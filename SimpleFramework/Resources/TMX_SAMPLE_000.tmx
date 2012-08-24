@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="40" height="20" tilewidth="36" tileheight="28">
+ <tileset firstgid="1" name="IMG_TMX_SAMPLE_000" tilewidth="36" tileheight="28">
+  <image source="IMG_TMX_SAMPLE_000.png" width="180" height="84"/>
+ </tileset>
+ <layer name="back000" width="40" height="20">
+  <data encoding="base64" compression="zlib">
+   eJy9VMsOgCAMQ03ERPH/P1cOHMjCo92Ghx40W0tXRgwhxIwr462wZewFB/B/hrPotLRGtU9BAvlmOr3z3wMtiboWqUmEDjMnSx4IWtzMnDR+GHhws36YDBBuNj9Zj/Rb5sT2ynqk35IB2yvr5Tcyz5U755HHip1DPSN5eOyct2dr7rN+xnOLy5q7551ocVlz97wTK95dLbQa3jvc86vV8J5xz+9Iw5ohM2PN/bRmuOKd/JMfwQeh4SSb
+  </data>
+ </layer>
+ <layer name="back001" width="40" height="20">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFowATsEAxtdRRG3BCMbXUEQtYiMQwe6mlDhfG5d/BgkfBKBgMgNz8hS+vUROM5jVUMBjiBB8Y7HEy6j7KALHuo0a5Qg4e6HqdWhgA1GEGxA==
+  </data>
+ </layer>
+ <layer name="ground" width="40" height="20" opacity="0.28">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFowATsEIxtdRRGwyU+1gHGR5q7hsFo2AgwGBPy4PdffQGg93Pgz28R91HGSDWfaN1K2UAANwWAxw=
+  </data>
+ </layer>
+</map>

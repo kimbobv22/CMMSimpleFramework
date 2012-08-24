@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>frames</key>
+	<dict>
+		<key>IMG_JOYPAD_000_BTN_A.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{242, 0}, {173, 173}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>sourceColorRect</key>
+			<string>{{242, 0}, {173, 173}}</string>
+			<key>sourceSize</key>
+			<string>{173, 173}</string>
+		</dict>
+		<key>IMG_JOYPAD_000_BTN_B.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{242, 178}, {173, 173}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>sourceColorRect</key>
+			<string>{{242, 178}, {173, 173}}</string>
+			<key>sourceSize</key>
+			<string>{173, 173}</string>
+		</dict>
+		<key>IMG_JOYPAD_000_STICK.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{0, 242}, {171, 170}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>sourceColorRect</key>
+			<string>{{0, 242}, {171, 170}}</string>
+			<key>sourceSize</key>
+			<string>{171, 170}</string>
+		</dict>
+		<key>IMG_JOYPAD_000_STICK_BACK.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{0, 0}, {236, 237}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {236, 237}}</string>
+			<key>sourceSize</key>
+			<string>{236, 237}</string>
+		</dict>
+	</dict>
+	<key>metadata</key>
+	<dict>
+		<key>format</key>
+		<integer>1</integer>
+		<key>size</key>
+		<string>{416, 412}</string>
+	</dict>
+</dict>
+</plist>
