@@ -26,10 +26,12 @@ typedef enum{
 	CMMTouchState_none,
 	CMMTouchState_onTouchChild,
 	CMMTouchState_onDrag,
-	CMMTouchState_onScroll,
+	CMMTouchState_onScroll, //none touch state
 	CMMTouchState_onDragChild,
 	CMMTouchState_onFixed,
 } CMMTouchState;
+
+#define cmmVarCMMLayerMaskDrag_minInnerLayerPositionDiffValue 0.4f
 
 @interface CMMLayerMaskDrag : CMMLayerMask{
 	BOOL isCanDragX,isCanDragY;
@@ -37,6 +39,7 @@ typedef enum{
 	CMMTouchState touchState;
 	
 	float _scrollAccelX,_scrollAccelY;
+	BOOL _isInnerLayerMoved;
 }
 
 -(void)update:(ccTime)dt_;

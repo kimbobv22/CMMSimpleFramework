@@ -1,6 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "cocos2d.h"
+#import "CMMMacro.h"
 
 @interface CMMDrawingUtil : NSObject
 
@@ -69,9 +70,8 @@
 
 @end
 
-@interface CMMDrawingUtil(Copy)
+@interface CMMDrawingUtil(Capture)
 
-+(CCTexture2D *)copyFromTexture:(CCNode *)targetNode_;
-+(CCSprite *)copyFromSprite:(CCNode *)targetNode_;
++(CCTexture2D *)captureFromNode:(CCNode *)node_;
 
 @end

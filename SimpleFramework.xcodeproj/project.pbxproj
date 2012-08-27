@@ -225,6 +225,8 @@
 		E0AEC75F15E47D7D0015A2BB /* CMMControlItemSlider.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AEC75E15E47D7D0015A2BB /* CMMControlItemSlider.mm */; };
 		E0AEC76215E4A1F40015A2BB /* CMMControlItemText.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AEC76115E4A1F40015A2BB /* CMMControlItemText.mm */; };
 		E0B586CE15DCB406006C8B7F /* ScrollMenuTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0B586CD15DCB406006C8B7F /* ScrollMenuTestLayer.mm */; };
+		E0C1173615E89729000142B2 /* CMMScrollMenuV.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C1173515E89729000142B2 /* CMMScrollMenuV.mm */; };
+		E0C1173F15E8B110000142B2 /* CMMScrollMenuH.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C1173E15E8B110000142B2 /* CMMScrollMenuH.mm */; };
 		E0D08A8615D8131600D14618 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D08A8515D8131600D14618 /* CoreMotion.framework */; };
 		E0D4097015D4F67F00953AFC /* SND_CMN_BTN_0001.caf in Resources */ = {isa = PBXBuildFile; fileRef = E0D4096F15D4F67F00953AFC /* SND_CMN_BTN_0001.caf */; };
 		E0D4097315D4F6FD00953AFC /* CommonIntroLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0D4097215D4F6FD00953AFC /* CommonIntroLayer.mm */; };
@@ -689,6 +691,10 @@
 		E0AEC76115E4A1F40015A2BB /* CMMControlItemText.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMControlItemText.mm; path = libs/CMMSimpleFramework/CMMControlItemText.mm; sourceTree = "<group>"; };
 		E0B586CC15DCB406006C8B7F /* ScrollMenuTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollMenuTestLayer.h; sourceTree = "<group>"; };
 		E0B586CD15DCB406006C8B7F /* ScrollMenuTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ScrollMenuTestLayer.mm; sourceTree = "<group>"; };
+		E0C1173415E89729000142B2 /* CMMScrollMenuV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMScrollMenuV.h; path = libs/CMMSimpleFramework/CMMScrollMenuV.h; sourceTree = "<group>"; };
+		E0C1173515E89729000142B2 /* CMMScrollMenuV.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMScrollMenuV.mm; path = libs/CMMSimpleFramework/CMMScrollMenuV.mm; sourceTree = "<group>"; };
+		E0C1173D15E8B110000142B2 /* CMMScrollMenuH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMScrollMenuH.h; path = libs/CMMSimpleFramework/CMMScrollMenuH.h; sourceTree = "<group>"; };
+		E0C1173E15E8B110000142B2 /* CMMScrollMenuH.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMScrollMenuH.mm; path = libs/CMMSimpleFramework/CMMScrollMenuH.mm; sourceTree = "<group>"; };
 		E0D08A8515D8131600D14618 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		E0D4096F15D4F67F00953AFC /* SND_CMN_BTN_0001.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SND_CMN_BTN_0001.caf; path = Resources/SND_CMN_BTN_0001.caf; sourceTree = "<group>"; };
 		E0D4097115D4F6FD00953AFC /* CommonIntroLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonIntroLayer.h; sourceTree = "<group>"; };
@@ -1512,6 +1518,10 @@
 				E0ED520E15E204680070712E /* CMMMenuItem.mm */,
 				E0ED520F15E204680070712E /* CMMScrollMenu.h */,
 				E0ED521015E204680070712E /* CMMScrollMenu.mm */,
+				E0C1173D15E8B110000142B2 /* CMMScrollMenuH.h */,
+				E0C1173E15E8B110000142B2 /* CMMScrollMenuH.mm */,
+				E0C1173415E89729000142B2 /* CMMScrollMenuV.h */,
+				E0C1173515E89729000142B2 /* CMMScrollMenuV.mm */,
 			);
 			name = menu;
 			sourceTree = "<group>";
@@ -1872,6 +1882,8 @@
 				E0431BA615E780C900E724E2 /* CMMCustomUI.mm in Sources */,
 				E08DBA9515E7D90A0090F7F7 /* CMMCustomUIJoypad.mm in Sources */,
 				E08DBAA015E7E5EE0090F7F7 /* CustomUITestLayer.mm in Sources */,
+				E0C1173615E89729000142B2 /* CMMScrollMenuV.mm in Sources */,
+				E0C1173F15E8B110000142B2 /* CMMScrollMenuH.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

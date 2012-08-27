@@ -39,8 +39,10 @@
 #import "CMMSPlanet.h"
 #import "CMMSObject_Test.h"
 
-#import "CMMScrollMenu.h"
 #import "CMMMenuItem.h"
+#import "CMMScrollMenu.h"
+#import "CMMScrollMenuV.h"
+#import "CMMScrollMenuH.h"
 
 #import "CMMControlItem.h"
 #import "CMMControlItemSwitch.h"

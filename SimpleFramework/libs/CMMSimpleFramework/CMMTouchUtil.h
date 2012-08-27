@@ -1,6 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "cocos2d.h"
+#import "CMMMacro.h"
 
 @interface CMMTouchUtil : NSObject
 

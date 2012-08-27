@@ -154,8 +154,7 @@
 	return self;
 }
 
-
--(void)setCMMTouchState:(CMMTouchState)touchState_{
+-(void)setTouchState:(CMMTouchState)touchState_{
 	touchState = touchState_;
 	switch(touchState){
 		case CMMTouchState_onDrag:{
@@ -169,36 +168,36 @@
 		case CMMTouchState_onDragChild:
 		case CMMTouchState_onFixed:
 		default:
-			_scrollAccelX = _scrollAccelY = 0;
+			_scrollAccelX = _scrollAccelY = 0.0f;
 			break;
 	}
 }
 
+-(void)setInnerPosition:(CGPoint)innerPosition_{
+	if(ccpDistance(_innerLayer.position,innerPosition_)>= cmmVarCMMLayerMaskDrag_minInnerLayerPositionDiffValue)
+		_isInnerLayerMoved = YES;
+	[super setInnerPosition:innerPosition_];
+}
+
 -(void)draw{
-	switch(touchState){
-		case CMMTouchState_onScroll:
-		case CMMTouchState_onDrag:
-		case CMMTouchState_onDragChild:
-		case CMMTouchState_onFixed:{
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glLineWidth(2.0f*CC_CONTENT_SCALE_FACTOR());
-			ccDrawColor4F(1.0f, 1.0f, 1.0f, 0.5f);
-			
-			float hDiffRate_ = self.contentSize.width/_innerLayer.contentSize.width;
-			float vDiffRate_ = self.contentSize.height/_innerLayer.contentSize.height;
-			
-			float hScrollBarSize_ = self.contentSize.width*hDiffRate_;
-			float vScrollBarSize_ = self.contentSize.height*vDiffRate_;
-			
-			CGPoint hScrollPoint_ = ccp(-_innerLayer.position.x*hDiffRate_,4);
-			CGPoint vScrollPoint_ = ccp(self.contentSize.width-4,-_innerLayer.position.y*vDiffRate_);
-			
-			if(isCanDragX) ccDrawLine(hScrollPoint_, ccpAdd(hScrollPoint_, ccp(hScrollBarSize_,0)));
-			if(isCanDragY) ccDrawLine(vScrollPoint_, ccpAdd(vScrollPoint_, ccp(0,vScrollBarSize_)));
-			break;
-		}
-		default:break;
-	}
+	if(!_isInnerLayerMoved) return;
+		
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glLineWidth(2.0f*CC_CONTENT_SCALE_FACTOR());
+	ccDrawColor4F(1.0f, 1.0f, 1.0f, 0.5f);
+	
+	float hDiffRate_ = self.contentSize.width/_innerLayer.contentSize.width;
+	float vDiffRate_ = self.contentSize.height/_innerLayer.contentSize.height;
+	
+	float hScrollBarSize_ = self.contentSize.width*hDiffRate_;
+	float vScrollBarSize_ = self.contentSize.height*vDiffRate_;
+	
+	CGPoint hScrollPoint_ = ccp(-_innerLayer.position.x*hDiffRate_,4);
+	CGPoint vScrollPoint_ = ccp(self.contentSize.width-4,-_innerLayer.position.y*vDiffRate_);
+	
+	if(isCanDragX) ccDrawLine(hScrollPoint_, ccpAdd(hScrollPoint_, ccp(hScrollBarSize_,0)));
+	if(isCanDragY) ccDrawLine(vScrollPoint_, ccpAdd(vScrollPoint_, ccp(0,vScrollBarSize_)));
+	_isInnerLayerMoved = NO;
 }
 -(void)_befreDraw{
 	[super draw];
@@ -209,12 +208,15 @@
 		case CMMTouchState_none:
 			break;
 		case CMMTouchState_onTouchChild:
+			_isInnerLayerMoved = YES;
 			break;
 		case CMMTouchState_onDrag:
+			_isInnerLayerMoved = YES;
 			break;
 		case CMMTouchState_onFixed:
 			break;
 		case CMMTouchState_onScroll:{
+			_isInnerLayerMoved = YES;
 			CGPoint curInnerPoint_ = _innerLayer.position;
 			CGSize itemLimitSize_ = self.innerSize;
 			CGPoint addPoint_ = CGPointZero;
@@ -243,7 +245,7 @@
 			if(ABS(ccpLength(addPoint_)) <= 0.1f)
 				self.touchState = CMMTouchState_none;
 			
-			_innerLayer.position = ccpAdd(_innerLayer.position, addPoint_);
+			[self setInnerPosition:ccpAdd(_innerLayer.position, addPoint_)];
 			break;
 		}
 		default: break;
@@ -285,7 +287,7 @@
 			else if(curInnerPoint_.y+itemLimitSize_.height<itemLimitSize_.height)
 				addPoint_.y *= MIN((curInnerPoint_.y+itemLimitSize_.height)/self.contentSize.height,1);
 			
-			_innerLayer.position = ccpAdd(_innerLayer.position, addPoint_);
+			[self setInnerPosition:ccpAdd(_innerLayer.position, addPoint_)];
 			
 			_scrollAccelX = -diffPoint_.x;
 			_scrollAccelY = -diffPoint_.y;
@@ -322,17 +324,17 @@
 @implementation CMMLayerMaskDrag(ViewControl)
 
 -(void)gotoTop{
-	_innerLayer.position = ccp(_innerLayer.position.x,-_innerLayer.contentSize.height+self.contentSize.height);
+	[self setInnerPosition:ccp(_innerLayer.position.x,-_innerLayer.contentSize.height+self.contentSize.height)];
 }
 -(void)gotoBottom{
-	_innerLayer.position = ccp(_innerLayer.position.x,0);
+	[self setInnerPosition:ccp(_innerLayer.position.x,0)];
 }
 
 -(void)gotoLeft{
-	_innerLayer.position = ccp(0,_innerLayer.position.y);
+	[self setInnerPosition:ccp(0,_innerLayer.position.y)];
 }
 -(void)gotoRight{
-	_innerLayer.position = ccp(-_innerLayer.contentSize.width+self.contentSize.width,_innerLayer.position.y);
+	[self setInnerPosition:ccp(-_innerLayer.contentSize.width+self.contentSize.width,_innerLayer.position.y)];
 }
 
 @end

@@ -27,7 +27,7 @@
 	_buttonSprite = [CMMMenuItem spriteWithTexture:buttonSprite_.texture rect:buttonSprite_.textureRect];
 	_buttonSprite.touchCancelDistance = 100.0f;
 	_resultBarSprite = [CCSprite node];
-	_resultBackSprite = [CCSprite node];
+	_resultBackSprite = [[CCSprite node] retain];
 	_resultMaskSprite = [[CCSprite node] retain];
 	
 	CGSize frameSize_ = CGSizeZero;
@@ -42,7 +42,9 @@
 	[self setUnitValue:1.0f];
 	[self setMinValue:0.0f];
 	[self setMaxValue:10.0f];
-	[self setItemValue:1.0f];
+	[self setItemValue:0.0f];
+	
+	[self scheduleUpdate];
 	
 	return self;
 }
@@ -100,19 +102,19 @@
 }
 
 -(void)_setPointXOfButton:(float)x_{
-	CGSize frameSize_ = self.contentSize;
 	CGSize buttonSize_ = _buttonSprite.contentSize;
 	
 	if(x_<buttonSize_.width/2)
 		x_ = buttonSize_.width/2;
-	else if(x_>frameSize_.width-buttonSize_.width/2)
-		x_ = frameSize_.width-buttonSize_.width/2;
+	else if(x_>contentSize_.width-buttonSize_.width/2)
+		x_ = contentSize_.width-buttonSize_.width/2;
 	
-	_buttonSprite.position = ccp(x_,frameSize_.height/2);
-	[self redraw];
+	_buttonSprite.position = ccp(x_,contentSize_.height/2);
+	_doRedraw = YES;
 }
 
 -(void)redraw{
+	[super redraw];
 	CGSize frameSize_ = self.contentSize;
 	CCRenderTexture *render_ = [CCRenderTexture renderTextureWithWidth:frameSize_.width height:frameSize_.height];
 	
@@ -126,14 +128,18 @@
 	_backSpriteR.anchorPoint = ccp(0.0f,0.5f);
 	_backSpriteR.position = ccp(_buttonSprite.position.x,frameSize_.height/2);
 	
+	[_backSpriteL setBlendFunc:(ccBlendFunc){GL_DST_ALPHA, GL_ZERO}];
+	[_backSpriteR setBlendFunc:(ccBlendFunc){GL_DST_ALPHA, GL_ZERO}];
+	
 	[render_ begin];
 	
+	[_resultMaskSprite visit];
 	[_backSpriteL visit];
 	[_backSpriteR visit];
 	
 	[render_ end];
 	
-	[_resultBackSprite setTexture:[CMMDrawingUtil textureMaskWithFrameSize:frameSize_ sprite:render_.sprite spritePoint:ccp(frameSize_.width/2,frameSize_.height/2) maskSprite:_resultMaskSprite maskPoint:ccp(frameSize_.width/2,frameSize_.height/2)]];
+	[_resultBackSprite setTexture:render_.sprite.texture];
 	CGRect targetTextureRect_ = CGRectZero;
 	targetTextureRect_.size = frameSize_;
 	[_resultBackSprite setTextureRect:targetTextureRect_];
@@ -181,6 +187,7 @@
 -(void)dealloc{
 	[callback_whenChangedItemVale release];
 	[_resultMaskSprite release];
+	[_resultBackSprite release];
 	[_maskSprite release];
 	[_barSprite release];
 	[_backSpriteL release];

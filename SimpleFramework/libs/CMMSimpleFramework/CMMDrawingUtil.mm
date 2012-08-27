@@ -216,11 +216,6 @@
 
 +(void)drawMask:(CCRenderTexture *)targetRender_ sprite:(CCSprite *)sprite_ spritePoint:(CGPoint)spritePoint_ maskSprite:(CCSprite *)maskSprite_ maskPoint:(CGPoint)maskPoint_ isReverse:(BOOL)isReverse_{
 	
-	[targetRender_ end];
-	
-	CGSize renderSize_ = targetRender_.sprite.contentSize;
-	CCRenderTexture *otherRender_ = [CCRenderTexture renderTextureWithWidth:renderSize_.width height:renderSize_.height];
-	
 	CCSprite *targetSprite_ = [CCSprite spriteWithTexture:sprite_.texture rect:sprite_.textureRect];
 	CCSprite *tMaskSprite_ = [CCSprite spriteWithTexture:maskSprite_.texture rect:maskSprite_.textureRect];
 	
@@ -228,28 +223,17 @@
 	tMaskSprite_.position = maskPoint_;
 	targetSprite_.flipY = tMaskSprite_.flipY = YES;
 	
-	[otherRender_ begin];
-	
-	[targetSprite_ visit];
-	[tMaskSprite_ setBlendFunc:(ccBlendFunc){GL_ZERO, GL_ONE_MINUS_SRC_ALPHA}];
-	[tMaskSprite_ visit];
-	
-	[otherRender_ end];
-	
-	CCSprite *cutSprite_ = [CCSprite spriteWithTexture:otherRender_.sprite.texture];
-	cutSprite_.position = ccp(renderSize_.width/2.0f,renderSize_.height/2.0f);
-	cutSprite_.flipY = YES;
-	
-	[targetRender_ begin];
-	
 	if(isReverse_){
-		[cutSprite_ visit];
-	}else{
 		[targetSprite_ visit];
-		[cutSprite_ setBlendFunc:(ccBlendFunc){GL_ZERO, GL_ONE_MINUS_SRC_ALPHA}];
-		[cutSprite_ visit];
+		[tMaskSprite_ setBlendFunc:(ccBlendFunc){GL_ZERO, GL_ONE_MINUS_SRC_ALPHA}];
+		[tMaskSprite_ visit];
+	}else{
+		[tMaskSprite_ visit];
+		[targetSprite_ setBlendFunc:(ccBlendFunc){GL_DST_ALPHA, GL_ZERO}];
+		[targetSprite_ visit];
 	}
 }
+
 +(void)drawMask:(CCRenderTexture *)targetRender_ sprite:(CCSprite *)sprite_ spritePoint:(CGPoint)spritePoint_ maskSprite:(CCSprite *)maskSprite_ maskPoint:(CGPoint)maskPoint_{
 	[self drawMask:targetRender_ sprite:sprite_ spritePoint:spritePoint_ maskSprite:maskSprite_ maskPoint:maskPoint_ isReverse:NO];
 }
@@ -328,37 +312,32 @@
 
 @end
 
-@implementation CMMDrawingUtil(Copy)
+@implementation CMMDrawingUtil(Capture)
 
-+(CCTexture2D *)copyFromTexture:(CCNode *)targetNode_{
-	CGSize frameSize_ = targetNode_.contentSize;
-	CCRenderTexture *render_ = [[[CCRenderTexture alloc] initWithWidth:frameSize_.width height:frameSize_.height pixelFormat:kCCTexture2DPixelFormat_Default] autorelease];
++(CCTexture2D *)captureFromNode:(CCNode *)node_{
+	CGSize frameSize_ = [node_ boundingBox].size;
+	CCRenderTexture *render_ = [CCRenderTexture renderTextureWithWidth:frameSize_.width height:frameSize_.height];
 	
-	CCNode *orgParent_ = targetNode_.parent;
-	CGPoint orgPoint_ = targetNode_.position;
-	float orgYScale_ = targetNode_.scaleY;
-	[targetNode_ removeFromParentAndCleanup:NO];
-	targetNode_.position = ccp(targetNode_.contentSize.width*targetNode_.anchorPoint.x
-							   ,targetNode_.contentSize.height*targetNode_.anchorPoint.y);
+	node_ = [[node_ retain] autorelease];
+	CGPoint anchorPoint_ = node_.anchorPoint;
+	CGPoint orgPoint_ = node_.position;
+	CCNode *orgParent_ = node_.parent;
+	
+	[node_ removeFromParentAndCleanup:NO];
+	node_.position = ccp(frameSize_.width*anchorPoint_.x,frameSize_.height*anchorPoint_.y);
+	node_.scaleY *=-1;
 	
 	[render_ begin];
 	
-	[render_ addChild:targetNode_];
-	targetNode_.scaleY = -1;
-	[targetNode_ visit];
-	[targetNode_ removeFromParentAndCleanup:NO];
+	[node_ visit];
 	
 	[render_ end];
 	
-	if(orgParent_)
-		[orgParent_ addChild:targetNode_];
-	targetNode_.position = orgPoint_;
-	targetNode_.scaleY = orgYScale_;
+	node_.scaleY *=-1;
+	node_.position = orgPoint_;
+	[orgParent_ addChild:node_];
 	
 	return render_.sprite.texture;
-}
-+(CCSprite *)copyFromSprite:(CCNode *)targetNode_{
-	return [CCSprite spriteWithTexture:[self copyFromTexture:targetNode_]];
 }
 
 @end

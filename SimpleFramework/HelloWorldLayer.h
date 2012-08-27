@@ -3,7 +3,7 @@
 #import "CMMHeader.h"
 
 @interface HelloWorldLayer : CMMLayer<CMMMenuItemDelegate>{
-	CMMScrollMenu *mainMenu;
+	CMMScrollMenuH *mainMenu;
 }
 
 @end

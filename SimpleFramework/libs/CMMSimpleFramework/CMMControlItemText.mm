@@ -39,7 +39,7 @@
 	[_toolBar addSubview:_textField];
 	callback_whenChangedItemVale = nil;
 	
-	[self schedule:@selector(update:) interval:1.0f/3.0f];
+	[self scheduleUpdate];
 	
 	return self;
 }
@@ -70,7 +70,7 @@
 	[itemValue release];
 	itemValue = [!itemValue_?@"":itemValue_ retain];
 	[_textLabel setString:itemValue];
-	[self redraw];
+	_doRedraw = YES;
 	
 	if(doCallback_){
 		if(!callback_whenChangedItemVale && cmmFuncCommon_respondsToSelector(delegate, @selector(controlItemText:whenChangedItemValue:))){
@@ -81,7 +81,9 @@
 	}
 }
 
--(void)redraw{}
+-(void)redraw{
+	[super redraw];
+}
 -(void)redrawWithBar{
 	CGRect targetTextureRect_ = CGRectZero;
 	targetTextureRect_.size = contentSize_;
@@ -98,7 +100,7 @@
 	if(_toolBar.superview){
 		if(![_textLabel.string isEqualToString:_textField.text]){
 			[_textLabel setString:!_textField.text?@"":_textField.text];
-			[self redraw];
+			_doRedraw = YES;
 		}
 	}
 }

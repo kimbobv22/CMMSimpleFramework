@@ -18,13 +18,13 @@
 		<key>IMG_CMN_BFRAME_000_BAR_00.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{72, 202}, {8, 2}}</string>
+			<string>{{72, 202}, {8, 8}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>sourceColorRect</key>
-			<string>{{72, 202}, {8, 2}}</string>
+			<string>{{72, 202}, {8, 8}}</string>
 			<key>sourceSize</key>
-			<string>{8, 2}</string>
+			<string>{8, 8}</string>
 		</dict>
 		<key>IMG_CMN_BFRAME_000_BAR_01.png</key>
 		<dict>
@@ -158,7 +158,7 @@
 			<key>sourceSize</key>
 			<string>{35, 62}</string>
 		</dict>
-		<key>IMG_CMN_BFRAME_000_TEXT_MASK.png</key>
+		<key>IMG_CMN_BFRAME_000_TEXT_MASK-hd</key>
 		<dict>
 			<key>frame</key>
 			<string>{{198, 74}, {35, 62}}</string>
@@ -175,7 +175,7 @@
 		<key>format</key>
 		<integer>1</integer>
 		<key>size</key>
-		<string>{240, 208}</string>
+		<string>{256, 256}</string>
 	</dict>
 </dict>
 </plist>

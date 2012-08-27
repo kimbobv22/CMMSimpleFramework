@@ -32,6 +32,8 @@
 	[self addChild:_resultBackSprite z:0];
 	[self setItemValue:NO];
 	
+	[self scheduleUpdate];
+	
 	return self;
 	
 }
@@ -73,10 +75,11 @@
 		x_ = frameSize_.width-buttonSize_.width/2;
 	
 	_buttonSprite.position = ccp(x_,frameSize_.height/2);
-	[self redraw];
+	_doRedraw = YES;
 }
 
 -(void)redraw{
+	[super redraw];
 	CGSize frameSize_ = self.contentSize;
 	CCRenderTexture *render_ = [CCRenderTexture renderTextureWithWidth:frameSize_.width height:frameSize_.height];
 	[render_ begin];
@@ -110,7 +113,6 @@
 	
 	CGPoint convertPoint_ = [self convertToNodeSpace:[CMMTouchUtil pointFromTouch:touch_]];
 	[self _setPointXOfButton:convertPoint_.x];
-	[self redraw];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];

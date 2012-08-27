@@ -2,8 +2,21 @@
 
 #import "CMMHeader.h"
 
-@interface ScrollMenuTestLayer : CMMLayer<CMMScrollMenuDelegate>{
-	CMMScrollMenu *scrollMenu1,*scrollMenu2;
+@interface ScrollMenuTestLayer : CMMLayer{
+	
+}
+
+@end
+
+@interface ScrollMenuTestLayer_H : CMMLayer<CMMScrollMenuHDelegate>{
+	CMMScrollMenuH *scrollMenu1,*scrollMenu2;
+	CCLabelTTF *labelDisplay;
+}
+
+@end
+
+@interface ScrollMenuTestLayer_V : CMMLayer<CMMScrollMenuHDelegate>{
+	CMMScrollMenuV *scrollMenu;
 	CCLabelTTF *labelDisplay;
 }
 
