@@ -150,7 +150,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 >Designed for Notification management in CMMScene.<br>
 >CMMScene에서 알림를 관리할 수 있도록 설계되었습니다.
 
-	// 1. Set a template for notification window firstly.(reusable 재사용가능)
+	// 1. First, set a template for notification window.(reusable 재사용가능)
 	// 1. 먼저 공지창의 템플릿을 설정합니다.
 	[(CMMNoticeDispatcher *).noticeTemplate = [(CMMNoticeDispatcherTemplate *) templateWithNoticeDispatcher:(CMMNoticeDispatcher *)];
 
@@ -204,17 +204,27 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 >Designed for implementing loading feature easily.<br>
 >로딩을 쉽게 구현할 수 있도록 디자인되었습니다.
 
->지정한 로딩 포메터를 이용해 로딩을 수행합니다. 예를 들어 로딩 포메터가 @"test%03d"이고 
+>Perform Loading through "Loading formatter". for example, "Loading formatter" is "test%03d", and the method "test000","test001","test002","test003" is existed in the target class.
+ "Loading object" call the method sequentially. "test000","test001","test002","test003".
+ when ended loading , call the callback method through delegate class<br>
+>"Loading formatter"를 통해 로딩을 수행합니다. 예를 들어 "Loading formatter"가 @"test%03d", 해당 클래스에 메소드 "test000","test001","test002","test003"
+가 존재합니다. "Loading object"는 순차적으로 "test000","test001","test002","test003"를 호출합니다. 로딩이 끝나면, delegate 클래스를 통해 callback 함수를 호출합니다.
 
 	// How to use
 	// 사용법
 	CMMLoadingObject *loadingObject_ = [CMMLoadingObject loadingObject];
 	loadingObject_.delegate = (id<CMMLoadingObjectDelegate>)(id);
 	
-	 //default loading formatter (@"loadingProcess%03d")
-	 //기본 로딩 포메터 (@"loadingProcess%03d")
+	 // default Loading formatter (@"loadingProcess%03d")
+	 // 기본 Loading formatter (@"loadingProcess%03d")
 	[loadingObject_ startLoading];
+	
+	// custom Loading formatter
+	// 커스텀 Loading formatter
 	[loadingObject_ startLoadingWithMethodFormatter:(NSString *)];
+	
+	// custom Loading formatter & custom target class
+	// 커스텀 Loading formatter & 임의 해당 클래스
 	[loadingObject_ startLoadingWithMethodFormatter:(NSString *) target:(id)];
 
 <br>
