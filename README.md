@@ -114,7 +114,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMTouchDispatcher
 
->support Multi-touch Management and Separation.<br>
+>Support Multi-touch Management and Separation.<br>
 >멀티터치 관리 및 분리를 지원합니다.
 
     // How to set max count of multi-touch.(default : 4)
@@ -125,7 +125,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
     
 #####CMMPopupDispatcher
 
->designed for Pop-up management in CMMScene. (Refer the CMMScene)<br>
+>Designed for Pop-up management in CMMScene. (Refer the CMMScene)<br>
 >CMMScene에서 팝업을 관리할 수 있도록 디자인되었습니다. (CMMScene 참고)
 
 <br>
@@ -152,12 +152,12 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 	// 1. Set a template for notification window firstly.(reusable 재사용가능)
 	// 1. 먼저 공지창의 템플릿을 설정합니다.
-	[[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [(CMMNoticeDispatcherTemplate *) templateWithNoticeDispatcher:(CMMNoticeDispatcher *)];
+	[(CMMNoticeDispatcher *).noticeTemplate = [(CMMNoticeDispatcherTemplate *) templateWithNoticeDispatcher:(CMMNoticeDispatcher *)];
 
 	// 2. Open notification window.
 	// 2. 공지창을 띄웁니다.
-	[[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
-	[[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
+	[(CMMNoticeDispatcher *) addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
+	[(CMMNoticeDispatcher *) addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
 	...(loadable 적재가능)
 
 <br>
@@ -166,12 +166,14 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMDrawingUtil
 
+>Designed for Image Drawing & Modify by using CCRenderTexture.<br>
 >CCRenderTexture를 사용하여 이미지를 그리거나, 수정할 수 있도록 디자인되었습니다.
 
 <br>
 
 #####CMMFileUtil
 
+>Designed for File Loading & Checking & etc....<br>
 >파일 불러오기, 검증 등을 할 수 있도록 디자인되었습니다.
 
 <br>
