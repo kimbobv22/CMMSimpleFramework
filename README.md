@@ -204,6 +204,19 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 >Designed for implementing loading feature easily.<br>
 >로딩을 쉽게 구현할 수 있도록 디자인되었습니다.
 
+>지정한 로딩 포메터를 이용해 로딩을 수행합니다. 예를 들어 로딩 포메터가 @"test%03d"이고 
+
+	// How to use
+	// 사용법
+	CMMLoadingObject *loadingObject_ = [CMMLoadingObject loadingObject];
+	loadingObject_.delegate = (id<CMMLoadingObjectDelegate>)(id);
+	
+	 //default loading formatter (@"loadingProcess%03d")
+	 //기본 로딩 포메터 (@"loadingProcess%03d")
+	[loadingObject_ startLoading];
+	[loadingObject_ startLoadingWithMethodFormatter:(NSString *)];
+	[loadingObject_ startLoadingWithMethodFormatter:(NSString *) target:(id)];
+
 <br>
 
 ##Class List - Component
