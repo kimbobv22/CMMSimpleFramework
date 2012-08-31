@@ -5,8 +5,25 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 ##How to use
 
-    // Just import.
-    #import "CMMHeader.h"
+	// 1. Import "CMMGLView.h" and replace CCGLView to CMMGLView at AppDelegate.mm.
+	// 1. AppDelegate.mm에 "CMMGLView.h"를 임포트하고, CCGLView를 CMMGLView로 교체합니다.
+    
+	CMMGLView *glView = [CMMGLView viewWithFrame:[window_ bounds]
+					pixelFormat:kEAGLColorFormatRGB565
+					depthFormat:0
+					preserveBackbuffer:NO
+					sharegroup:nil
+					multiSampling:NO
+					numberOfSamples:0];
+					
+	// 2. Import "CMMScene.h" and replace Intro layer that made by CCScene to CMMScene intro layer at AppDelegate.mm.
+	// 2. "CMMScene.h"를 임포트하고, CMMScene 인트로 레이어로 CCScene로 만든 인트로 레이어를 교체합니다.
+	
+	[director_ pushScene:[CMMScene sharedScene]];
+	[[CMMScene sharedScene] pushLayer:(CMMLayer *)];
+	
+	//
+	#import "CMMHeader.h"
     
 ##Class List - Common
 
