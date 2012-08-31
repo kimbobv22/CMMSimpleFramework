@@ -29,6 +29,7 @@ CMMSimpleframework which coded based on the cocos2d 2.x will be helpful to devel
 #####CMMTouchDispatcher
 #####CMMPopupDispatcher
 #####CMMMotionDispatcher
+#####CMMNoticeDispatcher
 
 ###4.Util
 
@@ -60,7 +61,17 @@ CMMSimpleframework which coded based on the cocos2d 2.x will be helpful to devel
 
 #####CMMMenuItem
 #####CMMScrollMenu
+#####CMMScrollMenuH
+#####CMMScrollMenuV
+
+###4.control
+
 #####CMMControlItem
 #####CMMControlItemSwitch
 #####CMMControlItemSlider
 #####CMMControlItemText
+
+###5.customUI
+
+#####CMMCustomUI
+#####CMMCustomUIJoypad
