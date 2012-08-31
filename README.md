@@ -18,6 +18,8 @@ CMMSimpleframework which coded based on the cocos2d 2.x will be helpful to devel
 
 #####CMMScene
 
+CMMSimpleFramework only supports the transition between layers by CMMScene.
+
 1. support the transition between layers. 
 2. support Pop-up. 
 3. support Notifications layer. 
