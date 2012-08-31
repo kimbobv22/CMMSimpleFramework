@@ -81,12 +81,17 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 	// How to allow dragging
 	// 드래그 허용하는 방법
-	[(CMMLayerMaskDrag *) setIsCanDragX:(BOOL)] //X-Axis X축
-	[(CMMLayerMaskDrag *) setIsCanDragY:(BOOL)] //Y-Axis Y축
+	[(CMMLayerMaskDrag *) setIsCanDragX:(BOOL)]; //X-Axis X축
+	[(CMMLayerMaskDrag *) setIsCanDragY:(BOOL)]; //Y-Axis Y축
 	
 <br>	
 
+>You can change the design of the scrollbar conditionally.<br>
 >스크롤바의 디자인을 제약적으로 변경할 수 있습니다.
+
+	// How to change design of scrollbar
+	// 스크롤바 디자인 변경방법
+	[(CMMLayerMaskDrag *) setScrollbarDesign:(CMMScrollbarDesign)];
 
 <br>
 
