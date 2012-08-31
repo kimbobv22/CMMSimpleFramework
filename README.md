@@ -20,21 +20,22 @@ CMMSimpleframework which coded based on the cocos2d 2.x will be helpful to devel
 
 #####CMMScene
 
-CMMSimpleFramework only supports the transition between layers(CMMLayer) by CMMScene.
-
+CMMSimpleFramework only supports the transition between layers(CMMLayer) by CMMScene.<br>
 CMMSimpleFramework는 레이어(CMMLayer)간 전환만 지원합니다.
 
     [[CMMScene sharedScene] pushLayer:(CMMLayer *)];
-    
-support Pop-up window. 
 
+<br>
+<br>
+support Pop-up window. <br>
 팝업창을 지원합니다.
 
     [[CMMScene sharedScene] openPopup:(CMMLayerPopup *) delegate:(id<CMMPopupDispatcherDelegate>)];
     [[CMMScene sharedScene] openPopupAtFirst:(CMMLayerPopup *) delegate:(id<CMMPopupDispatcherDelegate>)];
 
-support Notifications window.
-
+<br>
+<br>
+support Notifications window.<br>
 공지창을 지원합니다.
 
     // 1. Set a template for notification window firstly.(reusable)
@@ -46,18 +47,19 @@ support Notifications window.
     [[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
     [[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
     ...(loadable)
-    
-support Multi-touch Management and Separation.(Refer the CMMTouchDispatcher)
 
+<br>
+<br>
+support Multi-touch Management and Separation.(Refer the CMMTouchDispatcher)<br>
 멀티터치 관리 및 분리를 지원합니다.(CMMTouchDipatcher 참고)
-
+<br>
+<br>
 
 #####CMMLayer
 
 #####CMMLayerMask
 
-CMMLayerMask supports mask for children. also you can change size,position,color,opacity of inner layer.
-
+CMMLayerMask supports mask for children. also you can change size,position,color,opacity of inner layer.<br>
 CMMLayerMask 는 자식들의 마스크기능을 제공합니다. 또한 내부레이어의 크기,위치,색,투명도 를 설정할 수 있습니다.
     
 	// How to set property inner layer
@@ -66,7 +68,8 @@ CMMLayerMask 는 자식들의 마스크기능을 제공합니다. 또한 내부�
 	[(CMMLayerMask *) setInnerOpacity:(GLubyte)];
 	[(CMMLayerMask *) setInnerPosition:(CGPoint):];
 	[(CMMLayerMask *) setInnerSize:(CGSize)];
-
+<br>
+<br>
 #####CMMLayerMaskDrag
 #####CMMLayerPinchZoom
 #####CMMLayerPopup
