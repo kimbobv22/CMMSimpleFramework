@@ -134,14 +134,23 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
     
 #####CMMPopupDispatcher
 
+>designed for manage Pop-up in CMMScene.<br>
 >CMMScene에서 팝업을 관리할 수 있도록 디자인되었습니다.
 
 <br>
 
 #####CMMMotionDispatcher
 
->가속도센서를 관리할 수 있도록 디자인되었습니다.
->CMMLayer을 등록하여 사용할 수 있습니다.
+>designed for manage Accelerometer. Supported in CMMLayer.<br>
+>가속도계를 관리할 수 있도록 디자인되었습니다. CMMLayer에서 사용가능합니다.
+
+	// How to use
+	// 사용법
+	[(CMMLayer *) setIsAccelerometerEnabled:(BOOL)];
+	
+	//and add syntax in class
+	//그리고 클래스에 구문을 추가합니다.
+	-(void)motionDispatcher:(CMMMotionDispatcher *)motionDispatcher_ updateMotion:(CMMMotionState)state_{}
 
 <br>
 
