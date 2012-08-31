@@ -19,6 +19,7 @@
 #import "CMMTouchDispatcher.h"
 #import "CMMPopupDispatcher.h"
 #import "CMMMotionDispatcher.h"
+#import "CMMNoticeDispatcher.h"
 
 #import "CMMSoundEngine.h"
 

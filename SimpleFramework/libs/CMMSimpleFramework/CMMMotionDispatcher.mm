@@ -30,7 +30,7 @@ static CMMMotionDispatcher *_sharedCMMMotionDispatcher_ = nil;
 	}
 	
 	motionFixState = CMMMotionState();
-	self.updateInterval = 1.0f/30.0f;
+	[self setUpdateInterval:1.0f/30.0f];
 	
 	return self;
 }
