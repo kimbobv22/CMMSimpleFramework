@@ -20,10 +20,18 @@ CMMSimpleframework which coded based on the cocos2d 2.x will be helpful to devel
 
 CMMSimpleFramework only supports the transition between layers by CMMScene.
 
-1. support the transition between layers. 
-2. support Pop-up. 
-3. support Notifications layer. 
-4. support Multi-touch Management and Separation. 
+    [[CMMScene sharedScene] pushLayer:(CMMLayer *)];
+    
+support Pop-up. 
+
+    [[CMMScene sharedScene] openPopup:(CMMLayerPopup *) delegate:(id<CMMPopupDispatcherDelegate>)];
+    
+    or
+    
+    [[CMMScene sharedScene] openPopupAtFirst:(CMMLayerPopup *) delegate:(id<CMMPopupDispatcherDelegate>)];
+
+support Notifications layer. 
+support Multi-touch Management and Separation. 
 
 #####CMMLayer
 #####CMMLayerMask
