@@ -10,6 +10,9 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
     
 ##Class List - Common
 
+>The classes in "Common" is necessary.
+>"Common"에 있는 클래스는 CMMSimpleFramework를 구동하는데 반드시 필요합니다.
+
 ###1.Common
 
 #####CMMHeader
