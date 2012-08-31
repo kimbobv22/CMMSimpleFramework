@@ -3,6 +3,8 @@
 CMMSimpleframework which coded based on the cocos2d 2.x will be helpful to develop your cocos2d project.
 
 ##How to use
+
+    just import.
     #import "CMMHeader.h"
     
 ##Class List - Common
@@ -25,9 +27,6 @@ CMMSimpleFramework only supports the transition between layers by CMMScene.
 support Pop-up. 
 
     [[CMMScene sharedScene] openPopup:(CMMLayerPopup *) delegate:(id<CMMPopupDispatcherDelegate>)];
-    
-    or
-    
     [[CMMScene sharedScene] openPopupAtFirst:(CMMLayerPopup *) delegate:(id<CMMPopupDispatcherDelegate>)];
 
 support Notifications layer. 
