@@ -23,7 +23,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 	[[CMMScene sharedScene] pushLayer:(CMMLayer *)];
 	
 	//3. The class that can be used to "CMMScene scene transition" is only CMMLayer or a class that inherited CMMLayer.
-	//   you can use all features of CMMSimpleFramework through importing "CMMHeader.h",
+	//   you can use all features of CMMSimpleFramework through importing "CMMHeader.h"!
 	//3. CMMScene의 화면전환으로 사용할 수 있는 클래스는 CMMLayer나, CMMLayer를 상속받은 것만 가능합니다.
 	//   해당 클래스에서 "CMMHeader.h" 를 상속받음으로 CMMSimpleFramework의 모든 기능을 사용하세요!
 	
@@ -37,8 +37,10 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
     
 ##Class List - Common
 
->The classes in "Common" is necessary.
->"Common"에 있는 클래스는 CMMSimpleFramework를 구동하는데 반드시 필요합니다.
+>The classes in "Common" required for running of CMMSimpleFramework.
+>"Common"의 클래스는 CMMSimpleFramework를 실행하기 위해 필요합니다.
+
+<br>
 
 ###1.Common
 
@@ -265,8 +267,12 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 ##Class List - Component
 
->The classes in "Component" isn't need Necessarily. but They can constitute Powerful & Simple Menu.<br>
->"Component"에 있는 클래스는 반드시 필요한 클래스는 아닙니다. 하지만 간편하고 강력한 메뉴구성을 할 수 있습니다.
+>The classes in "Component" not required for running of CMMSimpleFramework essentially.<br>
+>but that can constitute Powerful & Simple Menu to using them.
+><br>
+><br>
+>"Component"의 클래스는 CMMSimpleFramework를 실행하기 위해 반드시 필요하지는 않습니다.
+>하지만 이것들을 사용하여 간편하고 강력한 메뉴구성을 할 수 있습니다.
 
 <br>
 
