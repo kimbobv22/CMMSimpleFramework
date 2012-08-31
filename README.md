@@ -17,6 +17,12 @@ CMMSimpleframework which coded based on the cocos2d 2.x will be helpful to devel
 ###2.View
 
 #####CMMScene
+
+1. support the transition between layers. 
+2. support Pop-up. 
+3. support Notifications layer. 
+4. support Multi-touch Management and Separation. 
+
 #####CMMLayer
 #####CMMLayerMask
 #####CMMLayerMaskDrag
