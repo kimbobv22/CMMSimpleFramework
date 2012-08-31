@@ -280,10 +280,26 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMDrawingManager
 
+>CMMDrawingManager는 미리 작성한 Sprite frame 을 가지고, 특정사이즈의 프레임을 가져올 수 있습니다.
+>또한 한번 그려진 프레임 저장되어 관리되기 때문에, 쓸데없는 메모리 낭비를 막을 수 있습니다.
+
+<br>
+
 ###2.Stage
 
 #####CMMStage
+
+>Box2d를 응용하여 만든 CMMStage는 오브젝트 생성 및 삭제 관리가 용이하고,
+>다양한 Delegate method 를 제공하여, 확장성이 뛰어납니다.
+
+<br>
+
 #####CMMTilemapStage
+
+>TMX파일을 분석하여 Box2d 맵으로 만들어냅니다.
+
+<br>
+
 #####CMMSSpec
 #####CMMSSpecStage
 #####CMMSParticle
