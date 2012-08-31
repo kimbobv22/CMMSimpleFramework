@@ -31,6 +31,13 @@ support Pop-up.
     [[CMMScene sharedScene] openPopupAtFirst:(CMMLayerPopup *) delegate:(id<CMMPopupDispatcherDelegate>)];
 
 support Notifications layer. 
+
+    1. set a template for notification.
+    [[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [(CMMNoticeDispatcherTemplate *) templateWithNoticeDispatcher:(CMMNoticeDispatcher *)];
+
+    2. open notification.
+    [[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
+    
 support Multi-touch Management and Separation. 
 
 #####CMMLayer
