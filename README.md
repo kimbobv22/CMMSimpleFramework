@@ -234,9 +234,13 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 >Designed for implementing loading feature easily.<br>
 >로딩을 쉽게 구현할 수 있도록 디자인되었습니다.
 
+<br>
+
 >Perform Loading through "Loading formatter". for example, "Loading formatter" is "test%03d", and the method "test000","test001","test002","test003" is existed in the target class.
  "Loading object" call the method sequentially. "test000","test001","test002","test003".
- when ended loading , call the callback method through delegate class<br>
+ when ended loading , call the callback method through delegate class
+><br>
+><br>
 >"Loading formatter"를 통해 로딩을 수행합니다. 예를 들어 "Loading formatter"가 @"test%03d", 해당 클래스에 메소드 "test000","test001","test002","test003"
 가 존재합니다. "Loading object"는 순차적으로 "test000","test001","test002","test003"를 호출합니다. 로딩이 끝나면, delegate 클래스를 통해 callback 함수를 호출합니다.
 
