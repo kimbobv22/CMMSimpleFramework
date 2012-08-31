@@ -27,14 +27,14 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
     [[CMMScene sharedScene] pushLayer:(CMMLayer *)];
 
 <br>
->support Pop-up window. <br>
+>Support Pop-up window. <br>
 >팝업창을 지원합니다.
 
     [[CMMScene sharedScene] openPopup:(CMMLayerPopup *) delegate:(id<CMMPopupDispatcherDelegate>)];
     [[CMMScene sharedScene] openPopupAtFirst:(CMMLayerPopup *) delegate:(id<CMMPopupDispatcherDelegate>)];
 
 <br>
->support Notifications window.<br>
+>Support Notifications window.<br>
 >공지창을 지원합니다.
 
     // 1. Set a template for notification window firstly.(reusable)
@@ -48,7 +48,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
     ...(loadable)
 
 <br>
->support Multi-touch Management and Separation.(Refer the CMMTouchDispatcher)<br>
+>Support Multi-touch management and separation.(Refer the CMMTouchDispatcher)<br>
 >멀티터치 관리 및 분리를 지원합니다.(CMMTouchDipatcher 참고)
 
 <br>
@@ -114,6 +114,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMSprite
 
+>CMMSprite is "the Sprite node that can be received the touch input" in CMMSimpleFramework.<br>
 >CMMSprite는 CMMSimpleFramework에서 터치를 입력받을 수 있는 스프라이트 노드입니다.
 
 <br>
