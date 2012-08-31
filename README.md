@@ -4,7 +4,7 @@ CMMSimpleframework which coded based on the cocos2d 2.x will be helpful to devel
 
 ##How to use
 
-    Just import.
+    // Just import.
     #import "CMMHeader.h"
     
 ##Class List - Common
@@ -31,20 +31,29 @@ support Pop-up.
 
 support Notifications layer. 
 
-    1. Set a template for notification.(reusable)
+    // 1. Set a template for notification firstly.(reusable)
     [[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [(CMMNoticeDispatcherTemplate *) templateWithNoticeDispatcher:(CMMNoticeDispatcher *)];
 
-    2. Open notification.
+    // 2. Open notification.
     [[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
     [[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
     ...(loadable)
     
-support Multi-touch Management and Separation. 
+support Multi-touch Management and Separation.
+
+    // How to set max count of multi-touch.(default : 4)
+    [(CMMTouchDispatcher *) setMaxMultiTouchCount:(int)]
 
 #####CMMLayer
 #####CMMLayerMask
 
 CMMLayerMask supports mask for children. also you can change inner size of layer arbitrarily.
+    
+    // How to set property inner layer
+    [(CMMLayerMask *) setInnerColor:(ccColor3B)];
+    [(CMMLayerMask *) setInnerOpacity:(GLubyte)];
+	[(CMMLayerMask *) setInnerPosition:(CGPoint):]
+	[(CMMLayerMask *) setInnerSize:(CGSize)]
 
 #####CMMLayerMaskDrag
 #####CMMLayerPinchZoom
