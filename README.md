@@ -20,9 +20,9 @@ CMMSimpleframework which coded based on the cocos2d 2.x will be helpful to devel
 
 #####CMMScene
 
-CMMSimpleFramework only supports the transition between layers by CMMScene.
+CMMSimpleFramework only supports the transition between layers(CMMLayer) by CMMScene.
 
-CMMSimpleFramework는 레이어간 전환만 지원합니다.
+CMMSimpleFramework는 레이어(CMMLayer)간 전환만 지원합니다.
 
     [[CMMScene sharedScene] pushLayer:(CMMLayer *)];
     
@@ -47,13 +47,9 @@ support Notifications window.
     [[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
     ...(loadable)
     
-support Multi-touch Management and Separation.
+support Multi-touch Management and Separation.(Refer the CMMTouchDispatcher)
 
-멀티터치 관리 및 분리를 지원합니다.
-
-    // How to set max count of multi-touch.(default : 4)
-    // 최대멀티터치수 설정하는 방법 
-    [(CMMTouchDispatcher *) setMaxMultiTouchCount:(int)]
+멀티터치 관리 및 분리를 지원합니다.(CMMTouchDipatcher 참고)
 
 
 #####CMMLayer
@@ -79,6 +75,15 @@ CMMLayerMask 는 자식들의 마스크기능을 제공합니다. 또한 내부�
 ###3.Dispatcher
 
 #####CMMTouchDispatcher
+
+support Multi-touch Management and Separation.
+
+멀티터치 관리 및 분리를 지원합니다.
+
+    // How to set max count of multi-touch.(default : 4)
+    // 최대멀티터치수 설정하는 방법 
+    [(CMMTouchDispatcher *) setMaxMultiTouchCount:(int)]
+    
 #####CMMPopupDispatcher
 #####CMMMotionDispatcher
 #####CMMNoticeDispatcher
