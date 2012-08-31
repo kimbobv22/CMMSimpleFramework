@@ -33,10 +33,22 @@ typedef enum{
 
 #define cmmVarCMMLayerMaskDrag_minInnerLayerPositionDiffValue 0.4f
 
+struct CMMScrollbarDesign{
+	CMMScrollbarDesign(){
+		colorX = colorY = ccc4(255.0f, 255.0f, 255.0f, 145.0f);
+		widthX = widthY = 2.0f;
+		distanceX = distanceY = 4.0f;
+	}
+	
+	ccColor4B colorX,colorY;
+	float widthX,widthY,distanceX,distanceY;
+};
+
 @interface CMMLayerMaskDrag : CMMLayerMask{
 	BOOL isCanDragX,isCanDragY;
 	float dragAccelRate;
 	CMMTouchState touchState;
+	CMMScrollbarDesign scrollbarDesign;
 	
 	float _scrollAccelX,_scrollAccelY;
 	BOOL _isInnerLayerMoved;
@@ -47,6 +59,7 @@ typedef enum{
 @property (nonatomic, readwrite) BOOL isCanDragX,isCanDragY;
 @property (nonatomic, readwrite) float dragAccelRate;
 @property (nonatomic, readwrite) CMMTouchState touchState;
+@property (nonatomic, readwrite) CMMScrollbarDesign scrollbarDesign;
 
 @end
 

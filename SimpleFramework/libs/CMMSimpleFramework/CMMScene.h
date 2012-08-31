@@ -3,6 +3,7 @@
 #import "CMMGLView.h"
 #import "CMMLayerPopup.h"
 #import "CMMTouchDispatcherScene.h"
+#import "CMMNoticeDispatcher.h"
 #import "CMMLoadingObject.h"
 
 @interface CMMScene : CCScene<CMMGLViewTouchDelegate,CMMLoadingObjectDelegate>{
@@ -16,6 +17,7 @@
 	CMMLoadingObject *_loadingObject;
 	CMMTouchDispatcherScene *touchDispatcher;
 	CMMPopupDispatcher *popupDispatcher;
+	CMMNoticeDispatcher *noticeDispatcher;
 }
 
 +(id)sharedScene;
@@ -29,6 +31,7 @@
 @property (nonatomic, readwrite) ccTime fadeTime;
 @property (nonatomic, readonly) CMMTouchDispatcherScene *touchDispatcher;
 @property (nonatomic, readonly) CMMPopupDispatcher *popupDispatcher;
+@property (nonatomic, readonly) CMMNoticeDispatcher *noticeDispatcher;
 
 @end
 

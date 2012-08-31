@@ -86,6 +86,15 @@
 	[menuItem_ setTitle:@"CustomUI(Joypad) Test"];
 	[mainMenu addItem:menuItem_];
 	
+	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:1 frameSize:menuItemSize_];
+	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){
+		[[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:@"Hello world :)" subject:@"Welcome to CMMSimpleFramework!"];
+	};
+	[menuItem_ setTitle:@"Notice Test"];
+	[mainMenu addItem:menuItem_];
+	
+	
+	
 	return self;
 }
 

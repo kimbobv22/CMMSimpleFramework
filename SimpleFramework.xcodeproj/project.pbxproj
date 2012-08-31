@@ -214,6 +214,7 @@
 		E049BE2615E3E28700DF09A1 /* ControlItemTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E049BE2515E3E28600DF09A1 /* ControlItemTestLayer.mm */; };
 		E049E24B15DE9FCC00CD80E1 /* IMG_TMX_SAMPLE_000.png in Resources */ = {isa = PBXBuildFile; fileRef = E049E24915DE9FCC00CD80E1 /* IMG_TMX_SAMPLE_000.png */; };
 		E049E24C15DE9FCC00CD80E1 /* TMX_SAMPLE_000.tmx in Resources */ = {isa = PBXBuildFile; fileRef = E049E24A15DE9FCC00CD80E1 /* TMX_SAMPLE_000.tmx */; };
+		E070503B15EC701500CFC81E /* CMMNoticeDispatcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = E070503A15EC701500CFC81E /* CMMNoticeDispatcher.mm */; };
 		E08DBA9515E7D90A0090F7F7 /* CMMCustomUIJoypad.mm in Sources */ = {isa = PBXBuildFile; fileRef = E08DBA9415E7D90A0090F7F7 /* CMMCustomUIJoypad.mm */; };
 		E08DBA9A15E7E5D90090F7F7 /* IMG_JOYPAD_000-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E08DBA9615E7E5D90090F7F7 /* IMG_JOYPAD_000-hd.plist */; };
 		E08DBA9B15E7E5D90090F7F7 /* IMG_JOYPAD_000-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E08DBA9715E7E5D90090F7F7 /* IMG_JOYPAD_000-hd.png */; };
@@ -673,6 +674,8 @@
 		E049BE2515E3E28600DF09A1 /* ControlItemTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ControlItemTestLayer.mm; sourceTree = "<group>"; };
 		E049E24915DE9FCC00CD80E1 /* IMG_TMX_SAMPLE_000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_TMX_SAMPLE_000.png; path = Resources/IMG_TMX_SAMPLE_000.png; sourceTree = "<group>"; };
 		E049E24A15DE9FCC00CD80E1 /* TMX_SAMPLE_000.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = TMX_SAMPLE_000.tmx; path = Resources/TMX_SAMPLE_000.tmx; sourceTree = "<group>"; };
+		E070503915EC701500CFC81E /* CMMNoticeDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMNoticeDispatcher.h; path = libs/CMMSimpleFramework/CMMNoticeDispatcher.h; sourceTree = "<group>"; };
+		E070503A15EC701500CFC81E /* CMMNoticeDispatcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMNoticeDispatcher.mm; path = libs/CMMSimpleFramework/CMMNoticeDispatcher.mm; sourceTree = "<group>"; };
 		E08DBA9315E7D90A0090F7F7 /* CMMCustomUIJoypad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMCustomUIJoypad.h; path = libs/CMMSimpleFramework/CMMCustomUIJoypad.h; sourceTree = "<group>"; };
 		E08DBA9415E7D90A0090F7F7 /* CMMCustomUIJoypad.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMCustomUIJoypad.mm; path = libs/CMMSimpleFramework/CMMCustomUIJoypad.mm; sourceTree = "<group>"; };
 		E08DBA9615E7E5D90090F7F7 /* IMG_JOYPAD_000-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "IMG_JOYPAD_000-hd.plist"; path = "Resources/IMG_JOYPAD_000-hd.plist"; sourceTree = "<group>"; };
@@ -1233,8 +1236,8 @@
 				E032FC3615E1EAB200B28B61 /* CMMDrawingUtil.h */,
 				E032FC3715E1EAB200B28B61 /* CMMDrawingUtil.mm */,
 				E032FC3815E1EAB200B28B61 /* CMMFileUtil.h */,
-				E032FC3915E1EAB200B28B61 /* CMMFileUtil.mm */,
 				E032FC3A15E1EAB200B28B61 /* CMMFontUtil.h */,
+				E032FC3915E1EAB200B28B61 /* CMMFileUtil.mm */,
 				E032FC3B15E1EAB200B28B61 /* CMMFontUtil.m */,
 				E032FC3E15E1EAB300B28B61 /* CMMStringUtil.h */,
 				E032FC3F15E1EAB300B28B61 /* CMMStringUtil.mm */,
@@ -1300,6 +1303,8 @@
 				E032FC6215E1F22700B28B61 /* CMMTouchDispatcher.mm */,
 				E0ED521715E20E590070712E /* CMMTouchDispatcherScene.h */,
 				E0ED521815E20E590070712E /* CMMTouchDispatcherScene.mm */,
+				E070503915EC701500CFC81E /* CMMNoticeDispatcher.h */,
+				E070503A15EC701500CFC81E /* CMMNoticeDispatcher.mm */,
 			);
 			name = dispatcher;
 			sourceTree = "<group>";
@@ -1884,6 +1889,7 @@
 				E08DBAA015E7E5EE0090F7F7 /* CustomUITestLayer.mm in Sources */,
 				E0C1173615E89729000142B2 /* CMMScrollMenuV.mm in Sources */,
 				E0C1173F15E8B110000142B2 /* CMMScrollMenuH.mm in Sources */,
+				E070503B15EC701500CFC81E /* CMMNoticeDispatcher.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -12,7 +12,7 @@ static CMMScene *_sharedScene_ = nil;
 @end
 
 @implementation CMMScene
-@synthesize runningLayer,transitionColor,isOnTransition,fadeTime,touchDispatcher,popupDispatcher;
+@synthesize runningLayer,transitionColor,isOnTransition,fadeTime,touchDispatcher,popupDispatcher,noticeDispatcher;
 
 +(id)sharedScene{
 	if(!_sharedScene_){
@@ -24,6 +24,8 @@ static CMMScene *_sharedScene_ = nil;
 
 -(id)init{
 	if(!(self = [super init])) return self;
+	[self setAnchorPoint:CGPointZero];
+	[self setIgnoreAnchorPointForPosition:NO];
 	
 	runningLayer = nil;
 	_pushLayerList = [[CCArray alloc] init];
@@ -31,9 +33,10 @@ static CMMScene *_sharedScene_ = nil;
 	_transitionLayer = [[CCLayerColor alloc] init];
 	fadeTime = 0.4f;
 	
+	_loadingObject = [[CMMLoadingObject alloc] init];
 	touchDispatcher = [[CMMTouchDispatcherScene alloc] initWithTarget:self];
 	popupDispatcher = [[CMMPopupDispatcher alloc] initWithScene:self];
-	_loadingObject = [[CMMLoadingObject alloc] init];
+	noticeDispatcher = [[CMMNoticeDispatcher alloc] initWithTarget:self];
 	
 	[self scheduleUpdate];
 	
@@ -75,11 +78,13 @@ static CMMScene *_sharedScene_ = nil;
 }
 
 -(void)dealloc{
-	[_loadingObject release];
+	[noticeDispatcher release];
 	[popupDispatcher release];
 	[touchDispatcher release];
+	[_loadingObject release];
 	[_pushLayerList release];
 	[_transitionLayer release];
+	
 	[super dealloc];
 }
 

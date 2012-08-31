@@ -7,8 +7,8 @@
 
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
-	self.anchorPoint = ccp(0,0);
-	self.ignoreAnchorPointForPosition = NO;
+	[self setAnchorPoint:CGPointZero];
+	[self setIgnoreAnchorPointForPosition:NO];
 	
 	touchDispatcher = [[CMMTouchDispatcher alloc] initWithTarget:self];
 	isAvailableMotion = NO;

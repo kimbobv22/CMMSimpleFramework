@@ -137,7 +137,7 @@
 @end
 
 @implementation CMMLayerMaskDrag
-@synthesize isCanDragX,isCanDragY,dragAccelRate,touchState;
+@synthesize isCanDragX,isCanDragY,dragAccelRate,touchState,scrollbarDesign;
 
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
@@ -145,6 +145,7 @@
 	touchDispatcher.maxMultiTouchCount = 0;
 	isCanDragX = isCanDragY = NO;
 	touchState = CMMTouchState_none;
+	scrollbarDesign = CMMScrollbarDesign();
 	
 	dragAccelRate = 5.0f;
 	_scrollAccelX = _scrollAccelY = 0;
@@ -183,20 +184,28 @@
 	if(!_isInnerLayerMoved) return;
 		
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-	glLineWidth(2.0f*CC_CONTENT_SCALE_FACTOR());
-	ccDrawColor4F(1.0f, 1.0f, 1.0f, 0.5f);
 	
-	float hDiffRate_ = self.contentSize.width/_innerLayer.contentSize.width;
-	float vDiffRate_ = self.contentSize.height/_innerLayer.contentSize.height;
+	float hDiffRate_ = contentSize_.width/_innerLayer.contentSize.width;
+	float vDiffRate_ = contentSize_.height/_innerLayer.contentSize.height;
 	
-	float hScrollBarSize_ = self.contentSize.width*hDiffRate_;
-	float vScrollBarSize_ = self.contentSize.height*vDiffRate_;
+	float hScrollBarSize_ = contentSize_.width*hDiffRate_;
+	float vScrollBarSize_ = contentSize_.height*vDiffRate_;
 	
-	CGPoint hScrollPoint_ = ccp(-_innerLayer.position.x*hDiffRate_,4);
-	CGPoint vScrollPoint_ = ccp(self.contentSize.width-4,-_innerLayer.position.y*vDiffRate_);
+	CGPoint hScrollPoint_ = ccp(-_innerLayer.position.x*hDiffRate_,scrollbarDesign.distanceY);
+	CGPoint vScrollPoint_ = ccp(contentSize_.width-scrollbarDesign.distanceX,-_innerLayer.position.y*vDiffRate_);
 	
-	if(isCanDragX) ccDrawLine(hScrollPoint_, ccpAdd(hScrollPoint_, ccp(hScrollBarSize_,0)));
-	if(isCanDragY) ccDrawLine(vScrollPoint_, ccpAdd(vScrollPoint_, ccp(0,vScrollBarSize_)));
+	if(isCanDragX){
+		glLineWidth(scrollbarDesign.widthX*CC_CONTENT_SCALE_FACTOR());
+		ccColor4F tColor_ = ccc4FFromccc4B(scrollbarDesign.colorX);
+		ccDrawColor4F(tColor_.r, tColor_.g, tColor_.b, tColor_.a);
+		ccDrawLine(hScrollPoint_, ccpAdd(hScrollPoint_, ccp(hScrollBarSize_,0)));
+	}
+	if(isCanDragY){
+		glLineWidth(scrollbarDesign.widthY*CC_CONTENT_SCALE_FACTOR());
+		ccColor4F tColor_ = ccc4FFromccc4B(scrollbarDesign.colorY);
+		ccDrawColor4F(tColor_.r, tColor_.g, tColor_.b, tColor_.a);
+		ccDrawLine(vScrollPoint_, ccpAdd(vScrollPoint_, ccp(0,vScrollBarSize_)));
+	}
 	_isInnerLayerMoved = NO;
 }
 -(void)_befreDraw{

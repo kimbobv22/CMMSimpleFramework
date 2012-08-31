@@ -43,6 +43,17 @@
 }
 
 -(void)loadingProcess006{
+	[self _setDisplayStr:@"Initializing notice template..."];
+}
+-(void)loadingProcess007{
+	[[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [CMMNoticeDispatcherTemplate_DefaultScale templateWithNoticeDispatcher:[[CMMScene sharedScene] noticeDispatcher]];
+	
+//	[[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [CMMNoticeDispatcherTemplate_DefaultMoveDown templateWithNoticeDispatcher:[[CMMScene sharedScene] noticeDispatcher]];
+	
+	//[[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [CMMNoticeDispatcherTemplate_DefaultFadeInOut templateWithNoticeDispatcher:[[CMMScene sharedScene] noticeDispatcher]];
+}
+
+-(void)loadingProcess008{
 	[self _setDisplayStr:@"loading complete!"];
 }
 
