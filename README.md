@@ -34,20 +34,11 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
     [[CMMScene sharedScene] openPopupAtFirst:(CMMLayerPopup *) delegate:(id<CMMPopupDispatcherDelegate>)];
 
 <br>
->Support Notifications window.<br>
->공지창을 지원합니다.
-
-    // 1. Set a template for notification window firstly.(reusable)
-    // 1. 먼저 공지창의 템플릿을 설정합니다.
-    [[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [(CMMNoticeDispatcherTemplate *) templateWithNoticeDispatcher:(CMMNoticeDispatcher *)];
-
-    // 2. Open notification window.
-    // 2. 공지창을 띄웁니다.
-    [[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
-    [[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
-    ...(loadable)
+>Support Notifications window. (Refer the CMMNoticeDispatcher><br>
+>알림창을 지원합니다. (CMMNoticeDispatcher 참고)
 
 <br>
+
 >Support Multi-touch management and separation.(Refer the CMMTouchDispatcher)<br>
 >멀티터치 관리 및 분리를 지원합니다.(CMMTouchDipatcher 참고)
 
@@ -134,14 +125,14 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
     
 #####CMMPopupDispatcher
 
->designed for manage Pop-up in CMMScene.<br>
->CMMScene에서 팝업을 관리할 수 있도록 디자인되었습니다.
+>designed for Pop-up management in CMMScene. (Refer the CMMScene)<br>
+>CMMScene에서 팝업을 관리할 수 있도록 디자인되었습니다. (CMMScene 참고)
 
 <br>
 
 #####CMMMotionDispatcher
 
->designed for manage Accelerometer. Supported in CMMLayer.<br>
+>designed for Accelerometer management. Supported in CMMLayer.<br>
 >가속도계를 관리할 수 있도록 디자인되었습니다. CMMLayer에서 사용가능합니다.
 
 	// How to use
@@ -156,7 +147,18 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMNoticeDispatcher
 
->CMMScene에서 공지를 관리할 수 있도록 디자인되었습니다.
+>Designed for Notification management in CMMScene.<br>
+>CMMScene에서 알림를 관리할 수 있도록 설계되었습니다.
+
+	// 1. Set a template for notification window firstly.(reusable 재사용가능)
+	// 1. 먼저 공지창의 템플릿을 설정합니다.
+	[[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [(CMMNoticeDispatcherTemplate *) templateWithNoticeDispatcher:(CMMNoticeDispatcher *)];
+
+	// 2. Open notification window.
+	// 2. 공지창을 띄웁니다.
+	[[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
+	[[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
+	...(loadable 적재가능)
 
 <br>
 
