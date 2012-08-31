@@ -58,8 +58,8 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 >CMMLayer is "Top layer node" in CMMSimpleFramework.<br>
 >CMMLayer는 CMMSimpleFramework에서 "최상위 레이어 노드"입니다.
 
->CMMLayer can manage Multi-touch(Max Multi-touch count, etc...( Individually.(Refer the CMMTouchDispatcher)<br>
->CMMLayer는 독립적으로 멀티터치(최대멀티터치수 등...)를 관리할 수 있습니다.
+>CMMLayer can manage Multi-touch(Max Multi-touch count, etc...) Individually.(Refer the CMMTouchDispatcher)<br>
+>CMMLayer는 독립적으로 멀티터치(최대멀티터치수 등...)를 관리할 수 있습니다.(CMMTouchDispatcher 참고)
 
 <br>
 
@@ -100,12 +100,14 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMLayerPinchZoom
 
+>CMMLayerPinchZoom is available Pinch-Zoom.<br>
 >CMMLayerPinchZoom는 핀치줌이 가능합니다.
 
 <br>
 
 #####CMMLayerPopup
 
+>Layer for Pop-up. You can create creative Pop-up window by inheriting the CMMLayerPopup.<br>
 >팝업창을 위한 레이어입니다. CMMLayerPopup를 상속받아 독창적인 팝업창을 제작할 수 있습니다.
 
 <br>
