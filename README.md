@@ -44,14 +44,17 @@ support Multi-touch Management and Separation.
     // How to set max count of multi-touch.(default : 4)
     [(CMMTouchDispatcher *) setMaxMultiTouchCount:(int)]
 
+
 #####CMMLayer
+
+
 #####CMMLayerMask
 
 CMMLayerMask supports mask for children. also you can change inner size of layer arbitrarily.
     
-    // How to set property inner layer
-    [(CMMLayerMask *) setInnerColor:(ccColor3B)];
-    [(CMMLayerMask *) setInnerOpacity:(GLubyte)];
+	// How to set property inner layer
+	[(CMMLayerMask *) setInnerColor:(ccColor3B)];
+	[(CMMLayerMask *) setInnerOpacity:(GLubyte)];
 	[(CMMLayerMask *) setInnerPosition:(CGPoint):]
 	[(CMMLayerMask *) setInnerSize:(CGSize)]
 
