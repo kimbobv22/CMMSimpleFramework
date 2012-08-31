@@ -76,7 +76,16 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMLayerMaskDrag
 
+>CMMLayerMaskDrag is that from CMMLayerMask added dragging feature.<br>
 >CMMLayerMaskDrag는 CMMLayerMask에서 드래그기능이 추가되었습니다.
+
+	// How to allow dragging
+	// 드래그 허용하는 방법
+	[(CMMLayerMaskDrag *) setIsCanDragX:(BOOL)] //X-Axis X축
+	[(CMMLayerMaskDrag *) setIsCanDragY:(BOOL)] //Y-Axis Y축
+	
+<br>	
+
 >스크롤바의 디자인을 제약적으로 변경할 수 있습니다.
 
 <br>
