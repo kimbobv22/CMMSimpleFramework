@@ -55,8 +55,8 @@ CMMLayerMask supports mask for children. also you can change inner size of layer
 	// How to set property inner layer
 	[(CMMLayerMask *) setInnerColor:(ccColor3B)];
 	[(CMMLayerMask *) setInnerOpacity:(GLubyte)];
-	[(CMMLayerMask *) setInnerPosition:(CGPoint):]
-	[(CMMLayerMask *) setInnerSize:(CGSize)]
+	[(CMMLayerMask *) setInnerPosition:(CGPoint):];
+	[(CMMLayerMask *) setInnerSize:(CGSize)];
 
 #####CMMLayerMaskDrag
 #####CMMLayerPinchZoom
