@@ -180,25 +180,29 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMFontUtil
 
->CCLabelTTF 객체를 보다 쉽게 만들 수 있도록 디자인되었습니다.
+>Designed for Creating CCLabelTTF easily.<br>
+>CCLabelTTF 객체를 쉽게 만들 수 있도록 디자인되었습니다.
 
 <br>
 
 #####CMMStringUtil
 
->파일경로를 NSString 형식으로 변환해주거나, 다른 NSString 을 변경할 수 있도록 디자인되었습니다.
+>Designed for Converting to NSString from Filepath, Modify other NSString.<br>
+>파일경로를 NSString으로 변환하거나, 다른 NSString을 수정할 수 있도록 디자인되었습니다.
 
 <br>
 
 #####CMMTouchUtil
 
->터치좌표를 구하거나, 터치안에 있는 노드를 쉽게 찾을 수 있도록 디자인되었습니다.
+>Designed for Finding touch point &Finding node that contacting with the touch.<br>
+>터치좌표를 구하거나, 터치와 접촉하는 노드를 쉽게 찾을 수 있도록 디자인되었습니다.
 
 <br>
 
 #####CMMLoadingObject
 
->로딩을 보다 쉽게 구현할 수 있도록 디자인되었습니다.
+>Designed for implementing loading feature easily.<br>
+>로딩을 쉽게 구현할 수 있도록 디자인되었습니다.
 
 <br>
 
