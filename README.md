@@ -4,7 +4,7 @@ CMMSimpleframework which coded based on the cocos2d 2.x will be helpful to devel
 
 ##How to use
 
-    just import.
+    Just import.
     #import "CMMHeader.h"
     
 ##Class List - Common
@@ -31,11 +31,13 @@ support Pop-up.
 
 support Notifications layer. 
 
-    1. set a template for notification.
+    1. Set a template for notification.(reusable)
     [[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [(CMMNoticeDispatcherTemplate *) templateWithNoticeDispatcher:(CMMNoticeDispatcher *)];
 
-    2. open notification.
+    2. Open notification.
     [[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
+    [[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:(NSString *) subject:(NSString *)];
+    ...(loadable)
     
 support Multi-touch Management and Separation. 
 
