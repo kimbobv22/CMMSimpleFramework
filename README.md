@@ -27,6 +27,9 @@ CMMSimpleFramework only supports the transition between layers by CMMScene.
 
 #####CMMLayer
 #####CMMLayerMask
+
+CMMLayerMask supports mask for children. also you can change inner size of layer arbitrarily.
+
 #####CMMLayerMaskDrag
 #####CMMLayerPinchZoom
 #####CMMLayerPopup
