@@ -231,6 +231,11 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 ##Class List - Component
 
+>The classes in "Component" isn't need Necessarily. but They can constitute Powerful & Simple Menu.<br>
+>"Component"에 있는 클래스는 반드시 필요한 클래스는 아닙니다. 하지만 간편하고 강력한 메뉴구성을 할 수 있습니다.
+
+<br>
+
 ###1.Manager
 
 #####CMMDrawingManager
