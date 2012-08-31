@@ -56,6 +56,9 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMLayer
 
+>CMMLayer는 CMMSimpleFramework에서 최상위 레이어 노드입니다.
+>모든 CMMLayer는 독립적으로 멀티터치(최대멀티터치수 등)를 관리할 수 있습니다.
+
 #####CMMLayerMask
 
 >CMMLayerMask supports mask for children. also you can change size,position,color,opacity of inner layer.<br>
@@ -69,9 +72,21 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 	[(CMMLayerMask *) setInnerSize:(CGSize)];
 <br>
 #####CMMLayerMaskDrag
+
+>CMMLayerMaskDrag는 CMMLayerMask에서 드래그기능이 추가되었습니다.
+>스크롤바의 디자인을 제약적으로 변경할 수 있습니다.
+
 #####CMMLayerPinchZoom
+
+>CMMLayerPinchZoom는 핀치줌이 가능합니다.
+
 #####CMMLayerPopup
+
+>팝업창을 위한 레이어입니다. CMMLayerPopup를 상속받아 독창적인 팝업창을 제작할 수 있습니다.
+
 #####CMMSprite
+
+>CMMSprite는 CMMSimpleFramework에서 터치를 입력받을 수 있는 스프라이트 노드입니다.
 
 ###3.Dispatcher
 
@@ -86,12 +101,24 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 <br>
     
 #####CMMPopupDispatcher
+
+>CMMScene에서 팝업을 관리할 수 있도록 디자인되었습니다.
+
 #####CMMMotionDispatcher
+
+>자이로스코프를 관리할 수 있도록 디자인되었습니다.
+>CMMLayer을 등록하여 사용할 수 있습니다.
+
 #####CMMNoticeDispatcher
+
+>CMMScene에서 공지를 관리할 수 있도록 디자인되었습니다.
 
 ###4.Util
 
 #####CMMDrawingUtil
+
+
+
 #####CMMFileUtil
 #####CMMFontUtil
 #####CMMStringUtil
