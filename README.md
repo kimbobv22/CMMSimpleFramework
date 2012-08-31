@@ -52,12 +52,13 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 >멀티터치 관리 및 분리를 지원합니다.(CMMTouchDipatcher 참고)
 
 <br>
-<br>
 
 #####CMMLayer
 
 >CMMLayer는 CMMSimpleFramework에서 최상위 레이어 노드입니다.
 >모든 CMMLayer는 독립적으로 멀티터치(최대멀티터치수 등)를 관리할 수 있습니다.
+
+<br>
 
 #####CMMLayerMask
 
@@ -70,23 +71,33 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 	[(CMMLayerMask *) setInnerOpacity:(GLubyte)];
 	[(CMMLayerMask *) setInnerPosition:(CGPoint):];
 	[(CMMLayerMask *) setInnerSize:(CGSize)];
+
 <br>
+
 #####CMMLayerMaskDrag
 
 >CMMLayerMaskDrag는 CMMLayerMask에서 드래그기능이 추가되었습니다.
 >스크롤바의 디자인을 제약적으로 변경할 수 있습니다.
 
+<br>
+
 #####CMMLayerPinchZoom
 
 >CMMLayerPinchZoom는 핀치줌이 가능합니다.
+
+<br>
 
 #####CMMLayerPopup
 
 >팝업창을 위한 레이어입니다. CMMLayerPopup를 상속받아 독창적인 팝업창을 제작할 수 있습니다.
 
+<br>
+
 #####CMMSprite
 
 >CMMSprite는 CMMSimpleFramework에서 터치를 입력받을 수 있는 스프라이트 노드입니다.
+
+<br>
 
 ###3.Dispatcher
 
@@ -98,32 +109,65 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
     // How to set max count of multi-touch.(default : 4)
     // 최대멀티터치수 설정하는 방법 
     [(CMMTouchDispatcher *) setMaxMultiTouchCount:(int)]
+    
 <br>
     
 #####CMMPopupDispatcher
 
 >CMMScene에서 팝업을 관리할 수 있도록 디자인되었습니다.
 
+<br>
+
 #####CMMMotionDispatcher
 
->자이로스코프를 관리할 수 있도록 디자인되었습니다.
+>가속도센서를 관리할 수 있도록 디자인되었습니다.
 >CMMLayer을 등록하여 사용할 수 있습니다.
+
+<br>
 
 #####CMMNoticeDispatcher
 
 >CMMScene에서 공지를 관리할 수 있도록 디자인되었습니다.
 
+<br>
+
 ###4.Util
 
 #####CMMDrawingUtil
 
+>CCRenderTexture를 사용하여 이미지를 그리거나, 수정할 수 있도록 디자인되었습니다.
 
+<br>
 
 #####CMMFileUtil
+
+>파일 불러오기, 검증 등을 할 수 있도록 디자인되었습니다.
+
+<br>
+
 #####CMMFontUtil
+
+>CCLabelTTF 객체를 보다 쉽게 만들 수 있도록 디자인되었습니다.
+
+<br>
+
 #####CMMStringUtil
+
+>파일경로를 NSString 형식으로 변환해주거나, 다른 NSString 을 변경할 수 있도록 디자인되었습니다.
+
+<br>
+
 #####CMMTouchUtil
+
+>터치좌표를 구하거나, 터치안에 있는 노드를 쉽게 찾을 수 있도록 디자인되었습니다.
+
+<br>
+
 #####CMMLoadingObject
+
+>로딩을 보다 쉽게 구현할 수 있도록 디자인되었습니다.
+
+<br>
 
 ##Class List - Component
 
