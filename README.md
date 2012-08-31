@@ -55,8 +55,11 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMLayer
 
->CMMLayer는 CMMSimpleFramework에서 최상위 레이어 노드입니다.
->모든 CMMLayer는 독립적으로 멀티터치(최대멀티터치수 등)를 관리할 수 있습니다.
+>CMMLayer is "Top layer node" in CMMSimpleFramework.<br>
+>CMMLayer는 CMMSimpleFramework에서 "최상위 레이어 노드"입니다.
+
+>CMMLayer can manage Multi-touch(Max Multi-touch count, etc...( Individually.(Refer the CMMTouchDispatcher)<br>
+>CMMLayer는 독립적으로 멀티터치(최대멀티터치수 등...)를 관리할 수 있습니다.
 
 <br>
 
