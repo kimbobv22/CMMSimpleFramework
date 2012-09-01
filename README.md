@@ -37,7 +37,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
     
 ##Class List - Common
 
->The classes in "Common" required for running of CMMSimpleFramework.
+>The classes in "Common" required for running of CMMSimpleFramework.<br>
 >"Common"의 클래스는 CMMSimpleFramework를 실행하기 위해 필요합니다.
 
 <br>
