@@ -2,27 +2,31 @@
 
 #import "CMMScrollMenu.h"
 
-@protocol CMMScrollMenuVDelegate <CMMScrollMenuDelegate>
+@class CMMScrollMenuH;
+
+@protocol CMMScrollMenuHDelegate <CMMScrollMenuDelegate>
 
 @optional
+-(BOOL)scrollMenu:(CMMScrollMenuH *)scrollMenu_ isCanDragItem:(CCNode<CMMTouchDispatcherDelegate> *)item_;
 
 @end
 
-@interface CMMScrollMenuVItem : CMMLayer{
-	float touchCancelDistance;
+@interface CMMScrollMenuDragItem : CCSprite{
+	int targetIndex;
+}
+
+@property (nonatomic, readwrite) int targetIndex;
+
+@end
+
+@interface CMMScrollMenuH : CMMScrollMenu{
+	CMMScrollMenuDragItem *_dragItemView;
+	ccTime _curDragStartDelayTime;
 	CGPoint _firstTouchPoint;
+	
+	float dragStartDelayTime,dragStartDistance;
 }
 
-@property (nonatomic, readwrite) float touchCancelDistance;
-
-@end
-
-@interface CMMScrollMenuV : CMMScrollMenu{
-	float fouceItemScale,nonefouceItemScale,minScrollAccelToSnap;
-	BOOL isSnapAtItem;
-}
-
-@property (nonatomic, readwrite) float fouceItemScale,nonefouceItemScale,minScrollAccelToSnap;
-@property (nonatomic, readwrite) BOOL isSnapAtItem;
+@property (nonatomic, readwrite) float dragStartDelayTime,dragStartDistance;
 
 @end
