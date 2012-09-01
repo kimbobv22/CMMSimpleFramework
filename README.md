@@ -314,9 +314,17 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 ###3.menu
 
 #####CMMMenuItem
+
+>CMMMenuItem는 메뉴, 버튼 등 다양한 용도로 사용할 수 있습니다.
+
+<br>
+
 #####CMMScrollMenu
-#####CMMScrollMenuH
+
+>CMMSimpleFramework에는 수직,수평 스크롤이 가능한 메뉴를 제공합니다.
+
 #####CMMScrollMenuV
+#####CMMScrollMenuH
 
 ###4.control
 
