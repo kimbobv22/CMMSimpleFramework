@@ -264,7 +264,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 ##Class List - Component
 
 >The classes in "Component" not required for running of CMMSimpleFramework essentially.<br>
->But that can constitute Powerful & Simple Menu to using them.
+>but, You can
 ><br>
 ><br>
 >"Component"의 클래스는 CMMSimpleFramework를 실행하기 위해 반드시 필요하지는 않습니다.
@@ -276,8 +276,12 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMDrawingManager
 
->CMMDrawingManager는 미리 작성한 Sprite frame 을 가지고, 특정사이즈의 프레임을 가져올 수 있습니다.
->또한 한번 그려진 프레임 저장되어 관리되기 때문에, 쓸데없는 메모리 낭비를 막을 수 있습니다.
+>CMMDrawingManager can load Specified size frame through Sprite frame predesigned.<br>
+>also, It can be prevented memory leak because loaded frame managed by storing.
+><br>
+><br>
+>CMMDrawingManager는 미리 설계한 Sprite frame을 통해, 지정된 크기의 프레임을 가져올 수 있습니다.<br>
+>또한, 불러온 프레임을 적재하여 관리하기 때문에, 메모리 낭비를 막을 수 있습니다.
 
 <br>
 
