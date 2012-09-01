@@ -66,12 +66,12 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
     [[CMMScene sharedScene] openPopupAtFirst:(CMMLayerPopup *) delegate:(id<CMMPopupDispatcherDelegate>)];
 
 <br>
->Support Notifications window. (Refer the CMMNoticeDispatcher><br>
+>Support Notifications window. (Refer CMMNoticeDispatcher><br>
 >알림창을 지원합니다. (CMMNoticeDispatcher 참고)
 
 <br>
 
->Support Multi-touch management and separation.(Refer the CMMTouchDispatcher)<br>
+>Support Multi-touch management and separation.(Refer CMMTouchDispatcher)<br>
 >멀티터치 관리 및 분리를 지원합니다.(CMMTouchDipatcher 참고)
 
 <br>
@@ -81,7 +81,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 >CMMLayer is "Top layer node" in CMMSimpleFramework.<br>
 >CMMLayer는 CMMSimpleFramework에서 "최상위 레이어 노드"입니다.
 
->CMMLayer can manage Multi-touch(Max Multi-touch count, etc...) Individually.(Refer the CMMTouchDispatcher)<br>
+>CMMLayer can manage Multi-touch(Max Multi-touch count, etc...) Individually.(Refer CMMTouchDispatcher)<br>
 >CMMLayer는 독립적으로 멀티터치(최대멀티터치수 등...)를 관리할 수 있습니다.(CMMTouchDispatcher 참고)
 
 <br>
@@ -103,7 +103,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 #####CMMLayerMaskDrag
 
 >CMMLayerMaskDrag is that from CMMLayerMask added dragging feature.<br>
->CMMLayerMaskDrag는 CMMLayerMask에서 드래그기능이 추가되었습니다.
+>CMMLayerMaskDrag는 CMMLayerMask에서 드래그기능을 추가한 것 입니다.
 
 	// How to allow dragging
 	// 드래그 허용하는 방법
@@ -130,7 +130,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMLayerPopup
 
->Layer for Pop-up. You can create creative Pop-up window by inheriting the CMMLayerPopup.<br>
+>Layer for Pop-up. You can create creative Pop-up window by inheriting CMMLayerPopup.<br>
 >팝업창을 위한 레이어입니다. CMMLayerPopup를 상속받아 독창적인 팝업창을 제작할 수 있습니다.
 
 <br>
@@ -167,8 +167,6 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 >designed for Accelerometer management. Supported in CMMLayer.<br>
 >가속도계를 관리할 수 있도록 디자인되었습니다. CMMLayer에서 사용가능합니다.
 
-	// How to use
-	// 사용법
 	[(CMMLayer *) setIsAccelerometerEnabled:(BOOL)];
 	
 	//and add syntax in class
@@ -246,20 +244,18 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 >"Loading formatter"를 통해 로딩을 수행합니다. 예를 들어 "Loading formatter"가 @"test%03d", 해당 클래스에 메소드 "test000","test001","test002","test003"
 가 존재합니다. "Loading object"는 순차적으로 "test000","test001","test002","test003"를 호출합니다. 로딩이 끝나면, delegate 클래스를 통해 callback 함수를 호출합니다.
 
-	// How to use
-	// 사용법
 	CMMLoadingObject *loadingObject_ = [CMMLoadingObject loadingObject];
 	loadingObject_.delegate = (id<CMMLoadingObjectDelegate>)(id);
 	
-	 // default Loading formatter (@"loadingProcess%03d")
+	 // Default Loading formatter (@"loadingProcess%03d")
 	 // 기본 Loading formatter (@"loadingProcess%03d")
 	[loadingObject_ startLoading];
 	
-	// custom Loading formatter
+	// Custom Loading formatter
 	// 커스텀 Loading formatter
 	[loadingObject_ startLoadingWithMethodFormatter:(NSString *)];
 	
-	// custom Loading formatter & custom target class
+	// Custom Loading formatter & custom target class
 	// 커스텀 Loading formatter & 임의 해당 클래스
 	[loadingObject_ startLoadingWithMethodFormatter:(NSString *) target:(id)];
 
@@ -268,7 +264,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 ##Class List - Component
 
 >The classes in "Component" not required for running of CMMSimpleFramework essentially.<br>
->but that can constitute Powerful & Simple Menu to using them.
+>But that can constitute Powerful & Simple Menu to using them.
 ><br>
 ><br>
 >"Component"의 클래스는 CMMSimpleFramework를 실행하기 위해 반드시 필요하지는 않습니다.
