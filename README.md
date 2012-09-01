@@ -23,7 +23,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 	[[CMMScene sharedScene] pushLayer:(CMMLayer *)];
 	
 	//3. The class that can be used to "CMMScene scene transition" is only CMMLayer or a class that inherited CMMLayer.
-	//   you can use all features of CMMSimpleFramework through importing "CMMHeader.h"!
+	//   You can use all features of CMMSimpleFramework through importing "CMMHeader.h"!
 	//3. CMMScene의 화면전환으로 사용할 수 있는 클래스는 CMMLayer나, CMMLayer를 상속받은 것만 가능합니다.
 	//   해당 클래스에서 "CMMHeader.h" 를 상속받음으로 CMMSimpleFramework의 모든 기능을 사용하세요!
 	
