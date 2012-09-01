@@ -268,7 +268,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 ><br>
 ><br>
 >"Component"의 클래스는 CMMSimpleFramework를 실행하기 위해 반드시 필요하지는 않습니다.<br>
->하지만 이것들을 통해 강력한 기능을 가진 메뉴를 쉽게 설계할 수 있습니다.
+>하지만, 이것들을 통해 강력한 기능을 가진 메뉴를 쉽게 설계할 수 있습니다.
 
 <br>
 
@@ -289,8 +289,12 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMStage
 
->Box2d를 응용하여 만든 CMMStage는 오브젝트 생성 및 삭제 관리가 용이하고,
->다양한 Delegate method 를 제공하여, 확장성이 뛰어납니다.
+>CMSStage including Box2d 2D physics engine is easy to manage Creating & Deleting the object.<br>
+>also, 
+><br>
+><br>
+>Box2d 2D 물리엔진이 포함된 CMMStage는 오브젝트 생성 및 삭제 관리가 용이하고,
+>다양한 Delegate method 를 제공하며, 확장성이 뛰어납니다.
 
 <br>
 
