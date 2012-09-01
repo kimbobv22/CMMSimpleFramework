@@ -290,17 +290,17 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 #####CMMStage
 
 >CMSStage including Box2d 2D physics engine is easy to manage Creating & Deleting the object.<br>
->and, Provide variety delegate method & Great extensible.
+>Provide variety delegate method & Great extensible.
 ><br>
 ><br>
->Box2d 2D 물리엔진이 포함된 CMMStage는 오브젝트 생성 및 삭제 관리가 용이합니다.
->다양한 delegate method 를 제공하며, 확장성이 뛰어납니다.
+>Box2d 2D 물리엔진이 포함된 CMMStage는 오브젝트 생성 및 삭제 관리가 용이합니다.<br>
+>다양한 delegate method 제공 & 뛰어난 확장성.
 
 <br>
 
 #####CMMTilemapStage
 
->TMX파일을 분석하여 Box2d 맵으로 만들어냅니다.
+>TMX파일을 분석하여 Box2d 맵을 만들어 냅니다.
 
 <br>
 
