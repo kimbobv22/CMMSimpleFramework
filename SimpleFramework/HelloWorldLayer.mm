@@ -20,7 +20,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	mainMenu = [CMMScrollMenuH scrollMenuWithFrameSeq:0 frameSize:CGSizeMake(250, 300)];
+	mainMenu = [CMMScrollMenuV scrollMenuWithFrameSeq:0 frameSize:CGSizeMake(250, 300)];
 	mainMenu.position = cmmFuncCommon_position_center(self, mainMenu);
 	[self addChild:mainMenu];
 	

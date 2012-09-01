@@ -2,13 +2,13 @@
 
 #import "CMMScrollMenu.h"
 
-@protocol CMMScrollMenuVDelegate <CMMScrollMenuDelegate>
+@protocol CMMScrollMenuHDelegate <CMMScrollMenuDelegate>
 
 @optional
 
 @end
 
-@interface CMMScrollMenuVItem : CMMLayer{
+@interface CMMScrollMenuHItem : CMMLayer{
 	float touchCancelDistance;
 	CGPoint _firstTouchPoint;
 }
@@ -17,7 +17,7 @@
 
 @end
 
-@interface CMMScrollMenuV : CMMScrollMenu{
+@interface CMMScrollMenuH : CMMScrollMenu{
 	float fouceItemScale,nonefouceItemScale,minScrollAccelToSnap;
 	BOOL isSnapAtItem;
 }

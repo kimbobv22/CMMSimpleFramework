@@ -1,8 +1,8 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#import "CMMScrollMenuV.h"
+#import "CMMScrollMenuH.h"
 
-@implementation CMMScrollMenuVItem
+@implementation CMMScrollMenuHItem
 @synthesize touchCancelDistance;
 
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
@@ -28,7 +28,7 @@
 
 @end
 
-@implementation CMMScrollMenuV
+@implementation CMMScrollMenuH
 @synthesize fouceItemScale,nonefouceItemScale,minScrollAccelToSnap,isSnapAtItem;
 
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
@@ -49,7 +49,7 @@
 	switch(touchState){
 		case CMMTouchState_none:{
 			if(!isSnapAtItem) break;
-			CMMScrollMenuVItem *item_ = (CMMScrollMenuVItem *)[self itemAtIndex:index];
+			CMMScrollMenuHItem *item_ = (CMMScrollMenuHItem *)[self itemAtIndex:index];
 			if(!item_) break;
 			
 			CGSize itemSize_ = item_.contentSize;
@@ -79,7 +79,7 @@
 			ccArray *data_ = itemList->data;
 			int count_ = data_->num;
 			for(uint index_=0;index_<count_;index_++){
-				CMMScrollMenuVItem *item_ = data_->arr[index_];
+				CMMScrollMenuHItem *item_ = data_->arr[index_];
 				CGSize itemSize_ = item_.contentSize;
 				CGPoint targetPoint_ = item_.position;
 				targetPoint_.x += itemSize_.width*(0.5f-item_.anchorPoint.x);
@@ -104,7 +104,7 @@
 
 @end
 
-@implementation CMMScrollMenuV(Display)
+@implementation CMMScrollMenuH(Display)
 
 -(void)doUpdateInnerSize{
 	float targetWidth_ = marginPerItem*2.0f;
@@ -135,10 +135,10 @@
 
 @end
 
-@implementation CMMScrollMenuV(Common)
+@implementation CMMScrollMenuH(Common)
 
 -(void)addItem:(CCNode<CMMTouchDispatcherDelegate> *)item_ atIndex:(int)index_{
-	NSAssert([item_ isKindOfClass:[CMMScrollMenuVItem class]], @"CMMScrolMenuV only support CMMScrolMenuVItem as children.");
+	NSAssert([item_ isKindOfClass:[CMMScrollMenuHItem class]], @"CMMScrolMenuV only support CMMScrolMenuVItem as children.");
 	[super addItem:item_ atIndex:index_];
 	
 	CGPoint targetPoint_ = cmmFuncCommon_position_center(self, item_);

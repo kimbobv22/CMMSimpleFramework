@@ -9,14 +9,14 @@
 @end
 
 @interface ScrollMenuTestLayer_H : CMMLayer<CMMScrollMenuHDelegate>{
-	CMMScrollMenuH *scrollMenu1,*scrollMenu2;
+	CMMScrollMenuH *scrollMenu;
 	CCLabelTTF *labelDisplay;
 }
 
 @end
 
-@interface ScrollMenuTestLayer_V : CMMLayer<CMMScrollMenuHDelegate>{
-	CMMScrollMenuV *scrollMenu;
+@interface ScrollMenuTestLayer_V : CMMLayer<CMMScrollMenuVDelegate>{
+	CMMScrollMenuV *scrollMenu1,*scrollMenu2;
 	CCLabelTTF *labelDisplay;
 }
 

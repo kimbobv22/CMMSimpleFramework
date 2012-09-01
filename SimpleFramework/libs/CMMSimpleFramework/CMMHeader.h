@@ -42,8 +42,8 @@
 
 #import "CMMMenuItem.h"
 #import "CMMScrollMenu.h"
-#import "CMMScrollMenuV.h"
 #import "CMMScrollMenuH.h"
+#import "CMMScrollMenuV.h"
 
 #import "CMMControlItem.h"
 #import "CMMControlItemSwitch.h"

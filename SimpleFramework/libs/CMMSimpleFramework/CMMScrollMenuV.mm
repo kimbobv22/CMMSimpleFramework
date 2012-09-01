@@ -1,15 +1,15 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#import "CMMScrollMenuH.h"
+#import "CMMScrollMenuV.h"
 
-@interface CMMScrollMenuH(Private)
+@interface CMMScrollMenuV(Private)
 
 -(void)_moveDragViewItemTo:(CCNode *)item_;
 -(void)_clearDragViewItem;
 
 @end
 
-@implementation CMMScrollMenuH(Private)
+@implementation CMMScrollMenuV(Private)
 
 -(void)_moveDragViewItemTo:(CCNode *)item_{
 	[_dragItemView runAction:[CCSequence actions:[CCEaseOut actionWithAction:[CCMoveTo actionWithDuration:0.2 position:[self convertToNodeSpace:[_innerLayer convertToWorldSpace:item_.position]]] rate:3], [CCCallFunc actionWithTarget:self selector:@selector(_clearDragViewItem)], nil]];
@@ -33,7 +33,7 @@
 
 @end
 
-@implementation CMMScrollMenuH
+@implementation CMMScrollMenuV
 @synthesize dragStartDelayTime,dragStartDistance;
 
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
@@ -61,7 +61,7 @@
 			CCNode<CMMTouchDispatcherDelegate> *item_ = touchItem_.node;
 			
 			if(!cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:isCanDragItem:))
-			   || ![((id<CMMScrollMenuHDelegate>)delegate) scrollMenu:self isCanDragItem:touchItem_.node]) break;
+			   || ![((id<CMMScrollMenuVDelegate>)delegate) scrollMenu:self isCanDragItem:touchItem_.node]) break;
 			
 			_curDragStartDelayTime += dt_;
 			
@@ -206,7 +206,7 @@
 
 @end
 
-@implementation CMMScrollMenuH(Display)
+@implementation CMMScrollMenuV(Display)
 
 -(void)doUpdateInnerSize{
 	CGSize innerSize_ = [self innerSize];
@@ -249,7 +249,7 @@
 
 @end
 
-@implementation CMMScrollMenuH(Common)
+@implementation CMMScrollMenuV(Common)
 
 -(void)addItem:(CCNode<CMMTouchDispatcherDelegate> *)item_ atIndex:(int)index_{
 	NSAssert([item_ isKindOfClass:[CMMSprite class]], @"CMMScrolMenuH only support CMMSprite as children.");

@@ -2,12 +2,12 @@
 
 #import "CMMScrollMenu.h"
 
-@class CMMScrollMenuH;
+@class CMMScrollMenuV;
 
-@protocol CMMScrollMenuHDelegate <CMMScrollMenuDelegate>
+@protocol CMMScrollMenuVDelegate <CMMScrollMenuDelegate>
 
 @optional
--(BOOL)scrollMenu:(CMMScrollMenuH *)scrollMenu_ isCanDragItem:(CCNode<CMMTouchDispatcherDelegate> *)item_;
+-(BOOL)scrollMenu:(CMMScrollMenuV *)scrollMenu_ isCanDragItem:(CCNode<CMMTouchDispatcherDelegate> *)item_;
 
 @end
 
@@ -19,7 +19,7 @@
 
 @end
 
-@interface CMMScrollMenuH : CMMScrollMenu{
+@interface CMMScrollMenuV : CMMScrollMenu{
 	CMMScrollMenuDragItem *_dragItemView;
 	ccTime _curDragStartDelayTime;
 	CGPoint _firstTouchPoint;
