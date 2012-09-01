@@ -264,11 +264,11 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 ##Class List - Component
 
 >The classes in "Component" not required for running of CMMSimpleFramework essentially.<br>
->but, You can
+>but, You can design the Menu that has powerful features easily through them.
 ><br>
 ><br>
->"Component"의 클래스는 CMMSimpleFramework를 실행하기 위해 반드시 필요하지는 않습니다.
->하지만 이것들을 사용하여 간편하고 강력한 메뉴구성을 할 수 있습니다.
+>"Component"의 클래스는 CMMSimpleFramework를 실행하기 위해 반드시 필요하지는 않습니다.<br>
+>하지만 이것들을 통해 강력한 기능을 가진 메뉴를 쉽게 설계할 수 있습니다.
 
 <br>
 
