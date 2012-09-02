@@ -45,9 +45,26 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 ###1.Common
 
 #####CMMHeader
+
+>You must import "CMMHeader.h" for using CMMSimpleFramework.<br>
+>CMMSimpleFramework를 사용하기 위해서는 반드시 "CMMHeader.h"를 임포트 해야 합니다.
+
+	#import "CMMHeader.h"
+
+<br>
+
 #####CMMType
 #####CMMMacro
 #####CMMGLView
+
+>CMMGLView has inherited to CCGLView,<br>
+>It will be induced typed touch to shared CMMScene. and, CMMScene manage typed touch.
+><br>
+><br>
+>CMMGLView 는 CCGLView 를 상속받은 클래스로,<br>
+>입력된 터치를 공유된 CMMScene로 유도합니다. 그리고, CMMScene는 통해 유도된 터치를 관리합니다.
+
+<br>
 
 ###2.View
 
