@@ -58,7 +58,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 #####CMMGLView
 
 >CMMGLView has inherited to CCGLView,<br>
->It will be induced typed touch to shared CMMScene. and, CMMScene manage typed touch.
+>It will be induced entered touch to shared CMMScene. and, CMMScene manage entered touch.
 ><br>
 ><br>
 >CMMGLView 는 CCGLView 를 상속받은 클래스로,<br>
@@ -317,6 +317,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMTilemapStage
 
+>Create Box2d map by parsing TMX file.<br>
 >TMX파일을 분석하여 Box2d 맵을 만들어 냅니다.
 
 <br>
@@ -332,6 +333,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMMenuItem
 
+>CMMMenuItem can used by Menu, Button, etc.<br>
 >CMMMenuItem는 메뉴, 버튼 등 다양한 용도로 사용할 수 있습니다.
 
 <br>
