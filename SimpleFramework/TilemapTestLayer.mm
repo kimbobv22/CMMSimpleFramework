@@ -21,7 +21,7 @@
 
 -(void)loadingProcess000{
 	CMMStageSpecDef stageSpecDef_ = CMMStageSpecDef(CGSizeMake(480, 270),CGSizeZero,ccp(0,-9.8f));
-	tilemapStage = [CMMTilemapStage stageWithCMMStageSpecDef:stageSpecDef_ tmxFileName:@"TMX_SAMPLE_000.tmx" isInDocument:NO];
+	tilemapStage = [CMMStageTMX stageWithStageSpecDef:stageSpecDef_ tmxFileName:@"TMX_SAMPLE_000.tmx" isInDocument:NO];
 	tilemapStage.position = ccp(0,self.contentSize.height-tilemapStage.contentSize.height);
 	tilemapStage.delegate = self;
 	tilemapStage.isAllowTouch = YES;
@@ -57,10 +57,10 @@
 	object_.body->GetFixtureList()->SetRestitution(0.7f);
 }
 
--(void)tilemapStage:(CMMTilemapStage *)stage_ whenTileBuiltupAtTMXLayer:(CCTMXLayer *)tmxLayer_ fromXIndex:(float)fromXIndex_ toXIndex:(float)toXIndex_ yIndex:(float)yIndex_ tileFixture:(b2Fixture *)tileFixture_{
+-(void)tilemapStage:(CMMStageTMX *)stage_ whenTileBuiltupAtTMXLayer:(CCTMXLayer *)tmxLayer_ fromXIndex:(float)fromXIndex_ toXIndex:(float)toXIndex_ yIndex:(float)yIndex_ tileFixture:(b2Fixture *)tileFixture_{
 	CCLOG(@"tile built up! [ X : %d -> %d , Y: %d ]",(int)fromXIndex_,(int)toXIndex_,(int)yIndex_);
 }
--(BOOL)tilemapStage:(CMMTilemapStage *)stage_ isSingleTileAtTMXLayer:(CCTMXLayer *)tmxLayer_ tile:(CCSprite *)tile_ xIndex:(float)xIndex_ yIndex:(float)yIndex_{
+-(BOOL)tilemapStage:(CMMStageTMX *)stage_ isSingleTileAtTMXLayer:(CCTMXLayer *)tmxLayer_ tile:(CCSprite *)tile_ xIndex:(float)xIndex_ yIndex:(float)yIndex_{
 	return NO; // if return value is 'yes', a tile will be built up as single;
 }
 

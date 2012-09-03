@@ -18,11 +18,14 @@
 	CMMTouchDispatcherScene *touchDispatcher;
 	CMMPopupDispatcher *popupDispatcher;
 	CMMNoticeDispatcher *noticeDispatcher;
+	
+#if COCOS2D_DEBUG >= 1
+	CCArray *_touchPoints;
+#endif
 }
 
-+(id)sharedScene;
++(CMMScene *)sharedScene;
 
--(void)update:(ccTime)dt_;
 -(void)pushLayer:(CMMLayer *)layer_;
 
 @property (nonatomic, readonly) CMMLayer *runningLayer;

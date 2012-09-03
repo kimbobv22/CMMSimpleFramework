@@ -17,7 +17,7 @@
 	stageSpec_.friction = 0.3f;
 	stageSpec_.restitution = 0.3f;
 	
-	stage = [CMMStage stageWithCMMStageSpecDef:stageSpec_];
+	stage = [CMMStage stageWithStageSpecDef:stageSpec_];
 	stage.sound.soundDistance = 300.0f;
 	stage.position = ccp(0,self.contentSize.height-stage.contentSize.height);
 	[self addChild:stage z:0];

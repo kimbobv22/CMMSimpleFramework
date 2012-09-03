@@ -37,3 +37,9 @@
 -(id)initBall;
 
 @end
+
+@interface CMMSBall(Box2d)
+
+-(void)doCollisionEvent:(CGPoint)contactPoint_;
+
+@end

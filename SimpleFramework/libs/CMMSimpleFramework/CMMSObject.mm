@@ -13,7 +13,7 @@
 	state = nil;
 	body = NULL;
 	objectTag = -1;
-	b2CMask = CMMb2ContactMask(CMMb2FixtureType_object,-1,-1,1);
+	b2CMask = CMMb2ContactMask(0x1001,-1,-1,1);
 
 	[self buildupObject];
 	[state resetStateWithSpecObject:spec];
@@ -51,6 +51,9 @@
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{}
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{}
 
+-(void)whenContractWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{}
+-(void)doContractWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_ interval:(ccTime)interval_{}
+
 -(void)dealloc{
 	[state release];
 	[spec release];
@@ -75,12 +78,6 @@
 	body->CreateFixture(&fixtureDef_)->SetUserData(&b2CMask);
 	body->SetFixedRotation(false);
 }
-
--(void)whenCollisionWithObject:(CMMb2FixtureType)fixtureType_ otherObject:(CMMSObject *)otherObject_  otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{}
--(void)whenCollisionWithStage:(CMMb2FixtureType)fixtureType_ stageFixtureType:(CMMb2FixtureType)stageFixtureType_ contactPoint:(CGPoint)contactPoint_{}
-
--(void)doContactingWithObject:(CMMb2FixtureType)fixtureType_ otherObject:(CMMSObject *)otherObject_  otherFixtureType:(CMMb2FixtureType)otherFixtureType contactPoint:(CGPoint)contactPoint_ dt:(ccTime)dt_{}
--(void)doContactingWithStage:(CMMb2FixtureType)fixtureType_ stageFixtureType:(CMMb2FixtureType)stageFixtureType_ contactPoint:(CGPoint)contactPoint_ dt:(ccTime)dt_{}
 
 -(void)updateBodyWithPosition:(CGPoint)point_ andRotation:(float)tRotation_{
 	if(body == NULL) return;

@@ -1,12 +1,6 @@
-//
-//  NoticeTestLayer.h
-//  SimpleFramework
-//
-//  Created by Kim Jazz on 12. 9. 3..
-//
-//
+//  Created by JGroup(kimbobv22@gmail.com)
 
-#import "CMMLayer.h"
+#import "CMMHeader.h"
 
 @interface NoticeTestLayer : CMMLayer
 

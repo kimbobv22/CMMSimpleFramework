@@ -61,6 +61,7 @@ static CMMDrawingManager *_sharedDrawingManager_ = nil;
 		NSString *frameFileName_ = [NSString stringWithFormat:frameFormatter_,curFrameSeq_];
 		NSString *frameFilePath_ = [CMMStringUtil stringPathOfResoruce:frameFileName_ extension:@"plist"];
 		
+		
 		if([CMMFileUtil isExistWithFilePath:frameFilePath_]){
 			[spriteFrameCache_ addSpriteFramesWithFile:frameFilePath_];
 			CMMDrawingManagerItem *drawItem_ = [[[CMMDrawingManagerItem alloc] init] autorelease];
@@ -124,7 +125,7 @@ static CMMDrawingManager *_sharedDrawingManager_ = nil;
 
 @end
 
-@implementation CMMDrawingManager(Default)
+@implementation CMMDrawingManager(CachedTexture)
 
 -(CCTexture2D *)textureFrameWithFrameSeq:(int)frameSeq_ size:(CGSize)size_ backGroundYN:(BOOL)backGroundYN_ barYN:(BOOL)barYN_{
 	if(!backGroundYN_ && !barYN_) return nil;

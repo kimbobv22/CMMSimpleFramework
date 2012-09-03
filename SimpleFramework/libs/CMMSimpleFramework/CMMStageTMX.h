@@ -2,20 +2,20 @@
 
 #import "CMMStage.h"
 
-#define cmmFuncCMMTilemapStage_tileYIndex(_curIndex_,_totalTileWidth_) floorf((_curIndex_)/(_totalTileWidth_))
-#define cmmFuncCMMTilemapStage_tileXIndex(_curIndex_,_totalTileWidth_,_yIndex_) (_curIndex_) - ((_totalTileWidth_)*(_yIndex_))
+#define cmmFuncCMMStageTMX_tileYIndex(_curIndex_,_totalTileWidth_) floorf((_curIndex_)/(_totalTileWidth_))
+#define cmmFuncCMMStageTMX_tileXIndex(_curIndex_,_totalTileWidth_,_yIndex_) (_curIndex_) - ((_totalTileWidth_)*(_yIndex_))
 
-@class CMMTilemapStage;
+@class CMMStageTMX;
 
-@protocol CMMTilemapStageDelegate <CMMStageDelegate>
+@protocol CMMStageTMXDelegate <CMMStageDelegate>
 
 @optional
--(BOOL)tilemapStage:(CMMTilemapStage *)stage_ isSingleTileAtTMXLayer:(CCTMXLayer *)tmxLayer_ tile:(CCSprite *)tile_ xIndex:(float)xIndex_ yIndex:(float)yIndex_;
--(void)tilemapStage:(CMMTilemapStage *)stage_ whenTileBuiltupAtTMXLayer:(CCTMXLayer *)tmxLayer_ fromXIndex:(float)fromXIndex_ toXIndex:(float)toXIndex_ yIndex:(float)yIndex_ tileFixture:(b2Fixture *)tileFixture_;
+-(BOOL)tilemapStage:(CMMStageTMX *)stage_ isSingleTileAtTMXLayer:(CCTMXLayer *)tmxLayer_ tile:(CCSprite *)tile_ xIndex:(float)xIndex_ yIndex:(float)yIndex_;
+-(void)tilemapStage:(CMMStageTMX *)stage_ whenTileBuiltupAtTMXLayer:(CCTMXLayer *)tmxLayer_ fromXIndex:(float)fromXIndex_ toXIndex:(float)toXIndex_ yIndex:(float)yIndex_ tileFixture:(b2Fixture *)tileFixture_;
 
 @end
 
-@interface CMMTilemapStage : CMMStage{
+@interface CMMStageTMX : CMMStage{
 	CCTMXTiledMap *tilemap;
 	CCArray *groundTMXLayers;
 	CMMb2ContactMask b2MaskTile;
@@ -23,8 +23,8 @@
 	BOOL isTilemapBuiltup;
 }
 
-+(id)stageWithCMMStageSpecDef:(CMMStageSpecDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_;
--(id)initWithCMMStageSpecDef:(CMMStageSpecDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_;
++(id)stageWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_;
+-(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_;
 
 @property (nonatomic, readonly) CCTMXTiledMap *tilemap;
 @property (nonatomic, readonly) CCArray *groundTMXLayers;
@@ -32,7 +32,7 @@
 
 @end
 
-@interface CMMTilemapStage(Tilemap)
+@interface CMMStageTMX(Tilemap)
 
 -(void)addGroundTMXLayerAtLayerName:(NSString *)tmxLayerName_;
 -(void)removeGroundTMXLayerAtLayerName:(NSString *)tmxLayerName_;

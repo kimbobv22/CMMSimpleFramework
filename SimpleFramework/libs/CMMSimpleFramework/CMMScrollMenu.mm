@@ -53,7 +53,7 @@
 	delegate = nil;
 	marginPerItem = 1.0f;
 	isCanSelectItem = YES;
-	scrollbarDesign.distanceX = scrollbarDesign.distanceY = 8.0f;
+	scrollbarDesign.distanceX = scrollbarDesign.distanceY = 6.0f;
 	
 	return self;
 }

@@ -67,7 +67,7 @@
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
 	
-	b2CMask = CMMb2ContactMask(CMMb2FixtureType_ball,-1,-1,1);
+	b2CMask = CMMb2ContactMask(0x1005,-1,-1,1);
 	
 	return self;
 }
@@ -78,6 +78,13 @@
 -(void)buildupObject{
 	spec = [[CMMSSpecBall alloc] initWithTarget:self];
 	state = [[CMMSStateBall alloc] initWithTarget:self];
+}
+
+-(void)whenContractWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{
+	if(fixtureType_ == otherFixtureType_)
+		((CMMSStateBall *)state).HP -= ((CMMSSpecBall *)spec).AP;
+	
+	[self doCollisionEvent:contactPoint_];
 }
 
 @end
@@ -100,7 +107,7 @@
 	body->SetFixedRotation(false);
 }
 
--(void)_collisionEvent:(CGPoint)contactPoint_{
+-(void)doCollisionEvent:(CGPoint)contactPoint_{
 	CMMSSpecBall *spec_ = (CMMSSpecBall *)spec;
 	CMMSStateBall *state_ = (CMMSStateBall *)state;
 	
@@ -111,20 +118,6 @@
 	CMMSoundHandlerItem *soundItem_ = [stage.sound addSoundItem:@"SND_EFT_00003.caf" soundPoint:contactPoint_];
 	soundItem_.deregWhenStop = YES;
 	[soundItem_ play];
-}
-
--(void)whenCollisionWithObject:(CMMb2FixtureType)fixtureType_ otherObject:(CMMSObject *)otherObject_  otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{
-	switch(otherFixtureType_){
-		case CMMb2FixtureType_ball:
-			((CMMSStateBall *)state).HP -= ((CMMSSpecBall *)spec).AP;
-			break;
-		default: break;
-	}
-	
-	[self _collisionEvent:contactPoint_];
-}
--(void)whenCollisionWithStage:(CMMb2FixtureType)fixtureType_ stageFixtureType:(CMMb2FixtureType)stageFixtureType_ contactPoint:(CGPoint)contactPoint_{
-	[self _collisionEvent:contactPoint_];
 }
 
 @end

@@ -1,13 +1,13 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#import "CMMType.h"
+#import "CMMSType.h"
 #import "CMMSprite.h"
 #import "CMMSSpecObject.h"
 #import "CMMSStateObject.h"
 
 @class CMMStage;
 
-@interface CMMSObject : CMMSprite{
+@interface CMMSObject : CMMSprite<CMMSContactProtocol>{
 	int objectTag;
 	
 	CMMSSpecObject *spec;
@@ -33,12 +33,6 @@
 @interface CMMSObject(Box2d)
 
 -(void)buildupBody;
-
--(void)whenCollisionWithObject:(CMMb2FixtureType)fixtureType_ otherObject:(CMMSObject *)otherObject_  otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_;
--(void)whenCollisionWithStage:(CMMb2FixtureType)fixtureType_ stageFixtureType:(CMMb2FixtureType)stageFixtureType_ contactPoint:(CGPoint)contactPoint_;
-
--(void)doContactingWithObject:(CMMb2FixtureType)fixtureType_ otherObject:(CMMSObject *)otherObject_  otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_ dt:(ccTime)dt_;
--(void)doContactingWithStage:(CMMb2FixtureType)fixtureType_ stageFixtureType:(CMMb2FixtureType)stageFixtureType_ contactPoint:(CGPoint)contactPoint_ dt:(ccTime)dt_;
 
 -(void)updateBodyWithPosition:(CGPoint)point_ andRotation:(float)tRotation_;
 -(void)updateBodyWithPosition:(CGPoint)point_;

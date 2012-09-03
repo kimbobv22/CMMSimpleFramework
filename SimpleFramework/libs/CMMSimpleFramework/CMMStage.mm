@@ -8,52 +8,29 @@ static CGPoint getContactPoint(b2Contact* contact){
 	return ccpFromb2Vec2(worldManifold.points[0]);
 }
 
-static BOOL isObjectBody(CMMb2FixtureType fixtureType_){
-	switch(fixtureType_){
-		case CMMb2FixtureType_object:
-		case CMMb2FixtureType_ball:
-		case CMMb2FixtureType_nail:
-		case CMMb2FixtureType_planet:
-			return YES;
-			break;
-		default:
-			return NO;
-			break;
-	}
-}
-
-void CMMStageContactListener::proccessCollision(b2Contact* contact_, b2Fixture *targetFixture_, b2Fixture *otherFixture_){
-	CMMb2ContactMask *targetB2CMask = (CMMb2ContactMask *)targetFixture_->GetUserData();
-	CMMb2ContactMask *otherB2CMask = (CMMb2ContactMask *)otherFixture_->GetUserData();
-	
-	if(isObjectBody(targetB2CMask->fixtureType)){
-		CGPoint contactPoint_ = getContactPoint(contact_);
-		CMMSObject *targetObject_ = (CMMSObject *)targetFixture_->GetBody()->GetUserData();
-		
-		if(isObjectBody(otherB2CMask->fixtureType)){
-			CMMSObject *otherObject_ = (CMMSObject *)otherFixture_->GetBody()->GetUserData();
-			[targetObject_ whenCollisionWithObject:targetB2CMask->fixtureType otherObject:otherObject_ otherFixtureType:otherB2CMask->fixtureType contactPoint:contactPoint_];
-		}else{
-			[targetObject_ whenCollisionWithStage:targetB2CMask->fixtureType stageFixtureType:otherB2CMask->fixtureType contactPoint:contactPoint_];
-		}
-	}
-}
-
 void CMMStageContactListener::BeginContact(b2Contact* contact){
-	proccessCollision(contact, contact->GetFixtureA(), contact->GetFixtureB());
-	proccessCollision(contact, contact->GetFixtureB(), contact->GetFixtureA());
+	b2Fixture *fixtureA_ = contact->GetFixtureA();
+	b2Fixture *fixtureB_ = contact->GetFixtureB();
+	
+	CMMb2ContactMask *b2CMaskA_ = (CMMb2ContactMask *)fixtureA_->GetUserData();
+	CMMb2ContactMask *b2CMaskB_ = (CMMb2ContactMask *)fixtureB_->GetUserData();;
+	
+	id<CMMSContactProtocol> objectA_ = (id<CMMSContactProtocol>)fixtureA_->GetBody()->GetUserData();
+	id<CMMSContactProtocol> objectB_ = (id<CMMSContactProtocol>)fixtureB_->GetBody()->GetUserData();
+	
+	CGPoint contactPoint_ = getContactPoint(contact);
+	
+	[objectA_ whenContractWithFixtureType:b2CMaskA_->fixtureType otherObject:objectB_ otherFixtureType:b2CMaskB_->fixtureType contactPoint:contactPoint_];
+	[objectB_ whenContractWithFixtureType:b2CMaskB_->fixtureType otherObject:objectA_ otherFixtureType:b2CMaskA_->fixtureType contactPoint:contactPoint_];
 }
 
 
 bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtureB){
-	//다른 충돌 조건을 넣고 싶다면 여기에 작성해주세요
-	
-	//아래는 제가 제작한 충돌필터입니다.
 	CMMb2ContactMask *b2CMaskA_ = (CMMb2ContactMask *)fixtureA->GetUserData();
 	CMMb2ContactMask *b2CMaskB_ = (CMMb2ContactMask *)fixtureB->GetUserData();
 	return b2CMaskA_->IsContact(b2CMaskB_);
 	
-	//아래는 Box2d에서 제공하는 기본 충돌필터입니다.
+	//filter supported by Box2d - N/U
 	//return b2ContactFilter::ShouldCollide(fixtureA, fixtureB);
 }
 
@@ -95,13 +72,13 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 	_debugDraw->SetFlags(flags);
 #endif
 	
-	b2Mask1 = CMMb2ContactMask(CMMb2FixtureType_stageBottom,-1,-1,1);
-	b2Mask2 = CMMb2ContactMask(CMMb2FixtureType_stageTop,-1,-1,1);
-	b2Mask3 = CMMb2ContactMask(CMMb2FixtureType_stageLeft,-1,-1,1);
-	b2Mask4 = CMMb2ContactMask(CMMb2FixtureType_stageRight,-1,-1,1);
+	b2Mask1 = CMMb2ContactMask(0x3001,-1,-1,1);
+	b2Mask2 = CMMb2ContactMask(0x3003,-1,-1,1);
+	b2Mask3 = CMMb2ContactMask(0x3005,-1,-1,1);
+	b2Mask4 = CMMb2ContactMask(0x3007,-1,-1,1);
 	
 	worldBody = [self createBody:b2_staticBody point:CGPointZero angle:0];
-	worldBody->SetUserData(self);
+	worldBody->SetUserData(stage);
 	
 	b2EdgeShape groundBox;
 	groundBox.Set(b2Vec2Fromccp(0,0), b2Vec2Fromccp(self.contentSize.width,0));
@@ -183,9 +160,16 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 		b2Fixture *fixtureA_ = contact_->GetFixtureA();
 		b2Fixture *fixtureB_ = contact_->GetFixtureB();
 		
+		CMMb2ContactMask *b2CMaskA_ = (CMMb2ContactMask *)fixtureA_->GetUserData();
+		CMMb2ContactMask *b2CMaskB_ = (CMMb2ContactMask *)fixtureB_->GetUserData();
+		
+		id<CMMSContactProtocol> objectA_ = (id<CMMSContactProtocol>)fixtureA_->GetBody()->GetUserData();
+		id<CMMSContactProtocol> objectB_ = (id<CMMSContactProtocol>)fixtureB_->GetBody()->GetUserData();
+		
 		CGPoint contactPoint_ = getContactPoint(contact_);
-		[self _doContacting:fixtureA_ otherFixture:fixtureB_ contactPoint:contactPoint_ dt:dt_];
-		[self _doContacting:fixtureB_ otherFixture:fixtureA_ contactPoint:contactPoint_ dt:dt_];
+		
+		[objectA_ doContractWithFixtureType:b2CMaskA_->fixtureType otherObject:objectB_ otherFixtureType:b2CMaskB_->fixtureType contactPoint:contactPoint_ interval:dt_];
+		[objectB_ doContractWithFixtureType:b2CMaskB_->fixtureType otherObject:objectA_ otherFixtureType:b2CMaskA_->fixtureType contactPoint:contactPoint_ interval:dt_];
 	}
 }
 
@@ -241,21 +225,6 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 
 -(int)_nextObjectTag{
 	return _OBJECTTAG_++;
-}
-
--(void)_doContacting:(b2Fixture *)targetFixture_ otherFixture:(b2Fixture *)otherFixture_ contactPoint:(CGPoint)contactPoint_ dt:(ccTime)dt_{
-	CMMb2ContactMask *targetB2CMask = (CMMb2ContactMask *)targetFixture_->GetUserData();
-	CMMb2ContactMask *otherB2CMask = (CMMb2ContactMask *)otherFixture_->GetUserData();
-	
-	if(isObjectBody(targetB2CMask->fixtureType)){
-		CMMSObject *targetObject_ = (CMMSObject *)targetFixture_->GetBody()->GetUserData();
-		if(isObjectBody(otherB2CMask->fixtureType)){
-			CMMSObject *otherObject_ = (CMMSObject *)otherFixture_->GetBody()->GetUserData();
-			[targetObject_ doContactingWithObject:targetB2CMask->fixtureType otherObject:otherObject_ otherFixtureType:otherB2CMask->fixtureType contactPoint:contactPoint_ dt:dt_];
-		}else{
-			[targetObject_ doContactingWithStage:targetB2CMask->fixtureType stageFixtureType:otherB2CMask->fixtureType contactPoint:contactPoint_ dt:dt_];
-		}
-	}
 }
 
 -(void)addObject:(CMMSObject *)object_{
@@ -498,10 +467,10 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 @implementation CMMStage
 @synthesize spec,delegate,world,particle,backGround,sound,worldSize,worldPoint,isAllowTouch;
 
-+(id)stageWithCMMStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
-	return [[[self alloc] initWithCMMStageSpecDef:stageSpecDef_] autorelease];
++(id)stageWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
+	return [[[self alloc] initWithStageSpecDef:stageSpecDef_] autorelease];
 }
--(id)initWithCMMStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
+-(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
 	if(!(self = [super init])) return self;
 	
 	self.contentSize = stageSpecDef_.stageSize;
@@ -585,6 +554,9 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 	if(!isAllowTouch) return;
 	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
 }
+
+-(void)whenContractWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{}
+-(void)doContractWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_ interval:(ccTime)interval_{}
 
 -(void)dealloc{
 	[sound release];

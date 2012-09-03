@@ -1,14 +1,8 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#import "cocos2d.h"
+#import "CMMSType.h"
 
-typedef enum{
-	CMMSSpecType_none,
-	CMMSSpecType_object,
-	CMMSSpecType_stage,
-	
-	//add more..
-} CMMSSpecType;
+typedef uint16 CMMSSpecType;
 
 #define cmmVarCMMSSpec_specType @"m0"
 

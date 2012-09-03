@@ -48,7 +48,7 @@ typedef enum{
 
 @end
 
-@interface CMMDrawingManager(Default)
+@interface CMMDrawingManager(CachedTexture)
 
 -(CCTexture2D *)textureFrameWithFrameSeq:(int)frameSeq_ size:(CGSize)size_ backGroundYN:(BOOL)backGroundYN_ barYN:(BOOL)barYN_;
 -(CCTexture2D *)textureFrameWithFrameSeq:(int)frameSeq_ size:(CGSize)size_ backGroundYN:(BOOL)backGroundYN_;

@@ -30,7 +30,7 @@ struct CMMMotionState{
 	ccTime updateInterval;
 }
 
-+(id)sharedDispatcher;
++(CMMMotionDispatcher *)sharedDispatcher;
 
 -(void)addTarget:(id<CMMMotionDispatcherDelegate>)target_;
 

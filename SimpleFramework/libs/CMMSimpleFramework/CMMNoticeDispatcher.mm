@@ -267,6 +267,20 @@ static CCArray *_cachedNoticeDispatcherItems_ = nil;
 	return self;
 }
 
+-(void)setNoticeTemplate:(CMMNoticeDispatcherTemplate *)noticeTemplate_{
+	BOOL isOnNotice_ = _isOnNotice;
+	if(isOnNotice_ && noticeTemplate){
+		[noticeTemplate removeFromParentAndCleanup:YES];
+		[noticeTemplate release];
+		_isOnNotice = NO;
+	}
+	
+	noticeTemplate = [noticeTemplate_ retain];
+	
+	if(isOnNotice_)
+		[self _startNotice];
+}
+
 -(void)addNoticeItem:(CMMNoticeDispatcherItem *)noticeItem_{
 	[itemList addObject:noticeItem_];
 	[self _startNotice];

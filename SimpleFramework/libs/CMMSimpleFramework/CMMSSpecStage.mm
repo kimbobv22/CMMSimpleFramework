@@ -11,7 +11,7 @@
 -(id)initWithTarget:(id)target_{
 	if(!(self = [super initWithTarget:target_])) return self;
 	
-	specType = CMMSSpecType_stage;
+	specType = 0x3001;
 	
 	return self;
 }

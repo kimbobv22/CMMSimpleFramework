@@ -7,9 +7,9 @@ static CMMMotionDispatcher *_sharedCMMMotionDispatcher_ = nil;
 @implementation CMMMotionDispatcher
 @synthesize targetList,motionFixState,updateInterval;
 
-+(id)sharedDispatcher{
++(CMMMotionDispatcher *)sharedDispatcher{
 	if(!_sharedCMMMotionDispatcher_){
-		_sharedCMMMotionDispatcher_ = [[CMMMotionDispatcher alloc] init];
+		_sharedCMMMotionDispatcher_ = [[self alloc] init];
 	}
 	
 	return _sharedCMMMotionDispatcher_;

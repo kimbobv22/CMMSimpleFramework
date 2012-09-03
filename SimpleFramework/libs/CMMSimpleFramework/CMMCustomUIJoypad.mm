@@ -91,7 +91,7 @@
 		
 	[self addChild:_backSprite z:0];
 	[self addChild:_stick z:1];
-	[self setStickVector:CGPointZero];
+	[_stick setPosition:cmmFuncCommon_position_center(self, _stick)];
 	
 	return self;
 }

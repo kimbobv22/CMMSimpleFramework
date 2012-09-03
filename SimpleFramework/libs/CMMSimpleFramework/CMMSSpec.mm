@@ -12,7 +12,7 @@
 	if(!(self = [super init])) return self;
 	
 	target = target_;
-	specType = CMMSSpecType_none;
+	specType = 0x0000;
 	
 	return self;
 }

@@ -1,21 +1,21 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#import "CMMTilemapStage.h"
+#import "CMMStageTMX.h"
 #import "CMMStringUtil.h"
 
-@implementation CMMTilemapStage
+@implementation CMMStageTMX
 @synthesize tilemap,groundTMXLayers,isTilemapBuiltup;
 
-+(id)stageWithCMMStageSpecDef:(CMMStageSpecDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_{
-	return [[[self alloc] initWithCMMStageSpecDef:stageSpecDef_ tmxFileName:tmxFileName_ isInDocument:isInDocument_] autorelease];
++(id)stageWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_{
+	return [[[self alloc] initWithStageSpecDef:stageSpecDef_ tmxFileName:tmxFileName_ isInDocument:isInDocument_] autorelease];
 }
 
--(id)initWithCMMStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
+-(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
 	//do not use for init
 	[self release];
 	return nil;
 }
--(id)initWithCMMStageSpecDef:(CMMStageSpecDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_{
+-(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_{
 	tilemap = [CCTMXTiledMap tiledMapWithTMXFile:[CMMStringUtil stringPathWithFileName:tmxFileName_ isInDocument:isInDocument_]];
 	
 	//only support Orthogonal orientation
@@ -26,13 +26,13 @@
 
 	stageSpecDef_.worldSize = tilemap.contentSize;
 	
-	if(!(self = [super initWithCMMStageSpecDef:stageSpecDef_])) return self;
+	if(!(self = [super initWithStageSpecDef:stageSpecDef_])) return self;
 	[self addChild:tilemap z:1];
 	
 	groundTMXLayers = [[CCArray alloc] init];
 	isTilemapBuiltup = NO;
 	
-	b2MaskTile = CMMb2ContactMask(CMMb2FixtureType_stageTile,-1,-1,1);
+	b2MaskTile = CMMb2ContactMask(0x3009,-1,-1,1);
 	
 	return self;
 }
@@ -54,7 +54,7 @@
 
 @end
 
-@implementation CMMTilemapStage(Tilemap)
+@implementation CMMStageTMX(Tilemap)
 
 -(void)addGroundTMXLayerAtLayerName:(NSString *)tmxLayerName_{
 	if(isTilemapBuiltup) return;
@@ -92,8 +92,8 @@
 		BOOL doDraw_ = NO;
 		
 		for(int tileIndex_=0; tileIndex_<totalTileLength_;tileIndex_++){			
-			float curYIndex_ = cmmFuncCMMTilemapStage_tileYIndex(tileIndex_,tileLayerSize_.width);
-			float curXIndex_ = cmmFuncCMMTilemapStage_tileXIndex(tileIndex_,tileLayerSize_.width,curYIndex_);
+			float curYIndex_ = cmmFuncCMMStageTMX_tileYIndex(tileIndex_,tileLayerSize_.width);
+			float curXIndex_ = cmmFuncCMMStageTMX_tileXIndex(tileIndex_,tileLayerSize_.width,curYIndex_);
 			
 			CCSprite *tile_ = [tmxLayer_ tileAt:ccp(curXIndex_,(tileLayerSize_.height-1.0f)-curYIndex_)];
 	//		u_int32_t tile_ = [tmxLayer_ tileGIDAt:ccp(curXIndex_,(tileLayerSize_.height-1.0f)-curYIndex_)];
@@ -104,14 +104,14 @@
 					doDraw_ = NO;
 				}
 				
-				float nextYIndex_ = cmmFuncCMMTilemapStage_tileYIndex(tileIndex_+1.0f,tileLayerSize_.width);
+				float nextYIndex_ = cmmFuncCMMStageTMX_tileYIndex(tileIndex_+1.0f,tileLayerSize_.width);
 				if(nextYIndex_ != curYIndex_){
 					curXIndex_++; //issue
 					doDraw_ = YES;
 				}else doDraw_ = NO;
 				
 				if(!doDraw_ && cmmFuncCommon_respondsToSelector(delegate, @selector(tilemapStage:isSingleTileAtTMXLayer:tile:xIndex:yIndex:))){
-					if([((id<CMMTilemapStageDelegate>)delegate) tilemapStage:self isSingleTileAtTMXLayer:tmxLayer_ tile:tile_ xIndex:curXIndex_ yIndex:curYIndex_]){
+					if([((id<CMMStageTMXDelegate>)delegate) tilemapStage:self isSingleTileAtTMXLayer:tmxLayer_ tile:tile_ xIndex:curXIndex_ yIndex:curYIndex_]){
 						curXIndex_++;
 						doDraw_ = YES;
 					}
@@ -135,7 +135,7 @@
 				tileFixture_->SetUserData(&b2MaskTile);
 				
 				if(cmmFuncCommon_respondsToSelector(delegate, @selector(tilemapStage:whenTileBuiltupAtTMXLayer:fromXIndex:toXIndex:yIndex:tileFixture:)))
-					[((id<CMMTilemapStageDelegate>)delegate) tilemapStage:self whenTileBuiltupAtTMXLayer:tmxLayer_ fromXIndex:startXIndex_ toXIndex:curXIndex_ yIndex:curXIndex_-1.0f tileFixture:tileFixture_];
+					[((id<CMMStageTMXDelegate>)delegate) tilemapStage:self whenTileBuiltupAtTMXLayer:tmxLayer_ fromXIndex:startXIndex_ toXIndex:curXIndex_ yIndex:curXIndex_-1.0f tileFixture:tileFixture_];
 			
 				doDraw_ = NO;
 				startXIndex_ = startYIndex_ = -1;

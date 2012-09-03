@@ -33,8 +33,9 @@
 
 #import "CMMDrawingManager.h"
 
+#import "CMMSType.h"
 #import "CMMStage.h"
-#import "CMMTilemapStage.h"
+#import "CMMStageTMX.h"
 #import "CMMSSpecStage.h"
 #import "CMMSObject.h"
 #import "CMMSPlanet.h"
@@ -42,8 +43,8 @@
 
 #import "CMMMenuItem.h"
 #import "CMMScrollMenu.h"
-#import "CMMScrollMenuH.h"
 #import "CMMScrollMenuV.h"
+#import "CMMScrollMenuH.h"
 
 #import "CMMControlItem.h"
 #import "CMMControlItemSwitch.h"

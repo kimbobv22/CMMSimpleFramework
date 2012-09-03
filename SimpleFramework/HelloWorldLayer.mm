@@ -14,6 +14,7 @@
 #import "TilemapTestLayer.h"
 #import "ControlItemTestLayer.h"
 #import "CustomUITestLayer.h"
+#import "NoticeTestLayer.h"
 
 @implementation HelloWorldLayer
 
@@ -87,13 +88,9 @@
 	[mainMenu addItem:menuItem_];
 	
 	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:1 frameSize:menuItemSize_];
-	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){
-		[[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:@"Hello world :)" subject:@"Welcome to CMMSimpleFramework!"];
-	};
+	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[NoticeTestLayer node]];};
 	[menuItem_ setTitle:@"Notice Test"];
 	[mainMenu addItem:menuItem_];
-	
-	
 	
 	return self;
 }

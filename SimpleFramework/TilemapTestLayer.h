@@ -2,8 +2,8 @@
 
 #import "CMMHeader.h"
 
-@interface TilemapTestLayer : CMMLayer<CMMTilemapStageDelegate,CMMStageTouchDelegate>{
-	CMMTilemapStage *tilemapStage;
+@interface TilemapTestLayer : CMMLayer<CMMStageTMXDelegate,CMMStageTouchDelegate>{
+	CMMStageTMX *tilemapStage;
 	BOOL _isOnDrag;
 }
 

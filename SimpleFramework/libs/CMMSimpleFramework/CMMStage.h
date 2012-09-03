@@ -6,16 +6,15 @@
 #import "CMMSoundEngine.h"
 #import "CMMMacro.h"
 
+#import "CMMSType.h"
+
 @class CMMStage;
 
 static CGPoint getContactPoint(b2Contact* contact);
-static BOOL isObjectBody(CMMb2FixtureType fixtureType_);
 
 class CMMStageContactListener : public b2ContactListener{
 public:
 	CMMStage *stage;
-	
-	void proccessCollision(b2Contact* contact_, b2Fixture *targetFixture_, b2Fixture *otherFixture_);
 	
 	void BeginContact(b2Contact* contact);
 	void EndContact(b2Contact* contact){}
@@ -105,8 +104,6 @@ struct CMMStageSpecDef{
 
 @interface CMMStageWorld(Common)
 
--(void)_doContacting:(b2Fixture *)targetFixture_ otherFixture:(b2Fixture *)otherFixture_ contactPoint:(CGPoint)contactPoint_ dt:(ccTime)dt_;
-
 -(void)addObject:(CMMSObject *)object_;
 
 -(void)removeObject:(CMMSObject *)object_;
@@ -182,7 +179,7 @@ struct CMMStageSpecDef{
 
 @end
 
-@interface CMMStage : CMMLayer{
+@interface CMMStage : CMMLayer<CMMSContactProtocol>{
 	CMMSSpecStage *spec;
 
 	id<CMMStageDelegate,CMMStageTouchDelegate> delegate;
@@ -195,8 +192,8 @@ struct CMMStageSpecDef{
 	BOOL isAllowTouch;
 }
 
-+(id)stageWithCMMStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
--(id)initWithCMMStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
++(id)stageWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
+-(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
 
 -(CGPoint)convertToStageWorldSpace:(CGPoint)worldPoint_;
 

@@ -7,7 +7,7 @@
 -(id)initWithTarget:(id)target_{
 	if(!(self = [super initWithTarget:target_])) return self;
 	
-	specType = CMMSSpecType_object;
+	specType = 0x1001;
 	
 	return self;
 }

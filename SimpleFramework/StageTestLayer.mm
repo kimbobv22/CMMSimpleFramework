@@ -46,7 +46,7 @@
 	stageSpec_.friction = 0.3f;
 	stageSpec_.restitution = 0.3f;
 	
-	stage = [CMMStage stageWithCMMStageSpecDef:stageSpec_];
+	stage = [CMMStage stageWithStageSpecDef:stageSpec_];
 	stage.sound.soundDistance = 300.0f;
 	stage.position = ccp(0,self.contentSize.height-stage.contentSize.height);
 	stage.delegate = self;
@@ -65,6 +65,22 @@
 	labelGravity = [CMMFontUtil labelWithstring:@" "];
 	[self addChild:labelGravity];
 	
+	CMMControlItemSlider *gravitySlider_ = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:150];
+	gravitySlider_.callback_whenChangedItemVale = ^(id sender_, float itemValue_, float beforeItemValue_){
+		CGPoint gravity_ = stage.spec.gravity;
+		gravity_.y = itemValue_;
+		[stage.spec setGravity:gravity_];
+	};
+	gravitySlider_.minValue = -10.0f;
+	gravitySlider_.maxValue = 10.0f;
+	gravitySlider_.unitValue = 0.5f;
+	gravitySlider_.itemValue = 0.0f;
+	CGPoint targetPoint_ = cmmFuncCommon_position_center(self, gravitySlider_);
+	targetPoint_.x += 40.0f;
+	targetPoint_.y = 5.0f;
+	gravitySlider_.position = targetPoint_;
+	[self addChild:gravitySlider_];
+	
 	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
 	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,menuItemBack_.contentSize.height/2);
@@ -72,7 +88,7 @@
 	[self addChild:menuItemBack_];
 	
 	[self scheduleUpdate];
-	[self schedule:@selector(updateGravityUp:)];
+	//[self schedule:@selector(updateGravityUp:)];
 	
 	return self;
 }
@@ -93,7 +109,7 @@
 	[stage update:dt_];
 	
 	CGPoint gravity_ = stage.spec.gravity;
-	[labelGravity setString:[NSString stringWithFormat:@"gravity : %1.1f/%1.1f",gravity_.x,gravity_.y]];
+	[labelGravity setString:[NSString stringWithFormat:@"gravity : %1.1f",gravity_.y]];
 	labelGravity.position = ccp(self.contentSize.width-labelGravity.contentSize.width/2-5,labelGravity.contentSize.height/2+5);
 }
 

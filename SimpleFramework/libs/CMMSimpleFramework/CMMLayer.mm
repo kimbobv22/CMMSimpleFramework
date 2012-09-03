@@ -27,18 +27,23 @@
 }
 
 #if COCOS2D_DEBUG >= 1
--(void)draw{
-	[super draw];
+-(void)visit{
+	[super visit];
+	
+	kmGLPushMatrix();
+	[self transform];
 	
 	ccArray *data_ = touchDispatcher.touchList->data;
 	int count_ = data_->num;
 	for(uint index_=0;index_<count_;index_++){
 		CMMTouchDispatcherItem *touchItem_ = data_->arr[index_];
 		CGPoint centerPoint_ = [self convertToNodeSpace:[CMMTouchUtil pointFromTouch:touchItem_.touch]];
-		glLineWidth(2.0f);
-		ccDrawColor4F(1.0, 1.0, 1.0, 1.0);
-		ccDrawCircle(centerPoint_, 20, 0, 15, NO);
+		glLineWidth(3.0f);
+		ccDrawColor4F(0.0, 1.0, 0.0, 1.0);
+		ccDrawCircle(centerPoint_, 15, 0, 15, NO);
 	}
+	
+	kmGLPopMatrix();
 }
 #endif
 
