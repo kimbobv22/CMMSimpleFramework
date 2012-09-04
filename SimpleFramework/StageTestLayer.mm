@@ -62,6 +62,14 @@
 	//[self _addPlanet:ccp(stage.worldSize.width/2,0) gravity:-7 gravityRadius:350];
 	[self _addPlanet:ccp(stage.worldSize.width/2,stage.worldSize.height) gravity:-7 gravityRadius:500.0f];
 	
+	/// set object batch node
+	CMMSObjectBatchNode *batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"Icon.png" isInDocument:NO];
+	[stage.world addObatchNode:batchNode_];
+	
+	batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"IMG_STG_ball.png" isInDocument:NO];
+	batchNode_.objectClass = [CMMSBall class];
+	[stage.world addObatchNode:batchNode_];
+	
 	labelGravity = [CMMFontUtil labelWithstring:@" "];
 	[self addChild:labelGravity];
 	
@@ -198,13 +206,15 @@
 	}
 }
 -(CMMSObject *)_addBox:(CGPoint)point_{
-	CMMSObject *object_ = [CMMSObject spriteWithFile:@"Icon.png"];
+	CMMSObjectBatchNode *batchNode_ = [stage.world obatchNodeAtFileName:@"Icon.png" isInDocument:NO];
+	CMMSObject *object_ = [batchNode_ createObject];
 	object_.position = point_;
 	[stage.world addObject:object_];
 	return object_;
 }
 -(CMMSBall *)_addBall:(CGPoint)point_{
-	CMMSBall *ball_ = [CMMSBall ball];
+	CMMSObjectBatchNode *batchNode_ = [stage.world obatchNodeAtFileName:@"IMG_STG_ball.png" isInDocument:NO];
+	CMMSBall *ball_ = (CMMSBall *)[batchNode_ createObject];
 	ball_.position = point_;
 	[stage.world addObject:ball_];
 	return ball_;

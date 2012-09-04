@@ -19,12 +19,12 @@
 	tilemap = [CCTMXTiledMap tiledMapWithTMXFile:[CMMStringUtil stringPathWithFileName:tmxFileName_ isInDocument:isInDocument_]];
 	
 	//only support Orthogonal orientation
-	if(tilemap.mapOrientation != CCTMXOrientationOrtho){
+	if([tilemap mapOrientation] != CCTMXOrientationOrtho){
 		[self release];
 		return nil;
 	}
 
-	stageSpecDef_.worldSize = tilemap.contentSize;
+	stageSpecDef_.worldSize = [tilemap contentSize];
 	
 	if(!(self = [super initWithStageSpecDef:stageSpecDef_])) return self;
 	[self addChild:tilemap z:1];
@@ -39,7 +39,7 @@
 
 -(void)setWorldPoint:(CGPoint)worldPoint_{
 	[super setWorldPoint:worldPoint_];
-	[tilemap setPosition:world.position];
+	[tilemap setPosition:[world position]];
 }
 
 -(void)update:(ccTime)dt_{

@@ -222,6 +222,7 @@
 		E08DBA9C15E7E5D90090F7F7 /* IMG_JOYPAD_000.plist in Resources */ = {isa = PBXBuildFile; fileRef = E08DBA9815E7E5D90090F7F7 /* IMG_JOYPAD_000.plist */; };
 		E08DBA9D15E7E5D90090F7F7 /* IMG_JOYPAD_000.png in Resources */ = {isa = PBXBuildFile; fileRef = E08DBA9915E7E5D90090F7F7 /* IMG_JOYPAD_000.png */; };
 		E08DBAA015E7E5EE0090F7F7 /* CustomUITestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E08DBA9F15E7E5EE0090F7F7 /* CustomUITestLayer.mm */; };
+		E08DE63215F5AA62003E0D84 /* CMMSObjectSView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E08DE63115F5AA62003E0D84 /* CMMSObjectSView.mm */; };
 		E095571515D8A5FE00615954 /* GyroTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E095571415D8A5FE00615954 /* GyroTestLayer.mm */; };
 		E0AA4BD415E3CBF6006D0C7F /* CMMControlItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AA4BD315E3CBF6006D0C7F /* CMMControlItem.mm */; };
 		E0AEC75F15E47D7D0015A2BB /* CMMControlItemSlider.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AEC75E15E47D7D0015A2BB /* CMMControlItemSlider.mm */; };
@@ -687,6 +688,8 @@
 		E08DBA9915E7E5D90090F7F7 /* IMG_JOYPAD_000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_JOYPAD_000.png; path = Resources/IMG_JOYPAD_000.png; sourceTree = "<group>"; };
 		E08DBA9E15E7E5EE0090F7F7 /* CustomUITestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomUITestLayer.h; sourceTree = "<group>"; };
 		E08DBA9F15E7E5EE0090F7F7 /* CustomUITestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomUITestLayer.mm; sourceTree = "<group>"; };
+		E08DE63015F5AA62003E0D84 /* CMMSObjectSView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSObjectSView.h; path = libs/CMMSimpleFramework/CMMSObjectSView.h; sourceTree = "<group>"; };
+		E08DE63115F5AA62003E0D84 /* CMMSObjectSView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSObjectSView.mm; path = libs/CMMSimpleFramework/CMMSObjectSView.mm; sourceTree = "<group>"; };
 		E095571115D8A5E900615954 /* GyroTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GyroTestLayer.h; sourceTree = "<group>"; };
 		E095571415D8A5FE00615954 /* GyroTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GyroTestLayer.mm; sourceTree = "<group>"; };
 		E0AA4BD215E3CBF6006D0C7F /* CMMControlItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMControlItem.h; path = libs/CMMSimpleFramework/CMMControlItem.h; sourceTree = "<group>"; };
@@ -776,6 +779,8 @@
 				E0ED520515E201020070712E /* CMMSSpecStage.mm */,
 				E0ED520715E202450070712E /* CMMSParticle.h */,
 				E0ED520815E202450070712E /* CMMSParticle.mm */,
+				E08DE63015F5AA62003E0D84 /* CMMSObjectSView.h */,
+				E08DE63115F5AA62003E0D84 /* CMMSObjectSView.mm */,
 			);
 			name = stageComp;
 			sourceTree = "<group>";
@@ -1898,6 +1903,7 @@
 				E0C1173F15E8B110000142B2 /* CMMScrollMenuV.mm in Sources */,
 				E070503B15EC701500CFC81E /* CMMNoticeDispatcher.mm in Sources */,
 				E03DD9F915F4B8580001257B /* NoticeTestLayer.mm in Sources */,
+				E08DE63215F5AA62003E0D84 /* CMMSObjectSView.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

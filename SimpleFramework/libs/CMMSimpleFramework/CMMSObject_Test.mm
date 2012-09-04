@@ -11,7 +11,7 @@
 	
 	HP = 100.0f;
 	AP = 40.0f;
-	bounceCount = arc4random()%7;
+	bounceCount = 10;
 	
 	return self;
 }
@@ -58,6 +58,30 @@
 
 @end
 
+@implementation CMMSBallStateView
+
+-(void)draw{
+	[super draw];
+	
+	if(!target) return;
+	
+	CGSize targetSize_ = [target contentSize];
+	CGPoint fromPoint_ = ccp(-targetSize_.width/2.0f,targetSize_.height/2.0f + 10.0f);
+	CGPoint toPoint_ = ccpAdd(fromPoint_, ccp(targetSize_.width,0.0f));
+	
+	glLineWidth(5.0f*CC_CONTENT_SCALE_FACTOR());
+	ccDrawColor4F(1.0f, 1.0f, 1.0f, 0.5f);
+	ccDrawLine(fromPoint_, toPoint_);
+
+	toPoint_ = ccpAdd(fromPoint_, ccp(targetSize_.width * ([((CMMSStateBall *)target.state) HP]/[((CMMSSpecBall *)target.spec) HP]),0.0f));
+	
+	glLineWidth(3.0f*CC_CONTENT_SCALE_FACTOR());
+	ccDrawColor4F(1.0f, 0.0f, 0.0f, 0.5f);
+	ccDrawLine(fromPoint_, toPoint_);
+}
+
+@end
+
 @implementation CMMSBall
 
 +(id)ball{
@@ -76,15 +100,32 @@
 }
 
 -(void)buildupObject{
-	spec = [[CMMSSpecBall alloc] initWithTarget:self];
-	state = [[CMMSStateBall alloc] initWithTarget:self];
+	[self setSpec:[CMMSSpecBall specWithTarget:self]];
+	[self setState:[CMMSStateBall stateWithTarget:self]];
 }
 
 -(void)whenContractWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{
-	if(fixtureType_ == otherFixtureType_)
-		((CMMSStateBall *)state).HP -= ((CMMSSpecBall *)spec).AP;
 	
-	[self doCollisionEvent:contactPoint_];
+	CMMSSpecBall *spec_ = (CMMSSpecBall *)spec;
+	CMMSStateBall *state_ = (CMMSStateBall *)state;
+	
+	state_.HP -= (float)(arc4random()%40 + 10);
+	state_.bounceCount++;
+	if(state_.bounceCount>=spec_.bounceCount)
+		[stage.world removeObject:self];
+	[stage.particle addParticleWithName:@"PAR_EFT_0001" point:contactPoint_];
+	CMMSoundHandlerItem *soundItem_ = [stage.sound addSoundItem:@"SND_EFT_00003.caf" soundPoint:contactPoint_];
+	soundItem_.deregWhenStop = YES;
+	[soundItem_ play];
+}
+
+@end
+
+@implementation CMMSBall(Stage)
+
+-(void)whenAddedToStage{
+	[super whenAddedToStage];
+	[stage.stateView addStateView:[CMMSBallStateView stateViewWithTarget:self]];
 }
 
 @end
@@ -105,19 +146,6 @@
 	
 	body->CreateFixture(&fixtureDef_)->SetUserData(&b2CMask);
 	body->SetFixedRotation(false);
-}
-
--(void)doCollisionEvent:(CGPoint)contactPoint_{
-	CMMSSpecBall *spec_ = (CMMSSpecBall *)spec;
-	CMMSStateBall *state_ = (CMMSStateBall *)state;
-	
-	state_.bounceCount++;
-	if(state_.bounceCount>=spec_.bounceCount)
-		[stage.world removeObject:self];
-	[stage.particle addParticleWithName:@"PAR_EFT_0001" point:contactPoint_];
-	CMMSoundHandlerItem *soundItem_ = [stage.sound addSoundItem:@"SND_EFT_00003.caf" soundPoint:contactPoint_];
-	soundItem_.deregWhenStop = YES;
-	[soundItem_ play];
 }
 
 @end

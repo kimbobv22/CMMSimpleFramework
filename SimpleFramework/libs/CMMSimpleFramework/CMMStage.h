@@ -1,12 +1,12 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
+#import "CMMMacro.h"
 #import "CMMLayer.h"
+#import "CMMSoundEngine.h"
+#import "CMMSType.h"
 #import "CMMSObject.h"
 #import "CMMSSpecStage.h"
-#import "CMMSoundEngine.h"
-#import "CMMMacro.h"
-
-#import "CMMSType.h"
+#import "CMMSObjectSView.h"
 
 @class CMMStage;
 
@@ -81,13 +81,14 @@ struct CMMStageSpecDef{
 	CMMStageContactFilter *_contactFilter;
 	b2Draw *_debugDraw;
 	
+	CCArray *obatchNode_list,*obatchNode_destroyList;
 	CCArray *object_list,*object_createList,*object_destroyList;
 	CMMb2ContactMask b2Mask1,b2Mask2,b2Mask3,b2Mask4;
 	
 	//for performance Touch delegate
 	CCArray *_touchedObjects;
-	
-	int _OBJECTTAG_;
+
+	int _OBATCHNODETAG_,_OBJECTTAG_;
 }
 
 +(id)worldWithStage:(CMMStage *)stage_ worldSize:(CGSize)worldSize_;
@@ -98,7 +99,26 @@ struct CMMStageSpecDef{
 @property (nonatomic, assign) CMMStage *stage;
 @property (nonatomic, readonly) b2World *world;
 @property (nonatomic, readonly) b2Body *worldBody;
-@property (nonatomic, readonly) CCArray *object_list;
+@property (nonatomic, readonly) CCArray *obatchNode_list,*object_list;
+@property (nonatomic, readonly) int count DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readonly) int countOfObatchNode,countOfObject;
+
+@end
+
+@interface CMMStageWorld(ObjectBatchNode)
+
+-(void)addObatchNode:(CMMSObjectBatchNode *)obatchNode_;
+-(CMMSObjectBatchNode *)addObatchNodeWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
+
+-(void)removeObatchNode:(CMMSObjectBatchNode *)obatchNode_;
+-(void)removeObatchNodeAtIndex:(int)index_;
+-(void)removeObatchNodeAtFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
+
+-(CMMSObjectBatchNode *)obatchNodeAtIndex:(int)index_;
+-(CMMSObjectBatchNode *)obatchNodeAtFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
+
+-(int)indexOfObatchNode:(CMMSObjectBatchNode *)obatchNode_;
+-(int)indexOfObatchNodeFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
 
 @end
 
@@ -107,10 +127,16 @@ struct CMMStageSpecDef{
 -(void)addObject:(CMMSObject *)object_;
 
 -(void)removeObject:(CMMSObject *)object_;
+-(void)removeObjectAtIndex:(int)index_;
 -(void)removeObjectAtObjectTag:(int)objectTag_;
+-(void)removeObjectAtObatchNode:(CMMSObjectBatchNode *)obatchNode_;
 
+-(CMMSObject *)objectAtIndex:(int)index_;
 -(CMMSObject *)objectAtObjectTag:(int)objectTag_;
 -(CMMSObject *)objectAtTouch:(UITouch *)touch_;
+
+-(int)indexOfObject:(CMMSObject *)object_;
+-(int)indexOfObjectTag:(int)objectTag_;
 
 -(CCArray *)objectsInTouched;
 
@@ -162,6 +188,38 @@ struct CMMStageSpecDef{
 
 @end
 
+@interface CMMStageObjectSView : CMMLayer{
+	CMMStage *stage;
+	CCArray *stateViewList;
+}
+
++(id)stateViewWithStage:(CMMStage *)stage_;
+-(id)initWithStage:(CMMStage *)stage_;
+
+-(void)update:(ccTime)dt_;
+
+@property (nonatomic, assign) CMMStage *stage;
+@property (nonatomic, readonly) CCArray *stateViewList;
+@property (nonatomic, readonly) int count;
+
+@end
+
+@interface CMMStageObjectSView(Common)
+
+-(void)addStateView:(CMMSObjectSView *)stateView_;
+
+-(void)removeStateView:(CMMSObjectSView *)stateView_;
+-(void)removeStateViewAtIndex:(int)index_;
+-(void)removeStateViewAtTarget:(CMMSObject *)target_;
+-(void)removeAllStateView;
+
+-(CMMSObjectSView *)stateViewAtIndex:(int)index_;
+-(CCArray *)stateViewListAtTarget:(CMMSObject *)target_;
+
+-(int)indexOfStateView:(CMMSObjectSView *)stateView_;
+
+@end
+
 @interface CMMStageBackGround : NSObject{
 	CMMStage *stage;
 	CCNode *backGroundNode;
@@ -186,6 +244,7 @@ struct CMMStageSpecDef{
 	
 	CMMStageWorld *world;
 	CMMStageParticle *particle;
+	CMMStageObjectSView *stateView;
 	CMMStageBackGround *backGround;
 	CMMSoundHandler *sound;
 	
@@ -195,18 +254,23 @@ struct CMMStageSpecDef{
 +(id)stageWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
 -(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
 
--(CGPoint)convertToStageWorldSpace:(CGPoint)worldPoint_;
-
 -(void)update:(ccTime)dt_;
 
 @property (nonatomic, retain) CMMSSpecStage *spec;
 @property (nonatomic, assign) id<CMMStageDelegate>delegate;
 @property (nonatomic, readonly) CMMStageWorld *world;
 @property (nonatomic, readonly) CMMStageParticle *particle;
+@property (nonatomic, readonly) CMMStageObjectSView *stateView;
 @property (nonatomic, readonly) CMMStageBackGround *backGround;
 @property (nonatomic, readonly) CMMSoundHandler *sound;
 @property (nonatomic, readonly) CGSize worldSize;
 @property (nonatomic, readwrite) CGPoint worldPoint;
 @property (nonatomic, readwrite) BOOL isAllowTouch;
+
+@end
+
+@interface CMMStage(Point)
+
+-(CGPoint)convertToStageWorldSpace:(CGPoint)worldPoint_;
 
 @end

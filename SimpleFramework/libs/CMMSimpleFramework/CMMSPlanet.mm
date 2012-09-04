@@ -21,7 +21,7 @@
 	return self;
 }
 -(id)initPlanetWithGravity:(float)gravity_ gravityRadius:(float)gravityRadius_{
-	if(!(self = [super initWithFile:@"IMG_STG_planet.png"])) return self;
+	if(!(self = [self initWithFile:@"IMG_STG_planet.png"])) return self;
 	
 	gravity = gravity_;
 	gravityRadius = gravityRadius_;
@@ -69,11 +69,11 @@
 @implementation CMMSPlanet(Box2d)
 
 -(void)buildupBody{
-	body = [stage.world createBody:b2_staticBody point:self.position angle:self.rotation];
+	body = [stage.world createBody:b2_staticBody point:position_ angle:rotation_];
 	body->SetUserData(self);
 	
 	b2CircleShape bodyBox_;
-	bodyBox_.m_radius = self.contentSize.width/2.0f/PTM_RATIO;
+	bodyBox_.m_radius = (contentSize_.width/2.0f)/PTM_RATIO;
 	b2FixtureDef fixtureDef_;
 	fixtureDef_.density = 0.5f;
 	fixtureDef_.restitution = 0.1f;
