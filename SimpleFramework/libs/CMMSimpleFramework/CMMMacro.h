@@ -1,6 +1,11 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "cocos2d.h"
+#import <objc/message.h>
+
+static CGPoint cmmFuncCommon_ccpOffset(CGPoint centerPoint_,float radians_,float offset_){
+	return ccp(centerPoint_.x+cosf(radians_)*offset_,centerPoint_.y+sinf(radians_)*offset_);
+}
 
 static CGRect cmmFuncCommon_nodeToworldRect(CCNode *node_){
 	CGRect rect_ = CGRectZero;
@@ -19,4 +24,6 @@ static CGPoint cmmFuncCommon_position_center(CCNode *parent_,CCNode *target_){
 	return cmmFuncCommon_position_center(parentRect_, parent_.anchorPoint, targetRect_, target_.anchorPoint);
 }
 
-#define cmmFuncCommon_respondsToSelector(_delegate_,_selector_) ((_delegate_) && [(_delegate_) respondsToSelector:(_selector_)])
+static BOOL cmmFuncCommon_respondsToSelector(id target_,SEL selector_){
+	return (target_ && [target_ respondsToSelector:selector_]);
+}

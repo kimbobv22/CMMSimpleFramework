@@ -28,6 +28,8 @@
 	soundSprite2.position = ccp(self.contentSize.width-soundSprite2.contentSize.width/2-20,self.contentSize.height/2);
 	[self addChild:soundSprite2];
 	
+	listenSprite.touchCancelDistance = soundSprite1.touchCancelDistance = soundSprite2.touchCancelDistance = 100.0f;
+	
 	element_ = [handler addSoundItemFollow:@"SND_EFT_00002.caf" trackNode:soundSprite2];
 	element_.isLoop = YES;
 	element_.loopDelayTime = 0.5f;

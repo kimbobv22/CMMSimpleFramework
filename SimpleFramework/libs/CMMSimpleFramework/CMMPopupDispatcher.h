@@ -1,6 +1,5 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#import "CMMType.h"
 #import "CMMMacro.h"
 
 @class CMMScene;

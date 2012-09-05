@@ -1,7 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMDrawingManager.h"
-#import "CMMType.h"
+#import "CMMMacro.h"
 #import "CMMDrawingUtil.h"
 #import "CMMFileUtil.h"
 
@@ -37,7 +37,7 @@
 		
 		float startLength_ = ((float)pointIndex_/(float)pointCount_)*targetLength_;
 		float curTarget_ = startLength_+MIN(CCRANDOM_0_1()*pointUnit_,pointUnit_-barSprite_.contentSize.height);
-		CGPoint targetPoint_ = ccpOffset(point1_, targetRadians_, curTarget_);
+		CGPoint targetPoint_ = cmmFuncCommon_ccpOffset(point1_, targetRadians_, curTarget_);
 		
 		barSprite_.position = targetPoint_;
 		[barSprite_ visit];

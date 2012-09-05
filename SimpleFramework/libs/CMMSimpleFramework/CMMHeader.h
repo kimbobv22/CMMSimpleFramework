@@ -4,7 +4,6 @@
 
 #import "cocos2d.h"
 
-#import "CMMType.h"
 #import "CMMMacro.h"
 
 #import "CMMGLView.h"

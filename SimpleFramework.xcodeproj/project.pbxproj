@@ -522,7 +522,6 @@
 		E02A462D15D4115F005BB6C1 /* HelloWorldLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloWorldLayer.h; sourceTree = "<group>"; };
 		E02A464515D411DD005BB6C1 /* HelloWorldLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HelloWorldLayer.mm; sourceTree = "<group>"; };
 		E032FC2F15E1E7F200B28B61 /* CMMHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMMHeader.h; path = libs/CMMSimpleFramework/CMMHeader.h; sourceTree = "<group>"; };
-		E032FC3115E1E82700B28B61 /* CMMType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMType.h; path = libs/CMMSimpleFramework/CMMType.h; sourceTree = "<group>"; };
 		E032FC3315E1E97F00B28B61 /* CMMGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMGLView.h; path = libs/CMMSimpleFramework/CMMGLView.h; sourceTree = "<group>"; };
 		E032FC3415E1E98100B28B61 /* CMMGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMGLView.mm; path = libs/CMMSimpleFramework/CMMGLView.mm; sourceTree = "<group>"; };
 		E032FC3615E1EAB200B28B61 /* CMMDrawingUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMDrawingUtil.h; path = libs/CMMSimpleFramework/CMMDrawingUtil.h; sourceTree = "<group>"; };
@@ -1227,7 +1226,6 @@
 			isa = PBXGroup;
 			children = (
 				E032FC2F15E1E7F200B28B61 /* CMMHeader.h */,
-				E032FC3115E1E82700B28B61 /* CMMType.h */,
 				E0ED521615E20E250070712E /* CMMMacro.h */,
 				E032FC3315E1E97F00B28B61 /* CMMGLView.h */,
 				E032FC3415E1E98100B28B61 /* CMMGLView.mm */,
