@@ -39,9 +39,10 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
+	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
 	CMMStageSpecDef stageSpec_;
-	stageSpec_.stageSize = CGSizeMake(480, 270);
-	stageSpec_.worldSize = CGSizeMake(600, 500);
+	stageSpec_.stageSize = CGSizeMake(targetSize_.width, targetSize_.height-50.0f);
+	stageSpec_.worldSize = CGSizeMake(targetSize_.width+200.0f, targetSize_.height+200.0f);
 	stageSpec_.gravity = CGPointZero;
 	stageSpec_.friction = 0.3f;
 	stageSpec_.restitution = 0.3f;

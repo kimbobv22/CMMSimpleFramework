@@ -20,7 +20,8 @@
 }
 
 -(void)loadingProcess000{
-	CMMStageSpecDef stageSpecDef_ = CMMStageSpecDef(CGSizeMake(480, 270),CGSizeZero,ccp(0,-9.8f));
+	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
+	CMMStageSpecDef stageSpecDef_ = CMMStageSpecDef(CGSizeMake(targetSize_.width, targetSize_.height-50.0f),CGSizeZero,ccp(0,-9.8f));
 	tilemapStage = [CMMStageTMX stageWithStageSpecDef:stageSpecDef_ tmxFileName:@"TMX_SAMPLE_000.tmx" isInDocument:NO];
 	tilemapStage.position = ccp(0,self.contentSize.height-tilemapStage.contentSize.height);
 	tilemapStage.delegate = self;

@@ -716,19 +716,8 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 }
 
 -(void)setWorldPoint:(CGPoint)worldPoint_{
-	CGSize worldSize_ = [self worldSize];
 	CGSize stageSize_ = [self contentSize];
 	CGPoint resultPoint_ = worldPoint_;
-	
-	if(worldPoint_.x < 0)
-		resultPoint_.x -= worldPoint_.x;
-	else if(worldPoint_.x >worldSize_.width-stageSize_.width)
-		resultPoint_.x -= worldPoint_.x-(worldSize_.width-stageSize_.width);
-	
-	if(worldPoint_.y < 0)
-		resultPoint_.y -= worldPoint_.y;
-	else if(worldPoint_.y >worldSize_.height-stageSize_.height)
-		resultPoint_.y -= worldPoint_.y-(worldSize_.height-stageSize_.height);
 	
 	resultPoint_ = ccpMult(resultPoint_, -1.0f);
 	[world setPosition:resultPoint_];

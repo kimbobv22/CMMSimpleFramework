@@ -10,8 +10,9 @@
 	
 	self.isAvailableMotion = YES;
 	
+	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
 	CMMStageSpecDef stageSpec_;
-	stageSpec_.stageSize = CGSizeMake(480, 270);
+	stageSpec_.stageSize = CGSizeMake(targetSize_.width, targetSize_.height-50.0f);
 	stageSpec_.worldSize = stageSpec_.stageSize;
 	stageSpec_.gravity = CGPointZero;
 	stageSpec_.friction = 0.3f;
