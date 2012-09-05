@@ -20,10 +20,24 @@ void CMMStageContactListener::BeginContact(b2Contact* contact){
 	
 	CGPoint contactPoint_ = getContactPoint(contact);
 	
-	[objectA_ whenContractWithFixtureType:b2CMaskA_->fixtureType otherObject:objectB_ otherFixtureType:b2CMaskB_->fixtureType contactPoint:contactPoint_];
-	[objectB_ whenContractWithFixtureType:b2CMaskB_->fixtureType otherObject:objectA_ otherFixtureType:b2CMaskA_->fixtureType contactPoint:contactPoint_];
+	[objectA_ whenContactBeganWithFixtureType:b2CMaskA_->fixtureType otherObject:objectB_ otherFixtureType:b2CMaskB_->fixtureType contactPoint:contactPoint_];
+	[objectB_ whenContactBeganWithFixtureType:b2CMaskB_->fixtureType otherObject:objectA_ otherFixtureType:b2CMaskA_->fixtureType contactPoint:contactPoint_];
 }
-
+void CMMStageContactListener::EndContact(b2Contact *contact){
+	b2Fixture *fixtureA_ = contact->GetFixtureA();
+	b2Fixture *fixtureB_ = contact->GetFixtureB();
+	
+	CMMb2ContactMask *b2CMaskA_ = (CMMb2ContactMask *)fixtureA_->GetUserData();
+	CMMb2ContactMask *b2CMaskB_ = (CMMb2ContactMask *)fixtureB_->GetUserData();;
+	
+	id<CMMSContactProtocol> objectA_ = (id<CMMSContactProtocol>)fixtureA_->GetBody()->GetUserData();
+	id<CMMSContactProtocol> objectB_ = (id<CMMSContactProtocol>)fixtureB_->GetBody()->GetUserData();
+	
+	CGPoint contactPoint_ = getContactPoint(contact);
+	
+	[objectA_ whenContactEndedWithFixtureType:b2CMaskA_->fixtureType otherObject:objectB_ otherFixtureType:b2CMaskB_->fixtureType contactPoint:contactPoint_];
+	[objectB_ whenContactEndedWithFixtureType:b2CMaskB_->fixtureType otherObject:objectA_ otherFixtureType:b2CMaskA_->fixtureType contactPoint:contactPoint_];
+}
 
 bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtureB){
 	CMMb2ContactMask *b2CMaskA_ = (CMMb2ContactMask *)fixtureA->GetUserData();
@@ -195,8 +209,8 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 		
 		CGPoint contactPoint_ = getContactPoint(contact_);
 		
-		[objectA_ doContractWithFixtureType:b2CMaskA_->fixtureType otherObject:objectB_ otherFixtureType:b2CMaskB_->fixtureType contactPoint:contactPoint_ interval:dt_];
-		[objectB_ doContractWithFixtureType:b2CMaskB_->fixtureType otherObject:objectA_ otherFixtureType:b2CMaskA_->fixtureType contactPoint:contactPoint_ interval:dt_];
+		[objectA_ doContactWithFixtureType:b2CMaskA_->fixtureType otherObject:objectB_ otherFixtureType:b2CMaskB_->fixtureType contactPoint:contactPoint_ interval:dt_];
+		[objectB_ doContactWithFixtureType:b2CMaskB_->fixtureType otherObject:objectA_ otherFixtureType:b2CMaskA_->fixtureType contactPoint:contactPoint_ interval:dt_];
 	}
 }
 
@@ -756,8 +770,9 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
 }
 
--(void)whenContractWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{}
--(void)doContractWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_ interval:(ccTime)interval_{}
+-(void)whenContactBeganWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{}
+-(void)whenContactEndedWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{}
+-(void)doContactWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_ interval:(ccTime)interval_{}
 
 -(void)dealloc{
 	[sound release];

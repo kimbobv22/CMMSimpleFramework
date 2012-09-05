@@ -104,8 +104,7 @@
 	[self setState:[CMMSStateBall stateWithTarget:self]];
 }
 
--(void)whenContractWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{
-	
+-(void)whenContactBeganWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{
 	CMMSSpecBall *spec_ = (CMMSSpecBall *)spec;
 	CMMSStateBall *state_ = (CMMSStateBall *)state;
 	

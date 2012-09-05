@@ -17,14 +17,14 @@ public:
 	CMMStage *stage;
 	
 	void BeginContact(b2Contact* contact);
-	void EndContact(b2Contact* contact){}
+	void EndContact(b2Contact* contact);
 	
-	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold){
+/*	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold){
 		b2ContactListener::PreSolve(contact, oldManifold);
 	}
 	void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse){
 		b2ContactListener::PostSolve(contact, impulse);
-	}
+	}*/
 };
 
 class CMMStageContactFilter : public b2ContactFilter{
