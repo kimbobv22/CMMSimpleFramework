@@ -27,7 +27,7 @@
 	
 	int pointCount_ = rand()%3;
 	float pointUnit_ = (targetLength_/(float)pointCount_);
-	for(uint pointIndex_=0;pointIndex_<pointCount_;pointIndex_++){
+	for(uint pointIndex_=0;pointIndex_<pointCount_;++pointIndex_){
 		[barSprite_ setDisplayFrame:[spriteFrames_ objectAtIndex:MAX(rand()%totalSeq_,1)]];
 		barSprite_.ignoreAnchorPointForPosition = NO;
 		[barSprite_.texture setAliasTexParameters];
@@ -37,7 +37,7 @@
 		
 		float startLength_ = ((float)pointIndex_/(float)pointCount_)*targetLength_;
 		float curTarget_ = startLength_+MIN(CCRANDOM_0_1()*pointUnit_,pointUnit_-barSprite_.contentSize.height);
-		CGPoint targetPoint_ = cmmFuncCommon_ccpOffset(point1_, targetRadians_, curTarget_);
+		CGPoint targetPoint_ = ccpOffset(point1_, targetRadians_, curTarget_);
 		
 		barSprite_.position = targetPoint_;
 		[barSprite_ visit];
@@ -256,62 +256,6 @@
 
 @end
 
-@implementation CMMDrawingUtil(BatchBar)
-
-+(void)drawBar:(CCRenderTexture *)targetRender_ edgeSprite:(CCSprite *)edgeSprite_ barCropWidth:(float)barCropWidth_ startPoint:(CGPoint)startPoint_ width:(float)width_{
-	
-	[targetRender_ end];
-	
-	CGSize edgeSize_ = edgeSprite_.contentSize;
-	CCRenderTexture *cropBarRender_ = [CCRenderTexture renderTextureWithWidth:barCropWidth_ height:edgeSize_.height];
-	CCSprite *tEdgeSprite_ = [CCSprite spriteWithTexture:edgeSprite_.texture rect:edgeSprite_.textureRect];
-	tEdgeSprite_.anchorPoint = ccp(0.0f,0.5f);
-	
-	[cropBarRender_ begin];
-	
-	[tEdgeSprite_ setBlendFunc:(ccBlendFunc){GL_ONE,GL_ONE}];
-	[tEdgeSprite_.texture setAliasTexParameters];
-	tEdgeSprite_.flipX = NO;
-	tEdgeSprite_.flipY = YES;
-	tEdgeSprite_.position = ccp(-edgeSize_.width+barCropWidth_,edgeSize_.height/2.0f);
-	[tEdgeSprite_ visit];
-	
-	[cropBarRender_ end];
-	
-	CCSprite *barFrameSprite_ = [CCSprite spriteWithTexture:cropBarRender_.sprite.texture];
-	[barFrameSprite_ setBlendFunc:(ccBlendFunc){GL_ONE,GL_ONE}];
-	[barFrameSprite_.texture setAliasTexParameters];
-	barFrameSprite_.anchorPoint = ccp(0.0f,0.5f);
-	
-	[targetRender_ begin];
-	
-	CGPoint endPoint_ = ccp(startPoint_.x+width_-edgeSize_.width,startPoint_.y);
-	
-	barFrameSprite_.scaleY = -1;
-	barFrameSprite_.scaleX = (ABS(startPoint_.x-endPoint_.x)-edgeSize_.width)/barFrameSprite_.contentSize.width;
-	barFrameSprite_.position = ccp(startPoint_.x+edgeSize_.width,startPoint_.y);
-	[barFrameSprite_ visit];
-	
-	tEdgeSprite_.position = startPoint_;
-	tEdgeSprite_.flipX = NO;
-	[tEdgeSprite_ visit];
-	
-	tEdgeSprite_.position = endPoint_;
-	tEdgeSprite_.flipX = YES;
-	[tEdgeSprite_ visit];
-}
-+(CCTexture2D *)textureBarWithFrameSize:(CGSize)frameSize_ edgeSprite:(CCSprite *)edgeSprite_ barCropWidth:(float)barCropWidth_ startPoint:(CGPoint)startPoint_ width:(float)width_{
-	
-	startPoint_.y = frameSize_.height-startPoint_.y;
-	CCRenderTexture *render_ = [CCRenderTexture renderTextureWithWidth:frameSize_.width height:frameSize_.height];
-	[render_ begin];
-	[self drawBar:render_ edgeSprite:edgeSprite_ barCropWidth:barCropWidth_ startPoint:startPoint_ width:width_];
-	[render_ end];
-	return render_.sprite.texture;
-}
-
-@end
-
 @implementation CMMDrawingUtil(Capture)
 
 +(CCTexture2D *)captureFromNode:(CCNode *)node_{
@@ -337,7 +281,7 @@
 	node_.position = orgPoint_;
 	[orgParent_ addChild:node_];
 	
-	return render_.sprite.texture;
+	return [[render_ sprite] texture];
 }
 
 @end

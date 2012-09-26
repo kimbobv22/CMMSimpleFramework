@@ -6,7 +6,10 @@
 @interface CMMTouchUtil : NSObject
 
 +(CGPoint)pointFromTouch:(UITouch *)touch_;
++(CGPoint)pointFromTouch:(UITouch *)touch_ targetNode:(CCNode *)node_;
+
 +(CGPoint)prepointFromTouch:(UITouch *)touch_;
++(CGPoint)prepointFromTouch:(UITouch *)touch_ targetNode:(CCNode *)node_;
 
 @end
 

@@ -19,7 +19,7 @@
 	fileName = nil;
 	isInDocument = NO;
 	
-	_cachedObjects = [[CCArray alloc] init];
+	_cachedObjects = [[CMMSimpleCache alloc] init];
 	
 	return self;
 }
@@ -70,16 +70,11 @@
 @implementation CMMSObjectBatchNode(Cache)
 
 -(CMMSObject *)cachedObject{
-	CMMSObject *object_ = nil;
-	if(_cachedObjects.count>0){
-		object_ = [[[_cachedObjects objectAtIndex:0] retain] autorelease];
-		[_cachedObjects removeObjectAtIndex:0];
-	}
-	return object_;
+	return [_cachedObjects cachedObject];
 }
 -(void)cacheObject:(CMMSObject *)object_{
 	[object_ resetObject];
-	[_cachedObjects addObject:object_];
+	[_cachedObjects cacheObject:object_];
 }
 
 @end
@@ -99,7 +94,7 @@
 	state = nil;
 	body = NULL;
 	objectTag = -1;
-	b2CMask = CMMb2ContactMask(0x1001,-1,-1,1);
+	b2CMask = b2CMaskMake(0x1001,-1,-1,1);
 
 	[self buildupObject];
 	[self resetObject];
@@ -117,6 +112,7 @@
 	b2CMask.maskBit1 = objectTag_;
 }
 
+//#issue
 -(void)setB2CMask:(CMMb2ContactMask)b2CMask_{
 	b2CMask.fixtureType = b2CMask_.fixtureType;
 	b2CMask.maskBit1 = b2CMask_.maskBit1;
@@ -130,12 +126,13 @@
 	[self setState:[CMMSStateObject stateWithTarget:self]];
 }
 -(void)resetObject{
+	[self setObjectTag:-1];
 	if(state) [state resetStateWithSpecObject:spec];
 }
 
 -(void)update:(ccTime)dt_{
-	self.position = ccpFromb2Vec2(body->GetPosition());
-	self.rotation = -CC_RADIANS_TO_DEGREES(body->GetAngle());
+	[self setPosition:ccpFromb2Vec2_PTM_RATIO(body->GetPosition())];
+	[self setRotation:-CC_RADIANS_TO_DEGREES(body->GetAngle())];
 	
 	[state update:dt_];
 }
@@ -160,10 +157,10 @@
 @implementation CMMSObject(Box2d)
 
 -(void)buildupBody{
-	body = [stage.world createBody:b2_dynamicBody point:position_ angle:rotation_];
+	body = [[stage world] createBody:b2_dynamicBody point:position_ angle:rotationX_];
 	body->SetUserData(self);
 	
-	b2Vec2 targetSize_ = b2Vec2Fromccp(contentSize_.width*0.5,contentSize_.height*0.5);
+	b2Vec2 targetSize_ = b2Vec2Div(b2Vec2FromSize_PTM_RATIO(contentSize_), 2.0f);
 	b2PolygonShape bodyBox_;
 	bodyBox_.SetAsBox(targetSize_.x,targetSize_.y);
 	b2FixtureDef fixtureDef_;
@@ -171,12 +168,11 @@
 	fixtureDef_.density = 0.7f;
 	
 	body->CreateFixture(&fixtureDef_)->SetUserData(&b2CMask);
-	body->SetFixedRotation(false);
 }
 
 -(void)updateBodyWithPosition:(CGPoint)point_ andRotation:(float)tRotation_{
 	if(body == NULL) return;
-	body->SetTransform(b2Vec2Fromccp(point_), -CC_DEGREES_TO_RADIANS(tRotation_));
+	body->SetTransform(b2Vec2Fromccp_PTM_RATIO(point_), -CC_DEGREES_TO_RADIANS(tRotation_));
 }
 -(void)updateBodyWithPosition:(CGPoint)point_{
 	[self updateBodyWithPosition:point_ andRotation:self.rotation];
@@ -192,7 +188,7 @@
 		[self setBatchNode:obatchNode];
 		[obatchNode addChild:self];
 	}else{
-		[stage.world addChild:self];
+		[[stage world] addChild:self];
 	}
 }
 -(void)whenRemovedToStage{

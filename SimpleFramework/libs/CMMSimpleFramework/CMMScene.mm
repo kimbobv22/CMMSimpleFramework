@@ -101,7 +101,7 @@ static CMMScene *_sharedScene_ = nil;
 	
 	ccArray *data_ = _touchPoints->data;
 	uint count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CGPoint point_ = [self convertToNodeSpace:[CMMTouchUtil pointFromTouch:data_->arr[index_]]];
 		glLineWidth(2.0f);
 		ccDrawColor4F(1.0, 1.0, 1.0, 0.7);

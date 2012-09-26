@@ -181,7 +181,7 @@ static CCArray *_cachedNoticeDispatcherItems_ = nil;
 +(CMMNoticeDispatcherItem *)cachedNoticeItem{
 	if(!_cachedNoticeDispatcherItems_){
 		_cachedNoticeDispatcherItems_ = [[CCArray alloc] init];
-		for(uint index_=0;index_<cmmVarCMMNoticeDispatcher_defaultCacheCount;index_++)
+		for(uint index_=0;index_<cmmVarCMMNoticeDispatcher_defaultCacheCount;++index_)
 			[_cachedNoticeDispatcherItems_ addObject:[CMMNoticeDispatcherItem noticeItemWithTitle:nil subject:nil]];
 	}
 	

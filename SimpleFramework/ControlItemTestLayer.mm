@@ -54,10 +54,10 @@
 	[self addChild:menuItemBack_];
 	
 	CMMMenuItemLabelTTF *testMenuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
-	[testMenuItem_ setTitle:@"CHNAGE!"];
+	[testMenuItem_ setTitle:@"Batch bar test"];
 	testMenuItem_.position = ccp(self.contentSize.width-testMenuItem_.contentSize.width/2,testMenuItem_.contentSize.height/2);
 	testMenuItem_.callback_pushup = ^(id sender_){
-		slider2.contentSize = CGSizeMake((arc4random()%50)+100.0f, slider2.contentSize.height);
+		[[CMMScene sharedScene] pushLayer:[ControlItemTestLayer2 node]];
 	};
 	[self addChild:testMenuItem_];
 	
@@ -70,6 +70,67 @@
 
 -(void)controlItemSlider:(CMMControlItemSlider *)controlItem_ whenChangedItemValue:(float)itemValue_ beforeItemValue:(float)beforeItemValue_{
 	CCLOG(@"test value : %1.1f -> %1.1f",beforeItemValue_,itemValue_);
+}
+
+@end
+
+@implementation ControlItemTestLayer2
+
+-(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
+	if(!(self = [super initWithColor:color width:w height:h])) return self;
+	
+	[touchDispatcher setMaxMultiTouchCount:0];
+	
+	CMMDrawingManagerItem *drawingItem_ = [[CMMDrawingManager sharedManager] drawingItemAtIndex:0];
+	batchBar = [CMMControlItemBatchBar batchBarWithTargetSprite:[CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_text_bar]] batchBarSize:CGSizeMake(100, 40)];
+	[batchBar setPosition:ccp(10,80)];
+	[self addChild:batchBar];
+	
+	label = [CMMFontUtil labelWithstring:@"Drag me!"];
+	[label runAction:[CCRepeatForever actionWithAction:[CCBlink actionWithDuration:1 blinks:2]]];
+	[self addChild:label];
+	
+	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	[menuItemBack_ setTitle:@"BACK"];
+	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,menuItemBack_.contentSize.height/2);
+	menuItemBack_.callback_pushup = ^(id sender_){
+		[[CMMScene sharedScene] pushLayer:[ControlItemTestLayer node]];
+	};
+	[self addChild:menuItemBack_];
+	
+	[self scheduleUpdate];
+	
+	return self;
+}
+
+-(void)update:(ccTime)dt_{
+	CGPoint batchBarPoint_ = [batchBar position];
+	CGSize targetSize_ = [batchBar contentSize];
+	[batchBar setContentSize:targetSize_];
+	
+	batchBarPoint_.x += targetSize_.width - [label contentSize].width/2.0f;
+	batchBarPoint_.y += targetSize_.height + [label contentSize].height/2.0f;
+	[label setPosition:batchBarPoint_];
+}
+
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
+	[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
+	
+	CMMTouchDispatcherItem *touchItem_ = [touchDispatcher touchItemAtIndex:0];
+	
+	if(touchItem_){
+		CGPoint batchBarPoint_ = [batchBar position];
+		CGPoint touchPoint_ = [CMMTouchUtil pointFromTouch:touch_ targetNode:self];
+		CGPoint diffPoint_ = ccpSub(touchPoint_, batchBarPoint_);
+		
+		if(diffPoint_.x < 100)
+			diffPoint_.x = 100;
+		if(diffPoint_.y < 40)
+			diffPoint_.y = 40;
+		
+		CGSize targetSize_ = CGSizeFromccp(diffPoint_);
+		[batchBar setContentSize:targetSize_];
+	}
 }
 
 @end

@@ -1,6 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMControlItem.h"
+#import "CMMControlItemBatchBar.h"
 #import "CMMFontUtil.h"
 
 @class CMMControlItemText;
@@ -14,7 +15,7 @@
 
 @interface CMMControlItemText : CMMControlItem<UITextFieldDelegate>{
 	CCLabelTTF *_textLabel;
-	CCSprite *_barSprite,*_resultBarSprite;
+	CMMControlItemBatchBar *_barSprite;
 	NSString *itemValue;
 	
 	UIToolbar *_toolBar;

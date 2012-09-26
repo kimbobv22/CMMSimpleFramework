@@ -21,7 +21,8 @@
 
 -(void)loadingProcess000{
 	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
-	CMMStageSpecDef stageSpecDef_ = CMMStageSpecDef(CGSizeMake(targetSize_.width, targetSize_.height-50.0f),CGSizeZero,ccp(0,-9.8f));
+	CMMStageSpecDef stageSpecDef_ = CMMStageSpecDefMake(CGSizeMake(targetSize_.width, targetSize_.height-50.0f),CGSizeZero,ccp(0,-9.8f));
+	
 	tilemapStage = [CMMStageTMX stageWithStageSpecDef:stageSpecDef_ tmxFileName:@"TMX_SAMPLE_000.tmx" isInDocument:NO];
 	tilemapStage.position = ccp(0,self.contentSize.height-tilemapStage.contentSize.height);
 	tilemapStage.delegate = self;
@@ -62,7 +63,7 @@
 	CCLOG(@"tile built up! [ X : %d -> %d , Y: %d ]",(int)fromXIndex_,(int)toXIndex_,(int)yIndex_);
 }
 -(BOOL)tilemapStage:(CMMStageTMX *)stage_ isSingleTileAtTMXLayer:(CCTMXLayer *)tmxLayer_ tile:(CCSprite *)tile_ xIndex:(float)xIndex_ yIndex:(float)yIndex_{
-	return NO; // if return value is 'yes', a tile will be built up as single;
+	return NO; // if return value is 'yes', the tile will be built up as a single tile;
 }
 
 -(void)update:(ccTime)dt_{

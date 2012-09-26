@@ -51,7 +51,7 @@
 #if CC_SPRITEBATCHNODE_RENDER_SUBPIXEL
 #define RENDER_IN_SUBPIXEL
 #else
-#define RENDER_IN_SUBPIXEL(__A__) ( (int)(__A__))
+#define RENDER_IN_SUBPIXEL(__ARGS__) (ceil(__ARGS__))
 #endif
 
 
@@ -239,10 +239,10 @@
 
 - (NSString*) description
 {
-	return [NSString stringWithFormat:@"<%@ = %p | Rect = (%.2f,%.2f,%.2f,%.2f) | tag = %i | atlasIndex = %i>", [self class], self,
+	return [NSString stringWithFormat:@"<%@ = %p | Rect = (%.2f,%.2f,%.2f,%.2f) | tag = %ld | atlasIndex = %ld>", [self class], self,
 			rect_.origin.x, rect_.origin.y, rect_.size.width, rect_.size.height,
-			tag_,
-			atlasIndex_
+			(long)tag_,
+			(unsigned long)atlasIndex_
 	];
 }
 
@@ -704,6 +704,18 @@
 	SET_DIRTY_RECURSIVELY();
 }
 
+-(void)setRotationX:(float)rot
+{
+	[super setRotationX:rot];
+	SET_DIRTY_RECURSIVELY();
+}
+
+-(void)setRotationY:(float)rot
+{
+	[super setRotationY:rot];
+	SET_DIRTY_RECURSIVELY();
+}
+
 -(void)setSkewX:(float)sx
 {
 	[super setSkewX:sx];
@@ -906,7 +918,7 @@
 	return [CCSpriteFrame frameWithTexture:texture_
 							  rectInPixels:CC_RECT_POINTS_TO_PIXELS(rect_)
 								   rotated:rectRotated_
-									offset:unflippedOffsetPositionFromCenter_
+									offset:CC_POINT_POINTS_TO_PIXELS(unflippedOffsetPositionFromCenter_)
 							  originalSize:CC_SIZE_POINTS_TO_PIXELS(contentSize_)];
 }
 

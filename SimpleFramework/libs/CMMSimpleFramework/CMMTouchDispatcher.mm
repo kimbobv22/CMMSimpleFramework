@@ -3,7 +3,7 @@
 #import "CMMTouchDispatcher.h"
 #import "CMMScene.h"
 
-static CCArray *_cachedTouchItems_ = nil;
+static CMMSimpleCache *_cachedTouchItems_ = nil;
 
 @implementation CMMTouchDispatcherItem
 @synthesize touch,node;
@@ -39,22 +39,21 @@ static CCArray *_cachedTouchItems_ = nil;
 
 -(CMMTouchDispatcherItem *)cachedTouchItem{
 	if(!_cachedTouchItems_){
-		_cachedTouchItems_ = [[CCArray alloc] init];
+		_cachedTouchItems_ = [[CMMSimpleCache alloc] init];
 		
-		for(uint index_=0;index_<cmmVarCMMTouchDispather_defaultCacheCount;index_++)
-			[_cachedTouchItems_ addObject:[CMMTouchDispatcherItem touchItemWithTouch:nil node:nil]];
+		for(uint index_=0;index_<cmmVarCMMTouchDispather_defaultCacheCount;++index_)
+			[_cachedTouchItems_ cacheObject:[CMMTouchDispatcherItem touchItemWithTouch:nil node:nil]];
 	}
 	
 	if(_cachedTouchItems_.count<=0) return nil;
 	
-	CMMTouchDispatcherItem *touchItem_ = [[[_cachedTouchItems_ objectAtIndex:0] retain] autorelease];
-	[_cachedTouchItems_ removeObjectAtIndex:0];
+	CMMTouchDispatcherItem *touchItem_ = [_cachedTouchItems_ cachedObject];
 	return touchItem_;
 }
 -(void)cacheTouchItem:(CMMTouchDispatcherItem *)touchItem_{
 	touchItem_.touch = nil;
 	touchItem_.node = nil;
-	[_cachedTouchItems_ addObject:touchItem_];
+	[_cachedTouchItems_ cacheObject:touchItem_];
 }
 
 @end
@@ -103,7 +102,7 @@ static SEL _sharedTouchSelectors_[TouchSelectorID_maxCount];
 	
 	ccArray *data_ = target.children->data;
 	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CCNode<CMMTouchDispatcherDelegate> *child_ = data_->arr[index_];
 		if([CMMTouchUtil isNodeInTouch:child_ touch:touch_]
 		   && cmmFuncCommon_respondsToSelector(child_, _sharedTouchSelectors_[TouchSelectorID_began])){
@@ -188,7 +187,7 @@ static SEL _sharedTouchSelectors_[TouchSelectorID_maxCount];
 -(int)indexOfTouch:(UITouch *)touch_{
 	ccArray *data_ = touchList->data;
 	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CMMTouchDispatcherItem *touchItem_ = data_->arr[index_];
 		if(touchItem_.touch == touch_)
 			return index_;
@@ -198,7 +197,7 @@ static SEL _sharedTouchSelectors_[TouchSelectorID_maxCount];
 -(int)indexOfNode:(CCNode<CMMTouchDispatcherDelegate> *)node_{
 	ccArray *data_ = touchList->data;
 	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CMMTouchDispatcherItem *touchItem_ = data_->arr[index_];
 		if(touchItem_.node == node_)
 			return index_;

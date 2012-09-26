@@ -102,7 +102,7 @@
 	if(innerChildren_){
 		data_ = innerChildren_->data;
 		count_ = data_->num;
-		for(uint index_=0;index_<count_;index_++){
+		for(uint index_=0;index_<count_;++index_){
 			CCNode *child_ = data_->arr[index_];
 			CGSize spriteSize_ = child_.contentSize;
 			CGRect spriteRect_ = CGRectApplyAffineTransform(CGRectMake(0, 0, spriteSize_.width, spriteSize_.height),[child_ nodeToWorldTransform]);
@@ -124,7 +124,7 @@
 	if(children_){
 		data_ = children_->data;
 		count_ = data_->num;
-		for(uint index_=0;index_<count_;index_++){
+		for(uint index_=0;index_<count_;++index_){
 			CCNode *child_ = data_->arr[index_];
 			if(child_ == _innerLayer) continue;
 			[child_ visit];

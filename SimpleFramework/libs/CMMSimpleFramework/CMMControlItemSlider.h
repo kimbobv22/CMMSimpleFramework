@@ -1,6 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMControlItem.h"
+#import "CMMControlItemBatchBar.h"
 #import "CMMMenuItem.h"
 
 @class CMMControlItemSlider;
@@ -13,22 +14,29 @@
 @end
 
 @interface CMMControlItemSlider : CMMControlItem{
-	CCSprite *_maskSprite,*_barSprite,*_backSpriteL,*_backSpriteR;
-	CCSprite *_resultBarSprite,*_resultBackSprite,*_resultMaskSprite;
+	CMMControlItemBatchBar *_maskSprite,*_barSprite;
+	CCSprite *_resultBackSprite;
 	CMMMenuItem *_buttonSprite;
+	
+	ccColor4B backColorL,backColorR;
 	
 	float itemValue,unitValue,minValue,maxValue;
 	void (^callback_whenChangedItemVale)(id sender_,float itemValue_, float beforeItemValue_);
 }
 
-+(id)controlItemSliderWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backSpriteL:(CCSprite *)backSpriteL_ backSpriteR:(CCSprite *)backSpriteR_ buttonSprite:(CCSprite *)buttonSprite_;
++(id)controlItemSliderWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor4B)backColorL_ backColorR:(ccColor4B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_;
+
++(id)controlItemSliderWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor4B)backColorL_ backColorR:(ccColor4B)backColorR_;
 +(id)controlItemSliderWithFrameSeq:(int)frameSeq_ width:(float)width_;
 
--(id)initWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backSpriteL:(CCSprite *)backSpriteL_ backSpriteR:(CCSprite *)backSpriteR_ buttonSprite:(CCSprite *)buttonSprite_;
+-(id)initWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor4B)backColorL_ backColorR:(ccColor4B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_;
+
+-(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor4B)backColorL_ backColorR:(ccColor4B)backColorR_;
 -(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_;
 
 -(void)redrawWithBar;
 
+@property (nonatomic, readwrite) ccColor4B backColorL,backColorR;
 @property (nonatomic, readwrite) float itemValue,unitValue,minValue,maxValue;
 @property (nonatomic, copy) void (^callback_whenChangedItemVale)(id sender_,float itemValue_, float beforeItemValue_);
 

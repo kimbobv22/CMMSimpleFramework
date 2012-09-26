@@ -45,14 +45,6 @@
 
 @end
 
-@interface CMMDrawingUtil(Deprecated)
-
-+(CCTexture2D *)textureFrameWithFrameSeq:(int)frameSeq_ size:(CGSize)size_ backGroundYN:(BOOL)backGroundYN_ barYN:(BOOL)barYN_ DEPRECATED_ATTRIBUTE;
-+(CCTexture2D *)textureFrameWithFrameSeq:(int)frameSeq_ size:(CGSize)size_ backGroundYN:(BOOL)backGroundYN_ DEPRECATED_ATTRIBUTE;
-+(CCTexture2D *)textureFrameWithFrameSeq:(int)frameSeq_ size:(CGSize)size_ DEPRECATED_ATTRIBUTE;
-
-@end
-
 @interface CMMDrawingUtil(Mask)
 
 +(void)drawMask:(CCRenderTexture *)targetRender_ sprite:(CCSprite *)sprite_ spritePoint:(CGPoint)spritePoint_ maskSprite:(CCSprite *)maskSprite_ maskPoint:(CGPoint)maskPoint_ isReverse:(BOOL)isReverse_;
@@ -60,13 +52,6 @@
 
 +(CCTexture2D *)textureMaskWithFrameSize:(CGSize)frameSize_ sprite:(CCSprite *)sprite_ spritePoint:(CGPoint)spritePoint_ maskSprite:(CCSprite *)maskSprite_ maskPoint:(CGPoint)maskPoint_ isReverse:(BOOL)isReverse_;
 +(CCTexture2D *)textureMaskWithFrameSize:(CGSize)frameSize_ sprite:(CCSprite *)sprite_ spritePoint:(CGPoint)spritePoint_ maskSprite:(CCSprite *)maskSprite_ maskPoint:(CGPoint)maskPoint_;
-
-@end
-
-@interface CMMDrawingUtil(BatchBar)
-
-+(void)drawBar:(CCRenderTexture *)targetRender_ edgeSprite:(CCSprite *)edgeSprite_ barCropWidth:(float)barCropWidth_ startPoint:(CGPoint)startPoint_ width:(float)width_;
-+(CCTexture2D *)textureBarWithFrameSize:(CGSize)frameSize_ edgeSprite:(CCSprite *)edgeSprite_ barCropWidth:(float)barCropWidth_ startPoint:(CGPoint)startPoint_ width:(float)width_;
 
 @end
 

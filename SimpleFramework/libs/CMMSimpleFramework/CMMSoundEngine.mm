@@ -31,7 +31,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 -(SoundID)bufferSound:(NSString *)soundPath_{
 	NSArray *soundPaths_ = [sharedBufferList allKeys];
 	uint count_ = soundPaths_.count;
-	for(int index_=0; index_<count_;index_++){
+	for(int index_=0; index_<count_;++index_){
 		NSNumber *soundId_ = [soundPaths_ objectAtIndex:index_];
 		NSString *existsPath_ = [sharedBufferList objectForKey:soundId_];
 		if([existsPath_ isEqualToString:soundPath_]){
@@ -409,7 +409,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 
 -(void)update:(ccTime)dt_{
 	ccArray *data_ = itemList->data;
-	for(int index_=data_->num-1;index_>=0;index_--){
+	for(int index_=data_->num-1;index_>=0;--index_){
 		CMMSoundHandlerItem *soundItem_ = data_->arr[index_];
 		if(soundItem_.deregWhenStop && !soundItem_.isPlaying && !soundItem_.isLoop){
 			[self removeSoundItemAtIndex:index_];
@@ -432,7 +432,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 
 -(void)dealloc{
 	ccArray *data_ = itemList->data;
-	for(uint index_=0;index_<data_->num;index_++){
+	for(uint index_=0;index_<data_->num;++index_){
 		CMMSoundHandlerItem *soundItem_ = data_->arr[index_];
 		[sharedEngine.buffer debufferSound:soundItem_.soundID];
 	}
@@ -452,7 +452,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 	ccArray *data_ = itemList->data;
 	int targetSoundCount = 0;
 	int targetIndex_ = -1;
-	for(uint index_=0;index_<data_->num;index_++){
+	for(uint index_=0;index_<data_->num;++index_){
 		CMMSoundHandlerItem *soundItem_ = data_->arr[index_];
 		if(soundItem_.soundID == soundID_
 		   && soundItem_.type == soundItemType_){
@@ -516,7 +516,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 
 -(BOOL)_isExistSoundID:(SoundID)soundID_{
 	ccArray *data_ = itemList->data;
-	for(uint index_=0;index_>data_->num;index_++){
+	for(uint index_=0;index_>data_->num;++index_){
 		CMMSoundHandlerItem *soundItem_ = data_->arr[index_];
 		if(soundItem_.soundID == soundID_)
 			return YES;
@@ -542,7 +542,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 }
 -(void)removeSoundItemOfTrackNode:(CCNode *)trackNode_{
 	ccArray *data_ = itemList->data;
-	for(int index_=data_->num-1;index_>=0;index_--){
+	for(int index_=data_->num-1;index_>=0;--index_){
 		CMMSoundHandlerItem *soundItem_ = data_->arr[index_];
 		if(soundItem_.type == CMMSoundHandlerItemType_follow
 		   && ((CMMSoundHandlerItemFollow *)soundItem_).trackNode == trackNode_)
@@ -552,7 +552,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 }
 -(void)removeAllSoundItem{
 	ccArray *data_ = itemList->data;
-	for(int index_=data_->num-1;index_>=0;index_--){
+	for(int index_=data_->num-1;index_>=0;--index_){
 		[self removeSoundItemAtIndex:index_];
 	}
 }
@@ -564,7 +564,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 -(CMMSoundHandlerItem *)cachedSoundItem:(CMMSoundHandlerItemType)soundItemType_{
 	ccArray *data_ = _cachedElements->data;
 	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CMMSoundHandlerItem *soundItem_ = data_->arr[index_];
 		if(soundItem_.type == soundItemType_){
 			soundItem_ = [[soundItem_ retain] autorelease];

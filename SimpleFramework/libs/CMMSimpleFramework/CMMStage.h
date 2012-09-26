@@ -10,21 +10,12 @@
 
 @class CMMStage;
 
-static CGPoint getContactPoint(b2Contact* contact);
-
 class CMMStageContactListener : public b2ContactListener{
 public:
 	CMMStage *stage;
 	
 	void BeginContact(b2Contact* contact);
 	void EndContact(b2Contact* contact);
-	
-/*	void PreSolve(b2Contact* contact, const b2Manifold* oldManifold){
-		b2ContactListener::PreSolve(contact, oldManifold);
-	}
-	void PostSolve(b2Contact* contact, const b2ContactImpulse* impulse){
-		b2ContactListener::PostSolve(contact, impulse);
-	}*/
 };
 
 class CMMStageContactFilter : public b2ContactFilter{
@@ -32,25 +23,6 @@ public:
 	CMMStage *stage;
 	
 	bool ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB);
-};
-
-struct CMMStageSpecDef{
-	CMMStageSpecDef(){
-		stageSize = worldSize = CGSizeZero;
-		gravity = CGPointZero;
-		friction = 0.3f;
-		restitution = 0.3f;
-	}
-	CMMStageSpecDef(CGSize stageSize_, CGSize worldSize_, CGPoint gravity_, float friction_, float restitution_):stageSize(stageSize_),worldSize(worldSize_),gravity(gravity_),friction(friction_),restitution(restitution_){}
-	CMMStageSpecDef(CGSize stageSize_, CGSize worldSize_, CGPoint gravity_):stageSize(stageSize_),worldSize(worldSize_),gravity(gravity_),friction(0.3f),restitution(0.3f){}
-	
-	CMMStageSpecDef Clone(){
-		return CMMStageSpecDef(stageSize,worldSize,gravity,friction,restitution);
-	}
-	
-	CGSize stageSize,worldSize;
-	CGPoint gravity;
-	float friction,restitution;
 };
 
 @protocol CMMStageDelegate<NSObject>
@@ -69,6 +41,17 @@ struct CMMStageSpecDef{
 -(void)stage:(CMMStage *)stage_ whenTouchMoved:(UITouch *)touch_ withObject:(CMMSObject *)object_;
 -(void)stage:(CMMStage *)stage_ whenTouchEnded:(UITouch *)touch_ withObject:(CMMSObject *)object_;
 -(void)stage:(CMMStage *)stage_ whenTouchCancelled:(UITouch *)touch_ withObject:(CMMSObject *)object_;
+
+@end
+
+@class CMMStageWorld;
+
+@protocol CMMStageWorldDelegate <NSObject>
+
+//inner rule
+@required
+-(void)stageWorld:(CMMStageWorld *)world_ whenAddedObject:(CMMSObject *)object_;
+-(void)stageWorld:(CMMStageWorld *)world_ whenRemovedObject:(CMMSObject *)object_;
 
 @end
 
@@ -188,6 +171,21 @@ struct CMMStageSpecDef{
 
 @end
 
+@interface CMMStageLight : CCLayer{
+	CMMStage *stage;
+	CCArray *lightList;
+}
+
++(id)lightWithStage:(CMMStage *)stage_;
+-(id)initWithStage:(CMMStage *)stage_;
+
+-(void)update:(ccTime)dt_;
+
+@property (nonatomic, assign) CMMStage *stage;
+@property (nonatomic, readonly) CCArray *lightList;
+
+@end
+
 @interface CMMStageObjectSView : CMMLayer{
 	CMMStage *stage;
 	CCArray *stateViewList;
@@ -237,7 +235,7 @@ struct CMMStageSpecDef{
 
 @end
 
-@interface CMMStage : CMMLayer<CMMSContactProtocol>{
+@interface CMMStage : CMMLayer<CMMStageWorldDelegate,CMMSContactProtocol>{
 	CMMSSpecStage *spec;
 
 	id<CMMStageDelegate,CMMStageTouchDelegate> delegate;

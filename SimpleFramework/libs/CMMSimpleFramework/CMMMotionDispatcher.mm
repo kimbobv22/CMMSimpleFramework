@@ -5,7 +5,7 @@
 static CMMMotionDispatcher *_sharedCMMMotionDispatcher_ = nil;
 
 @implementation CMMMotionDispatcher
-@synthesize targetList,motionFixState,updateInterval;
+@synthesize motion,targetList,motionFixState,updateInterval;
 
 +(CMMMotionDispatcher *)sharedDispatcher{
 	if(!_sharedCMMMotionDispatcher_){
@@ -63,7 +63,7 @@ static CMMMotionDispatcher *_sharedCMMMotionDispatcher_ = nil;
 -(int)indexOfTarget:(id<CMMMotionDispatcherDelegate>)target_{
 	ccArray *data_ = targetList->data;
 	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		id<CMMMotionDispatcherDelegate> oTarget_ = data_->arr[index_];
 		if(target_ == oTarget_)
 			return index_;
@@ -80,7 +80,7 @@ static CMMMotionDispatcher *_sharedCMMMotionDispatcher_ = nil;
 	
 	ccArray *data_ = targetList->data;
 	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		id<CMMMotionDispatcherDelegate> target_ = data_->arr[index_];
 		
 		if(cmmFuncCommon_respondsToSelector(target_, @selector(motionDispatcher:updateMotion:)))

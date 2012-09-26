@@ -19,7 +19,7 @@
 	NSString *fileName;
 	BOOL isInDocument;
 	
-	CCArray *_cachedObjects;
+	CMMSimpleCache *_cachedObjects;
 }
 
 +(id)batchNodeWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;

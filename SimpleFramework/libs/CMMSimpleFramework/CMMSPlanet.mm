@@ -16,7 +16,7 @@
 	gravity = -9.8f;
 	gravityRadius = 80.0f;
 	_curDrawRadius = 0;
-	b2CMask = CMMb2ContactMask(0x1003,-1,-1,1);
+	b2CMask = b2CMaskMake(0x1003,-1,-1,1);
 	
 	return self;
 }
@@ -52,7 +52,7 @@
 	[super update:dt_];
 	ccArray *objectData_ = stage.world.object_list->data;
 	int count_ = objectData_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CMMSObject *object_ = objectData_->arr[index_];
 		CGPoint diffPoint_ = ccpSub(object_.position, self.position);
 		float ditance_ = ccpLength(diffPoint_);
@@ -69,7 +69,7 @@
 @implementation CMMSPlanet(Box2d)
 
 -(void)buildupBody{
-	body = [stage.world createBody:b2_staticBody point:position_ angle:rotation_];
+	body = [stage.world createBody:b2_staticBody point:position_ angle:rotationX_];
 	body->SetUserData(self);
 	
 	b2CircleShape bodyBox_;

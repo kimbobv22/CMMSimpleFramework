@@ -61,7 +61,6 @@ static CMMDrawingManager *_sharedDrawingManager_ = nil;
 		NSString *frameFileName_ = [NSString stringWithFormat:frameFormatter_,curFrameSeq_];
 		NSString *frameFilePath_ = [CMMStringUtil stringPathOfResoruce:frameFileName_ extension:@"plist"];
 		
-		
 		if([CMMFileUtil isExistWithFilePath:frameFilePath_]){
 			[spriteFrameCache_ addSpriteFramesWithFile:frameFilePath_];
 			CMMDrawingManagerItem *drawItem_ = [[[CMMDrawingManagerItem alloc] init] autorelease];

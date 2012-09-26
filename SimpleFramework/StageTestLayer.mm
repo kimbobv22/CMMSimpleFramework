@@ -12,6 +12,7 @@
 -(void)draw{
 	[super draw];
 	
+	glLineWidth(1.0f);
 	ccDrawColor4F(1.0f, 1.0f, 1.0f, 0.4f);
 	ccDrawLine(ccp(self.contentSize.width/2,0), ccp(self.contentSize.width/2,self.contentSize.height));
 	ccDrawLine(ccp(0,self.contentSize.height/2), ccp(self.contentSize.width,self.contentSize.height/2));
@@ -41,13 +42,13 @@
 	
 	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
 	CMMStageSpecDef stageSpec_;
-	stageSpec_.stageSize = CGSizeMake(targetSize_.width, targetSize_.height-50.0f);
+	stageSpec_.stageSize = CGSizeMake(targetSize_.width-60.0f, targetSize_.height-50.0f);
 	stageSpec_.worldSize = CGSizeMake(targetSize_.width+200.0f, targetSize_.height+200.0f);
 	stageSpec_.gravity = CGPointZero;
 	stageSpec_.friction = 0.3f;
 	stageSpec_.restitution = 0.3f;
-	
-	stage = [CMMStage stageWithStageSpecDef:stageSpec_];
+
+	stage = [CMMStagePXL stageWithStageSpecDef:stageSpec_ fileName:@"IMG_STG_TEST_001.png" isInDocument:NO];
 	stage.sound.soundDistance = 300.0f;
 	stage.position = ccp(0,self.contentSize.height-stage.contentSize.height);
 	stage.delegate = self;
@@ -55,10 +56,11 @@
 	[self addChild:stage z:0];
 	
 	//backGround image for test
-	CCLayerGradient *backLayer_ = [CCLayerGradientTest layerWithColor:ccc4(120, 0, 0, 180) fadingTo:ccc4(0, 0, 120, 180) alongVector:ccp(0.3,0.7)];
+	//CCLayerGradient *backLayer_ = [CCLayerGradientTest layerWithColor:ccc4(120, 0, 0, 180) fadingTo:ccc4(0, 0, 120, 180) alongVector:ccp(0.3,0.7)];
+	CCLayerGradient *backLayer_ = [CCLayerGradientTest layerWithColor:ccc4(200, 200, 200, 255) fadingTo:ccc4(180, 180, 180, 255) alongVector:ccp(0.3,0.7)];
 	backLayer_.contentSize = stage.worldSize;
 	stage.backGround.backGroundNode = backLayer_;
-	stage.backGround.distanceRate = 0.1f; //for Parallax
+	stage.backGround.distanceRate = 1.0f; //for Parallax
 	
 	//[self _addPlanet:ccp(stage.worldSize.width/2,0) gravity:-7 gravityRadius:350];
 	[self _addPlanet:ccp(stage.worldSize.width/2,stage.worldSize.height) gravity:-7 gravityRadius:500.0f];
@@ -96,23 +98,91 @@
 	menuItemBack_.delegate = self;
 	[self addChild:menuItemBack_];
 	
+	controlBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 frameSize:CGSizeMake(50, 50)];
+	[controlBtn setTitle:@" "];
+	controlBtn.position = ccp(contentSize_.width-controlBtn.contentSize.width/2.0f,contentSize_.height/2);
+	controlBtn.callback_pushup = ^(id sender_){
+		int tempType_ = stageControlType+1;
+		
+		if(tempType_>=StageControlType_maxCount)
+			tempType_ = StageControlType_addBox;
+		
+		[self setStageControlType:(StageControlType)tempType_];
+	};
+	[self addChild:controlBtn];
+	
+	[self setStageControlType:StageControlType_addBox];
+	
 	[self scheduleUpdate];
 	//[self schedule:@selector(updateGravityUp:)];
 	
 	return self;
 }
 
+-(void)setStageControlType:(StageControlType)controlType_{
+	switch(controlType_){
+		case StageControlType_addBox:{
+			[controlBtn setTitle:@"BOX"];
+			break;
+		}
+		case StageControlType_addBall:{
+			[controlBtn setTitle:@"BALL"];
+			break;
+		}
+		case StageControlType_paintMap:{
+			[controlBtn setTitle:@"PAINT"];
+			break;
+		}
+		case StageControlType_eraseMap:{
+			[controlBtn setTitle:@"ERASE"];
+			break;
+		}
+		case StageControlType_dragMap:{
+			[controlBtn setTitle:@"DRAG"];
+			break;
+		}
+		default: break;
+	}
+	
+	stageControlType = controlType_;
+}
+
 -(void)update:(ccTime)dt_{
-	//drag object
-	if(_isOnDragObject){
-		b2Vec2 beforeVector_ = _dragObject.body->GetTransform().p;
-		[_dragObject updateBodyWithPosition:[stage convertToStageWorldSpace:_curTouchPoint]];
-		b2Vec2 curVector_ = _dragObject.body->GetTransform().p;
-		b2Vec2 velocity_ = curVector_-beforeVector_;
-		velocity_*=10.0f;
-		_dragObject.body->SetLinearVelocity(velocity_);
-		CGPoint diffPoint_ = ccpSub(ccp(self.contentSize.width/2,self.contentSize.height/2),_curTouchPoint);
-		stage.worldPoint = ccpSub(stage.worldPoint, ccpMult(diffPoint_, dt_*2.0f));
+	if(_isOnTouch){
+		float pointDistance_ = ccpDistance(_curTouchPoint, _beforeTouchPoint);
+		int targetCount_ = MAX((int)(pointDistance_/2.0f),2);
+		float targetRadians_ = ccpToAngle(_beforeTouchPoint,_curTouchPoint);
+		_beforeTouchPoint = _curTouchPoint;
+		switch(stageControlType){
+			case StageControlType_paintMap:{
+				for(uint index_=0;index_<targetCount_;++index_){
+					CGPoint targetPoint_ = ccpOffset(_curTouchPoint, targetRadians_, pointDistance_*((float)index_/(float)targetCount_));
+					[stage.pixel paintMapAtPoint:[stage convertToStageWorldSpace:targetPoint_] color:ccc4(0, 0, 0, 255) radius:20.0f];
+				}
+				break;
+			}
+			case StageControlType_eraseMap:{
+				for(uint index_=0;index_<targetCount_;++index_){
+					CGPoint targetPoint_ = ccpOffset(_curTouchPoint, targetRadians_, pointDistance_*((float)index_/(float)targetCount_));
+					[stage.pixel createCraterAtPoint:[stage convertToStageWorldSpace:targetPoint_] radius:20.0f];
+				}
+				break;
+			}
+			case StageControlType_dragMap:{
+				if(_isOnTouchObject){
+					b2Vec2 beforeVector_ = _dragObject.body->GetTransform().p;
+					[_dragObject updateBodyWithPosition:[stage convertToStageWorldSpace:_curTouchPoint]];
+					b2Vec2 curVector_ = _dragObject.body->GetTransform().p;
+					b2Vec2 velocity_ = curVector_-beforeVector_;
+					velocity_*=10.0f;
+					_dragObject.body->SetLinearVelocity(velocity_);
+					CGPoint diffPoint_ = ccpSub(ccp(self.contentSize.width/2,self.contentSize.height/2),_curTouchPoint);
+					stage.worldPoint = ccpSub(stage.worldPoint, ccpMult(diffPoint_, dt_*2.0f));
+				}
+				break;
+			}
+			default: break;
+		}
 	}
 	
 	[stage update:dt_];
@@ -123,40 +193,53 @@
 }
 
 -(void)stage:(CMMStage *)stage_ whenTouchBegan:(UITouch *)touch_ withObject:(CMMSObject *)object_{
-	if(object_){
+	_curTouchPoint = _beforeTouchPoint = [CMMTouchUtil pointFromTouch:touch_];
+	_isOnTouch = YES;
+	_isOnTouchObject = NO;
+	
+	if(stageControlType == StageControlType_dragMap && object_){
 		_dragObject = object_;
-		_isOnDragObject = YES;
-		_curTouchPoint = [CMMTouchUtil pointFromTouch:touch_];
+		_isOnTouchObject = YES;
 	}
 }
 -(void)stage:(CMMStage *)stage_ whenTouchMoved:(UITouch *)touch_ withObject:(CMMSObject *)object_{
-	if(!_isOnDragObject && !_isOnDrag && !object_)
-		_isOnDrag = YES;
-	
-	if(_isOnDrag){
-		CGPoint curPoint_ = [CMMTouchUtil pointFromTouch:touch_];
-		CGPoint diffPoint_ = ccpSub(curPoint_,[CMMTouchUtil prepointFromTouch:touch_]);
-		stage.worldPoint = ccpSub(stage.worldPoint, diffPoint_);
-	}else if(_isOnDragObject){
-		_curTouchPoint = [CMMTouchUtil pointFromTouch:touch_];
+	_curTouchPoint = [CMMTouchUtil pointFromTouch:touch_];
+
+	switch(stageControlType){
+		
+		case StageControlType_dragMap:{
+			if(!_isOnTouchObject){
+				CGPoint diffPoint_ = ccpSub(_curTouchPoint,[CMMTouchUtil prepointFromTouch:touch_]);
+				stage.worldPoint = ccpSub(stage.worldPoint, diffPoint_);
+			}
+			break;
+		}
+		default: break;
 	}
 }
 -(void)stage:(CMMStage *)stage_ whenTouchEnded:(UITouch *)touch_ withObject:(CMMSObject *)object_{
-	if(!_isOnDrag && !_isOnDragObject){
-		CGPoint addPoint_ = [stage convertToStageWorldSpace:[CMMTouchUtil pointFromTouch:touch_]];
-		if(arc4random()%2 == 0)
-			[self _addBall:addPoint_];
-		else [self _addBox:addPoint_];
+	CGPoint touchPoint_ = [stage_ convertToStageWorldSpace:_curTouchPoint];
+	
+	switch(stageControlType){
+		case StageControlType_addBall:{
+			[self _addBall:touchPoint_];
+			break;
+		}
+		case StageControlType_addBox:{
+			[self _addBox:touchPoint_];
+			break;
+		}
+		default: break;
 	}
 	
-	_isOnDrag = NO;
-	_isOnDragObject = NO;
+	_isOnTouch = NO;
+	_isOnTouchObject = NO;
 	_dragObject = nil;
 }
 -(void)stage:(CMMStage *)stage_ whenTouchCancelled:(UITouch *)touch_ withObject:(CMMSObject *)object_{
 	
-	_isOnDrag = NO;
-	_isOnDragObject = NO;
+	_isOnTouch = NO;
+	_isOnTouchObject = NO;
 	_dragObject = nil;
 }
 
@@ -173,7 +256,7 @@
 		CMMSObject *object_ = data_->arr[index_];
 		if(_dragObject == object_){
 			_dragObject = nil;
-			_isOnDragObject = NO;
+			_isOnTouchObject = NO;
 		}
 	}
 }

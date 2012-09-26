@@ -26,3 +26,12 @@
 +(void)deleteFileWithFileName:(NSString *)fileName_;
 
 @end
+
+@interface CMMFileUtil(ImageData)
+
++(void *)imageDataWithCGImage:(CGImageRef)cgImage_;
++(void *)imageDataWithFilePath:(NSString *)filePath_;
++(void *)imageDataWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ extension:(NSString *)extension_;
++(void *)imageDataWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
+
+@end

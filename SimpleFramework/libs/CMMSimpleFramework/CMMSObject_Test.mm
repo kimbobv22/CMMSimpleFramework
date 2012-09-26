@@ -91,7 +91,7 @@
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
 	
-	b2CMask = CMMb2ContactMask(0x1005,-1,-1,1);
+	b2CMask = b2CMaskMake(0x1005,-1,-1,1);
 	
 	return self;
 }

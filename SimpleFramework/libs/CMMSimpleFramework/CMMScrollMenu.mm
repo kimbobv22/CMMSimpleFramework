@@ -245,7 +245,7 @@
 	CGPoint convertPoint_ = [_innerLayer convertToNodeSpace:worldPoint_];
 	ccArray *data_ = itemList->data;
 	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CCNode<CMMTouchDispatcherDelegate> *item_ = data_->arr[index_];
 		if(CGRectContainsPoint([item_ boundingBox], convertPoint_))
 			return index_;

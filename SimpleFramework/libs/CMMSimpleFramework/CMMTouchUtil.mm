@@ -7,8 +7,15 @@
 +(CGPoint)pointFromTouch:(UITouch *)touch_{
 	return [[CCDirector sharedDirector] convertToGL:[touch_ locationInView:[touch_ view]]];
 }
++(CGPoint)pointFromTouch:(UITouch *)touch_ targetNode:(CCNode *)node_{
+	return [node_ convertToNodeSpace:[self pointFromTouch:touch_]];
+}
+
 +(CGPoint)prepointFromTouch:(UITouch *)touch_{
 	return [[CCDirector sharedDirector] convertToGL:[touch_ previousLocationInView:[touch_ view]]];
+}
++(CGPoint)prepointFromTouch:(UITouch *)touch_ targetNode:(CCNode *)node_{
+	return [node_ convertToNodeSpace:[self prepointFromTouch:touch_]];
 }
 
 @end

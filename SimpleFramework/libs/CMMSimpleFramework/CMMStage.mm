@@ -2,12 +2,6 @@
 
 #import "CMMStage.h"
 
-static CGPoint getContactPoint(b2Contact* contact){
-	b2WorldManifold worldManifold;
-	contact->GetWorldManifold(&worldManifold);
-	return ccpFromb2Vec2(worldManifold.points[0]);
-}
-
 void CMMStageContactListener::BeginContact(b2Contact* contact){
 	b2Fixture *fixtureA_ = contact->GetFixtureA();
 	b2Fixture *fixtureB_ = contact->GetFixtureB();
@@ -18,7 +12,7 @@ void CMMStageContactListener::BeginContact(b2Contact* contact){
 	id<CMMSContactProtocol> objectA_ = (id<CMMSContactProtocol>)fixtureA_->GetBody()->GetUserData();
 	id<CMMSContactProtocol> objectB_ = (id<CMMSContactProtocol>)fixtureB_->GetBody()->GetUserData();
 	
-	CGPoint contactPoint_ = getContactPoint(contact);
+	CGPoint contactPoint_ = cmmFuncCMMStage_GetContactPoint(contact);
 	
 	[objectA_ whenContactBeganWithFixtureType:b2CMaskA_->fixtureType otherObject:objectB_ otherFixtureType:b2CMaskB_->fixtureType contactPoint:contactPoint_];
 	[objectB_ whenContactBeganWithFixtureType:b2CMaskB_->fixtureType otherObject:objectA_ otherFixtureType:b2CMaskA_->fixtureType contactPoint:contactPoint_];
@@ -32,8 +26,8 @@ void CMMStageContactListener::EndContact(b2Contact *contact){
 	
 	id<CMMSContactProtocol> objectA_ = (id<CMMSContactProtocol>)fixtureA_->GetBody()->GetUserData();
 	id<CMMSContactProtocol> objectB_ = (id<CMMSContactProtocol>)fixtureB_->GetBody()->GetUserData();
-	
-	CGPoint contactPoint_ = getContactPoint(contact);
+
+	CGPoint contactPoint_ = cmmFuncCMMStage_GetContactPoint(contact);
 	
 	[objectA_ whenContactEndedWithFixtureType:b2CMaskA_->fixtureType otherObject:objectB_ otherFixtureType:b2CMaskB_->fixtureType contactPoint:contactPoint_];
 	[objectB_ whenContactEndedWithFixtureType:b2CMaskB_->fixtureType otherObject:objectA_ otherFixtureType:b2CMaskA_->fixtureType contactPoint:contactPoint_];
@@ -42,14 +36,14 @@ void CMMStageContactListener::EndContact(b2Contact *contact){
 bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtureB){
 	CMMb2ContactMask *b2CMaskA_ = (CMMb2ContactMask *)fixtureA->GetUserData();
 	CMMb2ContactMask *b2CMaskB_ = (CMMb2ContactMask *)fixtureB->GetUserData();
-	return b2CMaskA_->IsContact(b2CMaskB_);
+	return cmmFuncCMMb2ContactMask_IsContact(b2CMaskA_,b2CMaskB_);
 	
 	//filter supported by Box2d - N/U
 	//return b2ContactFilter::ShouldCollide(fixtureA, fixtureB);
 }
 
 @implementation CMMStageWorld
-@synthesize stage,world,worldBody,obatchNode_list,object_list,count;
+@synthesize stage,world,worldBody,obatchNode_list,object_list,count,countOfObatchNode,countOfObject;
 
 +(id)worldWithStage:(CMMStage *)stage_ worldSize:(CGSize)worldSize_{
 	return [[[self alloc] initWithStage:stage_ worldSize:worldSize_] autorelease];
@@ -89,25 +83,25 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 	_debugDraw->SetFlags(flags);
 #endif
 	
-	b2Mask1 = CMMb2ContactMask(0x3001,-1,-1,1);
-	b2Mask2 = CMMb2ContactMask(0x3003,-1,-1,1);
-	b2Mask3 = CMMb2ContactMask(0x3005,-1,-1,1);
-	b2Mask4 = CMMb2ContactMask(0x3007,-1,-1,1);
+	b2Mask1 = b2CMaskMake(0x3001,-1,-1,1);
+	b2Mask2 = b2CMaskMake(0x3003,-1,-1,1);
+	b2Mask3 = b2CMaskMake(0x3005,-1,-1,1);
+	b2Mask4 = b2CMaskMake(0x3007,-1,-1,1);
 	
 	worldBody = [self createBody:b2_staticBody point:CGPointZero angle:0];
 	worldBody->SetUserData(stage);
 	
 	b2EdgeShape groundBox;
-	groundBox.Set(b2Vec2Fromccp(0,0), b2Vec2Fromccp(self.contentSize.width,0));
+	groundBox.Set(b2Vec2(0,0), b2Vec2_PTM_RATIO(contentSize_.width,0));
 	worldBody->CreateFixture(&groundBox,0)->SetUserData(&b2Mask1);
 	
-	groundBox.Set(b2Vec2Fromccp(0,self.contentSize.height), b2Vec2Fromccp(self.contentSize.width,self.contentSize.height));
+	groundBox.Set(b2Vec2_PTM_RATIO(0,contentSize_.height), b2Vec2_PTM_RATIO(contentSize_.width,contentSize_.height));
 	worldBody->CreateFixture(&groundBox,0)->SetUserData(&b2Mask2);
 	
-	groundBox.Set(b2Vec2Fromccp(0,self.contentSize.height), b2Vec2Fromccp(0,0));
+	groundBox.Set(b2Vec2_PTM_RATIO(0,contentSize_.height), b2Vec2_PTM_RATIO(0,0));
 	worldBody->CreateFixture(&groundBox,0)->SetUserData(&b2Mask3);
 	
-	groundBox.Set(b2Vec2Fromccp(self.contentSize.width,self.contentSize.height), b2Vec2Fromccp(self.contentSize.width,0));
+	groundBox.Set(b2Vec2_PTM_RATIO(contentSize_.width,contentSize_.height), b2Vec2_PTM_RATIO(contentSize_.width,0));
 	worldBody->CreateFixture(&groundBox,0)->SetUserData(&b2Mask4);
 	
 	_touchedObjects = nil;
@@ -118,10 +112,17 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 }
 
 #if COCOS2D_DEBUG >= 1
--(void)draw{
+-(void)visit{
+	[super visit];
+	
+	kmGLPushMatrix();
+	[self transform];
+	
 	ccDrawColor4F(1.0, 1.0, 1.0, 1.0);
 	glLineWidth(1.0f);
 	world->DrawDebugData();
+	
+	kmGLPopMatrix();
 }
 #endif
 
@@ -139,7 +140,7 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 -(void)update:(ccTime)dt_{
 	//destroy object batch node
 	ccArray *data_ = obatchNode_destroyList->data;
-	for(int index_=data_->num-1;index_>=0;index_--){
+	for(int index_=data_->num-1;index_>=0;--index_){
 		CMMSObjectBatchNode *obatchNode_ = data_->arr[index_];
 		if([obatchNode_ count]>0){
 			[self removeObjectAtObatchNode:obatchNode_];
@@ -152,14 +153,17 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 	
 	//destory object
 	data_ = object_destroyList->data;
-	int count_ = data_->num;
-	for(int index_=0;index_<count_;index_++){
+	uint count_ = data_->num;
+	for(uint index_=0;index_<count_;++index_){
 		CMMSObject *object_ = data_->arr[index_];
 		[object_list removeObject:object_];
 		[object_ whenRemovedToStage];
 		
 		//remove touch
 		[touchDispatcher cancelTouchAtNode:object_];
+		
+		//stage delegate
+		[stage stageWorld:self whenRemovedObject:object_];
 	}
 	
 	if(count_>0 && cmmFuncCommon_respondsToSelector(stage.delegate,@selector(stage:whenRemovedObjects:)))
@@ -169,10 +173,11 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 	//add object
 	data_ = object_createList->data;
 	count_ = data_->num;
-	for(int index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CMMSObject *object_ = data_->arr[index_];
 		[object_list addObject:object_];
 		[object_ whenAddedToStage];
+		[stage stageWorld:self whenAddedObject:object_];
 	}
 	
 	if(count_>0 && cmmFuncCommon_respondsToSelector(stage.delegate,@selector(stage:whenAddedObjects:)))
@@ -182,12 +187,12 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 	world->Step(dt_, 8, 3);
 	
 	CMMSSpecStage *specStage_ = stage.spec;
-	b2Vec2 gravity_ = b2Vec2Fromccp(specStage_.gravity, 1.0f);
+	b2Vec2 gravity_ = b2Vec2Fromccp([specStage_ gravity]);
 	
 	//object update
 	data_ = object_list->data;
 	count_ = data_->num;
-	for(int index_=0;index_<count_;index_++){
+	for(int index_=0;index_<count_;++index_){
 		CMMSObject *object_ = data_->arr[index_];
 		b2Body *objectBody_ = object_.body;
 		
@@ -207,7 +212,7 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 		id<CMMSContactProtocol> objectA_ = (id<CMMSContactProtocol>)fixtureA_->GetBody()->GetUserData();
 		id<CMMSContactProtocol> objectB_ = (id<CMMSContactProtocol>)fixtureB_->GetBody()->GetUserData();
 		
-		CGPoint contactPoint_ = getContactPoint(contact_);
+		CGPoint contactPoint_ = cmmFuncCMMStage_GetContactPoint(contact_);
 		
 		[objectA_ doContactWithFixtureType:b2CMaskA_->fixtureType otherObject:objectB_ otherFixtureType:b2CMaskB_->fixtureType contactPoint:contactPoint_ interval:dt_];
 		[objectB_ doContactWithFixtureType:b2CMaskB_->fixtureType otherObject:objectA_ otherFixtureType:b2CMaskA_->fixtureType contactPoint:contactPoint_ interval:dt_];
@@ -215,11 +220,22 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 }
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
-	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
+	CMMSObject *touchedObject_ = nil;
+	ccArray *data_ = object_list->data;
+	NSUInteger count_ = data_->num;
+	for(NSUInteger index_=0;index_<count_;++index_){
+		CMMSObject *object_ = data_->arr[index_];
+		if([CMMTouchUtil isNodeInTouch:object_ touch:touch_]){
+			[touchDispatcher addTouchItemWithTouch:touch_ node:object_];
+			[object_ touchDispatcher:touchDispatcher whenTouchBegan:touch_ event:event_];
+			touchedObject_ = object_;
+			break;
+		}
+	}
 	
 	id<CMMStageTouchDelegate> delegate_ = (id<CMMStageTouchDelegate>)stage.delegate;
 	if(cmmFuncCommon_respondsToSelector(delegate_,@selector(stage:whenTouchBegan:withObject:))){
-		[delegate_ stage:stage whenTouchBegan:touch_ withObject:[self objectAtTouch:touch_]];
+		[delegate_ stage:stage whenTouchBegan:touch_ withObject:touchedObject_];
 	}
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
@@ -308,7 +324,7 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 -(int)indexOfObatchNodeFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
 	ccArray *data_ = obatchNode_list->data;
 	uint count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CMMSObjectBatchNode *obatchNode_ = data_->arr[index_];
 		if([obatchNode_.fileName isEqualToString:fileName_]
 		   && obatchNode_.isInDocument == isInDocument_)
@@ -327,8 +343,8 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 }
 
 -(void)addObject:(CMMSObject *)object_{
-	object_.stage = stage;
-	object_.objectTag = [self _nextObjectTag];
+	[object_ setStage:stage];
+	[object_ setObjectTag:[self _nextObjectTag]];
 	[object_createList addObject:object_];
 }
 
@@ -344,7 +360,7 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 }
 -(void)removeObjectAtObatchNode:(CMMSObjectBatchNode *)obatchNode_{
 	ccArray *data_ = object_list->data;
-	for(int index_=data_->num-1;index_>=0;index_--){
+	for(int index_=data_->num-1;index_>=0;--index_){
 		CMMSObject *object_ = data_->arr[index_];
 		if(object_.obatchNode == obatchNode_)
 			[self removeObject:object_];
@@ -371,7 +387,7 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 -(int)indexOfObjectTag:(int)objectTag_{
 	ccArray *data_ = object_list->data;
 	int count_ = data_->num;
-	for(int index_=0;index_<count_;index_++){
+	for(int index_=0;index_<count_;++index_){
 		CMMSObject *object_ = data_->arr[index_];
 		if(object_.objectTag == objectTag_)
 			return index_;
@@ -403,7 +419,7 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 -(b2Body *)createBody:(b2BodyType)bodyType_ point:(CGPoint)point_ angle:(float)angle_{
 	b2BodyDef bodyDef;
 	bodyDef.type = bodyType_;
-	bodyDef.position = b2Vec2Fromccp(point_);
+	bodyDef.position = b2Vec2Fromccp_PTM_RATIO(point_);
 	bodyDef.angle = -CC_DEGREES_TO_RADIANS(angle_);
 	return world->CreateBody(&bodyDef);
 }
@@ -422,7 +438,7 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 -(CMMSParticle *)cachedParticleOfParticleType:(ParticleType)particleType_ particleName:(NSString *)particleName_{
 	ccArray *data_ = _cachedParticles->data;
 	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CMMSParticle *particle_ = data_->arr[index_];
 		if(particle_.particleType == particleType_
 		   && [particle_.particleName isEqualToString:particleName_]){
@@ -491,7 +507,7 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 -(void)update:(ccTime)dt_{
 	ccArray *data_ = particleList->data;
 	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CMMSParticle *particle_ = data_->arr[index_];
 		[particle_ update:dt_];
 	}
@@ -533,12 +549,41 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 }
 -(void)removeParticleFollowOfTarget:(CMMSObject *)target_{
 	ccArray *data_ = particleList->data;
-	for(int index_=data_->num-1;index_>=0;index_--){
+	for(int index_=data_->num-1;index_>=0;--index_){
 		CMMSParticle *particle_ = data_->arr[index_];
 		if(particle_.particleType == ParticleType_follow
 		   && ((CMMSParticleFollow *)particle_).target == target_)
 			[self removeParticle:particle_];
 	}
+}
+
+@end
+
+@implementation CMMStageLight
+@synthesize stage,lightList;
+
++(id)lightWithStage:(CMMStage *)stage_{
+	return [[[self alloc] initWithStage:stage_] autorelease];
+}
+-(id)initWithStage:(CMMStage *)stage_{
+	if(!(self = [super init])) return self;
+	[self setContentSize:[stage_ worldSize]];
+	[self setIgnoreAnchorPointForPosition:NO];
+	[self setAnchorPoint:CGPointZero];
+	
+	stage = stage_;
+	lightList = [[CCArray alloc] init];
+	
+	return self;
+}
+
+-(void)update:(ccTime)dt_{
+	
+}
+
+-(void)dealloc{
+	[lightList release];
+	[super dealloc];
 }
 
 @end
@@ -565,7 +610,7 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 -(void)update:(ccTime)dt_{
 	ccArray *data_ = stateViewList->data;
 	uint count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CMMSObjectSView *stateView_ = data_->arr[index_];
 		[stateView_ update:dt_];
 	}
@@ -598,7 +643,7 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 -(void)removeStateViewAtTarget:(CMMSObject *)target_{
 	ccArray *data_ = stateViewList->data;
 	uint count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CMMSObjectSView *stateView_ = data_->arr[index_];
 		if(stateView_.target == target_)
 			[self removeStateView:stateView_];
@@ -607,7 +652,7 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 -(void)removeAllStateView{
 	ccArray *data_ = stateViewList->data;
 	uint count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CMMSObjectSView *stateView_ = data_->arr[index_];
 		[self removeStateView:stateView_];
 	}
@@ -622,7 +667,7 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 
 	ccArray *data_ = stateViewList->data;
 	uint count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CMMSObjectSView *stateView_ = data_->arr[index_];
 		if(stateView_.target == target_)
 			[array_ addObject:stateView_];
@@ -689,7 +734,7 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 	if(!(self = [super init])) return self;
 	[self setContentSize:stageSpecDef_.stageSize];
 	
-	spec = [[CMMSSpecStage alloc] init];
+	spec = [[CMMSSpecStage alloc] initWithTarget:self];
 	
 	world = [CMMStageWorld worldWithStage:self worldSize:stageSpecDef_.worldSize];
 	particle = [CMMStageParticle particleWithStage:self];
@@ -702,9 +747,7 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 	backGround = [[CMMStageBackGround alloc] initWithStage:self distanceRate:0.0f];
 	sound = [[CMMSoundHandler alloc] initSoundHandler:CGPointZero soundDistance:700.0f];
 	
-	[spec setGravity:stageSpecDef_.gravity];
-	[spec setFriction:stageSpecDef_.friction];
-	[spec setRestitution:stageSpecDef_.restitution];
+	[spec applyWithStageSpecDef:stageSpecDef_];
 	
 	isAllowTouch = NO;
 	
@@ -758,6 +801,9 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 	if(!isAllowTouch) return;
 	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
 }
+
+-(void)stageWorld:(CMMStageWorld *)world_ whenAddedObject:(CMMSObject *)object_{}
+-(void)stageWorld:(CMMStageWorld *)world_ whenRemovedObject:(CMMSObject *)object_{}
 
 -(void)whenContactBeganWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{}
 -(void)whenContactEndedWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{}

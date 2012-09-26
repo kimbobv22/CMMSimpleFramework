@@ -3,7 +3,7 @@
 #import "CMMPopupDispatcher.h"
 #import "CMMScene.h"
 
-static CCArray *_cachedPopupItems_ = nil;
+static CMMSimpleCache *_cachedPopupItems_ = nil;
 
 @implementation CMMPopupDispatcherItem
 @synthesize delegate,popup;
@@ -49,28 +49,27 @@ static CCArray *_cachedPopupItems_ = nil;
 	firstPopup_.scale = 0.98f;
 	[firstPopup_ runAction:[CCScaleTo actionWithDuration:0.1 scale:1.0f]];
 	
-	for(uint index_=1;index_<count_;index_++){
+	for(uint index_=1;index_<count_;++index_){
 		popupItem_ = data_->arr[index_];
 		[scene reorderChild:popupItem_.popup z:cmmVarCMMPopupDispatcher_defaultPopupZOrder-index_];
 	}
 }
 -(CMMPopupDispatcherItem *)cachedPopupItem{
 	if(!_cachedPopupItems_){
-		_cachedPopupItems_ = [[CCArray alloc] init];
-		for(uint index_=0;index_<cmmVarCMMPopupDispather_defaultCacheCount;index_++)
-			[_cachedPopupItems_ addObject:[CMMPopupDispatcherItem popupItemWithPopup:nil delegate:nil]];
+		_cachedPopupItems_ = [[CMMSimpleCache alloc] init];
+		for(uint index_=0;index_<cmmVarCMMPopupDispather_defaultCacheCount;++index_)
+			[_cachedPopupItems_ cacheObject:[CMMPopupDispatcherItem popupItemWithPopup:nil delegate:nil]];
 	}
 	
-	if(_cachedPopupItems_.count<=0) return nil;
+	if([_cachedPopupItems_ count]<=0) return nil;
 	
-	CMMPopupDispatcherItem *touchItem_ = [[[_cachedPopupItems_ objectAtIndex:0] retain] autorelease];
-	[_cachedPopupItems_ removeObjectAtIndex:0];
+	CMMPopupDispatcherItem *touchItem_ = [_cachedPopupItems_ cachedObject];
 	return touchItem_;
 }
 -(void)cachePopupItem:(CMMPopupDispatcherItem *)popupItem_{
 	popupItem_.popup = nil;
 	popupItem_.delegate = nil;
-	[_cachedPopupItems_ addObject:popupItem_];
+	[_cachedPopupItems_ cacheObject:popupItem_];
 }
 
 @end
@@ -152,7 +151,7 @@ static CCArray *_cachedPopupItems_ = nil;
 -(int)indexOfPopup:(CMMLayerPopup *)popup_{
 	ccArray *data_ = popupList->data;
 	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CMMPopupDispatcherItem *popupItem_ = data_->arr[index_];
 		if(popupItem_.popup == popup_)
 			return index_;

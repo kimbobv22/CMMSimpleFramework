@@ -148,7 +148,7 @@
 			if(!CGRectContainsPoint([self boundingBox], parentPoint_)){
 				ccArray *pData_ = parentLayer_.children->data;
 				int pCount_ = pData_->num;
-				for(uint index_=0;index_<pCount_;index_++){
+				for(uint index_=0;index_<pCount_;++index_){
 					CCNode *pChild_ = pData_->arr[index_];
 					if(pChild_ == self) continue;
 					if(CGRectContainsPoint([pChild_ boundingBox], parentPoint_)
@@ -216,7 +216,7 @@
 	
 	ccArray *data_ = itemList->data;
 	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CCNode<CMMTouchDispatcherDelegate> *item_ = data_->arr[index_];
 		targetHeight_ += item_.contentSize.height+marginPerItem;
 	}
@@ -226,7 +226,7 @@
 	
 	CGPoint targetPoint_ = ccpAdd([self innerPosition], ccp(0,beforeHeight_-targetHeight_));
 	[self setInnerPosition:targetPoint_];
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CCNode<CMMTouchDispatcherDelegate> *item_ = data_->arr[index_];
 		item_.position = ccpSub(item_.position, ccp(0,beforeHeight_-targetHeight_));
 	}
@@ -236,7 +236,7 @@
 	float totalItemHeight_ = 0;
 	ccArray *data_ = itemList->data;
 	int count_ = data_->num;
-	for(int index_=0;index_<count_;index_++){
+	for(int index_=0;index_<count_;++index_){
 		CCNode<CMMTouchDispatcherDelegate> *item_ = data_->arr[index_];
 		CGSize itemSize_ = item_.contentSize;
 		CGPoint targetPoint_ = cmmFuncCommon_position_center(self, item_);

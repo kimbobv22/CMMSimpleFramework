@@ -14,8 +14,8 @@
 
 -(id)initWithWidth:(float)width_ barSprite:(CCSprite *)barSprite_{
 	CGSize frameSize_ = CGSizeMake(width_, barSprite_.contentSize.height);
-	_barSprite = [[CCSprite alloc] initWithTexture:barSprite_.texture rect:barSprite_.textureRect];
-	_resultBarSprite = [CCSprite node];
+	
+	_barSprite = [CMMControlItemBatchBar batchBarWithTargetSprite:barSprite_ batchBarSize:frameSize_];
 	
 	if(!(self = [super initWithFrameSize:CGSizeMake(width_, barSprite_.contentSize.height)])) return self;
 	
@@ -23,7 +23,7 @@
 	_textLabel.position = ccp(contentSize_.width/2,contentSize_.height/2);
 	[self setTextColor:ccBLACK];
 	
-	[self addChild:_resultBarSprite z:0];
+	[self addChild:_barSprite z:0];
 	[self addChild:_textLabel z:1];
 	[self setItemValue:nil];
 	
@@ -83,20 +83,18 @@
 
 -(void)redraw{
 	[super redraw];
+	[_barSprite setPosition:cmmFuncCommon_position_center(self, _barSprite)];
 }
 -(void)redrawWithBar{
 	CGRect targetTextureRect_ = CGRectZero;
 	targetTextureRect_.size = contentSize_;
 	
-	//make bar
-	CCTexture2D *barTexture_ = [CMMDrawingUtil textureBarWithFrameSize:contentSize_ edgeSprite:_barSprite barCropWidth:2.0f startPoint:ccp(0.0f,contentSize_.height/2) width:contentSize_.width];
-	
-	[_resultBarSprite setTexture:barTexture_];
-	[_resultBarSprite setTextureRect:targetTextureRect_];
-	_resultBarSprite.position = ccp(contentSize_.width/2,contentSize_.height/2);
+	[_barSprite setContentSize:contentSize_];
+	[self redraw];
 }
 
 -(void)update:(ccTime)dt_{
+	[super update:dt_];
 	if(_toolBar.superview){
 		if(![_textLabel.string isEqualToString:_textField.text]){
 			[_textLabel setString:!_textField.text?@"":_textField.text];

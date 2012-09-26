@@ -32,7 +32,7 @@
 	groundTMXLayers = [[CCArray alloc] init];
 	isTilemapBuiltup = NO;
 	
-	b2MaskTile = CMMb2ContactMask(0x3009,-1,-1,1);
+	b2MaskTile = b2CMaskMake(0x3009,-1,-1,1);
 	
 	return self;
 }
@@ -80,18 +80,18 @@
 	b2Body *worldBody_ = world.worldBody;
 	ccArray *groundData_ = groundTMXLayers->data;
 	int count_ = groundData_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CCTMXLayer *tmxLayer_ = groundData_->arr[index_];
 		
 		CGSize tileLayerSize_ = tmxLayer_.layerSize;
 		uint totalTileLength_ = (int)tileLayerSize_.width*tileLayerSize_.height;
-		b2Vec2 tileSizeUint_ = b2Vec2Fromccp((tmxLayer_.mapTileSize.width/CC_CONTENT_SCALE_FACTOR())/2.0f, (tmxLayer_.mapTileSize.height/CC_CONTENT_SCALE_FACTOR())/2.0f);
+		b2Vec2 tileSizeUint_ = b2Vec2_PTM_RATIO((tmxLayer_.mapTileSize.width/CC_CONTENT_SCALE_FACTOR())/2.0f, (tmxLayer_.mapTileSize.height/CC_CONTENT_SCALE_FACTOR())/2.0f);
 		
 		float startXIndex_ = -1;
 		float startYIndex_ = -1;
 		BOOL doDraw_ = NO;
 		
-		for(int tileIndex_=0; tileIndex_<totalTileLength_;tileIndex_++){			
+		for(int tileIndex_=0; tileIndex_<totalTileLength_;++tileIndex_){			
 			float curYIndex_ = cmmFuncCMMStageTMX_tileYIndex(tileIndex_,tileLayerSize_.width);
 			float curXIndex_ = cmmFuncCMMStageTMX_tileXIndex(tileIndex_,tileLayerSize_.width,curYIndex_);
 			
@@ -127,9 +127,9 @@
 				blockShape_.SetAsBox(tileSize_.x, tileSize_.y, tilePoint_, 0);
 			
 				b2FixtureDef fixtureDef_;
-				fixtureDef_.density = 0.7f;
-				fixtureDef_.friction = spec.friction;
-				fixtureDef_.restitution = spec.restitution;
+				fixtureDef_.friction = [spec friction];
+				fixtureDef_.restitution = [spec restitution];
+				fixtureDef_.density = [spec density];
 				fixtureDef_.shape = &blockShape_;
 				b2Fixture *tileFixture_ = worldBody_->CreateFixture(&fixtureDef_);
 				tileFixture_->SetUserData(&b2MaskTile);

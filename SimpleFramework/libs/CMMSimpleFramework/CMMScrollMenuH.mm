@@ -78,7 +78,7 @@
 			CGPoint centerPoint_ = [self convertToWorldSpace:ccp(contentSize_.width/2.0f,contentSize_.height/2.0f)];
 			ccArray *data_ = itemList->data;
 			int count_ = data_->num;
-			for(uint index_=0;index_<count_;index_++){
+			for(uint index_=0;index_<count_;++index_){
 				CMMScrollMenuHItem *item_ = data_->arr[index_];
 				CGSize itemSize_ = item_.contentSize;
 				CGPoint targetPoint_ = item_.position;
@@ -110,7 +110,7 @@
 	float targetWidth_ = marginPerItem*2.0f;
 	ccArray *data_ = itemList->data;
 	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CCNode *item_ = data_->arr[index_];
 		targetWidth_ += item_.contentSize.width+marginPerItem;
 	}
@@ -122,7 +122,7 @@
 	float totalItemWidth_ = marginPerItem;
 	ccArray *data_ = itemList->data;
 	int count_ = data_->num;
-	for(int index_=0;index_<count_;index_++){
+	for(int index_=0;index_<count_;++index_){
 		CCNode<CMMTouchDispatcherDelegate> *item_ = data_->arr[index_];
 		CGSize itemSize_ = item_.contentSize;
 		CGPoint targetPoint_ = cmmFuncCommon_position_center(self, item_);

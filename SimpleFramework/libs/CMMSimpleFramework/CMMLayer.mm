@@ -35,7 +35,7 @@
 	
 	ccArray *data_ = touchDispatcher.touchList->data;
 	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
+	for(uint index_=0;index_<count_;++index_){
 		CMMTouchDispatcherItem *touchItem_ = data_->arr[index_];
 		CGPoint centerPoint_ = [self convertToNodeSpace:[CMMTouchUtil pointFromTouch:touchItem_.touch]];
 		glLineWidth(3.0f);

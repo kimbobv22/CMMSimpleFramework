@@ -1,6 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMMacro.h"
+#import "CMMSimpleCache.h"
 
 #define cmmVarCMMTouchDispather_defaultCacheCount 20
 
