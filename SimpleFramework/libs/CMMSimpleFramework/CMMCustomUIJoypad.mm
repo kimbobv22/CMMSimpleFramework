@@ -20,8 +20,9 @@
 -(void)update:(ccTime)dt_{
 	_curPushDelayTime = MIN(_curPushDelayTime+dt_,cmmVarCMMCustomUIJoypadButton_maxPushDelayTime);
 	
-	if(isAutoPushdown && _isOnPush && _curPushDelayTime>=pushDelayTime)
+	if(isAutoPushdown && _isOnPush && _curPushDelayTime>=pushDelayTime){
 		[self callCallback_pushdown];
+	}
 }
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
@@ -41,16 +42,16 @@
 
 @implementation CMMCustomUIJoypadButton(Callback)
 
--(void)callback_pushdown{
+-(void)callCallback_pushdown{
 	if(_curPushDelayTime>=pushDelayTime)
-		[super callback_pushdown];
+		[super callCallback_pushdown];
 	_curPushDelayTime = 0.0f;
 }
--(void)callback_pushup{
-	[super callback_pushup];
+-(void)callCallback_pushup{
+	[super callCallback_pushup];
 }
--(void)callback_pushcancel{
-	[super callback_pushcancel];
+-(void)callCallback_pushcancel{
+	[super callCallback_pushcancel];
 }
 
 @end
