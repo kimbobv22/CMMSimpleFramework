@@ -25,6 +25,7 @@
 }
 -(void)seq002{
 	introState = testIntroState_002;
+	[profileSprite stopAllActions];
 	[profileSprite setOpacity:0];
 	[[CMMScene sharedScene] pushLayer:[CommonIntroLayer2 node]];
 }
