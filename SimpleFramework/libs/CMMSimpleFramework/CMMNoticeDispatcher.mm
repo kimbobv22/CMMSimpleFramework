@@ -207,8 +207,8 @@ static CCArray *_cachedNoticeDispatcherItems_ = nil;
 	
 	[noticeTemplate setTitle:noticeItem_.title subject:noticeItem_.subject];
 	CGPoint targetPoint_ = noticePosition;
-	CGSize templateSize_ = noticeTemplate.contentSize;
-	switch(positionType){
+	CGSize templateSize_ = [noticeTemplate contentSize];
+	switch(noticePositionType){
 		case CMMNoticePositionType_top:{
 			targetPoint_ = cmmFuncCommon_position_center(target, noticeTemplate);
 			targetPoint_.y = target.contentSize.height-templateSize_.height*(1.0f-noticeTemplate.anchorPoint.y);
@@ -220,7 +220,7 @@ static CCArray *_cachedNoticeDispatcherItems_ = nil;
 		}
 		case CMMNoticePositionType_bottom:{
 			targetPoint_ = cmmFuncCommon_position_center(target, noticeTemplate);
-			targetPoint_.y = templateSize_.height*(1.0f-noticeTemplate.anchorPoint.y);
+			targetPoint_.y = templateSize_.height*noticeTemplate.anchorPoint.y;
 			break;
 		}
 		default: break;
@@ -248,7 +248,7 @@ static CCArray *_cachedNoticeDispatcherItems_ = nil;
 @end
 
 @implementation CMMNoticeDispatcher
-@synthesize target,itemList,noticeTemplate,positionType,noticePosition;
+@synthesize target,itemList,noticeTemplate,noticePositionType,noticePosition;
 
 +(id)noticeWithTarget:(CCNode *)target_{
 	return [[[self alloc] initWithTarget:target_] autorelease];
@@ -260,11 +260,16 @@ static CCArray *_cachedNoticeDispatcherItems_ = nil;
 	itemList = [[CCArray alloc] init];
 	
 	noticeTemplate = nil;
-	positionType = CMMNoticePositionType_top;
+	noticePositionType = CMMNoticePositionType_top;
 	noticePosition = CGPointZero;
 	_isOnNotice = NO;
 	
 	return self;
+}
+
+-(void)setNoticePosition:(CGPoint)noticePosition_{
+	noticePosition = noticePosition_;
+	[self setNoticePositionType:CMMNoticePositionType_custom];
 }
 
 -(void)setNoticeTemplate:(CMMNoticeDispatcherTemplate *)noticeTemplate_{

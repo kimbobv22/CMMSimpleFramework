@@ -74,7 +74,7 @@ typedef enum{
 	CCArray *itemList;
 	
 	CMMNoticeDispatcherTemplate *noticeTemplate;
-	CMMNoticePositionType positionType;
+	CMMNoticePositionType noticePositionType;
 	CGPoint noticePosition;
 
 	BOOL _isOnNotice;
@@ -90,7 +90,7 @@ typedef enum{
 @property (nonatomic, retain) CCArray *itemList;
 
 @property (nonatomic, retain) CMMNoticeDispatcherTemplate *noticeTemplate;
-@property (nonatomic, readwrite) CMMNoticePositionType positionType;
+@property (nonatomic, readwrite) CMMNoticePositionType noticePositionType;
 @property (nonatomic, readwrite) CGPoint noticePosition;
 
 @end
