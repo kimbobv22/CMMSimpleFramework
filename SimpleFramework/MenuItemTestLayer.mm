@@ -53,9 +53,10 @@
 		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
 	}
 }
--(void)menuItem_whenPushCancel:(CMMMenuItem *)menuItem_{
-	if(menuItem_ == menuItem1 || menuItem_ == menuItem2)
+-(void)menuItem_whenPushcancel:(CMMMenuItem *)menuItem_{
+	if(menuItem_ == menuItem1 || menuItem_ == menuItem2){
 		[displayLabel setString:[NSString stringWithFormat:@"%@ cancel",menuItem_.userData]];
+	}
 }
 
 @end

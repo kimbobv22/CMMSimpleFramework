@@ -236,6 +236,7 @@
 		E0AA4BD415E3CBF6006D0C7F /* CMMControlItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AA4BD315E3CBF6006D0C7F /* CMMControlItem.mm */; };
 		E0AEC75F15E47D7D0015A2BB /* CMMControlItemSlider.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AEC75E15E47D7D0015A2BB /* CMMControlItemSlider.mm */; };
 		E0AEC76215E4A1F40015A2BB /* CMMControlItemText.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AEC76115E4A1F40015A2BB /* CMMControlItemText.mm */; };
+		E0AF13EF1614766C00D9FA68 /* CMMMenuItemSet.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AF13EE1614766C00D9FA68 /* CMMMenuItemSet.mm */; };
 		E0B4ED1F15FB0E3A00F640D0 /* IMG_STG_TEST_001.png in Resources */ = {isa = PBXBuildFile; fileRef = E0B4ED1E15FB0E3A00F640D0 /* IMG_STG_TEST_001.png */; };
 		E0B586CE15DCB406006C8B7F /* ScrollMenuTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0B586CD15DCB406006C8B7F /* ScrollMenuTestLayer.mm */; };
 		E0C1173615E89729000142B2 /* CMMScrollMenuH.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C1173515E89729000142B2 /* CMMScrollMenuH.mm */; };
@@ -727,6 +728,8 @@
 		E0AEC75E15E47D7D0015A2BB /* CMMControlItemSlider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMControlItemSlider.mm; path = libs/CMMSimpleFramework/CMMControlItemSlider.mm; sourceTree = "<group>"; };
 		E0AEC76015E4A1F30015A2BB /* CMMControlItemText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMControlItemText.h; path = libs/CMMSimpleFramework/CMMControlItemText.h; sourceTree = "<group>"; };
 		E0AEC76115E4A1F40015A2BB /* CMMControlItemText.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMControlItemText.mm; path = libs/CMMSimpleFramework/CMMControlItemText.mm; sourceTree = "<group>"; };
+		E0AF13ED1614766C00D9FA68 /* CMMMenuItemSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMMenuItemSet.h; path = libs/CMMSimpleFramework/CMMMenuItemSet.h; sourceTree = "<group>"; };
+		E0AF13EE1614766C00D9FA68 /* CMMMenuItemSet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMMenuItemSet.mm; path = libs/CMMSimpleFramework/CMMMenuItemSet.mm; sourceTree = "<group>"; };
 		E0B4ED1E15FB0E3A00F640D0 /* IMG_STG_TEST_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_STG_TEST_001.png; path = Resources/IMG_STG_TEST_001.png; sourceTree = "<group>"; };
 		E0B586CC15DCB406006C8B7F /* ScrollMenuTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollMenuTestLayer.h; sourceTree = "<group>"; };
 		E0B586CD15DCB406006C8B7F /* ScrollMenuTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ScrollMenuTestLayer.mm; sourceTree = "<group>"; };
@@ -1354,6 +1357,8 @@
 			children = (
 				E0ED520D15E204670070712E /* CMMMenuItem.h */,
 				E0ED520E15E204680070712E /* CMMMenuItem.mm */,
+				E0AF13ED1614766C00D9FA68 /* CMMMenuItemSet.h */,
+				E0AF13EE1614766C00D9FA68 /* CMMMenuItemSet.mm */,
 				E0ED520F15E204680070712E /* CMMScrollMenu.h */,
 				E0ED521015E204680070712E /* CMMScrollMenu.mm */,
 				E0C1173D15E8B110000142B2 /* CMMScrollMenuV.h */,
@@ -1979,6 +1984,7 @@
 				E0A4D759160ACB8800D17935 /* ZipUtils.m in Sources */,
 				E076BB5D16131DAE00C94718 /* CMMSpriteBatchBar.mm in Sources */,
 				E0C1FE7F161428D800562E27 /* CMMDeprecated.mm in Sources */,
+				E0AF13EF1614766C00D9FA68 /* CMMMenuItemSet.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

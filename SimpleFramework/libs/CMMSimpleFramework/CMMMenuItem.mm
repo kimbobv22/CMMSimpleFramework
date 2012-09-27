@@ -68,16 +68,19 @@
 	return isEnable;
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
+	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
 	[self _stopFadeAction];
 	[self runAction:_fadeOutAction];
 	[self callCallback_pushdown];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
+	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
 	[self _stopFadeAction];
 	[self runAction:_fadeInAction];
 	[self callCallback_pushup];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
+	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
 	[self _stopFadeAction];
 	[self runAction:_fadeInAction];
 	[self callCallback_pushcancel];
