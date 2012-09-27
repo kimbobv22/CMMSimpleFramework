@@ -8,7 +8,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	menuItemBack = [[CMMMenuItemLabelTTF menuItemWithFrameSeq:0] retain];
+	menuItemBack = [[CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0] retain];
 	[menuItemBack setTitle:@"BACK"];
 	menuItemBack.position = ccp(menuItemBack.contentSize.width/2+20,menuItemBack.contentSize.height/2+20);
 	menuItemBack.delegate = self;
@@ -51,7 +51,7 @@
 }
 
 -(void)menuItem_whenPushup:(CMMMenuItem *)menuItem_{
-	[[CMMScene sharedScene] pushLayer:[HelloWorldLayer node]];
+	[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
 }
 
 -(void)dealloc{

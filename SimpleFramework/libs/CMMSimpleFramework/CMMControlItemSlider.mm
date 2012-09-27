@@ -25,8 +25,8 @@
 -(id)initWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor4B)backColorL_ backColorR:(ccColor4B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_{
 	
 	CGSize sliderSize_ = CGSizeMake(width_, [maskSprite_ contentSize].height);
-	_maskSprite = [[CMMControlItemBatchBar batchBarWithTargetSprite:maskSprite_  batchBarSize:sliderSize_] retain];
-	_barSprite = [CMMControlItemBatchBar batchBarWithTargetSprite:barSprite_ batchBarSize:sliderSize_];
+	_maskSprite = [[CMMSpriteBatchBar batchBarWithTargetSprite:maskSprite_  batchBarSize:sliderSize_] retain];
+	_barSprite = [CMMSpriteBatchBar batchBarWithTargetSprite:barSprite_ batchBarSize:sliderSize_];
 	
 	_resultBackSprite = [CCSprite node];
 	

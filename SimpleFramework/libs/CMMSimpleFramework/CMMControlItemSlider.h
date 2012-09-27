@@ -1,7 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMControlItem.h"
-#import "CMMControlItemBatchBar.h"
+#import "CMMSpriteBatchBar.h"
 #import "CMMMenuItem.h"
 
 @class CMMControlItemSlider;
@@ -14,7 +14,7 @@
 @end
 
 @interface CMMControlItemSlider : CMMControlItem{
-	CMMControlItemBatchBar *_maskSprite,*_barSprite;
+	CMMSpriteBatchBar *_maskSprite,*_barSprite;
 	CCSprite *_resultBackSprite;
 	CMMMenuItem *_buttonSprite;
 	

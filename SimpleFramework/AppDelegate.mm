@@ -83,7 +83,7 @@
 	// and add the scene to the stack. The director will run it when it automatically when the view is displayed.
 	
 	[director_ pushScene:[CMMScene sharedScene]];
-	[[CMMScene sharedScene] pushLayer:[CommonIntroLayer node]];
+	[[CMMScene sharedScene] pushLayer:[CommonIntroLayer1 node]];
 
 	return YES;
 }

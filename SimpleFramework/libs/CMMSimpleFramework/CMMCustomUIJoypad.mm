@@ -2,31 +2,8 @@
 
 #import "CMMCustomUIJoypad.h"
 
-@interface CMMCustomUIJoypadButton(Private)
-
--(void)_callbackPushdown;
--(void)_callbackPushup;
--(void)_callbackPushcancel;
-
-@end
-
-@implementation CMMCustomUIJoypadButton(Private)
-
--(void)_callbackPushdown{
-	if(callback_pushdown) callback_pushdown(self);
-	_curPushDelayTime = 0.0f;
-}
--(void)_callbackPushup{
-	if(callback_pushup) callback_pushup(self);
-}
--(void)_callbackPushcancel{
-	if(callback_pushcancel) callback_pushcancel(self);
-}
-
-@end
-
 @implementation CMMCustomUIJoypadButton
-@synthesize pushDelayTime,isAutoPushdown,callback_pushdown,callback_pushup,callback_pushcancel;
+@synthesize pushDelayTime,isAutoPushdown;
 
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
@@ -44,31 +21,36 @@
 	_curPushDelayTime = MIN(_curPushDelayTime+dt_,cmmVarCMMCustomUIJoypadButton_maxPushDelayTime);
 	
 	if(isAutoPushdown && _isOnPush && _curPushDelayTime>=pushDelayTime)
-		[self _callbackPushdown];
+		[self callCallback_pushdown];
 }
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
 	_isOnPush = YES;
-	if(_curPushDelayTime>=pushDelayTime)
-		[self _callbackPushdown];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
 	_isOnPush = NO;
-	[self _callbackPushup];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
 	_isOnPush = NO;
-	[self _callbackPushcancel];
 }
 
--(void)dealloc{
-	[callback_pushdown release];
-	[callback_pushup release];
-	[callback_pushcancel release];
-	[super dealloc];
+@end
+
+@implementation CMMCustomUIJoypadButton(Callback)
+
+-(void)callback_pushdown{
+	if(_curPushDelayTime>=pushDelayTime)
+		[super callback_pushdown];
+	_curPushDelayTime = 0.0f;
+}
+-(void)callback_pushup{
+	[super callback_pushup];
+}
+-(void)callback_pushcancel{
+	[super callback_pushcancel];
 }
 
 @end
@@ -84,7 +66,7 @@
 }
 
 -(id)initWithStickSprite:(CCSprite *)stickSprite_ backSprite:(CCSprite *)backSprite_ radius:(float)radius_{
-	_stick = [CMMSprite spriteWithTexture:stickSprite_.texture rect:stickSprite_.textureRect];
+	_stick = [CMMMenuItem spriteWithTexture:stickSprite_.texture rect:stickSprite_.textureRect];
 	_backSprite = [CCSprite spriteWithTexture:backSprite_.texture rect:backSprite_.textureRect];
 	
 	if(!(self = [super initWithColor:ccc4(0, 0, 0, 0) width:radius_*2.0f height:radius_*2.0f])) return self;
@@ -145,19 +127,19 @@
 }
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
-	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
+	[_stick touchDispatcher:touchDispatcher whenTouchBegan:touch_ event:event_];
 	[self moveStickPositionTo:[CMMTouchUtil pointFromTouch:touch_]];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
-	[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
+	[_stick touchDispatcher:touchDispatcher whenTouchMoved:touch_ event:event_];
 	[self moveStickPositionTo:[CMMTouchUtil pointFromTouch:touch_]];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
-	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
+	[_stick touchDispatcher:touchDispatcher whenTouchEnded:touch_ event:event_];
 	[self setStickVector:CGPointZero];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
-	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
+	[_stick touchDispatcher:touchDispatcher whenTouchCancelled:touch_ event:event_];
 	[self setStickVector:CGPointZero];
 }
 

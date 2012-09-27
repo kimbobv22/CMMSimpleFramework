@@ -14,7 +14,7 @@
 @protocol CMMMenuItemDelegate<NSObject>
 
 @optional
--(BOOL)menuItem_isCanPush:(CMMMenuItem *)menuItem_;
+-(BOOL)menuItem_isCanPush:(CMMMenuItem *)menuItem_ DEPRECATED_ATTRIBUTE;
 -(void)menuItem_whenPushdown:(CMMMenuItem *)menuItem_;
 -(void)menuItem_whenPushup:(CMMMenuItem *)menuItem_;
 -(void)menuItem_whenPushcancel:(CMMMenuItem *)menuItem_;
@@ -24,22 +24,32 @@
 @interface CMMMenuItem : CMMSprite{
 	id key,userData;
 	id<CMMMenuItemDelegate> delegate;
+	BOOL isEnable;
 	
 	CCAction *_fadeInAction,*_fadeOutAction;
 	void (^callback_pushdown)(id sender_),(^callback_pushup)(id sender_),(^callback_pushcancel)(id sender_);
 }
 
-+(id)menuItemWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_;
-+(id)menuItemWithFrameSeq:(int)frameSeq_;
++(id)menuItemWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ frameSize:(CGSize)frameSize_;
++(id)menuItemWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_;
 
--(id)initWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_;
--(id)initWithFrameSeq:(int)frameSeq_;
+-(id)initWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ frameSize:(CGSize)frameSize_;
+-(id)initWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_;
 
 -(void)updateDisplay;
 
 @property (nonatomic, retain) id key,userData;
 @property (nonatomic, assign) id<CMMMenuItemDelegate> delegate;
+@property (nonatomic, readwrite) BOOL isEnable;
 @property (nonatomic, copy) void (^callback_pushdown)(id sender_),(^callback_pushup)(id sender_),(^callback_pushcancel)(id sender_);
+
+@end
+
+@interface CMMMenuItem(Callback)
+
+-(void)callCallback_pushdown;
+-(void)callCallback_pushup;
+-(void)callCallback_pushcancel;
 
 @end
 

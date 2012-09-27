@@ -35,13 +35,13 @@
 	return [[[self alloc] initWithColor:cmmVarCMMScrollMenu_defaultColor width:frameSize_.width height:frameSize_.height] autorelease];
 }
 
-+(id)scrollMenuWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_{
++(id)scrollMenuWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ frameSize:(CGSize)frameSize_{
 	CMMScrollMenu *scrollMenu_ = [self scrollMenuWithFrameSize:frameSize_];
-
-	CCSprite *frameSprite_ = [CCSprite spriteWithTexture:[[CMMDrawingManager sharedManager] textureFrameWithFrameSeq:frameSeq_ size:frameSize_ backGroundYN:NO]];
+	
+	CCSprite *frameSprite_ = [CCSprite spriteWithTexture:[[CMMDrawingManager sharedManager] textureBatchBarWithFrameSeq:frameSeq_ batchBarSeq:batchBarSeq_ size:frameSize_]];
 	[scrollMenu_ addChildDirect:frameSprite_];
 	frameSprite_.position = cmmFuncCommon_position_center(scrollMenu_, frameSprite_);
-
+	
 	return scrollMenu_;
 }
 

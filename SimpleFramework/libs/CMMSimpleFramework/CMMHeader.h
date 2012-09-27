@@ -5,6 +5,7 @@
 #import "cocos2d.h"
 
 #import "CMMMacro.h"
+#import "CMMDeprecated.h"
 
 #import "CMMGLView.h"
 
@@ -14,6 +15,7 @@
 #import "CMMLayerMask.h"
 #import "CMMLayerPinchZoom.h"
 #import "CMMSprite.h"
+#import "CMMSpriteBatchBar.h"
 
 #import "CMMTouchDispatcher.h"
 #import "CMMPopupDispatcher.h"
@@ -49,7 +51,6 @@
 #import "CMMScrollMenuH.h"
 
 #import "CMMControlItem.h"
-#import "CMMControlItemBatchBar.h"
 #import "CMMControlItemSwitch.h"
 #import "CMMControlItemSlider.h"
 #import "CMMControlItemText.h"

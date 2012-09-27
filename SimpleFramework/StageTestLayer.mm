@@ -92,13 +92,13 @@
 	gravitySlider_.position = targetPoint_;
 	[self addChild:gravitySlider_];
 	
-	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
 	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,menuItemBack_.contentSize.height/2);
 	menuItemBack_.delegate = self;
 	[self addChild:menuItemBack_];
 	
-	controlBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 frameSize:CGSizeMake(50, 50)];
+	controlBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)];
 	[controlBtn setTitle:@" "];
 	controlBtn.position = ccp(contentSize_.width-controlBtn.contentSize.width/2.0f,contentSize_.height/2);
 	controlBtn.callback_pushup = ^(id sender_){
@@ -262,7 +262,7 @@
 }
 
 -(void)menuItem_whenPushup:(CMMMenuItem *)menuItem_{
-	[[CMMScene sharedScene] pushLayer:[HelloWorldLayer node]];
+	[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
 }
 
 @end

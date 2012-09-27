@@ -3,7 +3,19 @@
 #import "CMMCustomUI.h"
 
 @implementation CMMCustomUI
-@synthesize delegate;
+@synthesize delegate,isEnable;
+
+-(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
+	if(!(self = [super initWithColor:color width:w height:h])) return self;
+	
+	isEnable = YES;
+	
+	return self;
+}
+
+-(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ isAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
+	return isEnable;
+}
 
 -(void)update:(ccTime)dt_{}
 

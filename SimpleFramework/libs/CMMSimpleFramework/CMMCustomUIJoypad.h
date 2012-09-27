@@ -1,22 +1,19 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMCustomUI.h"
-#import "CMMSprite.h"
+#import "CMMMenuItem.h"
 
 #define cmmVarCMMCustomUIJoypadButton_maxPushDelayTime 100.0f
 
-@interface CMMCustomUIJoypadButton : CMMSprite{
+@interface CMMCustomUIJoypadButton : CMMMenuItem{
 	ccTime _curPushDelayTime,pushDelayTime;
 	BOOL _isOnPush,isAutoPushdown;
-	
-	void (^callback_pushdown)(id sender_),(^callback_pushup)(id sender_),(^callback_pushcancel)(id sender_);
 }
 
 -(void)update:(ccTime)dt_;
 
 @property (nonatomic, readwrite) ccTime pushDelayTime;
 @property (nonatomic, readwrite) BOOL isAutoPushdown;
-@property (nonatomic, copy) void (^callback_pushdown)(id sender_),(^callback_pushup)(id sender_),(^callback_pushcancel)(id sender_);
 
 @end
 
@@ -31,7 +28,7 @@
 
 @interface CMMCustomUIJoypadStick : CMMLayer{
 	id<CMMCustomUIJoypadStickDelegate> delegate;
-	CMMSprite *_stick;
+	CMMMenuItem *_stick;
 	CCSprite *_backSprite;
 }
 

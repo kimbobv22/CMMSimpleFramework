@@ -2,7 +2,20 @@
 
 #import "CMMHeader.h"
 
-@interface CommonIntroLayer : CMMLayer{
+enum testIntroState{
+	testIntroState_000,
+	testIntroState_001,
+	testIntroState_002,
+};
+
+@interface CommonIntroLayer1 : CMMLayer{
+	CCSprite *profileSprite;
+	testIntroState introState;
+}
+
+@end
+
+@interface CommonIntroLayer2 : CMMLayer{
 	CCLabelTTF *labelDisplay;
 }
 

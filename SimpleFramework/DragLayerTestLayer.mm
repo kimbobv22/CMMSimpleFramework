@@ -23,12 +23,12 @@
 	[dragLayer addChild:testSprite_];
 	
 	//add menuitem to dragLayer
-	CMMMenuItemLabelTTF *menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	CMMMenuItemLabelTTF *menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItem_ setTitle:@"TESTBUTTON"];
 	menuItem_.position = ccp(menuItem_.contentSize.width/2+20,menuItem_.contentSize.height/2+20);
 	[dragLayer addChild:menuItem_];
 	
-	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
 	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,menuItemBack_.contentSize.height/2+20);
 	menuItemBack_.delegate = self;
@@ -38,7 +38,7 @@
 }
 
 -(void)menuItem_whenPushup:(CMMMenuItem *)menuItem_{
-	[[CMMScene sharedScene] pushLayer:[HelloWorldLayer node]];
+	[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
 }
 
 @end

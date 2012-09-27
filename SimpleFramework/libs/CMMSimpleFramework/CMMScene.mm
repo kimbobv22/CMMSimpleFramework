@@ -27,7 +27,7 @@ static CMMScene *_sharedScene_ = nil;
 	CMMLayer *targetLayer_ = [_pushLayerList objectAtIndex:0];
 	targetLayer_.isTouchEnabled = NO;
 	if(runningLayer){
-		[runningLayer removeFromParentAndCleanup:YES];
+		[runningLayer removeFromParentAndCleanup:([self indexOfStaticLayerItemWithLayer:runningLayer] == NSNotFound)];
 	}
 	
 	runningLayer = targetLayer_;
@@ -52,8 +52,31 @@ static CMMScene *_sharedScene_ = nil;
 
 @end
 
+@implementation CMMSceneStaticLayerItem
+@synthesize key,layer;
+
++(id)staticLayerItemWithLayer:(CMMLayer *)layer_ key:(NSString *)key_{
+	return [[[self alloc] initWithLayer:layer_ key:key_] autorelease];
+}
+-(id)initWithLayer:(CMMLayer *)layer_ key:(NSString *)key_{
+	if(!(self = [super init])) return self;
+	
+	[self setLayer:layer_];
+	[self setKey:key_];
+	
+	return self;
+}
+
+-(void)dealloc{
+	[key release];
+	[layer release];
+	[super dealloc];
+}
+
+@end
+
 @implementation CMMScene
-@synthesize runningLayer,transitionColor,isOnTransition,fadeTime,touchDispatcher,popupDispatcher,noticeDispatcher;
+@synthesize runningLayer,transitionColor,isOnTransition,fadeTime,staticLayerItemList,countOfStaticLayerItem,touchDispatcher,popupDispatcher,noticeDispatcher;
 
 +(CMMScene *)sharedScene{
 	if(!_sharedScene_){
@@ -74,6 +97,8 @@ static CMMScene *_sharedScene_ = nil;
 	_transitionLayer = [[CCLayerColor alloc] init];
 	fadeTime = 0.4f;
 	
+	staticLayerItemList = [[CCArray alloc] init];
+	
 	_loadingObject = [[CMMLoadingObject alloc] init];
 	touchDispatcher = [[CMMTouchDispatcherScene alloc] initWithTarget:self];
 	popupDispatcher = [[CMMPopupDispatcher alloc] initWithScene:self];
@@ -90,6 +115,10 @@ static CMMScene *_sharedScene_ = nil;
 }
 -(ccColor3B)transitionColor{
 	return _transitionLayer.color;
+}
+
+-(uint)countOfStaticLayerItem{
+	return [staticLayerItemList count];
 }
 
 #if COCOS2D_DEBUG >= 1
@@ -143,6 +172,7 @@ static CMMScene *_sharedScene_ = nil;
 	[noticeDispatcher release];
 	[popupDispatcher release];
 	[touchDispatcher release];
+	[staticLayerItemList release];
 	[_loadingObject release];
 	[_pushLayerList release];
 	[_transitionLayer release];
@@ -152,6 +182,82 @@ static CMMScene *_sharedScene_ = nil;
 #endif
 	
 	[super dealloc];
+}
+
+@end
+
+@implementation CMMScene(StaticLayer)
+
+-(void)pushStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_{
+	if(!staticLayerItem_) return;
+	[self pushLayer:[staticLayerItem_ layer]];
+}
+-(void)pushStaticLayerItemAtKey:(NSString *)key_{
+	[self pushStaticLayerItem:[self staticLayerItemAtKey:key_]];
+}
+
+-(void)addStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_{
+	uint index_ = [self indexOfStaticLayerItem:staticLayerItem_];
+	if(index_ != NSNotFound) return;
+	[staticLayerItemList addObject:staticLayerItem_];
+}
+-(CMMSceneStaticLayerItem *)addStaticLayerItemWithLayer:(CMMLayer *)layer_ atKey:(NSString *)key_{
+	CMMSceneStaticLayerItem *staticLayerItem_ = [self staticLayerItemAtKey:key_];
+	[self removeStaticLayerItem:staticLayerItem_];
+	staticLayerItem_ = [CMMSceneStaticLayerItem staticLayerItemWithLayer:layer_ key:key_];
+	[self addStaticLayerItem:staticLayerItem_];
+	return staticLayerItem_;
+}
+
+-(void)removeStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_{
+	uint index_ = [self indexOfStaticLayerItem:staticLayerItem_];
+	if(index_ == NSNotFound) return;
+	[staticLayerItemList removeObjectAtIndex:index_];
+}
+-(void)removeStaticLayerItemAtIndex:(uint)index_{
+	[self removeStaticLayerItem:[self staticLayerItemAtIndex:index_]];
+}
+-(void)removeStaticLayerItemAtKey:(NSString *)key_{
+	[self removeStaticLayerItem:[self staticLayerItemAtKey:key_]];
+}
+-(void)removeAllStaticLayerItems{
+	ccArray *data_ = staticLayerItemList->data;
+	for(int index_ = data_->num-1;index>=0;--index_){
+		CMMSceneStaticLayerItem *staticLayerItem_ = data_->arr[index_];
+		[self removeStaticLayerItem:staticLayerItem_];
+	}
+}
+
+-(CMMSceneStaticLayerItem *)staticLayerItemAtIndex:(uint)index_{
+	if(index_ == NSNotFound) return nil;
+	return [staticLayerItemList objectAtIndex:index_];
+}
+-(CMMSceneStaticLayerItem *)staticLayerItemAtKey:(NSString *)key_{
+	return [self staticLayerItemAtIndex:[self indexOfStaticLayerItemWithKey:key_]];
+}
+
+-(uint)indexOfStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_{
+	return [staticLayerItemList indexOfObject:staticLayerItem_];
+}
+-(uint)indexOfStaticLayerItemWithLayer:(CMMLayer *)layer_{
+	ccArray *data_ = staticLayerItemList->data;
+	uint count_ = data_->num;
+	for(uint index_ = 0;index_<count_;++index_){
+		CMMSceneStaticLayerItem *staticLayerItem_ = data_->arr[index_];
+		if([staticLayerItem_ layer] == layer_)
+			return index_;
+	}
+	return NSNotFound;
+}
+-(uint)indexOfStaticLayerItemWithKey:(NSString *)key_{
+	ccArray *data_ = staticLayerItemList->data;
+	uint count_ = data_->num;
+	for(uint index_ = 0;index_<count_;++index_){
+		CMMSceneStaticLayerItem *staticLayerItem_ = data_->arr[index_];
+		if([[staticLayerItem_ key] isEqualToString:key_])
+			return index_;
+	}
+	return NSNotFound;
 }
 
 @end

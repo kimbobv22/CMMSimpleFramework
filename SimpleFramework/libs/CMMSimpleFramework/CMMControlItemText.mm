@@ -15,7 +15,7 @@
 -(id)initWithWidth:(float)width_ barSprite:(CCSprite *)barSprite_{
 	CGSize frameSize_ = CGSizeMake(width_, barSprite_.contentSize.height);
 	
-	_barSprite = [CMMControlItemBatchBar batchBarWithTargetSprite:barSprite_ batchBarSize:frameSize_];
+	_barSprite = [CMMSpriteBatchBar batchBarWithTargetSprite:barSprite_ batchBarSize:frameSize_];
 	
 	if(!(self = [super initWithFrameSize:CGSizeMake(width_, barSprite_.contentSize.height)])) return self;
 	

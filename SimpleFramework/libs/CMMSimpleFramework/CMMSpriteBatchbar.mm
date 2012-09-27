@@ -1,8 +1,8 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#import "CMMControlItemBatchBar.h"
+#import "CMMSpriteBatchBar.h"
 
-@implementation CMMControlItemBatchBar
+@implementation CMMSpriteBatchBar
 @synthesize targetSprite,edgeSize,barCropWidth;
 
 +(id)batchBarWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_ barCropWidth:(float)barCropWidth_{
@@ -84,7 +84,7 @@
 		_barRightSprite = [CCSprite spriteWithTexture:targetTexture_ rect:drawRect_];
 		[_barRightSprite setBatchNode:self];
 		[self addChild:_barRightSprite];
-	
+		
 		//back(center)
 		drawRect_.origin = ccp(targetSpriteTexturePoint_.x + targetSpriteTextureSize_.width/2.0f-barCropWidth/2.0f, targetSpriteTexturePoint_.y + (targetSpriteTextureSize_.height/2.0f - barCropWidth/2.0f));
 		drawRect_.size = CGSizeMake(barCropWidth, barCropWidth);
@@ -132,15 +132,6 @@
 		[self setTargetSprite:[[targetSprite retain] autorelease]];
 }
 
-#if COCOS2D_DEBUG >= 1
--(void)draw{
-	glLineWidth(1.0f);
-	ccDrawColor4B(0, 255, 0, 50);
-	ccDrawRect(CGPointZero, ccpFromSize(contentSize_));
-	[super draw];
-}
-#endif
-
 -(void)visit{
 	if(_isDirty){
 		CGSize spriteSize_ = [_barTopSprite contentSize];
@@ -174,7 +165,7 @@
 		[_edge2Sprite setPosition:ccp(contentSize_.width-edgeSize.width/2.0f,contentSize_.height-edgeSize.height/2.0f)];
 		[_edge3Sprite setPosition:ccp(edgeSize.width/2.0f,edgeSize.height/2.0f)];
 		[_edge4Sprite setPosition:ccp(contentSize_.width-edgeSize.width/2.0f,edgeSize.height/2.0f)];
-	
+		
 		_isDirty = NO;
 	}
 	

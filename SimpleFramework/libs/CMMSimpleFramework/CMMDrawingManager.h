@@ -3,9 +3,6 @@
 #import "CMMDrawingUtil.h"
 
 typedef enum{
-	CMMDrawingManagerItemKey_default_edge,
-	CMMDrawingManagerItemKey_default_back,
-	
 	CMMDrawingManagerItemKey_switch_button,
 	CMMDrawingManagerItemKey_switch_back,
 	CMMDrawingManagerItemKey_switch_mask,
@@ -17,21 +14,36 @@ typedef enum{
 	CMMDrawingManagerItemKey_slider_mask,
 	
 	CMMDrawingManagerItemKey_text_bar,
-	CMMDrawingManagerItemKey_text_mask,
 	
 	CMMDrawingManagerItemKey_maxCount,
 } CMMDrawingManagerItemKey;
 
 @interface CMMDrawingManagerItem : NSObject{
-	CCArray *default_barFrames;
-	//frames
+	CCArray *batchBarFrames;
 	NSMutableDictionary *_otherFrames;
 }
 
++(id)drawingItem;
+
+-(void)addBatchBarFrame:(CCSpriteFrame *)spriteFrame_;
+
+-(void)removeBatchBarFrame:(CCSpriteFrame *)spriteFrame_;
+-(void)removeBatchBarFrameAtIndex:(uint)index_;
+-(void)removeAllBatchBarFrames;
+
+-(CCSpriteFrame *)batchBarFrameAtIndex:(uint)index_;
+
+-(uint)indexOfBatchBarFrame:(CCSpriteFrame *)spriteFrame_;
+
+@property (nonatomic, retain) CCArray *batchBarFrames;
+@property (nonatomic, readonly) uint countOfBatchBar;
+
+@end
+
+@interface CMMDrawingManagerItem(Other)
+
 -(void)setSpriteFrame:(CCSpriteFrame *)spriteFrame_ forKey:(CMMDrawingManagerItemKey)key_;
 -(CCSpriteFrame *)spriteFrameForKey:(CMMDrawingManagerItemKey)key_;
-
-@property (nonatomic, retain) CCArray *default_barFrames;
 
 @end
 
@@ -50,8 +62,6 @@ typedef enum{
 
 @interface CMMDrawingManager(CachedTexture)
 
--(CCTexture2D *)textureFrameWithFrameSeq:(int)frameSeq_ size:(CGSize)size_ backGroundYN:(BOOL)backGroundYN_ barYN:(BOOL)barYN_;
--(CCTexture2D *)textureFrameWithFrameSeq:(int)frameSeq_ size:(CGSize)size_ backGroundYN:(BOOL)backGroundYN_;
--(CCTexture2D *)textureFrameWithFrameSeq:(int)frameSeq_ size:(CGSize)size_;
+-(CCTexture2D *)textureBatchBarWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ size:(CGSize)size_;
 
 @end

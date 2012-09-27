@@ -8,15 +8,15 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	CMMMenuItemLabelTTF *menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	CMMMenuItemLabelTTF *menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemButton_ setTitle:@"BACK"];
 	menuItemButton_.position = ccp(menuItemButton_.contentSize.width/2+20,menuItemButton_.contentSize.height/2);
 	menuItemButton_.callback_pushup = ^(id sender_){
-		[[CMMScene sharedScene] pushLayer:[HelloWorldLayer node]];
+		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
 	};
 	[self addChild:menuItemButton_];
 	
-	menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemButton_ setTitle:@"SCROLLMENU V"];
 	menuItemButton_.position = ccp(contentSize_.width/2.0f-menuItemButton_.contentSize.width/2-10.0f,contentSize_.height/2.0f);
 	menuItemButton_.callback_pushup = ^(id sender_){
@@ -24,7 +24,7 @@
 	};
 	[self addChild:menuItemButton_];
 	
-	menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemButton_ setTitle:@"SCROLLMENU H"];
 	menuItemButton_.position = ccp(contentSize_.width/2.0f+menuItemButton_.contentSize.width/2+10.0f,contentSize_.height/2.0f);
 	menuItemButton_.callback_pushup = ^(id sender_){
@@ -39,19 +39,17 @@
 
 @implementation ScrollMenuTestLayer_H
 
-
-
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	scrollMenu = [CMMScrollMenuH scrollMenuWithFrameSeq:0 frameSize:CGSizeMake(320, 200)];
+	scrollMenu = [CMMScrollMenuH scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(320, 200)];
 	scrollMenu.index = 0;
 	scrollMenu.marginPerItem = 150.0f;
 	//scrollMenu.isSnapAtItem = NO;
 	scrollMenu.position = cmmFuncCommon_position_center(self, scrollMenu);
 	[self addChild:scrollMenu];
 	
-	CMMMenuItemLabelTTF *menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	CMMMenuItemLabelTTF *menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemButton_ setTitle:@"BACK"];
 	menuItemButton_.position = ccp(menuItemButton_.contentSize.width/2+20,menuItemButton_.contentSize.height/2);
 	menuItemButton_.callback_pushup = ^(id sender_){
@@ -59,7 +57,7 @@
 	};
 	[self addChild:menuItemButton_];
 	
-	menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemButton_ setTitle:@"add"];
 	menuItemButton_.position = ccp(self.contentSize.width-menuItemButton_.contentSize.width-menuItemButton_.contentSize.width/2,menuItemButton_.contentSize.height/2);
 	menuItemButton_.callback_pushup = ^(id sender_){
@@ -76,7 +74,6 @@
 	return self;
 }
 
-
 @end
 
 @implementation ScrollMenuTestLayer_V
@@ -85,17 +82,17 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	scrollMenu1 = [CMMScrollMenuV scrollMenuWithFrameSeq:1 frameSize:CGSizeMake(200,220)];
+	scrollMenu1 = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(200,220)];
 	scrollMenu1.delegate = self;
 	scrollMenu1.position = ccpSub(cmmFuncCommon_position_center(self, scrollMenu1),ccp(scrollMenu1.contentSize.width/2+20,-40));
 	[self addChild:scrollMenu1];
 	
-	scrollMenu2 = [CMMScrollMenuV scrollMenuWithFrameSeq:0 frameSize:CGSizeMake(200,220)];
+	scrollMenu2 = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(200,220)];
 	scrollMenu2.delegate = self;
 	scrollMenu2.position = ccpAdd(cmmFuncCommon_position_center(self, scrollMenu2),ccp(scrollMenu2.contentSize.width/2+20,40));
 	[self addChild:scrollMenu2];
 	
-	CMMMenuItemLabelTTF *menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	CMMMenuItemLabelTTF *menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemButton_ setTitle:@"remove"];
 	menuItemButton_.position = ccp(self.contentSize.width-menuItemButton_.contentSize.width/2,menuItemButton_.contentSize.height/2);
 	menuItemButton_.callback_pushup = ^(id sender_){
@@ -103,17 +100,17 @@
 	};
 	[self addChild:menuItemButton_];
 	
-	menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemButton_ setTitle:@"add"];
 	menuItemButton_.position = ccp(self.contentSize.width-menuItemButton_.contentSize.width-menuItemButton_.contentSize.width/2,menuItemButton_.contentSize.height/2);
 	menuItemButton_.callback_pushup = ^(id sender_){
-		CMMMenuItemLabelTTF *menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 frameSize:CGSizeMake(scrollMenu2.contentSize.width,35)];
+		CMMMenuItemLabelTTF *menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(scrollMenu2.contentSize.width,35)];
 		[menuItem_ setTitle:[NSString stringWithFormat:@"object %d",scrollMenu2.count]];
 		[scrollMenu2 addItem:menuItem_];
 	};
 	[self addChild:menuItemButton_];
 	
-	menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemButton_ setTitle:@"BACK"];
 	menuItemButton_.position = ccp(menuItemButton_.contentSize.width/2+20,menuItemButton_.contentSize.height/2);
 	menuItemButton_.callback_pushup = ^(id sender_){

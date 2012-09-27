@@ -9,7 +9,7 @@
 @end
 
 @interface ControlItemTestLayer2 : CMMLayer{
-	CMMControlItemBatchBar *batchBar;
+	CMMSpriteBatchBar *batchBar;
 	CCLabelTTF *label;
 }
 

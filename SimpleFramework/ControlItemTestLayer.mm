@@ -45,15 +45,15 @@
 	};
 	[self addChild:slider2];
 	
-	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
 	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,menuItemBack_.contentSize.height/2);
 	menuItemBack_.callback_pushup = ^(id sender_){
-		[[CMMScene sharedScene] pushLayer:[HelloWorldLayer node]];
+		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
 	};
 	[self addChild:menuItemBack_];
 	
-	CMMMenuItemLabelTTF *testMenuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	CMMMenuItemLabelTTF *testMenuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[testMenuItem_ setTitle:@"Batch bar test"];
 	testMenuItem_.position = ccp(self.contentSize.width-testMenuItem_.contentSize.width/2,testMenuItem_.contentSize.height/2);
 	testMenuItem_.callback_pushup = ^(id sender_){
@@ -82,7 +82,7 @@
 	[touchDispatcher setMaxMultiTouchCount:0];
 	
 	CMMDrawingManagerItem *drawingItem_ = [[CMMDrawingManager sharedManager] drawingItemAtIndex:0];
-	batchBar = [CMMControlItemBatchBar batchBarWithTargetSprite:[CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_text_bar]] batchBarSize:CGSizeMake(100, 40)];
+	batchBar = [CMMSpriteBatchBar batchBarWithTargetSprite:[CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_text_bar]] batchBarSize:CGSizeMake(100, 40)];
 	[batchBar setPosition:ccp(10,80)];
 	[self addChild:batchBar];
 	
@@ -90,7 +90,7 @@
 	[label runAction:[CCRepeatForever actionWithAction:[CCBlink actionWithDuration:1 blinks:2]]];
 	[self addChild:label];
 	
-	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
 	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,menuItemBack_.contentSize.height/2);
 	menuItemBack_.callback_pushup = ^(id sender_){

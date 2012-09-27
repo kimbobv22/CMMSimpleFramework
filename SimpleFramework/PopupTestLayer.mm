@@ -21,13 +21,13 @@ static int _testPopupCount_ = 1;
 	testLabel.position = ccp(self.contentSize.width/2,self.contentSize.height/2);
 	[self addChild:testLabel];
 	
-	btnPopup = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	btnPopup = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	btnPopup.delegate = self;
 	[btnPopup setTitle:@"POPUP AGAIN!"];
 	btnPopup.position = ccp(MIN(MAX(arc4random()%(int)self.contentSize.width,btnPopup.contentSize.width/2),self.contentSize.width-btnPopup.contentSize.width/2),self.contentSize.height/2+80);
 	[self addChild:btnPopup];
 	
-	btnClose = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	btnClose = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	btnClose.delegate = self;
 	[btnClose setTitle:@"CLOSE"];
 	btnClose.position = ccp(self.contentSize.width/2,self.contentSize.height/2-80);
@@ -55,13 +55,13 @@ static int _testPopupCount_ = 1;
 	testLabel.position = ccp(self.contentSize.width/2,self.contentSize.height/2+80);
 	[self addChild:testLabel];
 	
-	menuItemOpen = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	menuItemOpen = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemOpen setTitle:@"OPEN POPUP"];
 	menuItemOpen.position = ccp(self.contentSize.width/2,self.contentSize.height/2);
 	menuItemOpen.delegate = self;
 	[self addChild:menuItemOpen];
 	
-	menuItemClose = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0];
+	menuItemClose = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemClose setTitle:@"BACK"];
 	menuItemClose.position = ccp(menuItemClose.contentSize.width/2+20,menuItemClose.contentSize.height/2);
 	menuItemClose.delegate = self;
@@ -84,7 +84,7 @@ static int _testPopupCount_ = 1;
 		[[CMMScene sharedScene] openPopup:popup_ delegate:self];
 		
 	}else if(menuItem_ == menuItemClose)
-		[[CMMScene sharedScene] pushLayer:[HelloWorldLayer node]];
+		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
 }
 
 @end

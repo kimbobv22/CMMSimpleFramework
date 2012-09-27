@@ -4,91 +4,58 @@
 <dict>
 	<key>frames</key>
 	<dict>
-		<key>IMG_CMN_BFRAME_000_BACK.png</key>
+		<key>IMG_CMN_BFRAME_000_BATCHBAR_00.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{96, 76}, {1, 23}}</string>
+			<string>{{62, 76}, {22, 21}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>sourceColorRect</key>
-			<string>{{96, 76}, {1, 23}}</string>
+			<string>{{62, 76}, {22, 21}}</string>
 			<key>sourceSize</key>
-			<string>{1, 23}</string>
+			<string>{22, 21}</string>
 		</dict>
-		<key>IMG_CMN_BFRAME_000_BAR_00.png</key>
+		<key>IMG_CMN_BFRAME_000_BATCHBAR_01.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{38, 108}, {4, 1}}</string>
+			<string>{{90, 76}, {22, 21}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>sourceColorRect</key>
-			<string>{{38, 108}, {4, 1}}</string>
+			<string>{{90, 76}, {22, 21}}</string>
 			<key>sourceSize</key>
-			<string>{4, 1}</string>
-		</dict>
-		<key>IMG_CMN_BFRAME_000_BAR_01.png</key>
-		<dict>
-			<key>frame</key>
-			<string>{{72, 96}, {4, 14}}</string>
-			<key>offset</key>
-			<string>{0, 0}</string>
-			<key>sourceColorRect</key>
-			<string>{{72, 96}, {4, 14}}</string>
-			<key>sourceSize</key>
-			<string>{4, 14}</string>
-		</dict>
-		<key>IMG_CMN_BFRAME_000_BAR_02.png</key>
-		<dict>
-			<key>frame</key>
-			<string>{{72, 76}, {4, 15}}</string>
-			<key>offset</key>
-			<string>{0, 0}</string>
-			<key>sourceColorRect</key>
-			<string>{{72, 76}, {4, 15}}</string>
-			<key>sourceSize</key>
-			<string>{4, 15}</string>
-		</dict>
-		<key>IMG_CMN_BFRAME_000_EDGE.png</key>
-		<dict>
-			<key>frame</key>
-			<string>{{106, 40}, {10, 10}}</string>
-			<key>offset</key>
-			<string>{0, 0}</string>
-			<key>sourceColorRect</key>
-			<string>{{106, 40}, {10, 10}}</string>
-			<key>sourceSize</key>
-			<string>{10, 10}</string>
+			<string>{22, 21}</string>
 		</dict>
 		<key>IMG_CMN_BFRAME_000_SLIDE_BAR.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{106, 54}, {10, 9}}</string>
+			<string>{{62, 102}, {10, 9}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>sourceColorRect</key>
-			<string>{{106, 54}, {10, 9}}</string>
+			<string>{{62, 102}, {10, 9}}</string>
 			<key>sourceSize</key>
 			<string>{10, 9}</string>
 		</dict>
 		<key>IMG_CMN_BFRAME_000_SLIDE_BTN.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{38, 76}, {28, 28}}</string>
+			<string>{{82, 40}, {28, 28}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>sourceColorRect</key>
-			<string>{{38, 76}, {28, 28}}</string>
+			<string>{{82, 40}, {28, 28}}</string>
 			<key>sourceSize</key>
 			<string>{28, 28}</string>
 		</dict>
 		<key>IMG_CMN_BFRAME_000_SLIDE_MASK.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{82, 76}, {10, 9}}</string>
+			<string>{{90, 102}, {10, 9}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>sourceColorRect</key>
-			<string>{{82, 76}, {10, 9}}</string>
+			<string>{{90, 102}, {10, 9}}</string>
 			<key>sourceSize</key>
 			<string>{10, 9}</string>
 		</dict>
@@ -128,11 +95,11 @@
 		<key>IMG_CMN_BFRAME_000_TEXT_BAR.png</key>
 		<dict>
 			<key>frame</key>
-			<string>{{82, 40}, {19, 31}}</string>
+			<string>{{38, 76}, {19, 31}}</string>
 			<key>offset</key>
 			<string>{0, 0}</string>
 			<key>sourceColorRect</key>
-			<string>{{82, 40}, {19, 31}}</string>
+			<string>{{38, 76}, {19, 31}}</string>
 			<key>sourceSize</key>
 			<string>{19, 31}</string>
 		</dict>
@@ -142,7 +109,7 @@
 		<key>format</key>
 		<integer>1</integer>
 		<key>size</key>
-		<string>{120, 112}</string>
+		<string>{128, 128}</string>
 	</dict>
 </dict>
 </plist>

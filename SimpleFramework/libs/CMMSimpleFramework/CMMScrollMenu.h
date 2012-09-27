@@ -44,7 +44,7 @@
 +(id)scrollMenuWithFrameSize:(CGSize)frameSize_ color:(ccColor4B)tcolor_;
 +(id)scrollMenuWithFrameSize:(CGSize)frameSize_;
 
-+(id)scrollMenuWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_;
++(id)scrollMenuWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ frameSize:(CGSize)frameSize_;
 
 @property (nonatomic, readwrite) int index;
 @property (nonatomic, readonly) int count;
