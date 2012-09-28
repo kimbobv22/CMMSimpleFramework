@@ -75,4 +75,9 @@
 	[self _performLoadingSchedule];
 }
 
+-(void)dealloc{
+	[delegate release];
+	[super dealloc];
+}
+
 @end

@@ -22,7 +22,7 @@
 -(void)draw{
 	ccDrawColor4B(0, 255, 0, 180);
 	glLineWidth(1.0f);
-	ccDrawRect(CGPointZero, ccp(contentSize_.width,contentSize_.height));
+	ccDrawRect(CGPointZero, ccpFromSize(contentSize_));
 	[super draw];
 }
 #endif
@@ -38,6 +38,7 @@
 }
 
 -(void)dealloc{
+	[delegate release];
 	[userData release];
 	[super dealloc];
 }

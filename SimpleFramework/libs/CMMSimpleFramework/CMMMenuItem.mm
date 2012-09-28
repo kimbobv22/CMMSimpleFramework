@@ -5,6 +5,7 @@
 @interface CMMMenuItem(Private)
 
 -(void)_stopFadeAction;
+-(void)_setMenuItemImage:(CCSprite *)sprite_;
 
 @end
 
@@ -14,11 +15,15 @@
 	[self stopAction:_fadeInAction];
 	[self stopAction:_fadeOutAction];
 }
+-(void)_setMenuItemImage:(CCSprite *)sprite_{
+	[self setTexture:[sprite_ texture]];
+	[self setTextureRect:[sprite_ textureRect]];
+}
 
 @end
 
 @implementation CMMMenuItem
-@synthesize key,userData,delegate,isEnable,callback_pushdown,callback_pushup,callback_pushcancel;
+@synthesize key,userData,selectedImage,delegate,isEnable,callback_pushdown,callback_pushup,callback_pushcancel;
 
 +(id)menuItemWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ frameSize:(CGSize)frameSize_{
 	return [[[self alloc] initWithFrameSeq:frameSeq_ batchBarSeq:batchBarSeq_ frameSize:frameSize_] autorelease];
@@ -31,6 +36,8 @@
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
 	
 	key = userData = nil;
+	_normalImage = [[CCSprite alloc] initWithTexture:texture rect:rect];
+	selectedImage = nil;
 	delegate = nil;
 	touchCancelDistance = 30.0f;
 	isEnable = YES;
@@ -57,6 +64,7 @@
 -(void)setIsEnable:(BOOL)isEnable_{
 	isEnable = isEnable_;
 	[self _stopFadeAction];
+	[self _setMenuItemImage:_normalImage];
 	if(isEnable){
 		[self runAction:_fadeInAction];
 	}else{
@@ -70,18 +78,24 @@
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
 	[self _stopFadeAction];
+	[self _setMenuItemImage:_normalImage];
+	if(selectedImage){
+		[self _setMenuItemImage:selectedImage];
+	}
 	[self runAction:_fadeOutAction];
 	[self callCallback_pushdown];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
 	[self _stopFadeAction];
+	[self _setMenuItemImage:_normalImage];
 	[self runAction:_fadeInAction];
 	[self callCallback_pushup];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
 	[self _stopFadeAction];
+	[self _setMenuItemImage:_normalImage];
 	[self runAction:_fadeInAction];
 	[self callCallback_pushcancel];
 }
@@ -89,6 +103,9 @@
 -(void)updateDisplay{}
 
 -(void)dealloc{
+	[selectedImage release];
+	[_normalImage release];
+	[delegate release];
 	[callback_pushdown release];
 	[callback_pushup release];
 	[callback_pushcancel release];

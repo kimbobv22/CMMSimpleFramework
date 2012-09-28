@@ -3,6 +3,7 @@
 #import "CMMMenuItem.h"
 
 #import "MenuItemTestLayer.h"
+#import "MenuItemSetTestLayer.h"
 #import "DragLayerTestLayer.h"
 #import "PinchZoomTestLayer.h"
 #import "StageTestLayer.h"
@@ -21,7 +22,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	mainMenu = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(250, 300)];
+	mainMenu = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(contentSize_.width * 0.5f, contentSize_.height * 0.8f)];
 	mainMenu.position = cmmFuncCommon_position_center(self, mainMenu);
 	[self addChild:mainMenu];
 	
@@ -30,6 +31,11 @@
 	CMMMenuItemLabelTTF *menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[MenuItemTestLayer node]];};
 	[menuItem_ setTitle:@"MenuItem Test"];
+ 	[mainMenu addItem:menuItem_];
+	
+	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[MenuItemSetTestLayer node]];};
+	[menuItem_ setTitle:@"MenuItemSet Test"];
  	[mainMenu addItem:menuItem_];
 	
 	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];

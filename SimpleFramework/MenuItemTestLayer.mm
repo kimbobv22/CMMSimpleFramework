@@ -16,6 +16,7 @@
 	[self addChild:menuItem1];
 	
 	menuItem2 = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	[menuItem2 setSelectedImage:[CCSprite spriteWithFile:@"Icon.png"]];
 	menuItem2.delegate = self;
 	menuItem2.touchCancelDistance = 100.0f; // check this function
 	menuItem2.title = @"button 2";

@@ -255,7 +255,7 @@ public:
 -(void)update:(ccTime)dt_;
 
 @property (nonatomic, retain) CMMSSpecStage *spec;
-@property (nonatomic, assign) id<CMMStageDelegate>delegate;
+@property (nonatomic, retain) id<CMMStageDelegate>delegate;
 @property (nonatomic, readonly) CMMStageWorld *world;
 @property (nonatomic, readonly) CMMStageParticle *particle;
 @property (nonatomic, readonly) CMMStageObjectSView *stateView;

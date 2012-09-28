@@ -1,6 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #define CMMSimpleFrameworkVersion 0x00010000
+static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.0.0";
 
 //common
 
@@ -48,6 +49,7 @@
 #import "CMMSObject_Test.h"
 
 #import "CMMMenuItem.h"
+#import "CMMMenuItemSet.h"
 #import "CMMScrollMenu.h"
 #import "CMMScrollMenuV.h"
 #import "CMMScrollMenuH.h"

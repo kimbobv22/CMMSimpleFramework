@@ -23,6 +23,7 @@
 
 @interface CMMMenuItem : CMMSprite{
 	id key,userData;
+	CCSprite *selectedImage,*_normalImage;
 	id<CMMMenuItemDelegate> delegate;
 	BOOL isEnable;
 	
@@ -39,7 +40,8 @@
 -(void)updateDisplay;
 
 @property (nonatomic, retain) id key,userData;
-@property (nonatomic, assign) id<CMMMenuItemDelegate> delegate;
+@property (nonatomic, retain) CCSprite *selectedImage;
+@property (nonatomic, retain) id<CMMMenuItemDelegate> delegate;
 @property (nonatomic, readwrite) BOOL isEnable;
 @property (nonatomic, copy) void (^callback_pushdown)(id sender_),(^callback_pushup)(id sender_),(^callback_pushcancel)(id sender_);
 

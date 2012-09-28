@@ -24,7 +24,7 @@ static CMMMotionDispatcher *_sharedCMMMotionDispatcher_ = nil;
 	if(motion.gyroAvailable){
 		[motion startDeviceMotionUpdates];
 	}else{
-		CCLOG(@"gyro is not available");
+		CCLOG(@"CMMMotionDispatcher : gyro is not available");
 		[motion release];
 		motion = nil;
 	}
@@ -38,8 +38,10 @@ static CMMMotionDispatcher *_sharedCMMMotionDispatcher_ = nil;
 -(void)setUpdateInterval:(ccTime)updateInterval_{
 	updateInterval = updateInterval_;
 	if(!motion) return;
-	motion.deviceMotionUpdateInterval = updateInterval;
-	[[CCDirector sharedDirector].scheduler scheduleSelector:@selector(update) forTarget:self interval:updateInterval paused:NO];
+	[motion setDeviceMotionUpdateInterval:updateInterval];
+	SEL targetSelector_ = @selector(update);
+	[[CCDirector sharedDirector].scheduler unscheduleSelector:targetSelector_ forTarget:self];
+	[[CCDirector sharedDirector].scheduler scheduleSelector:targetSelector_ forTarget:self interval:updateInterval paused:NO];
 }
 
 -(void)addTarget:(id<CMMMotionDispatcherDelegate>)target_{
@@ -73,7 +75,7 @@ static CMMMotionDispatcher *_sharedCMMMotionDispatcher_ = nil;
 }
 
 -(void)update{
-	CMAttitude *attitude_ = motion.deviceMotion.attitude;
+	CMAttitude *attitude_ = [[motion deviceMotion] attitude];
 	_motionState.roll = attitude_.roll+motionFixState.roll;
 	_motionState.pitch = attitude_.pitch+motionFixState.pitch;
 	_motionState.yaw = attitude_.yaw+motionFixState.yaw;

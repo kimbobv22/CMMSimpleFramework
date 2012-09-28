@@ -138,6 +138,7 @@
 }
 
 -(void)dealloc{
+	[delegate release];
 	[itemList release];
 	[super dealloc];
 }

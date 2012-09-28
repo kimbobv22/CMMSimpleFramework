@@ -30,6 +30,6 @@
 -(void)startLoadingWithTarget:(id)target_;
 -(void)startLoading;
 
-@property (nonatomic, assign) id<CMMLoadingObjectDelegate> delegate;
+@property (nonatomic, retain) id<CMMLoadingObjectDelegate> delegate;
 
 @end

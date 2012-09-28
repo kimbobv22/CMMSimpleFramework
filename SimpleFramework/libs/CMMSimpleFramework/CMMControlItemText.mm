@@ -32,7 +32,7 @@
 	_toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0,0,screenSize_.width,37)];
 	_textField = [[UITextField alloc] initWithFrame: CGRectMake(5, 5, screenSize_.width-10, 27)];
 	_textField.borderStyle = UITextBorderStyleRoundedRect;
-	_textField.delegate = (id)self;
+	_textField.delegate = self;
 	_textField.keyboardType = UIKeyboardTypeDefault;
 	_textField.clearButtonMode = UITextFieldViewModeWhileEditing;
 	_textField.inputAccessoryView = _toolBar;
