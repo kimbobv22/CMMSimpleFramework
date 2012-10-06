@@ -12,10 +12,11 @@
 #import "PopupTestLayer.h"
 #import "GyroTestLayer.h"
 #import "ScrollMenuTestLayer.h"
-#import "TilemapTestLayer.h"
 #import "ControlItemTestLayer.h"
 #import "CustomUITestLayer.h"
 #import "NoticeTestLayer.h"
+#import "LeaderBoardTestLayer.h"
+#import "AchievementsTestLayer.h"
 
 @implementation HelloWorldLayer
 
@@ -77,12 +78,7 @@
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[ScrollMenuTestLayer node]];};
 	[menuItem_ setTitle:@"ScrollMenu Test"];
 	[mainMenu addItem:menuItem_];
-	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
-	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[TilemapTestLayer node]];};
-	[menuItem_ setTitle:@"Tilemap Test"];
-	[mainMenu addItem:menuItem_];
-	
+
 	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[ControlItemTestLayer node]];};
 	[menuItem_ setTitle:@"Control Item Test"];
@@ -98,6 +94,16 @@
 	[menuItem_ setTitle:@"Notice Test"];
 	[mainMenu addItem:menuItem_];
 	
+	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[LeaderBoardTestLayer node]];};
+	[menuItem_ setTitle:@"LeaderBoard Test"];
+	[mainMenu addItem:menuItem_];
+
+	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[AchievementsTestLayer node]];};
+	[menuItem_ setTitle:@"Achievements Test"];
+	[mainMenu addItem:menuItem_];
+		
 	return self;
 }
 

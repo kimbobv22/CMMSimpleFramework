@@ -2,21 +2,14 @@
 
 #import "CMMheader.h"
 
-@interface CustomUITestObject : CCSprite{
-	CGPoint accelVector;
-}
-
--(void)update:(ccTime)dt_;
-
-@property (nonatomic, readwrite) CGPoint accelVector;
-
-@end
-
 @interface CustomUITestLayer : CMMLayer<CMMCustomUIJoypadDelegate>{
-	CustomUITestObject *target;
-	CMMCustomUIJoypad *joypad;
+	CMMStage *stage;
 	
-	CCLabelTTF *labelA,*labelB;
+	CMMSObject *target;
+	CMMCustomUIJoypad *joypad;
+	CCLabelTTF *labelA,*labelYou;
+	
+	b2Vec2 targetAccelVector;
 }
 
 -(void)update:(ccTime)dt_;

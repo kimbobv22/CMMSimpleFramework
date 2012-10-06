@@ -1,5 +1,6 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
+#import "CMMConfig.h"
 #import "CMMMacro.h"
 #import "CMMSimpleCache.h"
 
@@ -45,7 +46,7 @@ typedef enum{
 	CCArray *touchList;
 	CCNode *target;
 	
-	int maxMultiTouchCount;
+	uint maxMultiTouchCount;
 }
 
 +(id)touchDispatherWithTarget:(CCNode *)target_;
@@ -54,7 +55,7 @@ typedef enum{
 @property (nonatomic, readonly) CCArray *touchList;
 @property (nonatomic, readonly) CCNode *target;
 @property (nonatomic, readonly) int touchCount;
-@property (nonatomic, readwrite) int maxMultiTouchCount;
+@property (nonatomic, readwrite) uint maxMultiTouchCount;
 
 @end
 

@@ -10,6 +10,7 @@
 
 -(id)cachedObject;
 -(void)cacheObject:(id)object_;
+-(void)clearCache;
 
 @property (nonatomic, readonly) CCArray *itemList;
 @property (nonatomic, readonly) NSUInteger count;

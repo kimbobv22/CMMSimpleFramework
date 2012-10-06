@@ -2,6 +2,7 @@
 
 #import "CommonIntroLayer.h"
 #import "HelloWorldLayer.h"
+#import "AppDelegate.h"
 
 @implementation CommonIntroLayer1
 
@@ -91,17 +92,57 @@
 }
 -(void)loadingProcess007{
 	[[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [CMMNoticeDispatcherTemplate_DefaultScale templateWithNoticeDispatcher:[[CMMScene sharedScene] noticeDispatcher]];
-	
-//	[[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [CMMNoticeDispatcherTemplate_DefaultMoveDown templateWithNoticeDispatcher:[[CMMScene sharedScene] noticeDispatcher]];
-	
-	//[[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [CMMNoticeDispatcherTemplate_DefaultFadeInOut templateWithNoticeDispatcher:[[CMMScene sharedScene] noticeDispatcher]];
 }
 
 -(void)loadingProcess008{
-	[self _setDisplayStr:@"loading complete!"];
+	[self _setDisplayStr:@"connecting to Game Center..."];
 }
 
 -(void)whenLoadingEnded{
+	if(![[CMMGameKitPA sharedPA] isAvailableGameCenter]){
+		[self forwardScene];
+		return;
+	}
+	
+	[[CMMGameKitPA sharedPA] setDelegate:self];
+}
+
+//handling game center login view.
+-(void)gameKitPA:(CMMGameKitPA *)gameKitPA_ whenTryAuthenticationWithViewController:(UIViewController *)viewController_{
+	AppController *appDelegate_ = (AppController*)[[UIApplication sharedApplication] delegate];
+	[[appDelegate_ navController] presentViewController:viewController_ animated:YES completion:nil];
+}
+-(void)gameKitPA:(CMMGameKitPA *)gameKitPA_ whenCompletedAuthenticationWithLocalPlayer:(GKPlayer *)localPlayer_{
+	[[CMMGameKitAchievements sharedAchievements] setDelegate:self];
+	[[CMMGameKitAchievements sharedAchievements] reportCachedAchievements];
+}
+-(void)gameKitPA:(CMMGameKitPA *)gameKitPA_ whenFailedAuthenticationWithError:(NSError *)error_{
+	[self forwardScene];
+}
+
+-(void)gameKitAchievements:(CMMGameKitAchievements *)gameKitAchievements_ whenCompletedReportingAchievements:(NSArray *)achievements_{
+	CCLOG(@"whenCompletedReportingAchievements : count %d",[achievements_ count]);
+	[[CMMGameKitAchievements sharedAchievements] loadReportedAchievements];
+}
+-(void)gameKitAchievements:(CMMGameKitAchievements *)gameKitAchievements_ whenFailedReportingAchievementsWithError:(NSError *)error_{
+	CCLOG(@"whenFailedReportingAchievementsWithError : %@",[error_ debugDescription]);
+	[self forwardScene];
+}
+
+-(void)gameKitAchievements:(CMMGameKitAchievements *)gameKitAchievements_ whenReceiveAchievements:(NSArray *)achievements_{
+	CCLOG(@"whenReceiveAchievements : count %d",[achievements_ count]);
+	[self forwardScene];
+}
+-(void)gameKitAchievements:(CMMGameKitAchievements *)gameKitAchievements_ whenFailedReceivingAchievementsWithError:(NSError *)error_{
+	CCLOG(@"whenFailedReceivingAchievementsWithError : %@",[error_ debugDescription]);
+	[self forwardScene];
+}
+
+-(void)forwardScene{
+	//release delegate from CMMGameKitPA
+	[[CMMGameKitPA sharedPA] setDelegate:nil];
+	[[CMMGameKitAchievements sharedAchievements] setDelegate:nil];
+	
 	/*
 	 set HelloWorldLayer to static layer.
 	 static layer can be saved self state.
@@ -112,7 +153,11 @@
 	/*
 	 push static layer to scene.
 	 */
-	[[CMMScene sharedScene] pushStaticLayerItem:[scene_ staticLayerItemAtKey:_HelloWorldLayer_key_]];
+	[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
+}
+
+-(void)dealloc{
+	[super dealloc];
 }
 
 @end

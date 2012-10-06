@@ -53,6 +53,13 @@
 	
 	return object_;
 }
+-(CMMSObject *)createObjectWithSpriteFrame:(CCSpriteFrame *)spriteFrame_{
+	CCTexture2D *targetTexture_ = [spriteFrame_ texture];
+	if([self texture] != targetTexture_){
+		return nil;
+	}
+	return [self createObjectWithRect:[spriteFrame_ rect]];
+}
 -(CMMSObject *)createObject{
 	CGRect rect_ = CGRectZero;
 	rect_.size = [[textureAtlas_ texture] contentSize];

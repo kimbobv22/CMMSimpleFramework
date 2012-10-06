@@ -5,27 +5,50 @@
 enum StageControlType{
 	StageControlType_addBox = 0,
 	StageControlType_addBall,
+	StageControlType_dragMode,
 	StageControlType_paintMap,
 	StageControlType_eraseMap,
-	StageControlType_dragMap,
 	
 	StageControlType_maxCount,
 };
 
-@interface StageTestLayer : CMMLayer<CMMStageDelegate,CMMStageTouchDelegate,CMMMenuItemDelegate>{
-	CMMStagePXL *stage;
+@interface StageTestLayer : CMMLayer{
+	CMMMenuItemSet *stageSelector;
+}
+
+@end
+
+@interface StageTestLayerMaster : CMMLayer<CMMStageDelegate,CMMStageTouchDelegate,CMMScrollMenuDelegate>{
+	CMMStage *stage;
+	CMMScrollMenuV *controlMenu;
+	CMMControlItemSlider *gravitySlider;
 	CCLabelTTF *labelGravity;
+	CMMMenuItemLabelTTF *backBtn;
 	
-	BOOL _isOnTouch,_isOnTouchObject;
-	CGPoint _curTouchPoint,_beforeTouchPoint;
-	CMMSObject *_dragObject;
+	BOOL _isOnTouch,_isTouchObject;
+	CGPoint _curTouchPoint;
+	CMMSObject *_curTouchObject;
 	
-	CMMMenuItemLabelTTF *controlBtn;
 	StageControlType stageControlType;
 }
 
--(void)setStageControlType:(StageControlType)controlType_;
+-(CMMSObject *)addBox:(CGPoint)point_;
+-(CMMSBall *)addBall:(CGPoint)point_;
 
 -(void)update:(ccTime)dt_;
+
+@end
+
+@interface StageTestLayerBasic : StageTestLayerMaster
+
+@end
+
+@interface StageTestLayerPixel : StageTestLayerMaster{
+	CGPoint _beforeTouchPoint;
+}
+
+@end
+
+@interface StageTestLayerTile : StageTestLayerMaster<CMMStageTMXDelegate>
 
 @end

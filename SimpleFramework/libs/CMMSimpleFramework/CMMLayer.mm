@@ -11,19 +11,21 @@
 	[self setIgnoreAnchorPointForPosition:NO];
 	
 	touchDispatcher = [[CMMTouchDispatcher alloc] initWithTarget:self];
-	isAvailableMotion = NO;
 	
 	return self;
 }
 
 -(void)registerWithTouchDispatcher{}
 
+-(BOOL)isAvailableMotion{
+	return ([[CMMMotionDispatcher sharedDispatcher] indexOfTarget:self] != NSNotFound);
+}
 -(void)setIsAvailableMotion:(BOOL)isAvailableMotion_{
-	isAvailableMotion = isAvailableMotion_;
-	
-	if(isAvailableMotion && isRunning_)
+	if(isAvailableMotion){
 		[[CMMMotionDispatcher sharedDispatcher] addTarget:self];
-	else [[CMMMotionDispatcher sharedDispatcher] removeTarget:self];
+	}else{
+		 [[CMMMotionDispatcher sharedDispatcher] removeTarget:self];
+	}
 }
 
 #if COCOS2D_DEBUG >= 1
@@ -47,10 +49,6 @@
 }
 #endif
 
--(void)onEnter{
-	[super onEnter];
-	if(isAvailableMotion) [[CMMMotionDispatcher sharedDispatcher] addTarget:self];
-}
 -(void)onExit{
 	[super onExit];
 	[[CMMMotionDispatcher sharedDispatcher] removeTarget:self];

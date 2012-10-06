@@ -7,10 +7,12 @@ static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.0.0";
 
 #import "cocos2d.h"
 
+#import "CMMConfig.h"
 #import "CMMMacro.h"
 #import "CMMDeprecated.h"
 
 #import "CMMGLView.h"
+#import "CMMViewController.h"
 
 #import "CMMScene.h"
 #import "CMMLayer.h"
@@ -32,6 +34,8 @@ static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.0.0";
 #import "CMMTouchUtil.h"
 #import "CMMDrawingUtil.h"
 #import "CMMLoadingObject.h"
+
+#import "CMMGameKit.h"
 
 //component
 

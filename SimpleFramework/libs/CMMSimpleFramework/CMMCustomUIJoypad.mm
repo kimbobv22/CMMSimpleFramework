@@ -25,6 +25,9 @@
 	}
 }
 
+-(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ isAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
+	return _curPushDelayTime>=pushDelayTime;
+}
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
 	_isOnPush = YES;
@@ -43,9 +46,10 @@
 @implementation CMMCustomUIJoypadButton(Callback)
 
 -(void)callCallback_pushdown{
-	if(_curPushDelayTime>=pushDelayTime)
+	if(_curPushDelayTime>=pushDelayTime){
 		[super callCallback_pushdown];
-	_curPushDelayTime = 0.0f;
+		_curPushDelayTime = 0.0f;
+	}
 }
 -(void)callCallback_pushup{
 	[super callCallback_pushup];
@@ -151,31 +155,6 @@
 
 @end
 
-@interface CMMCustomUIJoypad(Private)
-
--(void)_callbackpushdownWithButton:(CMMCustomUIJoypadButton *)button_;
--(void)_callbackpushupWithButton:(CMMCustomUIJoypadButton *)button_;
--(void)_callbackpushcancelWithButton:(CMMCustomUIJoypadButton *)button_;
-
-@end
-
-@implementation CMMCustomUIJoypad(Private)
-
--(void)_callbackpushdownWithButton:(CMMCustomUIJoypadButton *)button_{
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(customUIJoypad:whenPushdownWithButton:)))
-		[((id<CMMCustomUIJoypadDelegate>)delegate) customUIJoypad:self whenPushdownWithButton:button_];
-}
--(void)_callbackpushupWithButton:(CMMCustomUIJoypadButton *)button_{
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(customUIJoypad:whenPushupWithButton:)))
-		[((id<CMMCustomUIJoypadDelegate>)delegate) customUIJoypad:self whenPushupWithButton:button_];
-}
--(void)_callbackpushcancelWithButton:(CMMCustomUIJoypadButton *)button_{
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(customUIJoypad:whenPushcancelWithButton:)))
-		[((id<CMMCustomUIJoypadDelegate>)delegate) customUIJoypad:self whenPushcancelWithButton:button_];
-}
-
-@end
-
 @implementation CMMCustomUIJoypad
 @synthesize stick,buttonA,buttonB;
 
@@ -195,14 +174,7 @@
 	stick.delegate = self;
 	
 	buttonA = [CMMCustomUIJoypadButton spriteWithTexture:buttonASprite_.texture rect:buttonASprite_.textureRect];
-	buttonA.callback_pushdown = ^(id sender_){[self _callbackpushdownWithButton:sender_];};
-	buttonA.callback_pushup = ^(id sender_){[self _callbackpushupWithButton:sender_];};
-	buttonA.callback_pushcancel = ^(id sender_){[self _callbackpushcancelWithButton:sender_];};
-	
 	buttonB = [CMMCustomUIJoypadButton spriteWithTexture:buttonBSprite_.texture rect:buttonBSprite_.textureRect];
-	buttonB.callback_pushdown = ^(id sender_){[self _callbackpushdownWithButton:sender_];};
-	buttonB.callback_pushup = ^(id sender_){[self _callbackpushupWithButton:sender_];};
-	buttonB.callback_pushcancel = ^(id sender_){[self _callbackpushcancelWithButton:sender_];};
 	
 	[self addChild:stick z:1];
 	[self addChild:buttonA z:1];

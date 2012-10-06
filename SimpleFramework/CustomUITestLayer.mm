@@ -3,36 +3,60 @@
 #import "CustomUITestLayer.h"
 #import "HelloWorldLayer.h"
 
-@implementation CustomUITestObject
-@synthesize accelVector;
-
--(void)update:(ccTime)dt_{
-	self.position = ccpAdd(self.position, ccpMult(accelVector, 6.0f));
-}
-
-@end
-
 @implementation CustomUITestLayer
 
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	target = [CustomUITestObject spriteWithFile:@"Icon-Small.png"];
-	target.position = cmmFuncCommon_position_center(self, target);
-	[self addChild:target z:0];
+	CGSize stageSize_ = contentSize_;
+	stageSize_.height -= 60.0f;
+	stage = [CMMStage stageWithStageSpecDef:CMMStageSpecDefMake(stageSize_, stageSize_, ccp(0,-9.8))];
+	[stage setIsAllowTouch:NO];
+	[stage setPosition:ccp(contentSize_.width*0.5f-stageSize_.width*0.5f,contentSize_.height-stageSize_.height)];
+	[self addChild:stage z:1];
+	
+	target = [CMMSObject spriteWithFile:@"Icon-Small.png"];
+	target.position = cmmFuncCommon_position_center(stage, target);
+	[stage.world addObject:target];
+	
+	for(uint index_=0;index_<10;++index_){
+		CMMSObject *tempObject_ = [CMMSObject spriteWithFile:@"Icon-Small.png"];
+		[tempObject_ setColor:ccc3(180, 80, 80)];
+		CGSize tempObjectSize_ = [tempObject_ contentSize];
+		CGPoint tempPoint_;
+		tempPoint_.x = arc4random()%(int)(stageSize_.width - tempObjectSize_.width) + tempObjectSize_.width/2.0f;
+		tempPoint_.y = arc4random()%(int)(stageSize_.height*0.5f - tempObjectSize_.height) + tempObjectSize_.height/2.0f;
+		[tempObject_ setPosition:tempPoint_];
+		[stage.world addObject:tempObject_];
+	}
 	
 	NSString *joypadSpriteFrameFileName_ = @"IMG_JOYPAD_000.plist";
 	[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:joypadSpriteFrameFileName_];
 	joypad = [CMMCustomUIJoypad joypadWithSpriteFrameFileName:joypadSpriteFrameFileName_];
 	joypad.opacity = 120.0f;
-	joypad.buttonA.isAutoPushdown = YES;
 	joypad.delegate = self;
+	
+	joypad.buttonA.isAutoPushdown = YES;
+	joypad.buttonB.pushDelayTime = 1.0f;
+	
 	[self addChild:joypad z:1];
 	
+	//register callback
+	[[joypad buttonA] setCallback_pushdown:^(id sender_){
+		[self _setLabelAStr:@"Action!"];
+	}];
+	[[joypad buttonB] setCallback_pushdown:^(id sender_){
+		b2Body *targetBody_ = [target body];
+		if(!targetBody_) return;
+		targetBody_->ApplyForceToCenter(b2Vec2(0,100.0f));
+	}];
+	
 	labelA = [CMMFontUtil labelWithstring:@" "];
-	labelB = [CMMFontUtil labelWithstring:@" "];
-	[self addChild:labelA];
-	[self addChild:labelB];
+	[self addChild:labelA z:2];
+	
+	labelYou = [CMMFontUtil labelWithstring:@"You"];
+	[labelYou runAction:[CCRepeatForever actionWithAction:[CCBlink actionWithDuration:0.5 blinks:1]]];
+	[self addChild:labelYou z:2];
 	
 	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
@@ -55,32 +79,24 @@
 }
 -(void)_setLabelAStr:(NSString *)str_{
 	[self _setLabelStr:str_ atLabel:labelA];
-	labelA.position = ccp(contentSize_.width/2-labelA.contentSize.width/2-5.0f,contentSize_.height/2+50.0f);
-}
--(void)_setLabelBStr:(NSString *)str_{
-	[self _setLabelStr:str_ atLabel:labelB];
-	labelB.position = ccp(contentSize_.width/2+labelB.contentSize.width/2+5.0f,contentSize_.height/2+50.0f);
+	labelA.position = ccp(contentSize_.width/2.0f,contentSize_.height/2+50.0f);
 }
 
 -(void)customUIJoypad:(CMMCustomUIJoypad *)joypad_ whenChangedStickVector:(CGPoint)vector_{
-	target.accelVector = vector_;
-}
--(void)customUIJoypad:(CMMCustomUIJoypad *)joypad_ whenPushdownWithButton:(CMMCustomUIJoypadButton *)button_{
-	if(button_ == joypad_.buttonA) [self _setLabelAStr:@"push down"];
-	else [self _setLabelBStr:@"push down"];
-}
--(void)customUIJoypad:(CMMCustomUIJoypad *)joypad_ whenPushupWithButton:(CMMCustomUIJoypadButton *)button_{
-	if(button_ == joypad_.buttonA) [self _setLabelAStr:@"push up"];
-	else [self _setLabelBStr:@"push up"];
-}
--(void)customUIJoypad:(CMMCustomUIJoypad *)joypad_ whenPushcancelWithButton:(CMMCustomUIJoypadButton *)button_{
-	if(button_ == joypad_.buttonA) [self _setLabelAStr:@"push cancel"];
-	else [self _setLabelBStr:@"push cancel"];
+	targetAccelVector = b2Vec2Mult(b2Vec2Fromccp(vector_), 0.2f);
 }
 
 -(void)update:(ccTime)dt_{
+	b2Body *targetBody_ = [target body];
+	if(targetBody_ && targetAccelVector.Length() > 0){
+		targetBody_->ApplyLinearImpulse(targetAccelVector, targetBody_->GetPosition());
+	}
 	[joypad update:dt_];
-	[target update:dt_];
+	[stage update:dt_];
+	
+	CGPoint targetPoint_ = [self convertToNodeSpace:[[stage world] convertToWorldSpace:[target position]]];
+	targetPoint_.y += [target contentSize].height+10.0f;
+	[labelYou setPosition:targetPoint_];
 }
 
 @end

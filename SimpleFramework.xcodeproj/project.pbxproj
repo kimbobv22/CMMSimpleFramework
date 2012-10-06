@@ -9,8 +9,9 @@
 /* Begin PBXBuildFile section */
 		E009D7E815D94F19004E9012 /* PAR_EFT_0001.plist in Resources */ = {isa = PBXBuildFile; fileRef = E009D7E715D94F19004E9012 /* PAR_EFT_0001.plist */; };
 		E00E2E6A15FF506A003551B4 /* CMMSimpleCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = E00E2E6915FF506A003551B4 /* CMMSimpleCache.mm */; };
-		E01D3C7015DE02850078F042 /* TilemapTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E01D3C6F15DE02850078F042 /* TilemapTestLayer.mm */; };
 		E0257A2215FF3C55008C54C2 /* CMMSPMapObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0257A2115FF3C55008C54C2 /* CMMSPMapObject.mm */; };
+		E026250D1615F33600B158CF /* CMMGameKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = E026250C1615F33600B158CF /* CMMGameKit.mm */; };
+		E0262512161696BE00B158CF /* CMMPacket.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0262511161696BE00B158CF /* CMMPacket.mm */; };
 		E02A44A315D4115C005BB6C1 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E02A44A215D4115C005BB6C1 /* QuartzCore.framework */; };
 		E02A44A515D4115C005BB6C1 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E02A44A415D4115C005BB6C1 /* OpenGLES.framework */; };
 		E02A44A715D4115C005BB6C1 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E02A44A615D4115C005BB6C1 /* OpenAL.framework */; };
@@ -238,12 +239,14 @@
 		E0AEC75F15E47D7D0015A2BB /* CMMControlItemSlider.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AEC75E15E47D7D0015A2BB /* CMMControlItemSlider.mm */; };
 		E0AEC76215E4A1F40015A2BB /* CMMControlItemText.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AEC76115E4A1F40015A2BB /* CMMControlItemText.mm */; };
 		E0AF13EF1614766C00D9FA68 /* CMMMenuItemSet.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AF13EE1614766C00D9FA68 /* CMMMenuItemSet.mm */; };
+		E0B42419161C251B00BEC59E /* CMMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0B42418161C251B00BEC59E /* CMMViewController.mm */; };
 		E0B4ED1F15FB0E3A00F640D0 /* IMG_STG_TEST_001.png in Resources */ = {isa = PBXBuildFile; fileRef = E0B4ED1E15FB0E3A00F640D0 /* IMG_STG_TEST_001.png */; };
 		E0B586CE15DCB406006C8B7F /* ScrollMenuTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0B586CD15DCB406006C8B7F /* ScrollMenuTestLayer.mm */; };
 		E0C1173615E89729000142B2 /* CMMScrollMenuH.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C1173515E89729000142B2 /* CMMScrollMenuH.mm */; };
 		E0C1173F15E8B110000142B2 /* CMMScrollMenuV.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C1173E15E8B110000142B2 /* CMMScrollMenuV.mm */; };
 		E0C1FE7F161428D800562E27 /* CMMDeprecated.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C1FE7E161428D800562E27 /* CMMDeprecated.mm */; };
 		E0C1FE821614348800562E27 /* develop.png in Resources */ = {isa = PBXBuildFile; fileRef = E0C1FE811614348800562E27 /* develop.png */; };
+		E0C6B483161EB592005F5749 /* AchievementsTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C6B482161EB592005F5749 /* AchievementsTestLayer.mm */; };
 		E0CA18C715F9DBAB0064EF9F /* CMMStagePXL.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0CA18C615F9DBAB0064EF9F /* CMMStagePXL.mm */; };
 		E0CA18CB15F9E8D60064EF9F /* CCSpriteBatchNode+SplitSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CA18CA15F9E8D50064EF9F /* CCSpriteBatchNode+SplitSprite.m */; };
 		E0D08A8615D8131600D14618 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D08A8515D8131600D14618 /* CoreMotion.framework */; };
@@ -269,6 +272,7 @@
 		E0ED521115E204680070712E /* CMMMenuItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0ED520E15E204680070712E /* CMMMenuItem.mm */; };
 		E0ED521215E204680070712E /* CMMScrollMenu.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0ED521015E204680070712E /* CMMScrollMenu.mm */; };
 		E0ED521915E20E590070712E /* CMMTouchDispatcherScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0ED521815E20E590070712E /* CMMTouchDispatcherScene.mm */; };
+		E0F8979616200F8600B34567 /* LeaderBoardTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0F8979516200F8600B34567 /* LeaderBoardTestLayer.mm */; };
 		E0FA89B115DD495C006732BC /* IMG_CMN_BFRAME_000.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0FA89AF15DD495C006732BC /* IMG_CMN_BFRAME_000.plist */; };
 		E0FA89B215DD495C006732BC /* IMG_CMN_BFRAME_000.png in Resources */ = {isa = PBXBuildFile; fileRef = E0FA89B015DD495C006732BC /* IMG_CMN_BFRAME_000.png */; };
 /* End PBXBuildFile section */
@@ -277,11 +281,13 @@
 		E009D7E715D94F19004E9012 /* PAR_EFT_0001.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PAR_EFT_0001.plist; path = Resources/PAR_EFT_0001.plist; sourceTree = "<group>"; };
 		E00E2E6815FF506A003551B4 /* CMMSimpleCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSimpleCache.h; path = libs/CMMSimpleFramework/CMMSimpleCache.h; sourceTree = "<group>"; };
 		E00E2E6915FF506A003551B4 /* CMMSimpleCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSimpleCache.mm; path = libs/CMMSimpleFramework/CMMSimpleCache.mm; sourceTree = "<group>"; };
-		E01D3C6E15DE02850078F042 /* TilemapTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TilemapTestLayer.h; sourceTree = "<group>"; };
-		E01D3C6F15DE02850078F042 /* TilemapTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TilemapTestLayer.mm; sourceTree = "<group>"; };
 		E0257A2015FF3C55008C54C2 /* CMMSPMapObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSPMapObject.h; path = libs/CMMSimpleFramework/CMMSPMapObject.h; sourceTree = "<group>"; };
 		E0257A2115FF3C55008C54C2 /* CMMSPMapObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSPMapObject.mm; path = libs/CMMSimpleFramework/CMMSPMapObject.mm; sourceTree = "<group>"; };
-		E02A449E15D4115C005BB6C1 /* SimpleFramework.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SimpleFramework.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E026250B1615F33600B158CF /* CMMGameKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMGameKit.h; path = libs/CMMSimpleFramework/CMMGameKit.h; sourceTree = "<group>"; };
+		E026250C1615F33600B158CF /* CMMGameKit.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMGameKit.mm; path = libs/CMMSimpleFramework/CMMGameKit.mm; sourceTree = "<group>"; };
+		E026250E161696AF00B158CF /* CMMPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMPacket.h; path = libs/CMMSimpleFramework/CMMPacket.h; sourceTree = "<group>"; };
+		E0262511161696BE00B158CF /* CMMPacket.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMPacket.mm; path = libs/CMMSimpleFramework/CMMPacket.mm; sourceTree = "<group>"; };
+		E02A449E15D4115C005BB6C1 /* CMMSimpleFramework.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CMMSimpleFramework.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E02A44A215D4115C005BB6C1 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		E02A44A415D4115C005BB6C1 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		E02A44A615D4115C005BB6C1 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
@@ -727,12 +733,15 @@
 		E0A4D703160ACB8800D17935 /* ZipUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZipUtils.m; sourceTree = "<group>"; };
 		E0AA4BD215E3CBF6006D0C7F /* CMMControlItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMControlItem.h; path = libs/CMMSimpleFramework/CMMControlItem.h; sourceTree = "<group>"; };
 		E0AA4BD315E3CBF6006D0C7F /* CMMControlItem.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMControlItem.mm; path = libs/CMMSimpleFramework/CMMControlItem.mm; sourceTree = "<group>"; };
+		E0AAF90A161C8A3200C6F241 /* CMMConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMConfig.h; path = libs/CMMSimpleFramework/CMMConfig.h; sourceTree = "<group>"; };
 		E0AEC75D15E47D7D0015A2BB /* CMMControlItemSlider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMControlItemSlider.h; path = libs/CMMSimpleFramework/CMMControlItemSlider.h; sourceTree = "<group>"; };
 		E0AEC75E15E47D7D0015A2BB /* CMMControlItemSlider.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMControlItemSlider.mm; path = libs/CMMSimpleFramework/CMMControlItemSlider.mm; sourceTree = "<group>"; };
 		E0AEC76015E4A1F30015A2BB /* CMMControlItemText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMControlItemText.h; path = libs/CMMSimpleFramework/CMMControlItemText.h; sourceTree = "<group>"; };
 		E0AEC76115E4A1F40015A2BB /* CMMControlItemText.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMControlItemText.mm; path = libs/CMMSimpleFramework/CMMControlItemText.mm; sourceTree = "<group>"; };
 		E0AF13ED1614766C00D9FA68 /* CMMMenuItemSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMMenuItemSet.h; path = libs/CMMSimpleFramework/CMMMenuItemSet.h; sourceTree = "<group>"; };
 		E0AF13EE1614766C00D9FA68 /* CMMMenuItemSet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMMenuItemSet.mm; path = libs/CMMSimpleFramework/CMMMenuItemSet.mm; sourceTree = "<group>"; };
+		E0B42417161C251B00BEC59E /* CMMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMViewController.h; path = libs/CMMSimpleFramework/CMMViewController.h; sourceTree = "<group>"; };
+		E0B42418161C251B00BEC59E /* CMMViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMViewController.mm; path = libs/CMMSimpleFramework/CMMViewController.mm; sourceTree = "<group>"; };
 		E0B4ED1E15FB0E3A00F640D0 /* IMG_STG_TEST_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_STG_TEST_001.png; path = Resources/IMG_STG_TEST_001.png; sourceTree = "<group>"; };
 		E0B586CC15DCB406006C8B7F /* ScrollMenuTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollMenuTestLayer.h; sourceTree = "<group>"; };
 		E0B586CD15DCB406006C8B7F /* ScrollMenuTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ScrollMenuTestLayer.mm; sourceTree = "<group>"; };
@@ -744,6 +753,8 @@
 		E0C1FE7E161428D800562E27 /* CMMDeprecated.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMDeprecated.mm; path = libs/CMMSimpleFramework/CMMDeprecated.mm; sourceTree = "<group>"; };
 		E0C1FE811614348800562E27 /* develop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = develop.png; path = Resources/develop.png; sourceTree = "<group>"; };
 		E0C5B41F15F4622200E0D6C9 /* CMMSType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSType.h; path = libs/CMMSimpleFramework/CMMSType.h; sourceTree = "<group>"; };
+		E0C6B481161EB592005F5749 /* AchievementsTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AchievementsTestLayer.h; sourceTree = "<group>"; };
+		E0C6B482161EB592005F5749 /* AchievementsTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AchievementsTestLayer.mm; sourceTree = "<group>"; };
 		E0CA18C515F9DBAB0064EF9F /* CMMStagePXL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMStagePXL.h; path = libs/CMMSimpleFramework/CMMStagePXL.h; sourceTree = "<group>"; };
 		E0CA18C615F9DBAB0064EF9F /* CMMStagePXL.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMStagePXL.mm; path = libs/CMMSimpleFramework/CMMStagePXL.mm; sourceTree = "<group>"; };
 		E0CA18C915F9E8D50064EF9F /* CCSpriteBatchNode+SplitSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CCSpriteBatchNode+SplitSprite.h"; path = "libs/CCSpriteBatchNode+SplitSprite.h"; sourceTree = "<group>"; };
@@ -790,6 +801,8 @@
 		E0ED521615E20E250070712E /* CMMMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMMMacro.h; path = libs/CMMSimpleFramework/CMMMacro.h; sourceTree = "<group>"; };
 		E0ED521715E20E590070712E /* CMMTouchDispatcherScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMTouchDispatcherScene.h; path = libs/CMMSimpleFramework/CMMTouchDispatcherScene.h; sourceTree = "<group>"; };
 		E0ED521815E20E590070712E /* CMMTouchDispatcherScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMTouchDispatcherScene.mm; path = libs/CMMSimpleFramework/CMMTouchDispatcherScene.mm; sourceTree = "<group>"; };
+		E0F8979416200F8600B34567 /* LeaderBoardTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaderBoardTestLayer.h; sourceTree = "<group>"; };
+		E0F8979516200F8600B34567 /* LeaderBoardTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LeaderBoardTestLayer.mm; sourceTree = "<group>"; };
 		E0FA89AF15DD495C006732BC /* IMG_CMN_BFRAME_000.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = IMG_CMN_BFRAME_000.plist; path = Resources/IMG_CMN_BFRAME_000.plist; sourceTree = "<group>"; };
 		E0FA89B015DD495C006732BC /* IMG_CMN_BFRAME_000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_CMN_BFRAME_000.png; path = Resources/IMG_CMN_BFRAME_000.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -830,6 +843,17 @@
 			name = stageComp;
 			sourceTree = "<group>";
 		};
+		E02625091615F2F900B158CF /* gameKit */ = {
+			isa = PBXGroup;
+			children = (
+				E026250E161696AF00B158CF /* CMMPacket.h */,
+				E0262511161696BE00B158CF /* CMMPacket.mm */,
+				E026250B1615F33600B158CF /* CMMGameKit.h */,
+				E026250C1615F33600B158CF /* CMMGameKit.mm */,
+			);
+			name = gameKit;
+			sourceTree = "<group>";
+		};
 		E02A449315D4115C005BB6C1 = {
 			isa = PBXGroup;
 			children = (
@@ -843,7 +867,7 @@
 		E02A449F15D4115C005BB6C1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				E02A449E15D4115C005BB6C1 /* SimpleFramework.app */,
+				E02A449E15D4115C005BB6C1 /* CMMSimpleFramework.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1055,10 +1079,13 @@
 				E0C1FE7E161428D800562E27 /* CMMDeprecated.mm */,
 				E032FC3315E1E97F00B28B61 /* CMMGLView.h */,
 				E032FC3415E1E98100B28B61 /* CMMGLView.mm */,
+				E0B42417161C251B00BEC59E /* CMMViewController.h */,
+				E0B42418161C251B00BEC59E /* CMMViewController.mm */,
 				E047705415D4C79C0079EAE9 /* view */,
 				E046596715D559F500D3ADF0 /* dispatcher */,
 				E0D4096615D4F4A400953AFC /* sound */,
 				E02A464815D411EE005BB6C1 /* util */,
+				E02625091615F2F900B158CF /* gameKit */,
 			);
 			name = common;
 			sourceTree = "<group>";
@@ -1167,14 +1194,16 @@
 				E095571415D8A5FE00615954 /* GyroTestLayer.mm */,
 				E0B586CC15DCB406006C8B7F /* ScrollMenuTestLayer.h */,
 				E0B586CD15DCB406006C8B7F /* ScrollMenuTestLayer.mm */,
-				E01D3C6E15DE02850078F042 /* TilemapTestLayer.h */,
-				E01D3C6F15DE02850078F042 /* TilemapTestLayer.mm */,
 				E049BE2415E3E28600DF09A1 /* ControlItemTestLayer.h */,
 				E049BE2515E3E28600DF09A1 /* ControlItemTestLayer.mm */,
 				E08DBA9E15E7E5EE0090F7F7 /* CustomUITestLayer.h */,
 				E08DBA9F15E7E5EE0090F7F7 /* CustomUITestLayer.mm */,
 				E03DD9F715F4B8580001257B /* NoticeTestLayer.h */,
 				E03DD9F815F4B8580001257B /* NoticeTestLayer.mm */,
+				E0F8979416200F8600B34567 /* LeaderBoardTestLayer.h */,
+				E0F8979516200F8600B34567 /* LeaderBoardTestLayer.mm */,
+				E0C6B481161EB592005F5749 /* AchievementsTestLayer.h */,
+				E0C6B482161EB592005F5749 /* AchievementsTestLayer.mm */,
 			);
 			name = TestMenu;
 			sourceTree = "<group>";
@@ -1409,6 +1438,7 @@
 		E09EA18915DB9E3E00D9C5C9 /* CMMSimpleFramework */ = {
 			isa = PBXGroup;
 			children = (
+				E0AAF90A161C8A3200C6F241 /* CMMConfig.h */,
 				E02A464715D411E2005BB6C1 /* common */,
 				E02A464915D4125A005BB6C1 /* component */,
 			);
@@ -1680,9 +1710,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		E02A449D15D4115C005BB6C1 /* SimpleFramework */ = {
+		E02A449D15D4115C005BB6C1 /* CMMSimpleFramework */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E02A463215D4115F005BB6C1 /* Build configuration list for PBXNativeTarget "SimpleFramework" */;
+			buildConfigurationList = E02A463215D4115F005BB6C1 /* Build configuration list for PBXNativeTarget "CMMSimpleFramework" */;
 			buildPhases = (
 				E02A449A15D4115C005BB6C1 /* Sources */,
 				E02A449B15D4115C005BB6C1 /* Frameworks */,
@@ -1692,9 +1722,9 @@
 			);
 			dependencies = (
 			);
-			name = SimpleFramework;
+			name = CMMSimpleFramework;
 			productName = SimpleFramework;
-			productReference = E02A449E15D4115C005BB6C1 /* SimpleFramework.app */;
+			productReference = E02A449E15D4115C005BB6C1 /* CMMSimpleFramework.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1717,7 +1747,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				E02A449D15D4115C005BB6C1 /* SimpleFramework */,
+				E02A449D15D4115C005BB6C1 /* CMMSimpleFramework */,
 			);
 		};
 /* End PBXProject section */
@@ -1851,7 +1881,6 @@
 				E046597015D56A3400D3ADF0 /* PopupTestLayer.mm in Sources */,
 				E095571515D8A5FE00615954 /* GyroTestLayer.mm in Sources */,
 				E0B586CE15DCB406006C8B7F /* ScrollMenuTestLayer.mm in Sources */,
-				E01D3C7015DE02850078F042 /* TilemapTestLayer.mm in Sources */,
 				E032FC3515E1E98500B28B61 /* CMMGLView.mm in Sources */,
 				E032FC4215E1EAB300B28B61 /* CMMDrawingUtil.mm in Sources */,
 				E032FC4315E1EAB300B28B61 /* CMMFileUtil.mm in Sources */,
@@ -1991,6 +2020,11 @@
 				E0C1FE7F161428D800562E27 /* CMMDeprecated.mm in Sources */,
 				E0AF13EF1614766C00D9FA68 /* CMMMenuItemSet.mm in Sources */,
 				E09D8382161577A1003E39A7 /* MenuItemSetTestLayer.mm in Sources */,
+				E026250D1615F33600B158CF /* CMMGameKit.mm in Sources */,
+				E0262512161696BE00B158CF /* CMMPacket.mm in Sources */,
+				E0B42419161C251B00BEC59E /* CMMViewController.mm in Sources */,
+				E0C6B483161EB592005F5749 /* AchievementsTestLayer.mm in Sources */,
+				E0F8979616200F8600B34567 /* LeaderBoardTestLayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2098,7 +2132,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E02A463215D4115F005BB6C1 /* Build configuration list for PBXNativeTarget "SimpleFramework" */ = {
+		E02A463215D4115F005BB6C1 /* Build configuration list for PBXNativeTarget "CMMSimpleFramework" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E02A463315D4115F005BB6C1 /* Debug */,

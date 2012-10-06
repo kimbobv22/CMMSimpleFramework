@@ -55,6 +55,10 @@ static CGPoint ccpOffset(CGPoint point_,float radians_,float offset_){
 	return ccpOffset(point_.x,point_.y,radians_,offset_);
 }
 
+static NSRange NSRangeMake(uint loc_, uint len_){
+	return NSMakeRange(loc_, len_);
+}
+
 static CGRect cmmFuncCommon_nodeToworldRect(CCNode *node_){
 	CGRect rect_ = CGRectZero;
 	rect_.size = node_.contentSize;

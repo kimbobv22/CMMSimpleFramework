@@ -15,8 +15,10 @@ enum testIntroState{
 
 @end
 
-@interface CommonIntroLayer2 : CMMLayer{
+@interface CommonIntroLayer2 : CMMLayer<CMMGameKitPADelegate,CMMGameKitAchievementsDelegate>{
 	CCLabelTTF *labelDisplay;
 }
+
+-(void)forwardScene;
 
 @end

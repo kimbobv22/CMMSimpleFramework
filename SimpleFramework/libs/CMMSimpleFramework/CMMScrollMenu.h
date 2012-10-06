@@ -69,6 +69,7 @@
 
 -(void)removeItem:(CCNode<CMMTouchDispatcherDelegate> *)item_;
 -(void)removeItemAtIndex:(int)index_;
+-(void)removeAllItems;
 
 -(CCNode<CMMTouchDispatcherDelegate> *)itemAtIndex:(int)index_;
 

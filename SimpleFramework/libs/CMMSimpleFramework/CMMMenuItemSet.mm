@@ -85,7 +85,7 @@
 		}
 	}
 	
-	int curUnitPerLine_ = itemCount_;
+	int curUnitPerLine_ = unitPerLine;
 	int curLine_ = -1,beforeLine_ = NSNotFound;
 	int curLineItemCount_ = 0;
 	float lineStartOffsetValue_ = 0;
@@ -102,6 +102,7 @@
 			curUnitPerLine_ = 0;
 			++curLine_;	
 		}
+		
 		
 		CMMMenuItem *menuItem_ = data_->arr[index_];
 		CGSize menuItemSize_ = [menuItem_ contentSize];

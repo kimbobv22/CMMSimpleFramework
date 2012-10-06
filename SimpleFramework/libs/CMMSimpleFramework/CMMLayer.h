@@ -8,14 +8,13 @@
 
 @interface CMMLayer : CCLayerColor<CMMTouchDispatcherDelegate,CMMPopupDispatcherDelegate,CMMMotionDispatcherDelegate>{
 	CMMTouchDispatcher *touchDispatcher;
-	BOOL isAvailableMotion;
 }
 
 -(void)loadingProcess000; //first loading seq
 -(void)whenLoadingEnded;
 
 @property (nonatomic, readonly) CMMTouchDispatcher *touchDispatcher;
-@property (nonatomic, readwrite) BOOL isAvailableMotion;
+@property (nonatomic, readwrite) BOOL isAvailableMotion DEPRECATED_ATTRIBUTE;
 
 @end
 

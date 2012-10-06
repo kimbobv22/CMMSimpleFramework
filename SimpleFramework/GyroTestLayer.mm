@@ -8,7 +8,8 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	self.isAvailableMotion = YES;
+	//register to gyro sensor
+	[[CMMMotionDispatcher sharedDispatcher] addTarget:self];
 	
 	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
 	CMMStageSpecDef stageSpec_;

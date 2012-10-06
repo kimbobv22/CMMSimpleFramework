@@ -186,6 +186,13 @@
 -(void)removeItemAtIndex:(int)index_{
 	[self removeItem:[self itemAtIndex:index_]];
 }
+-(void)removeAllItems{
+	ccArray *data_ = itemList->data;
+	for(int index_=data_->num-1;index_>=0;--index_){
+		CCNode<CMMTouchDispatcherDelegate> *item_ = data_->arr[index_];
+		[self removeItem:item_];
+	}
+}
 
 -(CCNode<CMMTouchDispatcherDelegate> *)itemAtIndex:(int)index_{
 	if(index_ < 0 || index_>=[self count] || index_ == NSNotFound) return nil;

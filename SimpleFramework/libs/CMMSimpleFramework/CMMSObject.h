@@ -26,6 +26,7 @@
 -(id)initWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
 
 -(CMMSObject *)createObjectWithRect:(CGRect)rect_;
+-(CMMSObject *)createObjectWithSpriteFrame:(CCSpriteFrame *)spriteFrame_;
 -(CMMSObject *)createObject;
 
 @property (nonatomic, readwrite) int obatchNodeTag;

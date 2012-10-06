@@ -52,10 +52,6 @@
 @optional
 -(void)customUIJoypad:(CMMCustomUIJoypad *)joypad_ whenChangedStickVector:(CGPoint)vector_;
 
--(void)customUIJoypad:(CMMCustomUIJoypad *)joypad_ whenPushdownWithButton:(CMMCustomUIJoypadButton *)button_;
--(void)customUIJoypad:(CMMCustomUIJoypad *)joypad_ whenPushupWithButton:(CMMCustomUIJoypadButton *)button_;
--(void)customUIJoypad:(CMMCustomUIJoypad *)joypad_ whenPushcancelWithButton:(CMMCustomUIJoypadButton *)button_;
-
 @end
 
 #define cmmVarCMMCustomUIJoypad_positionKey_stick @"stickPos"

@@ -43,6 +43,7 @@ static CMMScene *_sharedScene_ = nil;
 	runningLayer.isTouchEnabled = NO;
 	
 	_transitionLayer.opacity = 0.0f;
+	[_transitionLayer setContentSize:contentSize_];
 	[self addChild:_transitionLayer z:1];
 	[_transitionLayer runAction:[CCSequence actionOne:[CCFadeTo actionWithDuration:fadeTime/2.0f opacity:255] two:[CCCallFunc actionWithTarget:self selector:@selector(transition001)]]];
 }

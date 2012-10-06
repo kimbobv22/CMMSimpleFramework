@@ -112,17 +112,12 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 }
 
 #if COCOS2D_DEBUG >= 1
--(void)visit{
-	[super visit];
-	
-	kmGLPushMatrix();
-	[self transform];
+-(void)draw{
+	[super draw];
 	
 	ccDrawColor4F(1.0, 1.0, 1.0, 1.0);
 	glLineWidth(1.0f);
 	world->DrawDebugData();
-	
-	kmGLPopMatrix();
 }
 #endif
 
@@ -797,6 +792,9 @@ bool CMMStageContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *fixtur
 	[stateView update:dt_];
 }
 
+-(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ isAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
+	return isAllowTouch;
+}
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
 	if(!isAllowTouch) return;
 	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];

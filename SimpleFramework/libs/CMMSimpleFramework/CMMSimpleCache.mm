@@ -32,6 +32,9 @@
 -(void)cacheObject:(id)object_{
 	[itemList addObject:object_];
 }
+-(void)clearCache{
+	[itemList removeAllObjects];
+}
 
 -(void)dealloc{
 	[itemList release];
