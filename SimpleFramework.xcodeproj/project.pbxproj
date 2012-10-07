@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E0025053162128E4001DF0C0 /* CameraTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0025052162128E4001DF0C0 /* CameraTestLayer.mm */; };
 		E009D7E815D94F19004E9012 /* PAR_EFT_0001.plist in Resources */ = {isa = PBXBuildFile; fileRef = E009D7E715D94F19004E9012 /* PAR_EFT_0001.plist */; };
 		E00E2E6A15FF506A003551B4 /* CMMSimpleCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = E00E2E6915FF506A003551B4 /* CMMSimpleCache.mm */; };
 		E0257A2215FF3C55008C54C2 /* CMMSPMapObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0257A2115FF3C55008C54C2 /* CMMSPMapObject.mm */; };
@@ -135,6 +136,7 @@
 		E049BE2615E3E28700DF09A1 /* ControlItemTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E049BE2515E3E28600DF09A1 /* ControlItemTestLayer.mm */; };
 		E049E24B15DE9FCC00CD80E1 /* IMG_TMX_SAMPLE_000.png in Resources */ = {isa = PBXBuildFile; fileRef = E049E24915DE9FCC00CD80E1 /* IMG_TMX_SAMPLE_000.png */; };
 		E049E24C15DE9FCC00CD80E1 /* TMX_SAMPLE_000.tmx in Resources */ = {isa = PBXBuildFile; fileRef = E049E24A15DE9FCC00CD80E1 /* TMX_SAMPLE_000.tmx */; };
+		E066C5541621375000CE0172 /* CMMCaremaManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E066C5531621375000CE0172 /* CMMCaremaManager.mm */; };
 		E070503B15EC701500CFC81E /* CMMNoticeDispatcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = E070503A15EC701500CFC81E /* CMMNoticeDispatcher.mm */; };
 		E076BB5D16131DAE00C94718 /* CMMSpriteBatchBar.mm in Sources */ = {isa = PBXBuildFile; fileRef = E076BB5C16131DAE00C94718 /* CMMSpriteBatchBar.mm */; };
 		E08DBA9515E7D90A0090F7F7 /* CMMCustomUIJoypad.mm in Sources */ = {isa = PBXBuildFile; fileRef = E08DBA9415E7D90A0090F7F7 /* CMMCustomUIJoypad.mm */; };
@@ -278,6 +280,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E0025051162128E4001DF0C0 /* CameraTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraTestLayer.h; sourceTree = "<group>"; };
+		E0025052162128E4001DF0C0 /* CameraTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CameraTestLayer.mm; sourceTree = "<group>"; };
 		E009D7E715D94F19004E9012 /* PAR_EFT_0001.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PAR_EFT_0001.plist; path = Resources/PAR_EFT_0001.plist; sourceTree = "<group>"; };
 		E00E2E6815FF506A003551B4 /* CMMSimpleCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSimpleCache.h; path = libs/CMMSimpleFramework/CMMSimpleCache.h; sourceTree = "<group>"; };
 		E00E2E6915FF506A003551B4 /* CMMSimpleCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSimpleCache.mm; path = libs/CMMSimpleFramework/CMMSimpleCache.mm; sourceTree = "<group>"; };
@@ -512,6 +516,8 @@
 		E049BE2515E3E28600DF09A1 /* ControlItemTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ControlItemTestLayer.mm; sourceTree = "<group>"; };
 		E049E24915DE9FCC00CD80E1 /* IMG_TMX_SAMPLE_000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_TMX_SAMPLE_000.png; path = Resources/IMG_TMX_SAMPLE_000.png; sourceTree = "<group>"; };
 		E049E24A15DE9FCC00CD80E1 /* TMX_SAMPLE_000.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = TMX_SAMPLE_000.tmx; path = Resources/TMX_SAMPLE_000.tmx; sourceTree = "<group>"; };
+		E066C5521621375000CE0172 /* CMMCaremaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMCaremaManager.h; path = libs/CMMSimpleFramework/CMMCaremaManager.h; sourceTree = "<group>"; };
+		E066C5531621375000CE0172 /* CMMCaremaManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMCaremaManager.mm; path = libs/CMMSimpleFramework/CMMCaremaManager.mm; sourceTree = "<group>"; };
 		E070503915EC701500CFC81E /* CMMNoticeDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMNoticeDispatcher.h; path = libs/CMMSimpleFramework/CMMNoticeDispatcher.h; sourceTree = "<group>"; };
 		E070503A15EC701500CFC81E /* CMMNoticeDispatcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMNoticeDispatcher.mm; path = libs/CMMSimpleFramework/CMMNoticeDispatcher.mm; sourceTree = "<group>"; };
 		E076BB5B16131DAE00C94718 /* CMMSpriteBatchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSpriteBatchBar.h; path = libs/CMMSimpleFramework/CMMSpriteBatchBar.h; sourceTree = "<group>"; };
@@ -1128,6 +1134,8 @@
 			children = (
 				E0ED51E215E1F8550070712E /* CMMDrawingManager.h */,
 				E0ED51E315E1F8550070712E /* CMMDrawingManager.mm */,
+				E066C5521621375000CE0172 /* CMMCaremaManager.h */,
+				E066C5531621375000CE0172 /* CMMCaremaManager.mm */,
 			);
 			name = manager;
 			sourceTree = "<group>";
@@ -1204,6 +1212,8 @@
 				E0F8979516200F8600B34567 /* LeaderBoardTestLayer.mm */,
 				E0C6B481161EB592005F5749 /* AchievementsTestLayer.h */,
 				E0C6B482161EB592005F5749 /* AchievementsTestLayer.mm */,
+				E0025051162128E4001DF0C0 /* CameraTestLayer.h */,
+				E0025052162128E4001DF0C0 /* CameraTestLayer.mm */,
 			);
 			name = TestMenu;
 			sourceTree = "<group>";
@@ -2025,6 +2035,8 @@
 				E0B42419161C251B00BEC59E /* CMMViewController.mm in Sources */,
 				E0C6B483161EB592005F5749 /* AchievementsTestLayer.mm in Sources */,
 				E0F8979616200F8600B34567 /* LeaderBoardTestLayer.mm in Sources */,
+				E0025053162128E4001DF0C0 /* CameraTestLayer.mm in Sources */,
+				E066C5541621375000CE0172 /* CMMCaremaManager.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -113,9 +113,17 @@
 	[self updateScore];
 	
 	[[CMMGameKitLeaderBoard sharedLeaderBoard] setDelegate:self];
-	[self loadLeaderBoard];
 	
 	return self;
+}
+
+-(void)whenLoadingEnded{
+	[self loadLeaderBoard];
+}
+
+-(void)onExit{
+	[super onExit];
+	[[CMMGameKitLeaderBoard sharedLeaderBoard] setDelegate:nil];
 }
 
 -(void)setDisplayStr:(NSString *)str_{

@@ -280,3 +280,11 @@ static CMMScene *_sharedScene_ = nil;
 }
 
 @end
+
+@implementation CMMScene(ViewController)
+
+-(void)presentViewController:(UIViewController *)viewController_ animated:(BOOL)animated_ completion:(void (^)(void))completion_{
+	[[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:viewController_ animated:animated_ completion:completion_];
+}
+
+@end

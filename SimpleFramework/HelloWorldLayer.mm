@@ -17,6 +17,7 @@
 #import "NoticeTestLayer.h"
 #import "LeaderBoardTestLayer.h"
 #import "AchievementsTestLayer.h"
+#import "CameraTestLayer.h"
 
 @implementation HelloWorldLayer
 
@@ -102,6 +103,11 @@
 	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[AchievementsTestLayer node]];};
 	[menuItem_ setTitle:@"Achievements Test"];
+	[mainMenu addItem:menuItem_];
+	
+	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[CameraTestLayer node]];};
+	[menuItem_ setTitle:@"Camera Test"];
 	[mainMenu addItem:menuItem_];
 		
 	return self;

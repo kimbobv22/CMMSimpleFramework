@@ -108,10 +108,10 @@
 }
 
 //handling game center login view.
--(void)gameKitPA:(CMMGameKitPA *)gameKitPA_ whenTryAuthenticationWithViewController:(UIViewController *)viewController_{
+/*-(void)gameKitPA:(CMMGameKitPA *)gameKitPA_ whenTryAuthenticationWithViewController:(UIViewController *)viewController_{
 	AppController *appDelegate_ = (AppController*)[[UIApplication sharedApplication] delegate];
 	[[appDelegate_ navController] presentViewController:viewController_ animated:YES completion:nil];
-}
+}*/
 -(void)gameKitPA:(CMMGameKitPA *)gameKitPA_ whenCompletedAuthenticationWithLocalPlayer:(GKPlayer *)localPlayer_{
 	[[CMMGameKitAchievements sharedAchievements] setDelegate:self];
 	[[CMMGameKitAchievements sharedAchievements] reportCachedAchievements];

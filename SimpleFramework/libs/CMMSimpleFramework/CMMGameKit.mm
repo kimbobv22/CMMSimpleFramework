@@ -1,6 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMGameKit.h"
+#import "CMMScene.h"
 
 static CMMGameKitPA *_sharedCMMGameKitPA_ = nil;
 
@@ -48,9 +49,13 @@ static CMMGameKitPA *_sharedCMMGameKitPA_ = nil;
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onLocalPlayerAuthenticationChanged) name:GKPlayerAuthenticationDidChangeNotificationName object:nil];
 	
-	[[GKLocalPlayer localPlayer] setAuthenticateHandler:^(UIViewController *viewControl_, NSError *error_){
-		if(viewControl_ && cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitPA:whenTryAuthenticationWithViewController:))){
-			[delegate gameKitPA:self whenTryAuthenticationWithViewController:viewControl_];
+	[[GKLocalPlayer localPlayer] setAuthenticateHandler:^(UIViewController *viewController_, NSError *error_){
+		if(viewController_){
+			if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitPA:whenTryAuthenticationWithViewController:))){
+				[delegate gameKitPA:self whenTryAuthenticationWithViewController:viewController_];
+			}else{
+				[[CMMScene sharedScene] presentViewController:viewController_ animated:YES completion:nil];
+			}
 		}else if(error_ && cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitPA:whenFailedAuthenticationWithError:))){
 			[delegate gameKitPA:self whenFailedAuthenticationWithError:error_];
 		}else if(!error_ && cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitPA:whenCompletedAuthenticationWithLocalPlayer:))){

@@ -86,3 +86,9 @@
 -(void)closePopup:(CMMLayerPopup *)popup_;
 
 @end
+
+@interface CMMScene(ViewController)
+
+-(void)presentViewController:(UIViewController *)viewController_ animated:(BOOL)animated_ completion:(void (^)(void))completion_ NS_AVAILABLE_IOS(5_0);
+
+@end
