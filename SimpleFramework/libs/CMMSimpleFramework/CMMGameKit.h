@@ -84,7 +84,7 @@
 
 @end
 
-#define cmmVar_CMMGameKitAchievements_cacheName @"_cmmFile_achievements_cache_"
+#define cmmVarCMMGameKitAchievements_cacheName @"_cmmFile_achievements_cache_"
 
 @interface CMMGameKitAchievements : NSObject{
 	id<CMMGameKitAchievementsDelegate> delegate;

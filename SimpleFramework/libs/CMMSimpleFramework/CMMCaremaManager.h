@@ -11,7 +11,7 @@
 
 @end
 
-#define cmmVar_CMMCaremaManager_textureSeqName @"Image_CMMCaremaManager_"
+#define cmmVarCMMCaremaManager_textureSeqName @"Image_CMMCaremaManager_"
 
 @interface CMMCaremaManager : NSObject<UINavigationControllerDelegate,UIImagePickerControllerDelegate>{
 	id<CMMCaremaManagerDelegate> delegate;

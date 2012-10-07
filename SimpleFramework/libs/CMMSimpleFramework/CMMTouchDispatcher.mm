@@ -71,7 +71,7 @@ static SEL _sharedTouchSelectors_[TouchSelectorID_maxCount];
 	
 	touchList = [[CCArray alloc] init];
 	target = target_;
-	maxMultiTouchCount = cmmVar_defaultMultiTouchAllowCount;
+	maxMultiTouchCount = cmmVarConfig_defaultMultiTouchAllowCount;
 	
 	if(!_sharedTouchSelectors_[TouchSelectorID_began]){
 		_sharedTouchSelectors_[TouchSelectorID_began] = @selector(touchDispatcher:whenTouchBegan:event:);

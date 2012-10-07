@@ -2,7 +2,7 @@
 
 #import <Foundation/Foundation.h>
 
-#define cmmVar_CMMPacketData_maxCacheCount 20
+#define cmmVarCMMPacketData_maxCacheCount 20
 
 @class CMMPacket;
 
@@ -44,7 +44,7 @@ enum CMMPacketDataType{
 
 @end
 
-#define cmmVar_CMMPacket_keyName_mainData @"m0"
+#define cmmVarCMMPacket_keyName_mainData @"m0"
 
 @interface CMMPacket : NSObject<NSCopying,NSCoding>{
 	id mainData;

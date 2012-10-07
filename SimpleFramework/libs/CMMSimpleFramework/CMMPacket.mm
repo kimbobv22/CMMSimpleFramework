@@ -80,7 +80,7 @@ static CMMSimpleCache *_cachedCMMPacketData_ = nil;
 	return [_cachedCMMPacketData_ cachedObject];
 }
 +(void)cacheData:(CMMPacketData *)data_{
-	if([_cachedCMMPacketData_ count] >= cmmVar_CMMPacketData_maxCacheCount)
+	if([_cachedCMMPacketData_ count] >= cmmVarCMMPacketData_maxCacheCount)
 		return;
 	[data_ resetData];
 	[_cachedCMMPacketData_ cacheObject:data_];
@@ -101,12 +101,12 @@ static CMMSimpleCache *_cachedCMMPacketData_ = nil;
 -(id)initWithCoder:(NSCoder *)decoder_{
 	if(!(self = [super init])) return self;
 	
-	[self setMainData:[decoder_ decodeObjectForKey:cmmVar_CMMPacket_keyName_mainData]];
+	[self setMainData:[decoder_ decodeObjectForKey:cmmVarCMMPacket_keyName_mainData]];
 	
 	return self;
 }
 -(void)encodeWithCoder:(NSCoder *)encoder_{
-	[encoder_ encodeObject:mainData forKey:cmmVar_CMMPacket_keyName_mainData];
+	[encoder_ encodeObject:mainData forKey:cmmVarCMMPacket_keyName_mainData];
 }
 -(id)copyWithZone:(NSZone *)zone_{
 	CMMPacket *packet_ = [[[self class] allocWithZone:zone_] init];

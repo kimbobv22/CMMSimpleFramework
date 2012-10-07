@@ -184,7 +184,7 @@ static CMMGameKitAchievements *_sharedCMMGameKitAchievements_ = nil;
 	_cachedAchievements = [[NSMutableArray alloc] init];
 	_reportedAchievements = [[NSMutableArray alloc] init];
 	
-	NSData *achievementsData_ = [CMMFileUtil dataWithFileName:cmmVar_CMMGameKitAchievements_cacheName isInDocument:YES];
+	NSData *achievementsData_ = [CMMFileUtil dataWithFileName:cmmVarCMMGameKitAchievements_cacheName isInDocument:YES];
 	if(achievementsData_){
 		NSArray *targetArray_ = [NSKeyedUnarchiver unarchiveObjectWithData:achievementsData_];
 		for(GKAchievement *achievement_ in targetArray_){
@@ -345,7 +345,7 @@ static CMMGameKitAchievements *_sharedCMMGameKitAchievements_ = nil;
 }
 -(void)writeCachedAchievements{
 	NSData *targetData_ = [NSKeyedArchiver archivedDataWithRootObject:_cachedAchievements];
-	[targetData_ writeToFile:[CMMStringUtil stringPathOfDocument:cmmVar_CMMGameKitAchievements_cacheName] atomically:YES];
+	[targetData_ writeToFile:[CMMStringUtil stringPathOfDocument:cmmVarCMMGameKitAchievements_cacheName] atomically:YES];
 }
 
 @end

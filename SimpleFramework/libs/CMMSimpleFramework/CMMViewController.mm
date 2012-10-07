@@ -5,7 +5,7 @@
 @implementation CMMViewController
 
 -(NSUInteger)supportedInterfaceOrientations{	
-	return cmmVar_supportedUIInterfaceOrientationMask;
+	return cmmVarConfig_supportedUIInterfaceOrientationMask;
 }
 -(BOOL)shouldAutorotate{
 	return YES;

@@ -60,7 +60,7 @@ static CMMCaremaManager *_sharedCMMCaremaManager_ = nil;
 		targetImage_ = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
 		
-		NSString *textureKey_ = [NSString stringWithFormat:@"%@%04d",cmmVar_CMMCaremaManager_textureSeqName,++_IMAGE_SEQ_];
+		NSString *textureKey_ = [NSString stringWithFormat:@"%@%04d",cmmVarCMMCaremaManager_textureSeqName,++_IMAGE_SEQ_];
 		CCTexture2D *imageTexture_ = [[CCTextureCache sharedTextureCache] addCGImage:[targetImage_ CGImage]  forKey:textureKey_];
 #if COCOS2D_DEBUG >= 1
 		CCLOG(@"CMMCaremaManager : add texture from UIImage [ %@ ]",textureKey_);
