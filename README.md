@@ -5,8 +5,8 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 ##How to use
 
-	// 1. Import "CMMGLView.h" and replace CCGLView to CMMGLView at AppDelegate.mm.
-	// 1. AppDelegate.mm에 "CMMGLView.h"를 임포트하고, CCGLView를 CMMGLView로 교체합니다.
+	// 1. Import "CMMHeader.h" and replace CCGLView to CMMGLView at AppDelegate.mm.
+	// 1. AppDelegate.mm에 "CMMHeader.h"를 임포트하고, CCGLView를 CMMGLView로 교체합니다.
     
 	CMMGLView *glView = [CMMGLView viewWithFrame:[window_ bounds]
 					pixelFormat:kEAGLColorFormatRGB565
@@ -16,16 +16,23 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 					multiSampling:NO
 					numberOfSamples:0];
 					
-	// 2. Import "CMMScene.h" and replace Intro layer that made by CCScene to CMMScene intro layer at AppDelegate.mm.
-	// 2. "CMMScene.h"를 임포트하고, CMMScene 인트로 레이어로 CCScene로 만든 인트로 레이어를 교체합니다.
+	// 2. replace UINavigationController to CMMViewController at AppDelegate.mm.
+	      You can modify various setting(Interface Orientations, etc...) at CMMConfig.h
+	// 2. AppDelegate.mm에 UINavigationController 를 CMMViewController로 교체합니다.
+	      CMMConfig.h에서 여러가지 설정(인터페이스 방향 등)을 변경할 수 있습니다.
+					
+	navController_ = [[CMMViewController alloc] initWithRootViewController:director_];
+	
+	// 3. Import "CMMScene.h" and replace Intro layer that made by CCScene to CMMScene intro layer at AppDelegate.mm.
+	// 3. "CMMScene.h"를 임포트하고, CMMScene 인트로 레이어로 CCScene로 만든 인트로 레이어를 교체합니다.
 	
 	[director_ pushScene:[CMMScene sharedScene]];
 	[[CMMScene sharedScene] pushLayer:(CMMLayer *)];
 	
-	//3. The class that can be used to "CMMScene scene transition" is only CMMLayer or a class that inherited CMMLayer.
-	//   You can use all features of CMMSimpleFramework through importing "CMMHeader.h"!
-	//3. CMMScene의 화면전환으로 사용할 수 있는 클래스는 CMMLayer나, CMMLayer를 상속받은 것만 가능합니다.
-	//   해당 클래스에서 "CMMHeader.h" 를 상속받음으로 CMMSimpleFramework의 모든 기능을 사용하세요!
+	// 4. The class that can be used to "CMMScene scene transition" is only CMMLayer or a class that inherited CMMLayer.
+	//    You can use all features of CMMSimpleFramework through importing "CMMHeader.h"!
+	// 4. CMMScene의 화면전환으로 사용할 수 있는 클래스는 CMMLayer나, CMMLayer를 상속받은 것만 가능합니다.
+	//    해당 클래스에서 "CMMHeader.h" 를 상속받음으로 CMMSimpleFramework의 모든 기능을 사용하세요!
 	
 	#import "CMMHeader.h"
 
