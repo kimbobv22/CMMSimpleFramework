@@ -60,8 +60,13 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 <br>
 
-#####CMMType
 #####CMMMacro
+
+>include various and useful function.
+>다양한고 유용한 함수들이 포함되어 있습니다.
+
+<br>
+
 #####CMMGLView
 
 >CMMGLView has inherited to CCGLView,<br>
