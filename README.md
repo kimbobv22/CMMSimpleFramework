@@ -62,7 +62,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMMacro
 
->include various and useful function.
+>include various and useful function.<br>
 >다양한고 유용한 함수들이 포함되어 있습니다.
 
 <br>
@@ -327,10 +327,17 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 <br>
 
-#####CMMTilemapStage
+#####CMMStageTMX
 
 >Create Box2d map by parsing TMX file.<br>
 >TMX파일을 분석하여 Box2d 맵을 만들어 냅니다.
+
+<br>
+
+#####CMMStagePXL
+
+>You can create Box2d map that included pixel collision.<br>
+>픽셀충돌이 포함된 Box2d 맵을 만들 수 있습니다.
 
 <br>
 
