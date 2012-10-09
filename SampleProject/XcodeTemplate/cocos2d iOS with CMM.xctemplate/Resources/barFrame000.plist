@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>frames</key>
+	<dict>
+		<key>barFrame000_BATCHBAR_00.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{62, 76}, {22, 21}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>sourceColorRect</key>
+			<string>{{62, 76}, {22, 21}}</string>
+			<key>sourceSize</key>
+			<string>{22, 21}</string>
+		</dict>
+		<key>barFrame000_BATCHBAR_01.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{90, 76}, {22, 21}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>sourceColorRect</key>
+			<string>{{90, 76}, {22, 21}}</string>
+			<key>sourceSize</key>
+			<string>{22, 21}</string>
+		</dict>
+		<key>barFrame000_SLIDE_BAR.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{62, 102}, {10, 9}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>sourceColorRect</key>
+			<string>{{62, 102}, {10, 9}}</string>
+			<key>sourceSize</key>
+			<string>{10, 9}</string>
+		</dict>
+		<key>barFrame000_SLIDE_BTN.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{82, 40}, {28, 28}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>sourceColorRect</key>
+			<string>{{82, 40}, {28, 28}}</string>
+			<key>sourceSize</key>
+			<string>{28, 28}</string>
+		</dict>
+		<key>barFrame000_SLIDE_MASK.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{90, 102}, {10, 9}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>sourceColorRect</key>
+			<string>{{90, 102}, {10, 9}}</string>
+			<key>sourceSize</key>
+			<string>{10, 9}</string>
+		</dict>
+		<key>barFrame000_SWITCH_BACK.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{0, 0}, {120, 34}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>sourceColorRect</key>
+			<string>{{0, 0}, {120, 34}}</string>
+			<key>sourceSize</key>
+			<string>{120, 34}</string>
+		</dict>
+		<key>barFrame000_SWITCH_BTN.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{0, 76}, {33, 34}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>sourceColorRect</key>
+			<string>{{0, 76}, {33, 34}}</string>
+			<key>sourceSize</key>
+			<string>{33, 34}</string>
+		</dict>
+		<key>barFrame000_SWITCH_MASK.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{0, 40}, {76, 31}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>sourceColorRect</key>
+			<string>{{0, 40}, {76, 31}}</string>
+			<key>sourceSize</key>
+			<string>{76, 31}</string>
+		</dict>
+		<key>barFrame000_TEXT_BAR.png</key>
+		<dict>
+			<key>frame</key>
+			<string>{{38, 76}, {19, 31}}</string>
+			<key>offset</key>
+			<string>{0, 0}</string>
+			<key>sourceColorRect</key>
+			<string>{{38, 76}, {19, 31}}</string>
+			<key>sourceSize</key>
+			<string>{19, 31}</string>
+		</dict>
+	</dict>
+	<key>metadata</key>
+	<dict>
+		<key>format</key>
+		<integer>1</integer>
+		<key>size</key>
+		<string>{128, 128}</string>
+	</dict>
+</dict>
+</plist>

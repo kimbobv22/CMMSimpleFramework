@@ -6,6 +6,9 @@
 
 @interface HelloWorldLayer : CMMLayer<CMMMenuItemDelegate>{
 	CMMScrollMenuV *mainMenu;
+	CCLabelTTF *connectionStatusLabel;
 }
+
+-(void)updateConnectionStatus;
 
 @end

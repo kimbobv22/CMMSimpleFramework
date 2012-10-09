@@ -17,6 +17,7 @@
 #import "NoticeTestLayer.h"
 #import "LeaderBoardTestLayer.h"
 #import "AchievementsTestLayer.h"
+#import "GameCenterTestLayer.h"
 #import "CameraTestLayer.h"
 
 @implementation HelloWorldLayer
@@ -27,6 +28,12 @@
 	mainMenu = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(contentSize_.width * 0.5f, contentSize_.height * 0.8f)];
 	mainMenu.position = cmmFuncCommon_position_center(self, mainMenu);
 	[self addChild:mainMenu];
+	
+	connectionStatusLabel = [CMMFontUtil labelWithstring:@" "];
+	[self addChild:connectionStatusLabel];
+	
+	[[CMMConnectionMonitor sharedMonitor] addObserverForConnectionStatus:self selector:@selector(updateConnectionStatus)];
+	[self updateConnectionStatus];
 	
 	CGSize menuItemSize_ = CGSizeMake(mainMenu.contentSize.width, 55);
 	
@@ -106,11 +113,36 @@
 	[mainMenu addItem:menuItem_];
 	
 	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[GameCenterTestLayer node]];};
+	[menuItem_ setTitle:@"Game Center(Match,Session) Test"];
+	[mainMenu addItem:menuItem_];
+	
+	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[CameraTestLayer node]];};
 	[menuItem_ setTitle:@"Camera Test"];
 	[mainMenu addItem:menuItem_];
 		
 	return self;
+}
+
+-(void)updateConnectionStatus{
+	NSString *connectionStatusStr_ = nil;
+	CMMConnectionStatus connectionStatus_ = [[CMMConnectionMonitor sharedMonitor] connectionStatus];
+	switch(connectionStatus_){
+		case CMMConnectionStatus_WiFi:
+			connectionStatusStr_ = @"connected as WiFi";
+			break;
+		case CMMConnectionStatus_WWAN:
+			connectionStatusStr_ = @"connected as WWAN";
+			break;
+		case CMMConnectionStatus_noConnection:
+		default:
+			connectionStatusStr_ = @"no connection";
+			break;
+	}
+	
+	[connectionStatusLabel setString:connectionStatusStr_];
+	[connectionStatusLabel setPosition:ccp(contentSize_.width*0.5f,mainMenu.position.y+mainMenu.contentSize.height+connectionStatusLabel.contentSize.height*0.5f+10.0f)];
 }
 
 @end

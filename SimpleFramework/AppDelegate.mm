@@ -84,6 +84,7 @@
 	return YES;
 }
 
+// must put this code on iOS6.
 -(NSUInteger)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window{
 	return UIInterfaceOrientationMaskAll;
 }

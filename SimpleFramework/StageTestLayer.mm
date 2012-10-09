@@ -210,11 +210,11 @@
 		case StageControlType_dragMode:{
 			if(_isTouchObject){
 				b2Vec2 beforeVector_ = _curTouchObject.body->GetTransform().p;
-				[_curTouchObject updateBodyWithPosition:[stage convertToStageWorldSpace:_curTouchPoint]];
+				[_curTouchObject updateBodyPosition:[stage convertToStageWorldSpace:_curTouchPoint]];
 				b2Vec2 curVector_ = _curTouchObject.body->GetTransform().p;
 				b2Vec2 velocity_ = curVector_-beforeVector_;
 				velocity_*=10.0f;
-				_curTouchObject.body->SetLinearVelocity(velocity_);
+				[_curTouchObject updateBodyLinearVelocity:velocity_];
 				CGPoint diffPoint_ = ccpSub(ccp(self.contentSize.width/2,self.contentSize.height/2),_curTouchPoint);
 				stage.worldPoint = ccpSub(stage.worldPoint, ccpMult(diffPoint_, dt_*2.0f));
 			}
@@ -416,7 +416,7 @@
 	[backBtn setIsEnable:YES];
 }
 
--(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ isAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
+-(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
 	return [backBtn isEnable];
 }
 

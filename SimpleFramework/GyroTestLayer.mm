@@ -62,4 +62,10 @@
 	[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
 }
 
+-(void)cleanup{
+	//must remove from CMMMotionDispatcher in cleanup method
+	[[CMMMotionDispatcher sharedDispatcher] removeTarget:self];
+	[super cleanup];
+}
+
 @end

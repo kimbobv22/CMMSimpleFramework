@@ -70,7 +70,7 @@
 	[self _setDisplayStr:@"Loading sprite frame..."];
 }
 -(void)loadingProcess001{
-	[CMMDrawingManager sharedManager];
+	[[CMMDrawingManager sharedManager] addDrawingItemWithFileName:@"IMG_CMN_BFRAME_000"];
 }
 
 -(void)loadingProcess002{
