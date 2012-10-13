@@ -42,9 +42,9 @@
 	[tilemap setPosition:[world position]];
 }
 
--(void)update:(ccTime)dt_{
+-(void)step:(ccTime)dt_{
 	if(!isTilemapBuiltup) return;
-	[super update:dt_];
+	[super step:dt_];
 }
 
 -(void)dealloc{

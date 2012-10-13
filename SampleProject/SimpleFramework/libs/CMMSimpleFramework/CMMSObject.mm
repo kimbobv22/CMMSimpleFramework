@@ -216,9 +216,8 @@
 	}
 }
 -(void)whenRemovedToStage{
-	stage.world.world->DestroyBody(body);
+	[[stage world] world]->DestroyBody(body);
 	body = NULL;
-	[stage.stateView removeStateViewAtTarget:self];
 	[parent_ removeChild:self cleanup:YES];
 }
 

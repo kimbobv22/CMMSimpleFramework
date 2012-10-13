@@ -6,7 +6,7 @@
 #define cmmFuncCMMSSpecStage_LoopFixtureOfWorldBody(_varFixture_,_worldBody_) for((_varFixture_) = (_worldBody_)->GetFixtureList();(_varFixture_);(_varFixture_) = (_varFixture_)->GetNext())
 
 @implementation CMMSSpecStage
-@synthesize gravity,friction,restitution,density;
+@synthesize gravity,friction,restitution,density,brightness;
 
 +(id)specWithTarget:(id)target_ withStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
 	return [[[self alloc] initWithTarget:target_ withStageSpecDef:stageSpecDef_] autorelease];
@@ -16,6 +16,10 @@
 	if(!(self = [super initWithTarget:target_])) return self;
 	
 	specType = 0x3001;
+	friction = 0.5f;
+	restitution = 0.3f;
+	density = 0.7f;
+	brightness = 1.0f;
 	
 	return self;
 }
@@ -71,6 +75,7 @@
 	[self setFriction:stageSpecDef_.friction];
 	[self setRestitution:stageSpecDef_.restitution];
 	[self setDensity:stageSpecDef_.density];
+	[self setBrightness:stageSpecDef_.brightness];
 }
 
 -(id)initWithCoder:(NSCoder *)decoder_{
@@ -80,6 +85,7 @@
 	friction = [decoder_ decodeFloatForKey:cmmVarCMMSSpecStage_friction];
 	restitution = [decoder_ decodeFloatForKey:cmmVarCMMSSpecStage_restitution];
 	density = [decoder_ decodeFloatForKey:cmmVarCMMSSpecStage_density];
+	brightness = [decoder_ decodeFloatForKey:cmmVarCMMSSpecStage_brightness];
 	
 	return self;
 }
@@ -89,6 +95,7 @@
 	[encoder_ encodeFloat:friction forKey:cmmVarCMMSSpecStage_gravity];
 	[encoder_ encodeFloat:restitution forKey:cmmVarCMMSSpecStage_gravity];
 	[encoder_ encodeFloat:restitution forKey:cmmVarCMMSSpecStage_density];
+	[encoder_ encodeFloat:brightness forKey:cmmVarCMMSSpecStage_brightness];
 }
 
 -(id)copyWithZone:(NSZone *)zone_{
@@ -97,6 +104,7 @@
 	[copy_ setFriction:friction];
 	[copy_ setRestitution:restitution];
 	[copy_ setDensity:density];
+	[copy_ setBrightness:brightness];
 	
 	return copy_;
 }

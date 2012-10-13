@@ -378,9 +378,9 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 	[pixel setPosition:[world position]];
 }
 
--(void)update:(ccTime)dt_{
+-(void)step:(ccTime)dt_{
 	[pixel update:dt_];
-	[super update:dt_];
+	[super step:dt_];
 }
 
 -(void)whenContactBeganWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{

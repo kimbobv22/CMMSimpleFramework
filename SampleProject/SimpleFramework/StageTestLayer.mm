@@ -233,6 +233,10 @@
 	CMMSObject *object_ = [batchNode_ createObject];
 	object_.position = point_;
 	[stage.world addObject:object_];
+	
+	CMMStageLightItem *lightItem_ = [[stage light] addLightItemAtPoint:CGPointZero brightness:1.0f radius:100.0f];
+	[lightItem_ setTarget:object_];
+	
 	return object_;
 }
 -(CMMSBall *)addBall:(CGPoint)point_{
@@ -240,6 +244,10 @@
 	CMMSBall *ball_ = (CMMSBall *)[batchNode_ createObject];
 	ball_.position = point_;
 	[stage.world addObject:ball_];
+	
+	CMMStageLightItem *lightItem_ = [[stage light] addLightItemAtPoint:CGPointZero brightness:1.0f radius:100.0f];
+	[lightItem_ setTarget:ball_];
+	
 	return ball_;
 }
 
@@ -258,12 +266,15 @@
 	stageSpec_.gravity = CGPointZero;
 	stageSpec_.friction = 0.3f;
 	stageSpec_.restitution = 0.3f;
+	stageSpec_.brightness = 0.2f;
 	
 	stage = [CMMStage stageWithStageSpecDef:stageSpec_];
 	stage.sound.soundDistance = 300.0f;
 	stage.position = ccp(0,contentSize_.height-stage.contentSize.height);
 	stage.delegate = self;
 	stage.isAllowTouch = YES;
+	[stage initializeLightSystem]; // lazy initialization
+	
 	[self addChild:stage z:0];
 	
 	////add object batchNode
@@ -300,12 +311,15 @@
 	stageSpec_.gravity = CGPointZero;
 	stageSpec_.friction = 0.3f;
 	stageSpec_.restitution = 0.3f;
+	stageSpec_.brightness = 0.2f;
 
 	stage = [CMMStagePXL stageWithStageSpecDef:stageSpec_ fileName:@"IMG_STG_TEST_001.png" isInDocument:NO];
 	stage.sound.soundDistance = 300.0f;
 	stage.position = ccp(0,self.contentSize.height-stage.contentSize.height);
 	stage.delegate = self;
 	stage.isAllowTouch = YES;
+	[stage initializeLightSystem]; // lazy initialization
+	
 	[self addChild:stage z:0];
 	
 	//backGround image for test
@@ -388,16 +402,19 @@
 	
 	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
 	CMMStageSpecDef stageSpecDef_ = CMMStageSpecDefMake(CGSizeMake(targetSize_.width-80.0f, targetSize_.height-50.0f),CGSizeZero,ccp(0,0));
+	stageSpecDef_.brightness = 1.0f;
 	
 	stage = [CMMStageTMX stageWithStageSpecDef:stageSpecDef_ tmxFileName:@"TMX_SAMPLE_000.tmx" isInDocument:NO];
+	[stage light];
 	stage.position = ccp(0,contentSize_.height-stage.contentSize.height);
 	stage.delegate = self;
 	stage.isAllowTouch = YES;
+	[stage initializeLightSystem]; // lazy initialization
 	
 	[self addChild:stage];
 	
 	////add object batchNode
-	CMMSObjectBatchNode *batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"Icon.png" isInDocument:NO];
+	CMMSObjectBatchNode *batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"Icon-Small.png" isInDocument:NO];
 	[stage.world addObatchNode:batchNode_];
 	
 	batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"IMG_STG_ball.png" isInDocument:NO];
@@ -425,6 +442,18 @@
 }
 -(BOOL)tilemapStage:(CMMStageTMX *)stage_ isSingleTileAtTMXLayer:(CCTMXLayer *)tmxLayer_ tile:(CCSprite *)tile_ xIndex:(float)xIndex_ yIndex:(float)yIndex_{
 	return NO; // if return value is 'yes', the tile will be built up as a single tile;
+}
+
+-(CMMSObject *)addBox:(CGPoint)point_{
+	CMMSObjectBatchNode *batchNode_ = [stage.world obatchNodeAtFileName:@"Icon-Small.png" isInDocument:NO];
+	CMMSObject *object_ = [batchNode_ createObject];
+	object_.position = point_;
+	[stage.world addObject:object_];
+	
+	CMMStageLightItem *lightItem_ = [[stage light] addLightItemAtPoint:CGPointZero brightness:1.0f radius:100.0f];
+	[lightItem_ setTarget:object_];
+	
+	return object_;
 }
 
 @end

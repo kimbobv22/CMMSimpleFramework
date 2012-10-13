@@ -10,7 +10,7 @@
 
 @class CMMStage;
 
-class CMMStageContactListener : public b2ContactListener{
+class CMMStageWorldContactListener : public b2ContactListener{
 public:
 	CMMStage *stage;
 	
@@ -18,31 +18,12 @@ public:
 	void EndContact(b2Contact* contact);
 };
 
-class CMMStageContactFilter : public b2ContactFilter{
+class CMMStageWorldContactFilter : public b2ContactFilter{
 public:
 	CMMStage *stage;
 	
 	bool ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB);
 };
-
-@protocol CMMStageDelegate<NSObject>
-
-@optional
--(void)stage:(CMMStage *)stage_ whenAddedObjects:(CCArray *)objects_;
--(void)stage:(CMMStage *)stage_ whenRemovedObjects:(CCArray *)objects_;
-
-@end
-
-//optional protocal
-@protocol CMMStageTouchDelegate <NSObject>
-
-@optional
--(void)stage:(CMMStage *)stage_ whenTouchBegan:(UITouch *)touch_ withObject:(CMMSObject *)object_;
--(void)stage:(CMMStage *)stage_ whenTouchMoved:(UITouch *)touch_ withObject:(CMMSObject *)object_;
--(void)stage:(CMMStage *)stage_ whenTouchEnded:(UITouch *)touch_ withObject:(CMMSObject *)object_;
--(void)stage:(CMMStage *)stage_ whenTouchCancelled:(UITouch *)touch_ withObject:(CMMSObject *)object_;
-
-@end
 
 @class CMMStageWorld;
 
@@ -55,13 +36,13 @@ public:
 
 @end
 
-@interface CMMStageWorld : CMMLayer{
+@interface CMMStageWorld : CMMLayer<NSFastEnumeration>{
 	CMMStage *stage;
 	
 	b2World *world;
 	b2Body *worldBody;
-	CMMStageContactListener *_contactLintener;
-	CMMStageContactFilter *_contactFilter;
+	CMMStageWorldContactListener *_contactLintener;
+	CMMStageWorldContactFilter *_contactFilter;
 	b2Draw *_debugDraw;
 	
 	CCArray *obatchNode_list,*obatchNode_destroyList;
@@ -135,20 +116,12 @@ public:
 
 @interface CMMStageParticle : CMMLayer{
 	CMMStage *stage;
-	CCArray *particleList,*_cachedParticles;
+	CCArray *particleList;
+	CMMSimpleCache *_cachedParticles;
 }
 
 +(id)particleWithStage:(CMMStage *)stage_;
 -(id)initWithStage:(CMMStage *)stage_;
-
--(void)addParticle:(CMMSParticle *)particle_;
-
--(void)removeParticle:(CMMSParticle *)particle_;
--(void)removeParticleAtIndex:(int)index_;
-
--(CMMSParticle *)particleAtIndex:(int)index_;
-
--(int)indexOfParticle:(CMMSParticle *)particle_;
 
 -(void)update:(ccTime)dt_;
 
@@ -158,22 +131,56 @@ public:
 
 @end
 
-@interface CMMStageParticle(ParticleDefault)
+@interface CMMStageParticle(Particle)
 
+-(void)addParticle:(CMMSParticle *)particle_;
 -(CMMSParticle *)addParticleWithName:(NSString *)particleName_ point:(CGPoint)point_;
+
+-(void)removeParticle:(CMMSParticle *)particle_;
+-(void)removeParticleAtIndex:(int)index_;
+-(void)removeParticleOfTarget:(CMMSObject *)target_;
+
+-(CMMSParticle *)particleAtIndex:(int)index_;
+
+-(int)indexOfParticle:(CMMSParticle *)particle_;
 
 @end
 
-@interface CMMStageParticle(ParticleFollow)
+@class CMMStageLight;
 
--(CMMSParticleFollow *)addParticleFollowWithName:(NSString *)particleName_ target:(CMMSObject *)target_;
--(void)removeParticleFollowOfTarget:(CMMSObject *)target_;
+@interface CMMStageLightItem : NSObject{
+	CMMStageLight *stageLight;
+	
+	CGPoint point;
+	float brightness,radius;
+	ccTime duration,_curDuration;
+	
+	CMMSObject *target;
+}
+
++(id)lightItemWithStageLight:(CMMStageLight *)stageLight_ point:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_ duration:(ccTime)duration_;
+-(id)initWithStageLight:(CMMStageLight *)stageLight_ point:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_ duration:(ccTime)duration_;
+
+-(void)update:(ccTime)dt_;
+-(void)reset;
+
+@property (nonatomic, assign) CMMStageLight *stageLight; //weak ref
+@property (nonatomic, readwrite) CGPoint point;
+@property (nonatomic, readwrite) float brightness,radius;
+@property (nonatomic, readwrite) ccTime duration;
+@property (nonatomic, assign) CMMSObject *target; //weak ref
 
 @end
 
 @interface CMMStageLight : CCLayer{
 	CMMStage *stage;
 	CCArray *lightList;
+	
+	BOOL useLights,useCulling;
+	uint segmentOfLights;
+	
+	CCRenderTexture *_lightRender;
+	CMMSimpleCache *cachedlightItems;
 }
 
 +(id)lightWithStage:(CMMStage *)stage_;
@@ -183,6 +190,27 @@ public:
 
 @property (nonatomic, assign) CMMStage *stage;
 @property (nonatomic, readonly) CCArray *lightList;
+@property (nonatomic, readonly) uint count;
+@property (nonatomic, readwrite) BOOL useLights,useCulling;
+@property (nonatomic, readwrite) uint segmentOfLights;
+
+@end
+
+@interface CMMStageLight(Common)
+
+-(void)addLightItem:(CMMStageLightItem *)lightItem_;
+-(CMMStageLightItem *)addLightItemAtPoint:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_ duration:(ccTime)duration_;
+-(CMMStageLightItem *)addLightItemAtPoint:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_;
+-(CMMStageLightItem *)addLightItemAtPoint:(CGPoint)point_ brightness:(float)brightness_;
+-(CMMStageLightItem *)addLightItemAtPoint:(CGPoint)point_;
+
+-(void)removeLightItem:(CMMStageLightItem *)lightItem_;
+-(void)removeLightItemAtIndex:(uint)index_;
+-(void)removeLightItemsAtTarget:(CMMSObject *)target_;
+
+-(CMMStageLightItem *)lightItemAtIndex:(uint)index_;
+
+-(uint)indexOfLightItem:(CMMStageLightItem *)lightItem_;
 
 @end
 
@@ -235,6 +263,25 @@ public:
 
 @end
 
+@protocol CMMStageDelegate<NSObject>
+
+@optional
+-(void)stage:(CMMStage *)stage_ whenAddedObjects:(CCArray *)objects_;
+-(void)stage:(CMMStage *)stage_ whenRemovedObjects:(CCArray *)objects_;
+
+@end
+
+//optional protocal
+@protocol CMMStageTouchDelegate <NSObject>
+
+@optional
+-(void)stage:(CMMStage *)stage_ whenTouchBegan:(UITouch *)touch_ withObject:(CMMSObject *)object_;
+-(void)stage:(CMMStage *)stage_ whenTouchMoved:(UITouch *)touch_ withObject:(CMMSObject *)object_;
+-(void)stage:(CMMStage *)stage_ whenTouchEnded:(UITouch *)touch_ withObject:(CMMSObject *)object_;
+-(void)stage:(CMMStage *)stage_ whenTouchCancelled:(UITouch *)touch_ withObject:(CMMSObject *)object_;
+
+@end
+
 @interface CMMStage : CMMLayer<CMMStageWorldDelegate,CMMSContactProtocol>{
 	CMMSSpecStage *spec;
 
@@ -243,27 +290,38 @@ public:
 	CMMStageWorld *world;
 	CMMStageParticle *particle;
 	CMMStageObjectSView *stateView;
+	CMMStageLight *light;
 	CMMStageBackGround *backGround;
 	CMMSoundHandler *sound;
 	
 	BOOL isAllowTouch;
+	
+	ccTime timeInterval,_stackTime;
+	uint maxTimeIntervalProcessCount;
 }
 
 +(id)stageWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
 -(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
 
--(void)update:(ccTime)dt_;
+-(void)step:(ccTime)dt_; //single update
+-(void)afterStep:(ccTime)dt_;
+-(void)update:(ccTime)dt_; //update per stack time
+
+-(void)initializeLightSystem;
 
 @property (nonatomic, retain) CMMSSpecStage *spec;
 @property (nonatomic, retain) id<CMMStageDelegate>delegate;
 @property (nonatomic, readonly) CMMStageWorld *world;
 @property (nonatomic, readonly) CMMStageParticle *particle;
 @property (nonatomic, readonly) CMMStageObjectSView *stateView;
+@property (nonatomic, readonly) CMMStageLight *light;
 @property (nonatomic, readonly) CMMStageBackGround *backGround;
 @property (nonatomic, readonly) CMMSoundHandler *sound;
 @property (nonatomic, readonly) CGSize worldSize;
 @property (nonatomic, readwrite) CGPoint worldPoint;
 @property (nonatomic, readwrite) BOOL isAllowTouch;
+@property (nonatomic, readwrite) ccTime timeInterval;
+@property (nonatomic, readwrite) uint maxTimeIntervalProcessCount;
 
 @end
 
