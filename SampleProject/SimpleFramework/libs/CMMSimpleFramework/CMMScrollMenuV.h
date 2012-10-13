@@ -7,7 +7,7 @@
 @protocol CMMScrollMenuVDelegate <CMMScrollMenuDelegate>
 
 @optional
--(BOOL)scrollMenu:(CMMScrollMenuV *)scrollMenu_ isCanDragItem:(CCNode<CMMTouchDispatcherDelegate> *)item_;
+-(BOOL)scrollMenu:(CMMScrollMenuV *)scrollMenu_ isCanDragItem:(CMMMenuItem *)item_;
 
 @end
 

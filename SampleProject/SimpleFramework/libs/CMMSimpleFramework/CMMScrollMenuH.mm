@@ -3,10 +3,9 @@
 #import "CMMScrollMenuH.h"
 
 @implementation CMMScrollMenuHItem
-@synthesize touchCancelDistance;
 
--(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
-	if(!(self = [super initWithColor:color width:w height:h])) return self;
+-(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
+	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
 	
 	touchCancelDistance = 30.0f;
 	_firstTouchPoint = CGPointZero;
@@ -21,7 +20,7 @@
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
 
-	if(touchDispatcher.touchCount<=0 && ccpDistance([CMMTouchUtil pointFromTouch:touch_], _firstTouchPoint)>touchCancelDistance)
+	if([touchDispatcher touchCount] <=0 && ccpDistance([CMMTouchUtil pointFromTouch:touch_], _firstTouchPoint)>touchCancelDistance)
 		if(touchDispatcher_)
 			[touchDispatcher_ cancelTouchAtTouch:touch_];
 }
@@ -49,7 +48,7 @@
 	switch(touchState){
 		case CMMTouchState_none:{
 			if(!isSnapAtItem) break;
-			CMMScrollMenuHItem *item_ = (CMMScrollMenuHItem *)[self itemAtIndex:index];
+			CMMMenuItem *item_ = [self itemAtIndex:index];
 			if(!item_) break;
 			
 			CGSize itemSize_ = item_.contentSize;
@@ -79,7 +78,7 @@
 			ccArray *data_ = itemList->data;
 			int count_ = data_->num;
 			for(uint index_=0;index_<count_;++index_){
-				CMMScrollMenuHItem *item_ = data_->arr[index_];
+				CMMMenuItem *item_ = data_->arr[index_];
 				CGSize itemSize_ = item_.contentSize;
 				CGPoint targetPoint_ = item_.position;
 				targetPoint_.x += itemSize_.width*(0.5f-item_.anchorPoint.x);
@@ -123,7 +122,7 @@
 	ccArray *data_ = itemList->data;
 	int count_ = data_->num;
 	for(int index_=0;index_<count_;++index_){
-		CCNode<CMMTouchDispatcherDelegate> *item_ = data_->arr[index_];
+		CMMMenuItem *item_ = data_->arr[index_];
 		CGSize itemSize_ = item_.contentSize;
 		CGPoint targetPoint_ = cmmFuncCommon_position_center(self, item_);
 		targetPoint_.x = totalItemWidth_+itemSize_.width*(item_.anchorPoint.x);
@@ -137,13 +136,13 @@
 
 @implementation CMMScrollMenuH(Common)
 
--(void)addItem:(CCNode<CMMTouchDispatcherDelegate> *)item_ atIndex:(int)index_{
-	NSAssert([item_ isKindOfClass:[CMMScrollMenuHItem class]], @"CMMScrolMenuV only support CMMScrolMenuVItem as children.");
+-(void)addItem:(CMMMenuItem *)item_ atIndex:(int)index_{
+	//NSAssert([item_ isKindOfClass:[CMMScrollMenuHItem class]], @"CMMScrolMenuV only support CMMScrolMenuVItem as children.");
 	[super addItem:item_ atIndex:index_];
 	
 	CGPoint targetPoint_ = cmmFuncCommon_position_center(self, item_);
 	targetPoint_.x = marginPerItem;
-	CCNode<CMMTouchDispatcherDelegate> *preItem_ = [self itemAtIndex:index_-1];
+	CMMMenuItem *preItem_ = [self itemAtIndex:index_-1];
 	if(preItem_) targetPoint_.x = preItem_.position.x+preItem_.contentSize.width+marginPerItem;
 	item_.position = targetPoint_;
 }

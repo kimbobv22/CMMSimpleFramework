@@ -84,7 +84,11 @@ static SEL _sharedTouchSelectors_[TouchSelectorID_maxCount];
 }
 
 -(int)touchCount{
-	return touchList.count;
+	return [touchList count];
+}
+
+-(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained [])buffer count:(NSUInteger)len{
+	return [touchList countByEnumeratingWithState:state objects:buffer count:len];
 }
 
 -(void)dealloc{
@@ -97,8 +101,8 @@ static SEL _sharedTouchSelectors_[TouchSelectorID_maxCount];
 @implementation CMMTouchDispatcher(Handler)
 
 -(void)whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
-	if(self.touchCount >= maxMultiTouchCount+1) return;
-	if(!target.children) return;
+	if([self touchCount] >= maxMultiTouchCount+1) return;
+	if(![target children]) return;
 	
 	ccArray *data_ = target.children->data;
 	int count_ = data_->num;

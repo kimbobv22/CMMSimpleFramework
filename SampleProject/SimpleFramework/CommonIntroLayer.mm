@@ -66,7 +66,7 @@
 }
 
 -(void)loadingProcess000{
-	[[CCDirector sharedDirector] setAnimationInterval:1.0f/30.0f];
+//	[[CCDirector sharedDirector] setAnimationInterval:1.0f/30.0f];
 	[self _setDisplayStr:@"Loading sprite frame..."];
 }
 -(void)loadingProcess001{

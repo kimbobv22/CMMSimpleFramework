@@ -61,10 +61,10 @@
 	[menuItemButton_ setTitle:@"add"];
 	menuItemButton_.position = ccp(self.contentSize.width-menuItemButton_.contentSize.width-menuItemButton_.contentSize.width/2,menuItemButton_.contentSize.height/2);
 	menuItemButton_.callback_pushup = ^(id sender_){
-		CMMScrollMenuHItem *item_ = [CMMScrollMenuHItem layerWithColor:ccc4(255, 255, 255, 180) width:(arc4random()%200 + 200) height:150];
-		
+		CMMScrollMenuHItem *item_ = [CMMScrollMenuHItem menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake((arc4random()%200 + 200), 150)];
 		CMMControlItemSlider *slider_ = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:180];
 		slider_.position = cmmFuncCommon_position_center(item_, slider_);
+		
 		[item_ addChild:slider_];
 		
 		[scrollMenu addItem:item_];
@@ -129,32 +129,32 @@
 	labelDisplay.position = ccp(self.contentSize.width/2,scrollMenu1.position.y-labelDisplay.contentSize.height/2-10.0f);
 }
 
--(BOOL)scrollMenu:(CMMScrollMenuV *)scrollMenu_ isCanDragItem:(CCNode<CMMTouchDispatcherDelegate> *)item_{return YES;}
--(BOOL)scrollMenu:(CMMScrollMenu *)scrollMenu_ isCanLinkSwitchItem:(CCNode<CMMTouchDispatcherDelegate> *)item_ toScrollMenu:(CMMScrollMenu *)toScrollMenu_ toIndex:(int)toIndex_{return YES;}
--(BOOL)scrollMenu:(CMMScrollMenu *)scrollMenu_ isCanSwitchItem:(CCNode<CMMTouchDispatcherDelegate> *)item_ toIndex:(int)toIndex_{return YES;}
+-(BOOL)scrollMenu:(CMMScrollMenuV *)scrollMenu_ isCanDragItem:(CMMMenuItem *)item_{return YES;}
+-(BOOL)scrollMenu:(CMMScrollMenu *)scrollMenu_ isCanLinkSwitchItem:(CMMMenuItem *)item_ toScrollMenu:(CMMScrollMenu *)toScrollMenu_ toIndex:(int)toIndex_{return YES;}
+-(BOOL)scrollMenu:(CMMScrollMenu *)scrollMenu_ isCanSwitchItem:(CMMMenuItem *)item_ toIndex:(int)toIndex_{return YES;}
 
 -(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenSelectedAtIndex:(int)index_{
 	[self _setDisplayStr:[NSString stringWithFormat:@"whenSelectedAtIndex : %d",index_]];
 }
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenAddedItem:(CCNode<CMMTouchDispatcherDelegate> *)item_ atIndex:(int)index_{
+-(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenAddedItem:(CMMMenuItem *)item_ atIndex:(int)index_{
 	[self _setDisplayStr:[NSString stringWithFormat:@"whenAddedItem : %d",index_]];
 }
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenRemovedItem:(CCNode<CMMTouchDispatcherDelegate> *)item_{
+-(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenRemovedItem:(CMMMenuItem *)item_{
 	[self _setDisplayStr:@"whenRemovedItem"];
 }
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenSwitchedItem:(CCNode<CMMTouchDispatcherDelegate> *)item_ toIndex:(int)toIndex_{
+-(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenSwitchedItem:(CMMMenuItem *)item_ toIndex:(int)toIndex_{
 	[self _setDisplayStr:[NSString stringWithFormat:@"whenSwitchedItem : %d",toIndex_]];
 }
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenLinkSwitchedItem:(CCNode<CMMTouchDispatcherDelegate> *)fromItem_ toScrollMenu:(CMMScrollMenu *)toScrollMenu_ toIndex:(int)toIndex_{
+-(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenLinkSwitchedItem:(CMMMenuItem *)fromItem_ toScrollMenu:(CMMScrollMenu *)toScrollMenu_ toIndex:(int)toIndex_{
 	[self _setDisplayStr:[NSString stringWithFormat:@"whenLinkSwitchedItem : %d",toIndex_]];
 }
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenPushdownWithItem:(CCNode<CMMTouchDispatcherDelegate> *)item_{
+-(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenPushdownWithItem:(CMMMenuItem *)item_{
 	[self _setDisplayStr:@"whenPushdownWithItem"];
 }
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenPushupWithItem:(CCNode<CMMTouchDispatcherDelegate> *)item_{
+-(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenPushupWithItem:(CMMMenuItem *)item_{
 	[self _setDisplayStr:@"whenPushupWithItem"];
 }
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenPushcancelWithItem:(CCNode<CMMTouchDispatcherDelegate> *)item_{
+-(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenPushcancelWithItem:(CMMMenuItem *)item_{
 	[self _setDisplayStr:@"whenPushcancelWithItem"];
 }
 

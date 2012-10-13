@@ -4,6 +4,8 @@
 #import "CMMSpriteBatchBar.h"
 #import "CMMMenuItem.h"
 #import "CMMScrollMenu.h"
+#import "CMMStage.h"
+#import "CMMSParticle.h"
 
 /*
  */
@@ -39,5 +41,16 @@ DEPRECATED_ATTRIBUTE @interface CMMControlItemBatchBar : CMMSpriteBatchBar
 @interface CMMScrollMenu(Deprecated)
 
 +(id)scrollMenuWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_ DEPRECATED_ATTRIBUTE;
+
+@end
+
+DEPRECATED_ATTRIBUTE @interface CMMSParticleFollow : CMMSParticle
+
+@end
+
+@interface CMMStageParticle(Deprecated)
+
+-(CMMSParticle *)addParticleFollowWithName:(NSString *)particleName_ target:(CMMSObject *)target_ DEPRECATED_ATTRIBUTE;
+-(void)removeParticleFollowOfTarget:(CMMSObject *)target_ DEPRECATED_ATTRIBUTE;
 
 @end

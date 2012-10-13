@@ -121,7 +121,7 @@
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[CameraTestLayer node]];};
 	[menuItem_ setTitle:@"Camera Test"];
 	[mainMenu addItem:menuItem_];
-		
+	
 	return self;
 }
 

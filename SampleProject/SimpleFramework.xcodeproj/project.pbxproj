@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		E0025053162128E4001DF0C0 /* CameraTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0025052162128E4001DF0C0 /* CameraTestLayer.mm */; };
+		E008574D162543EC009C9BC4 /* CMMEncryptionUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E008574C162543EC009C9BC4 /* CMMEncryptionUtil.mm */; };
+		E00857551625448B009C9BC4 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = E00857521625448A009C9BC4 /* NSData+Base64.m */; };
+		E00857561625448B009C9BC4 /* NSData+Compression.m in Sources */ = {isa = PBXBuildFile; fileRef = E00857541625448A009C9BC4 /* NSData+Compression.m */; };
+		E00857591625482B009C9BC4 /* CMMPacketData.mm in Sources */ = {isa = PBXBuildFile; fileRef = E00857581625482B009C9BC4 /* CMMPacketData.mm */; };
 		E009D7E815D94F19004E9012 /* PAR_EFT_0001.plist in Resources */ = {isa = PBXBuildFile; fileRef = E009D7E715D94F19004E9012 /* PAR_EFT_0001.plist */; };
 		E00E2E6A15FF506A003551B4 /* CMMSimpleCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = E00E2E6915FF506A003551B4 /* CMMSimpleCache.mm */; };
 		E0257A2215FF3C55008C54C2 /* CMMSPMapObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0257A2115FF3C55008C54C2 /* CMMSPMapObject.mm */; };
@@ -286,6 +290,14 @@
 /* Begin PBXFileReference section */
 		E0025051162128E4001DF0C0 /* CameraTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraTestLayer.h; sourceTree = "<group>"; };
 		E0025052162128E4001DF0C0 /* CameraTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CameraTestLayer.mm; sourceTree = "<group>"; };
+		E008574B162543EC009C9BC4 /* CMMEncryptionUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMEncryptionUtil.h; path = libs/CMMSimpleFramework/CMMEncryptionUtil.h; sourceTree = "<group>"; };
+		E008574C162543EC009C9BC4 /* CMMEncryptionUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMEncryptionUtil.mm; path = libs/CMMSimpleFramework/CMMEncryptionUtil.mm; sourceTree = "<group>"; };
+		E00857511625448A009C9BC4 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "libs/NSData+Base64.h"; sourceTree = "<group>"; };
+		E00857521625448A009C9BC4 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "libs/NSData+Base64.m"; sourceTree = "<group>"; };
+		E00857531625448A009C9BC4 /* NSData+Compression.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Compression.h"; path = "libs/NSData+Compression.h"; sourceTree = "<group>"; };
+		E00857541625448A009C9BC4 /* NSData+Compression.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Compression.m"; path = "libs/NSData+Compression.m"; sourceTree = "<group>"; };
+		E00857571625482B009C9BC4 /* CMMPacketData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMPacketData.h; path = libs/CMMSimpleFramework/CMMPacketData.h; sourceTree = "<group>"; };
+		E00857581625482B009C9BC4 /* CMMPacketData.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMPacketData.mm; path = libs/CMMSimpleFramework/CMMPacketData.mm; sourceTree = "<group>"; };
 		E009D7E715D94F19004E9012 /* PAR_EFT_0001.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PAR_EFT_0001.plist; path = Resources/PAR_EFT_0001.plist; sourceTree = "<group>"; };
 		E00E2E6815FF506A003551B4 /* CMMSimpleCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSimpleCache.h; path = libs/CMMSimpleFramework/CMMSimpleCache.h; sourceTree = "<group>"; };
 		E00E2E6915FF506A003551B4 /* CMMSimpleCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSimpleCache.mm; path = libs/CMMSimpleFramework/CMMSimpleCache.mm; sourceTree = "<group>"; };
@@ -866,6 +878,8 @@
 			children = (
 				E026250E161696AF00B158CF /* CMMPacket.h */,
 				E0262511161696BE00B158CF /* CMMPacket.mm */,
+				E00857571625482B009C9BC4 /* CMMPacketData.h */,
+				E00857581625482B009C9BC4 /* CMMPacketData.mm */,
 				E0BEB0CD16217718000511C7 /* CMMPacketDataHandler.h */,
 				E0BEB0CE16217718000511C7 /* CMMPacketDataHandler.mm */,
 				E026250B1615F33600B158CF /* CMMGameKit.h */,
@@ -981,6 +995,10 @@
 				E0D8100615FDE80100F8C94C /* CCMutableTexture2D.m */,
 				E0CA18C915F9E8D50064EF9F /* CCSpriteBatchNode+SplitSprite.h */,
 				E0CA18CA15F9E8D50064EF9F /* CCSpriteBatchNode+SplitSprite.m */,
+				E00857511625448A009C9BC4 /* NSData+Base64.h */,
+				E00857521625448A009C9BC4 /* NSData+Base64.m */,
+				E00857531625448A009C9BC4 /* NSData+Compression.h */,
+				E00857541625448A009C9BC4 /* NSData+Compression.m */,
 				E09EA18915DB9E3E00D9C5C9 /* CMMSimpleFramework */,
 				E0A4D639160ACB8800D17935 /* cocos2d */,
 				E047706315D4D26D0079EAE9 /* Box2D */,
@@ -1124,6 +1142,8 @@
 				E032FC3F15E1EAB300B28B61 /* CMMStringUtil.mm */,
 				E032FC4015E1EAB300B28B61 /* CMMTouchUtil.h */,
 				E032FC4115E1EAB300B28B61 /* CMMTouchUtil.mm */,
+				E008574B162543EC009C9BC4 /* CMMEncryptionUtil.h */,
+				E008574C162543EC009C9BC4 /* CMMEncryptionUtil.mm */,
 				E032FC3C15E1EAB200B28B61 /* CMMLoadingObject.h */,
 				E032FC3D15E1EAB300B28B61 /* CMMLoadingObject.mm */,
 				E00E2E6815FF506A003551B4 /* CMMSimpleCache.h */,
@@ -2059,6 +2079,10 @@
 				E0BEB0CF16217718000511C7 /* CMMPacketDataHandler.mm in Sources */,
 				E0B248631621C52D003DDE16 /* GameCenterTestLayer.mm in Sources */,
 				E0C4A8751622BF5A00C4B57E /* CMMConnectionMonitor.mm in Sources */,
+				E008574D162543EC009C9BC4 /* CMMEncryptionUtil.mm in Sources */,
+				E00857551625448B009C9BC4 /* NSData+Base64.m in Sources */,
+				E00857561625448B009C9BC4 /* NSData+Compression.m in Sources */,
+				E00857591625482B009C9BC4 /* CMMPacketData.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
