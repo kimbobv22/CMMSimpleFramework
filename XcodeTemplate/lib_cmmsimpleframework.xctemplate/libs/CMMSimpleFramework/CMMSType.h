@@ -101,16 +101,17 @@ struct CMMStageSpecDef{
 		friction = 0.3f;
 		restitution = 0.3f;
 		density = 0.7f;
+		brightness = 1.0f;
 	}
-	CMMStageSpecDef(CGSize stageSize_, CGSize worldSize_, CGPoint gravity_, float friction_, float restitution_, float density_):stageSize(stageSize_),worldSize(worldSize_),gravity(gravity_),friction(friction_),restitution(restitution_),density(density_){}
+	CMMStageSpecDef(CGSize stageSize_, CGSize worldSize_, CGPoint gravity_, float friction_, float restitution_, float density_,float brightness_):stageSize(stageSize_),worldSize(worldSize_),gravity(gravity_),friction(friction_),restitution(restitution_),density(density_),brightness(brightness_){}
 	
 	CMMStageSpecDef Clone(){
-		return CMMStageSpecDef(stageSize,worldSize,gravity,friction,restitution,density);
+		return CMMStageSpecDef(stageSize,worldSize,gravity,friction,restitution,density,brightness);
 	}
 	
 	CGSize stageSize,worldSize;
 	CGPoint gravity;
-	float friction,restitution,density;
+	float friction,restitution,density,brightness;
 };
 
 static inline CMMStageSpecDef CMMStageSpecDefMake(CGSize stageSize_, CGSize worldSize_, CGPoint gravity_){

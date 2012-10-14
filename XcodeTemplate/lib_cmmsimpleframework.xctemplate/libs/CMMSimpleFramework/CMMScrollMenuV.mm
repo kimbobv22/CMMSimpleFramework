@@ -58,10 +58,10 @@
 			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher_ touchItemAtIndex:0];
 			if(!touchItem_) break;
 			
-			CCNode<CMMTouchDispatcherDelegate> *item_ = touchItem_.node;
+			CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
 			
 			if(!cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:isCanDragItem:))
-			   || ![((id<CMMScrollMenuVDelegate>)delegate) scrollMenu:self isCanDragItem:touchItem_.node]) break;
+			   || ![((id<CMMScrollMenuVDelegate>)delegate) scrollMenu:self isCanDragItem:item_]) break;
 			
 			_curDragStartDelayTime += dt_;
 			
@@ -138,7 +138,7 @@
 		case CMMTouchState_onDragChild:{
 			CMMTouchDispatcher *innerTouchDispatcher_ = _innerLayer.touchDispatcher;
 			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher_ touchItemAtTouch:touch_];
-			CCNode<CMMTouchDispatcherDelegate> *item_ = touchItem_.node;
+			CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
 			BOOL isRestoreDragItemView_ = YES;
 			CGPoint touchPoint_ = [CMMTouchUtil pointFromTouch:touch_];
 			
@@ -191,7 +191,7 @@
 		case CMMTouchState_onDragChild:{
 			CMMTouchDispatcher *innerTouchDispatcher_ = _innerLayer.touchDispatcher;
 			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher_ touchItemAtTouch:touch_];
-			CCNode<CMMTouchDispatcherDelegate> *item_ = touchItem_.node;
+			CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
 			[self _moveDragViewItemTo:item_];
 			[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
 			
@@ -217,7 +217,7 @@
 	ccArray *data_ = itemList->data;
 	int count_ = data_->num;
 	for(uint index_=0;index_<count_;++index_){
-		CCNode<CMMTouchDispatcherDelegate> *item_ = data_->arr[index_];
+		CMMMenuItem *item_ = data_->arr[index_];
 		targetHeight_ += item_.contentSize.height+marginPerItem;
 	}
 	targetHeight_-= marginPerItem;
@@ -227,7 +227,7 @@
 	CGPoint targetPoint_ = ccpAdd([self innerPosition], ccp(0,beforeHeight_-targetHeight_));
 	[self setInnerPosition:targetPoint_];
 	for(uint index_=0;index_<count_;++index_){
-		CCNode<CMMTouchDispatcherDelegate> *item_ = data_->arr[index_];
+		CMMMenuItem *item_ = data_->arr[index_];
 		item_.position = ccpSub(item_.position, ccp(0,beforeHeight_-targetHeight_));
 	}
 }
@@ -237,7 +237,7 @@
 	ccArray *data_ = itemList->data;
 	int count_ = data_->num;
 	for(int index_=0;index_<count_;++index_){
-		CCNode<CMMTouchDispatcherDelegate> *item_ = data_->arr[index_];
+		CMMMenuItem *item_ = data_->arr[index_];
 		CGSize itemSize_ = item_.contentSize;
 		CGPoint targetPoint_ = cmmFuncCommon_position_center(self, item_);
 		targetPoint_.y = innerSize_.height-(totalItemHeight_+itemSize_.height*(1.0f-item_.anchorPoint.y));
@@ -251,13 +251,13 @@
 
 @implementation CMMScrollMenuV(Common)
 
--(void)addItem:(CCNode<CMMTouchDispatcherDelegate> *)item_ atIndex:(int)index_{
+-(void)addItem:(CMMMenuItem *)item_ atIndex:(int)index_{
 	NSAssert([item_ isKindOfClass:[CMMSprite class]], @"CMMScrolMenuH only support CMMSprite as children.");
 	[super addItem:item_ atIndex:index_];
 	
 	CGPoint targetPoint_ = cmmFuncCommon_position_center(self, item_);
 	targetPoint_.y = self.innerSize.height;
-	CCNode<CMMTouchDispatcherDelegate> *preItem_ = [self itemAtIndex:index_-1];
+	CMMMenuItem *preItem_ = [self itemAtIndex:index_-1];
 	if(preItem_) targetPoint_.y = preItem_.position.y-preItem_.contentSize.height;
 	item_.position = targetPoint_;
 }

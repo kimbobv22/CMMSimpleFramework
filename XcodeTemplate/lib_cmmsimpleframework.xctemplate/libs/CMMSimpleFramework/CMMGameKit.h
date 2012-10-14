@@ -2,7 +2,7 @@
 
 #import <GameKit/GameKit.h>
 #import "CMMMacro.h"
-#import "CMMPacket.h"
+#import "CMMPacketData.h"
 
 #import "CMMStringUtil.h"
 #import "CMMFileUtil.h"

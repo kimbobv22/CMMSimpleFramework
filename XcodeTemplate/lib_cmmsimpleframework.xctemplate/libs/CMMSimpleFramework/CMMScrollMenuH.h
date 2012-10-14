@@ -8,8 +8,7 @@
 
 @end
 
-@interface CMMScrollMenuHItem : CMMLayer{
-	float touchCancelDistance;
+@interface CMMScrollMenuHItem : CMMMenuItem{
 	CGPoint _firstTouchPoint;
 }
 

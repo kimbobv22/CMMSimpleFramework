@@ -42,7 +42,7 @@ typedef enum{
 	TouchSelectorID_maxCount,
 } TouchSelectorID;
 
-@interface CMMTouchDispatcher : NSObject<CMMTouchDispatcherDelegate>{
+@interface CMMTouchDispatcher : NSObject<NSFastEnumeration>{
 	CCArray *touchList;
 	CCNode *target;
 	

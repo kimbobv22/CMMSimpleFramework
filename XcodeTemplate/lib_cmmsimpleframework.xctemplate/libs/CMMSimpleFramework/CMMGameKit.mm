@@ -479,7 +479,7 @@ static GKMatch *_sharedCMMGameKitHandlerMatch_GKMatch_ = nil;
 }
 
 -(void)sendPacketData:(CMMPacketData *)packetData_ toIDs:(NSArray *)toIDs_{
-	[_sharedCMMGameKitHandlerMatch_GKMatch_ sendData:packetData_ toPlayers:toIDs_ withDataMode:sendDataMode error:nil];
+	[_sharedCMMGameKitHandlerMatch_GKMatch_ sendData:[packetData_ toPackedData] toPlayers:toIDs_ withDataMode:sendDataMode error:nil];
 	[CMMPacketData cacheData:packetData_];
 }
 -(void)sendPacket:(CMMPacket *)packet_ toIDs:(NSArray *)toIDs_{
@@ -504,7 +504,7 @@ static GKMatch *_sharedCMMGameKitHandlerMatch_GKMatch_ = nil;
 }
 
 -(void)sendPacketDataToAll:(CMMPacketData *)packetData_{
-	[_sharedCMMGameKitHandlerMatch_GKMatch_ sendDataToAllPlayers:packetData_ withDataMode:sendDataMode error:nil];
+	[_sharedCMMGameKitHandlerMatch_GKMatch_ sendDataToAllPlayers:[packetData_ toPackedData] withDataMode:sendDataMode error:nil];
 	[CMMPacketData cacheData:packetData_];
 	
 	[self sendPacketData:packetData_ toIDs:[_sharedCMMGameKitHandlerMatch_GKMatch_ playerIDs]];
@@ -617,7 +617,7 @@ static GKSession *_sharedCMMGameKitHandlerSession_GKSession_ = nil;
 }
 
 -(void)sendPacketData:(CMMPacketData *)packetData_ toIDs:(NSArray *)toIDs_{
-	[_sharedCMMGameKitHandlerSession_GKSession_ sendData:packetData_ toPeers:toIDs_ withDataMode:sendDataMode error:nil];
+	[_sharedCMMGameKitHandlerSession_GKSession_ sendData:[packetData_ toPackedData] toPeers:toIDs_ withDataMode:sendDataMode error:nil];
 	[CMMPacketData cacheData:packetData_];
 }
 -(void)sendPacket:(CMMPacket *)packet_ toIDs:(NSArray *)toIDs_{
@@ -642,7 +642,7 @@ static GKSession *_sharedCMMGameKitHandlerSession_GKSession_ = nil;
 }
 
 -(void)sendPacketDataToAll:(CMMPacketData *)packetData_{
-	[_sharedCMMGameKitHandlerSession_GKSession_ sendDataToAllPeers:packetData_ withDataMode:sendDataMode error:nil];
+	[_sharedCMMGameKitHandlerSession_GKSession_ sendDataToAllPeers:[packetData_ toPackedData] withDataMode:sendDataMode error:nil];
 	[CMMPacketData cacheData:packetData_];
 }
 -(void)sendPacketToAll:(CMMPacket *)packet_{

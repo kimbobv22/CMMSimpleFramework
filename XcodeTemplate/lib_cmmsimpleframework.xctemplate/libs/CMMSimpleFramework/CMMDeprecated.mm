@@ -44,3 +44,20 @@
 }
 
 @end
+
+@implementation CMMSParticle(Deprecated)
+
+@end
+
+@implementation CMMStageParticle(Deprecated)
+
+-(CMMSParticle *)addParticleFollowWithName:(NSString *)particleName_ target:(CMMSObject *)target_{
+	CMMSParticle *particle_ = [self addParticleWithName:particleName_ point:CGPointZero];
+	[particle_ setTarget:target_];
+	return particle_;
+}
+-(void)removeParticleFollowOfTarget:(CMMSObject *)target_{
+	[self removeParticleOfTarget:target_];
+}
+
+@end

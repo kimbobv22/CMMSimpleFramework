@@ -6,10 +6,11 @@
 #define cmmVarCMMSSpecStage_friction @"s1"
 #define cmmVarCMMSSpecStage_restitution @"s2"
 #define cmmVarCMMSSpecStage_density @"s2"
+#define cmmVarCMMSSpecStage_brightness @"s3"
 
 @interface CMMSSpecStage : CMMSSpec{
 	CGPoint gravity;
-	float friction,restitution,density;
+	float friction,restitution,density,brightness;
 }
 
 +(id)specWithTarget:(id)target_ withStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
@@ -18,6 +19,6 @@
 -(void)applyWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
 
 @property (nonatomic, readwrite) CGPoint gravity;
-@property (nonatomic, readwrite) float friction,restitution,density;
+@property (nonatomic, readwrite) float friction,restitution,density,brightness;
 
 @end

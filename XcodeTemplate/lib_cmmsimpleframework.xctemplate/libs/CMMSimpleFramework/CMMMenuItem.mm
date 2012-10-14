@@ -46,6 +46,8 @@
 	_fadeInAction = [[CCTintTo actionWithDuration:0.1f red:255 green:255 blue:255] retain];
 	_fadeOutAction = [[CCTintTo actionWithDuration:0.1f red:140 green:140 blue:140] retain];
 	
+	[self initializeTouchDispatcher];
+	
 	return self;
 }
 -(id)initWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ frameSize:(CGSize)frameSize_{

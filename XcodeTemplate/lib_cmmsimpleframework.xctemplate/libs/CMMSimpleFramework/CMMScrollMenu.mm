@@ -81,7 +81,7 @@
 	
 	CMMTouchDispatcherItem *touchItem_ = [_innerLayer.touchDispatcher touchItemAtTouch:touch_];
 	if(touchItem_ && cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:whenPushdownWithItem:)))
-		[delegate scrollMenu:self whenPushdownWithItem:touchItem_.node];
+		[delegate scrollMenu:self whenPushdownWithItem:(CMMMenuItem *)[touchItem_ node]];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
@@ -93,9 +93,9 @@
 	switch(touchState){
 		case CMMTouchState_onTouchChild:{
 			if(touchItem_ && cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:whenPushupWithItem:)))
-				[delegate scrollMenu:self whenPushupWithItem:touchItem_.node];
+				[delegate scrollMenu:self whenPushupWithItem:(CMMMenuItem *)[touchItem_ node]];
 			
-			CCNode<CMMTouchDispatcherDelegate> *item_ = touchItem_.node;
+			CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
 			self.index = [self indexOfItem:item_];
 			[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
 			
@@ -114,7 +114,7 @@
 	switch(touchState){
 		case CMMTouchState_onTouchChild:{
 			if(touchItem_ && cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:whenPushcancelWithItem:)))
-				[delegate scrollMenu:self whenPushcancelWithItem:touchItem_.node];
+				[delegate scrollMenu:self whenPushcancelWithItem:(CMMMenuItem *)[touchItem_ node]];
 			
 			[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
 			break;
@@ -137,6 +137,10 @@
 		[delegate scrollMenu:self whenSelectedAtIndex:index];
 }
 
+-(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)len{
+	return [itemList countByEnumeratingWithState:state objects:stackbuf count:len];
+}
+
 -(void)dealloc{
 	[delegate release];
 	[itemList release];
@@ -154,7 +158,7 @@
 
 @implementation CMMScrollMenu(Common)
 
--(void)addItem:(CCNode<CMMTouchDispatcherDelegate> *)item_ atIndex:(int)index_{
+-(void)addItem:(CMMMenuItem *)item_ atIndex:(int)index_{
 	if([self indexOfItem:item_] != NSNotFound) return;
 	
 	if(cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:isCanAddItem:atIndex:)))
@@ -167,11 +171,11 @@
 	if(cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:whenAddedItem:atIndex:)))
 		[delegate scrollMenu:self whenAddedItem:item_ atIndex:index_];
 }
--(void)addItem:(CCNode<CMMTouchDispatcherDelegate> *)item_{
+-(void)addItem:(CMMMenuItem *)item_{
 	[self addItem:item_ atIndex:[self count]];
 }
 
--(void)removeItem:(CCNode<CMMTouchDispatcherDelegate> *)item_{
+-(void)removeItem:(CMMMenuItem *)item_{
 	int targetIndex_ = [self indexOfItem:item_];
 	if(targetIndex_ == NSNotFound) return;
 	
@@ -189,12 +193,12 @@
 -(void)removeAllItems{
 	ccArray *data_ = itemList->data;
 	for(int index_=data_->num-1;index_>=0;--index_){
-		CCNode<CMMTouchDispatcherDelegate> *item_ = data_->arr[index_];
+		CMMMenuItem *item_ = data_->arr[index_];
 		[self removeItem:item_];
 	}
 }
 
--(CCNode<CMMTouchDispatcherDelegate> *)itemAtIndex:(int)index_{
+-(CMMMenuItem *)itemAtIndex:(int)index_{
 	if(index_ < 0 || index_>=[self count] || index_ == NSNotFound) return nil;
 	return [itemList objectAtIndex:index_];
 }
@@ -203,7 +207,7 @@
 
 @implementation CMMScrollMenu(Switch)
 
--(BOOL)switchItem:(CCNode<CMMTouchDispatcherDelegate> *)item_ toIndex:(int)toIndex_{
+-(BOOL)switchItem:(CMMMenuItem *)item_ toIndex:(int)toIndex_{
 	int targetIndex_ = [self indexOfItem:item_];
 	if(targetIndex_ == NSNotFound || targetIndex_ == toIndex_) return NO;
 	
@@ -222,7 +226,7 @@
 	return [self switchItem:[self itemAtIndex:index_] toIndex:toIndex_];
 }
 
--(BOOL)linkSwitchItem:(CCNode<CMMTouchDispatcherDelegate> *)item_ toScrolMenu:(CMMScrollMenu *)toScrolMenu_ toIndex:(int)toIndex_{
+-(BOOL)linkSwitchItem:(CMMMenuItem *)item_ toScrolMenu:(CMMScrollMenu *)toScrolMenu_ toIndex:(int)toIndex_{
 	if([self indexOfItem:item_] == NSNotFound || !toScrolMenu_) return NO;
 	
 	if(cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:isCanLinkSwitchItem:toScrollMenu:toIndex:))){
@@ -246,7 +250,7 @@
 
 @implementation CMMScrollMenu(Search)
 
--(int)indexOfItem:(CCNode<CMMTouchDispatcherDelegate> *)item_{
+-(int)indexOfItem:(CMMMenuItem *)item_{
 	return [itemList indexOfObject:item_];
 }
 -(int)indexOfPoint:(CGPoint)worldPoint_{
@@ -254,7 +258,7 @@
 	ccArray *data_ = itemList->data;
 	int count_ = data_->num;
 	for(uint index_=0;index_<count_;++index_){
-		CCNode<CMMTouchDispatcherDelegate> *item_ = data_->arr[index_];
+		CMMMenuItem *item_ = data_->arr[index_];
 		if(CGRectContainsPoint([item_ boundingBox], convertPoint_))
 			return index_;
 	}

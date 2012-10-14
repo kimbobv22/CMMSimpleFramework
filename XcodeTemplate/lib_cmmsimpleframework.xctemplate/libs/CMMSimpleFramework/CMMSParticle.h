@@ -1,29 +1,18 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CCParticleSystemQuad.h"
-
-typedef enum{
-	ParticleType_default,
-	ParticleType_follow,
-} ParticleType;
+#import "CMMSObject.h"
 
 @interface CMMSParticle : CCParticleSystemQuad{
 	NSString *particleName;
-	ParticleType particleType;
+	
+	CMMSObject *target;
 }
 
 +(id)particleWithParticleName:(NSString *)particleName_;
 -(id)initWithParticleName:(NSString *)particleName_;
 
 @property (nonatomic, readonly) NSString *particleName;
-@property (nonatomic, readonly) ParticleType particleType;
-
-@end
-
-@interface CMMSParticleFollow : CMMSParticle{
-	CCNode *target;
-}
-
-@property (nonatomic, retain) CCNode *target;
+@property (nonatomic, assign) CMMSObject *target;
 
 @end
