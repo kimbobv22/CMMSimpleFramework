@@ -617,6 +617,28 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMPacket.mm</string>
 		</dict>
+<key>libs/CMMSimpleFramework/CMMPacketData.h</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>libs</string>
+				<string>CMMSimpleFramework</string>
+			</array>
+			<key>Path</key>
+			<string>libs/CMMSimpleFramework/CMMPacketData.h</string>
+			<key>TargetIndices</key>
+			<array/>
+		</dict>
+		<key>libs/CMMSimpleFramework/CMMPacketData.mm</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>libs</string>
+				<string>CMMSimpleFramework</string>
+			</array>
+			<key>Path</key>
+			<string>libs/CMMSimpleFramework/CMMPacketData.mm</string>
+		</dict>
 		<key>libs/CMMSimpleFramework/CMMPacketDataHandler.h</key>
 		<dict>
 			<key>Group</key>
@@ -1383,6 +1405,8 @@
 		<string>libs/CMMSimpleFramework/CMMNoticeDispatcher.mm</string>
 		<string>libs/CMMSimpleFramework/CMMPacket.h</string>
 		<string>libs/CMMSimpleFramework/CMMPacket.mm</string>
+		<string>libs/CMMSimpleFramework/CMMPacketData.h</string>
+		<string>libs/CMMSimpleFramework/CMMPacketData.mm</string>
 		<string>libs/CMMSimpleFramework/CMMPacketDataHandler.h</string>
 		<string>libs/CMMSimpleFramework/CMMPacketDataHandler.mm</string>
 		<string>libs/CMMSimpleFramework/CMMPopupDispatcher.h</string>
