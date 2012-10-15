@@ -9,7 +9,7 @@
 @end
 
 @implementation CMMControlItemSlider
-@synthesize backColorL,backColorR,itemValue,unitValue,minValue,maxValue,callback_whenChangedItemVale;
+@synthesize buttonItem,backColorL,backColorR,itemValue,unitValue,minValue,maxValue,callback_whenChangedItemVale;
 
 +(id)controlItemSliderWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor4B)backColorL_ backColorR:(ccColor4B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_{
 	return [[[self alloc] initWithWidth:width_ maskSprite:maskSprite_ barSprite:barSprite_ backColorL:backColorL_ backColorR:backColorR_ buttonSprite:buttonSprite_] autorelease];
@@ -30,19 +30,20 @@
 	
 	_resultBackSprite = [CCSprite node];
 	
-	_buttonSprite = [CMMMenuItem spriteWithTexture:buttonSprite_.texture rect:buttonSprite_.textureRect];
-	_buttonSprite.touchCancelDistance = 100.0f;
+	buttonItem = [CMMMenuItem node];
+	[buttonItem setTouchCancelDistance:100.0f];
+	[self setButtonSprite:buttonSprite_];
 	
 	backColorL = backColorL_;
 	backColorR = backColorR_;
 	
 	CGSize frameSize_ = CGSizeZero;
 	frameSize_.width = width_+10.0f;
-	frameSize_.height = _buttonSprite.contentSize.height+10.0f;
+	frameSize_.height = [buttonItem contentSize].height+10.0f;
 	if(!(self = [super initWithFrameSize:frameSize_])) return self;
 	
 	callback_whenChangedItemVale = nil;
-	[self addChild:_buttonSprite z:2];
+	[self addChild:buttonItem z:2];
 	[self addChild:_barSprite z:1];
 	[self addChild:_resultBackSprite z:0];
 	
@@ -79,6 +80,12 @@
 	[self redrawWithBar];
 }
 
+-(void)setButtonSprite:(CCSprite *)buttonSprite_{
+	[buttonItem setNormalImage:buttonSprite_];
+	[buttonItem setSelectedImage:buttonSprite_];
+	_doRedraw = YES;
+}
+
 -(void)setBackColorL:(ccColor4B)backColorL_{
 	backColorL = backColorL_;
 	_doRedraw = YES;
@@ -95,7 +102,7 @@
 	float beforeItemValue_ = itemValue;
 	itemValue = convertItemValue_;
 	
-	float buttonPointX_ = ((self.contentSize.width-_buttonSprite.contentSize.width)*((itemValue_-minValue)/(maxValue-minValue)))+_buttonSprite.contentSize.width/2.0f;
+	float buttonPointX_ = ((self.contentSize.width-[buttonItem contentSize].width)*((itemValue_-minValue)/(maxValue-minValue)))+[buttonItem contentSize].width/2.0f;
 	[self _setPointXOfButton:buttonPointX_];
 	
 	if(doCallback_){
@@ -120,14 +127,14 @@
 }
 
 -(void)_setPointXOfButton:(float)x_{
-	CGSize buttonSize_ = _buttonSprite.contentSize;
+	CGSize buttonSize_ = [buttonItem contentSize];
 	
 	if(x_<buttonSize_.width/2)
 		x_ = buttonSize_.width/2;
 	else if(x_>contentSize_.width-buttonSize_.width/2)
 		x_ = contentSize_.width-buttonSize_.width/2;
 	
-	_buttonSprite.position = ccp(x_,contentSize_.height/2);
+	[buttonItem setPosition:ccp(x_,contentSize_.height/2)];
 	_doRedraw = YES;
 }
 
@@ -141,14 +148,16 @@
 	[_maskSprite visit];
 	[_maskSprite removeFromParentAndCleanup:YES];
 	
+	CGPoint buttonPoint_ = [buttonItem position];
+	
 	ccGLBlendFunc(GL_DST_ALPHA, GL_ZERO);
 	glLineWidth(contentSize_.height);
 	
 	ccDrawColor4B(backColorL.r, backColorL.g, backColorL.b, backColorL.a);
-	ccDrawLine(ccp(0.0f,contentSize_.height/2.0f), ccp(_buttonSprite.position.x,contentSize_.height/2.0f));
+	ccDrawLine(ccp(0.0f,contentSize_.height/2.0f), ccp(buttonPoint_.x,contentSize_.height/2.0f));
 	
 	ccDrawColor4B(backColorR.r, backColorR.g, backColorR.b, backColorR.a);
-	ccDrawLine(ccp(_buttonSprite.position.x,contentSize_.height/2.0f), ccp(contentSize_.width,contentSize_.height/2.0f));
+	ccDrawLine(ccp(buttonPoint_.x,contentSize_.height/2.0f), ccp(contentSize_.width,contentSize_.height/2.0f));
 	
 	[render_ end];
 	
@@ -161,7 +170,7 @@
 }
 
 -(void)redrawWithBar{
-	CGSize buttonSize_ = _buttonSprite.contentSize;
+	CGSize buttonSize_ = [buttonItem contentSize];
 	_maskSprite.contentSize = _barSprite.contentSize = CGSizeMake(contentSize_.width-buttonSize_.width/2.0f, [_maskSprite contentSize].height);
 		
 	[self redraw];
@@ -178,7 +187,7 @@
 	}
 	
 	CGPoint convertPoint_ = [self convertToNodeSpace:[CMMTouchUtil pointFromTouch:touch_]];
-	CGSize buttonSize_ = _buttonSprite.contentSize;
+	CGSize buttonSize_ = [buttonItem contentSize];
 	float itemValue_ = (maxValue-minValue) * ((convertPoint_.x-buttonSize_.width/2.0f)/(self.contentSize.width-buttonSize_.width)) +minValue;
 	[self setItemValue:itemValue_];
 }

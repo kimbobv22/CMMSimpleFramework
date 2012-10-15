@@ -25,19 +25,23 @@
 	[self addChild:testSwitchItem_];
 	
 	testSwitchItem_ = [CMMControlItemSwitch controlItemSwitchWithFrameSeq:0];
+	[testSwitchItem_ setButtonSprite:[CCSprite spriteWithFile:@"Icon-Small.png"]];
 	testSwitchItem_.position = ccp(self.contentSize.width/2+10,self.contentSize.height/2+30);
 	testSwitchItem_.delegate = self;
 	[self addChild:testSwitchItem_];
 	
 	CMMControlItemSlider *testSliderItem_ = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:150];
-	testSliderItem_.minValue = -8.0f;
+	testSliderItem_.minValue = -10.0f;
+	testSliderItem_.maxValue = 10.0f;
 	testSliderItem_.itemValue = 1.0f;
 	testSliderItem_.position = ccp(self.contentSize.width/2-testSliderItem_.contentSize.width-10,testSwitchItem_.position.y-testSwitchItem_.contentSize.height-testSliderItem_.contentSize.height);
 	testSliderItem_.delegate = self;
 	[self addChild:testSliderItem_];
 	
 	slider2 = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:150];
-	slider2.minValue = -8.0f;
+	[slider2 setButtonSprite:[CCSprite spriteWithFile:@"Icon-Small.png"]];
+	slider2.minValue = -10.0f;
+	slider2.maxValue = 10.0f;
 	slider2.itemValue = 1.0f;
 	slider2.position = ccp(self.contentSize.width/2+10,testSwitchItem_.position.y-testSwitchItem_.contentSize.height-slider2.contentSize.height);
 	slider2.callback_whenChangedItemVale = ^(id sender_, float itemValue_, float beforeItemValue_){

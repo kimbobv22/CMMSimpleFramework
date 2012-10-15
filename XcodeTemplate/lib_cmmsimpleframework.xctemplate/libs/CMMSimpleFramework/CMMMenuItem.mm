@@ -6,6 +6,7 @@
 
 -(void)_stopFadeAction;
 -(void)_setMenuItemImage:(CCSprite *)sprite_;
+-(void)_setIsOnSelected:(BOOL)isOnSelected_;
 
 @end
 
@@ -19,11 +20,22 @@
 	[self setTexture:[sprite_ texture]];
 	[self setTextureRect:[sprite_ textureRect]];
 }
+-(void)_setIsOnSelected:(BOOL)isOnSelected_{
+	_isOnSelected = isOnSelected_;
+	[self _stopFadeAction];
+	if(_isOnSelected){
+		[self runAction:_fadeOutAction];
+		[self _setMenuItemImage:selectedImage];
+	}else{
+		[self runAction:isEnable?_fadeInAction:_fadeOutAction];
+		[self _setMenuItemImage:normalImage];
+	}
+}
 
 @end
 
 @implementation CMMMenuItem
-@synthesize key,userData,selectedImage,delegate,isEnable,callback_pushdown,callback_pushup,callback_pushcancel;
+@synthesize key,userData,normalImage,selectedImage,delegate,isEnable,callback_pushdown,callback_pushup,callback_pushcancel;
 
 +(id)menuItemWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ frameSize:(CGSize)frameSize_{
 	return [[[self alloc] initWithFrameSeq:frameSeq_ batchBarSeq:batchBarSeq_ frameSize:frameSize_] autorelease];
@@ -33,18 +45,21 @@
 }
 
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
+	
+	_fadeInAction = [[CCTintTo actionWithDuration:0.1f red:255 green:255 blue:255] retain];
+	_fadeOutAction = [[CCTintTo actionWithDuration:0.1f red:140 green:140 blue:140] retain];
+	
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
 	
 	key = userData = nil;
-	_normalImage = [[CCSprite alloc] initWithTexture:texture rect:rect];
-	selectedImage = nil;
+	normalImage = [[CCSprite alloc] initWithTexture:texture rect:rect];
+	selectedImage = [[CCSprite alloc] initWithTexture:texture rect:rect];
 	delegate = nil;
 	touchCancelDistance = 30.0f;
 	isEnable = YES;
+	_isOnSelected = NO;
 	
 	callback_pushdown = callback_pushup = callback_pushcancel = nil;
-	_fadeInAction = [[CCTintTo actionWithDuration:0.1f red:255 green:255 blue:255] retain];
-	_fadeOutAction = [[CCTintTo actionWithDuration:0.1f red:140 green:140 blue:140] retain];
 	
 	[self initializeTouchDispatcher];
 	
@@ -65,13 +80,23 @@
 
 -(void)setIsEnable:(BOOL)isEnable_{
 	isEnable = isEnable_;
-	[self _stopFadeAction];
-	[self _setMenuItemImage:_normalImage];
-	if(isEnable){
-		[self runAction:_fadeInAction];
-	}else{
-		[self runAction:_fadeOutAction];
-	}
+	[self _setIsOnSelected:NO];
+}
+-(BOOL)isOnSelected{
+	return _isOnSelected;
+}
+
+-(void)setNormalImage:(CCSprite *)normalImage_{
+	if(normalImage == normalImage_) return;
+	[normalImage release];
+	normalImage = [normalImage_ retain];
+	[self _setIsOnSelected:_isOnSelected];
+}
+-(void)setSelectedImage:(CCSprite *)selectedImage_{
+	if(selectedImage == selectedImage_) return;
+	[selectedImage release];
+	selectedImage = [selectedImage_ retain];
+	[self _setIsOnSelected:_isOnSelected];
 }
 
 -(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
@@ -79,26 +104,17 @@
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
-	[self _stopFadeAction];
-	[self _setMenuItemImage:_normalImage];
-	if(selectedImage){
-		[self _setMenuItemImage:selectedImage];
-	}
-	[self runAction:_fadeOutAction];
+	[self _setIsOnSelected:YES];
 	[self callCallback_pushdown];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
-	[self _stopFadeAction];
-	[self _setMenuItemImage:_normalImage];
-	[self runAction:_fadeInAction];
+	[self _setIsOnSelected:NO];
 	[self callCallback_pushup];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
-	[self _stopFadeAction];
-	[self _setMenuItemImage:_normalImage];
-	[self runAction:_fadeInAction];
+	[self _setIsOnSelected:NO];
 	[self callCallback_pushcancel];
 }
 
@@ -106,7 +122,7 @@
 
 -(void)dealloc{
 	[selectedImage release];
-	[_normalImage release];
+	[normalImage release];
 	[delegate release];
 	[callback_pushdown release];
 	[callback_pushup release];
@@ -171,7 +187,7 @@
 	[self updateDisplay];
 }
 -(NSString *)title{
-	return labelTitle.string;
+	return [labelTitle string];
 }
 
 @end

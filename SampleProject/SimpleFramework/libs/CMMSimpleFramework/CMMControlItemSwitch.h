@@ -13,7 +13,7 @@
 @end
 
 @interface CMMControlItemSwitch : CMMControlItem{
-	CMMMenuItem *_buttonSprite;
+	CMMMenuItem *buttonItem;
 	CCSprite *_backSprite,*_maskSprite,*_resultBackSprite;
 	
 	BOOL itemValue,_isTouchMoved;
@@ -26,6 +26,8 @@
 
 -(id)initWithMaskSprite:(CCSprite *)maskSprite_ backSprite:(CCSprite *)backSprite_ buttonSprite:(CCSprite *)buttonSprite_;
 -(id)initWithFrameSeq:(int)frameSeq_;
+
+-(void)setButtonSprite:(CCSprite *)buttonSprite_;
 
 @property (nonatomic, readwrite) BOOL itemValue;
 @property (nonatomic, copy) void (^callback_whenChangedItemVale)(id sender_,BOOL itemValue_);

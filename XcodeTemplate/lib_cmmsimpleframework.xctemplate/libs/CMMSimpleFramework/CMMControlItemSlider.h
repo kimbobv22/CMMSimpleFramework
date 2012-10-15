@@ -16,7 +16,7 @@
 @interface CMMControlItemSlider : CMMControlItem{
 	CMMSpriteBatchBar *_maskSprite,*_barSprite;
 	CCSprite *_resultBackSprite;
-	CMMMenuItem *_buttonSprite;
+	CMMMenuItem *buttonItem;
 	
 	ccColor4B backColorL,backColorR;
 	
@@ -34,8 +34,10 @@
 -(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor4B)backColorL_ backColorR:(ccColor4B)backColorR_;
 -(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_;
 
+-(void)setButtonSprite:(CCSprite *)buttonSprite_;
 -(void)redrawWithBar;
 
+@property (nonatomic, readonly) CMMMenuItem *buttonItem;
 @property (nonatomic, readwrite) ccColor4B backColorL,backColorR;
 @property (nonatomic, readwrite) float itemValue,unitValue,minValue,maxValue;
 @property (nonatomic, copy) void (^callback_whenChangedItemVale)(id sender_,float itemValue_, float beforeItemValue_);

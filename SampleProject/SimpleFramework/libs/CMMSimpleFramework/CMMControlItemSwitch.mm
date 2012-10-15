@@ -21,14 +21,15 @@
 -(id)initWithMaskSprite:(CCSprite *)maskSprite_ backSprite:(CCSprite *)backSprite_ buttonSprite:(CCSprite *)buttonSprite_{
 	_maskSprite = [[CCSprite alloc] initWithTexture:maskSprite_.texture rect:maskSprite_.textureRect];
 	_backSprite = [[CCSprite alloc] initWithTexture:backSprite_.texture rect:backSprite_.textureRect];
-	_buttonSprite = [CMMMenuItem spriteWithTexture:buttonSprite_.texture rect:buttonSprite_.textureRect];
-	_buttonSprite.touchCancelDistance = 100.0f;
+	buttonItem = [CMMMenuItem node];
+	[buttonItem setTouchCancelDistance:100.0f];
 	_resultBackSprite = [CCSprite node];
 	
 	if(!(self = [super initWithFrameSize:_maskSprite.contentSize])) return self;
 	
 	callback_whenChangedItemVale = nil;
-	[self addChild:_buttonSprite z:1];
+	[self addChild:buttonItem z:1];
+	[self setButtonSprite:buttonSprite_];
 	[self addChild:_resultBackSprite z:0];
 	[self setItemValue:NO];
 	
@@ -52,10 +53,16 @@
 	return [self initWithMaskSprite:maskSprite_ backSprite:backSprite_ buttonSprite:buttonSprite_];
 }
 
+-(void)setButtonSprite:(CCSprite *)buttonSprite_{
+	[buttonItem setNormalImage:buttonSprite_];
+	[buttonItem setSelectedImage:buttonSprite_];
+	_doRedraw = YES;
+}
+
 -(void)setItemValue:(BOOL)itemValue_{
 	BOOL doCallback_ = itemValue != itemValue_;
 	itemValue = itemValue_;
-	[self _setPointXOfButton:(itemValue?self.contentSize.width-_buttonSprite.contentSize.width/2:_buttonSprite.contentSize.width/2)];
+	[self _setPointXOfButton:(itemValue?self.contentSize.width-buttonItem.contentSize.width/2:buttonItem.contentSize.width/2)];
 	
 	if(doCallback_){
 		if(!callback_whenChangedItemVale && cmmFuncCommon_respondsToSelector(delegate, @selector(controlItemSwitch:whenChangedItemValue:)))
@@ -67,14 +74,14 @@
 
 -(void)_setPointXOfButton:(float)x_{
 	CGSize frameSize_ = self.contentSize;
-	CGSize buttonSize_ = _buttonSprite.contentSize;
+	CGSize buttonSize_ = [buttonItem contentSize];
 	
 	if(x_<buttonSize_.width/2.0f)
 		x_ = buttonSize_.width/2.0f;
 	else if(x_>frameSize_.width-buttonSize_.width/2)
 		x_ = frameSize_.width-buttonSize_.width/2;
 	
-	_buttonSprite.position = ccp(x_,frameSize_.height/2);
+	[buttonItem setPosition:ccp(x_,frameSize_.height/2)];
 	_doRedraw = YES;
 }
 
@@ -83,7 +90,7 @@
 	CGSize frameSize_ = self.contentSize;
 	CCRenderTexture *render_ = [CCRenderTexture renderTextureWithWidth:frameSize_.width height:frameSize_.height];
 	[render_ begin];
-	[CMMDrawingUtil drawMask:render_ sprite:_backSprite spritePoint:_buttonSprite.position maskSprite:_maskSprite maskPoint:ccp(frameSize_.width/2,frameSize_.height/2)];
+	[CMMDrawingUtil drawMask:render_ sprite:_backSprite spritePoint:[buttonItem position] maskSprite:_maskSprite maskPoint:ccp(frameSize_.width/2,frameSize_.height/2)];
 	[render_ end];
 	
 	CCTexture2D *resultTexture_ = render_.sprite.texture;

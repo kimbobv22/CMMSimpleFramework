@@ -23,9 +23,9 @@
 
 @interface CMMMenuItem : CMMSprite{
 	id key,userData;
-	CCSprite *selectedImage,*_normalImage;
+	CCSprite *normalImage,*selectedImage;
 	id<CMMMenuItemDelegate> delegate;
-	BOOL isEnable;
+	BOOL isEnable,_isOnSelected;
 	
 	CCAction *_fadeInAction,*_fadeOutAction;
 	void (^callback_pushdown)(id sender_),(^callback_pushup)(id sender_),(^callback_pushcancel)(id sender_);
@@ -40,9 +40,10 @@
 -(void)updateDisplay;
 
 @property (nonatomic, retain) id key,userData;
-@property (nonatomic, retain) CCSprite *selectedImage;
+@property (nonatomic, retain) CCSprite *normalImage,*selectedImage;
 @property (nonatomic, retain) id<CMMMenuItemDelegate> delegate;
 @property (nonatomic, readwrite) BOOL isEnable;
+@property (nonatomic, readonly) BOOL isOnSelected;
 @property (nonatomic, copy) void (^callback_pushdown)(id sender_),(^callback_pushup)(id sender_),(^callback_pushcancel)(id sender_);
 
 @end
