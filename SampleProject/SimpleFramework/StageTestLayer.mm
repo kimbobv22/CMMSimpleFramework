@@ -64,8 +64,8 @@
 	
 	glLineWidth(1.0f);
 	ccDrawColor4F(1.0f, 1.0f, 1.0f, 0.4f);
-	ccDrawLine(ccp(self.contentSize.width/2,0), ccp(self.contentSize.width/2,self.contentSize.height));
-	ccDrawLine(ccp(0,self.contentSize.height/2), ccp(self.contentSize.width,self.contentSize.height/2));
+	ccDrawLine(ccp(contentSize_.width/2,0), ccp(contentSize_.width/2,contentSize_.height));
+	ccDrawLine(ccp(0,contentSize_.height/2), ccp(contentSize_.width,contentSize_.height/2));
 }
 
 @end
@@ -246,6 +246,8 @@
 	[stage.world addObject:ball_];
 	
 	CMMStageLightItem *lightItem_ = [[stage light] addLightItemAtPoint:CGPointZero brightness:1.0f radius:100.0f];
+	[lightItem_ setIsBlendColor:YES];
+	[lightItem_ setColor:ccc3(255, 0, 0)];
 	[lightItem_ setTarget:ball_];
 	
 	return ball_;
@@ -266,7 +268,7 @@
 	stageSpec_.gravity = CGPointZero;
 	stageSpec_.friction = 0.3f;
 	stageSpec_.restitution = 0.3f;
-	stageSpec_.brightness = 0.2f;
+	stageSpec_.brightness = 0.1f;
 	
 	stage = [CMMStage stageWithStageSpecDef:stageSpec_];
 	stage.sound.soundDistance = 300.0f;
@@ -286,15 +288,40 @@
 	[stage.world addObatchNode:batchNode_];
 	
 	////add stage back ground
-	CCLayerGradient *backLayer_ = [CCLayerGradientTest layerWithColor:ccc4(120, 0, 0, 180) fadingTo:ccc4(0, 0, 120, 180) alongVector:ccp(0.3,0.7)];
+	CCLayerGradient *backLayer_ = [CCLayerGradientTest layerWithColor:ccc4(120, 0, 0, 230) fadingTo:ccc4(0, 0, 120, 230) alongVector:ccp(0.3,0.7)];
 	backLayer_.contentSize = stage.worldSize;
 	stage.backGround.backGroundNode = backLayer_;
 	
 	stageControlType = StageControlType_addBox;
 	
 	[gravitySlider setItemValue:-9.8f];
+	
+	//add light control item
+	CGSize tempMenuItemSize_ = CGSizeMake(controlMenu.contentSize.width, 30);
+	CMMMenuItemLabelTTF *tempMenuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:tempMenuItemSize_];
+	[tempMenuItem_ setTitle:@"add Light"];
+	[tempMenuItem_ setCallback_pushup:^(id) {
+		stageControlType = StageControlType_addLight;
+	}];
+	[controlMenu addItem:tempMenuItem_];
 
 	return self;
+}
+
+-(void)stage:(CMMStage *)stage_ whenTouchEnded:(UITouch *)touch_ withObject:(CMMSObject *)object_{
+	[super stage:stage_ whenTouchEnded:touch_ withObject:object_];
+	
+	switch(stageControlType){
+		case StageControlType_addLight:{
+			CGPoint targetPoint_ = [stage_ convertToStageWorldSpace:[CMMTouchUtil pointFromTouch:touch_]];
+			CMMStageLightItemFadeInOut *lightItem_ = (CMMStageLightItemFadeInOut *)[[stage_ light] addLightItemAtPoint:targetPoint_ brightness:1.0f radius:100.0f duration:1.0f lightItemClass:[CMMStageLightItemFadeInOut class]];
+			[lightItem_ setFadeTime:0.2f];
+			[lightItem_ setIsBlendColor:YES];
+			[lightItem_ setColor:ccc3(arc4random()%255, arc4random()%255, arc4random()%255)];
+			break;
+		}
+		default: break;
+	}
 }
 
 @end
@@ -448,7 +475,7 @@
 	CMMSObjectBatchNode *batchNode_ = [stage.world obatchNodeAtFileName:@"Icon-Small.png" isInDocument:NO];
 	CMMSObject *object_ = [batchNode_ createObject];
 	object_.position = point_;
-	[stage.world addObject:object_];
+	[[stage world] addObject:object_];
 	
 	CMMStageLightItem *lightItem_ = [[stage light] addLightItemAtPoint:CGPointZero brightness:1.0f radius:100.0f];
 	[lightItem_ setTarget:object_];

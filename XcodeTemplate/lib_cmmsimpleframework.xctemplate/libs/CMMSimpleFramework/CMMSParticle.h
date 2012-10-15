@@ -5,7 +5,6 @@
 
 @interface CMMSParticle : CCParticleSystemQuad{
 	NSString *particleName;
-	
 	CMMSObject *target;
 }
 

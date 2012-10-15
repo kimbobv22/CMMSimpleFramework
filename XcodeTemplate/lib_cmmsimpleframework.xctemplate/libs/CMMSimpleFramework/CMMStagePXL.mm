@@ -212,7 +212,7 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 	NSUInteger index_ = [self indexOfMapObject:mapObject_];
 	if(index_ == NSNotFound) return;
 	
-	[_CMMStagePixelObjectCache_ cacheObject:mapObject_];
+	[_CMMStagePixelObjectCache_ addObject:mapObject_];
 	[mapObjectList removeObjectAtIndex:index_];
 	[mapObject_ removeAllFixtures];
 	[[stage world] world]->DestroyBody(mapObject_->mapBody);

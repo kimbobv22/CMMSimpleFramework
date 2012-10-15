@@ -45,7 +45,11 @@
 
 @end
 
-@implementation CMMSParticle(Deprecated)
+@implementation CMMStageWorld(Deprecated)
+
+-(CCArray *)objectsInTouched{
+	return [self objectsInTouches];
+}
 
 @end
 
@@ -58,6 +62,17 @@
 }
 -(void)removeParticleFollowOfTarget:(CMMSObject *)target_{
 	[self removeParticleOfTarget:target_];
+}
+
+@end
+
+@implementation CMMSimpleCache(Deprecated)
+
+-(void)cacheObject:(id)object_{
+	[self addObject:object_];
+}
+-(void)clearCache{
+	[self removeAllObjects];
 }
 
 @end

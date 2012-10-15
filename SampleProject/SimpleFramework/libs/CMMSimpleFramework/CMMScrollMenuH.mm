@@ -137,7 +137,7 @@
 @implementation CMMScrollMenuH(Common)
 
 -(void)addItem:(CMMMenuItem *)item_ atIndex:(int)index_{
-	//NSAssert([item_ isKindOfClass:[CMMScrollMenuHItem class]], @"CMMScrolMenuV only support CMMScrolMenuVItem as children.");
+	NSAssert([item_ isKindOfClass:[CMMScrollMenuHItem class]], @"CMMScrolMenuV only support CMMScrolMenuVItem as children.");
 	[super addItem:item_ atIndex:index_];
 	
 	CGPoint targetPoint_ = cmmFuncCommon_position_center(self, item_);

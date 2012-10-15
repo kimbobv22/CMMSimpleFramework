@@ -89,7 +89,7 @@
 -(void)update:(ccTime)dt_{
 	b2Body *targetBody_ = [target body];
 	if(targetBody_ && targetAccelVector.Length() > 0){
-		targetBody_->ApplyLinearImpulse(targetAccelVector, targetBody_->GetPosition());
+		targetBody_->ApplyLinearImpulse(b2Vec2Mult(targetAccelVector, 30.0f*dt_), targetBody_->GetPosition());
 	}
 	[joypad update:dt_];
 	[stage update:dt_];

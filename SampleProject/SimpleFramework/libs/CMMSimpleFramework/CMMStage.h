@@ -7,6 +7,7 @@
 #import "CMMSObject.h"
 #import "CMMSSpecStage.h"
 #import "CMMSObjectSView.h"
+#import "CMMTimeIntervalArray.h"
 
 @class CMMStage;
 
@@ -46,8 +47,10 @@ public:
 	b2Draw *_debugDraw;
 	
 	CCArray *obatchNode_list,*obatchNode_destroyList;
-	CCArray *object_list,*object_createList,*object_destroyList;
+	CMMTimeIntervalArray *object_list;
 	CMMb2ContactMask b2Mask1,b2Mask2,b2Mask3,b2Mask4;
+	
+	int32 velocityIterations, positionIterations;
 	
 	//for performance Touch delegate
 	CCArray *_touchedObjects;
@@ -64,7 +67,7 @@ public:
 @property (nonatomic, readonly) b2World *world;
 @property (nonatomic, readonly) b2Body *worldBody;
 @property (nonatomic, readonly) CCArray *obatchNode_list,*object_list;
-@property (nonatomic, readonly) int count DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readwrite) int32 velocityIterations, positionIterations;
 @property (nonatomic, readonly) int countOfObatchNode,countOfObject;
 
 @end
@@ -102,7 +105,7 @@ public:
 -(int)indexOfObject:(CMMSObject *)object_;
 -(int)indexOfObjectTag:(int)objectTag_;
 
--(CCArray *)objectsInTouched;
+-(CCArray *)objectsInTouches;
 
 @end
 
@@ -116,7 +119,7 @@ public:
 
 @interface CMMStageParticle : CMMLayer{
 	CMMStage *stage;
-	CCArray *particleList;
+	CMMTimeIntervalArray *particleList;
 	CMMSimpleCache *_cachedParticles;
 }
 
@@ -126,7 +129,7 @@ public:
 -(void)update:(ccTime)dt_;
 
 @property (nonatomic, assign) CMMStage *stage;
-@property (nonatomic, readonly) CCArray *particleList;
+@property (nonatomic, readonly) CMMTimeIntervalArray *particleList;
 @property (nonatomic, readonly) int particleCount;
 
 @end
@@ -134,6 +137,7 @@ public:
 @interface CMMStageParticle(Particle)
 
 -(void)addParticle:(CMMSParticle *)particle_;
+-(CMMSParticle *)addParticleWithName:(NSString *)particleName_ point:(CGPoint)point_ particleClass:(Class)particleClass_;
 -(CMMSParticle *)addParticleWithName:(NSString *)particleName_ point:(CGPoint)point_;
 
 -(void)removeParticle:(CMMSParticle *)particle_;
@@ -155,6 +159,9 @@ public:
 	float brightness,radius;
 	ccTime duration,_curDuration;
 	
+	ccColor3B color;
+	BOOL isBlendColor;
+	
 	CMMSObject *target;
 }
 
@@ -164,23 +171,45 @@ public:
 -(void)update:(ccTime)dt_;
 -(void)reset;
 
-@property (nonatomic, assign) CMMStageLight *stageLight; //weak ref
+@property (nonatomic, retain) CMMStageLight *stageLight;
 @property (nonatomic, readwrite) CGPoint point;
 @property (nonatomic, readwrite) float brightness,radius;
 @property (nonatomic, readwrite) ccTime duration;
+@property (nonatomic, readwrite) ccColor3B color;
+@property (nonatomic, readwrite) BOOL isBlendColor;
 @property (nonatomic, assign) CMMSObject *target; //weak ref
+
+@end
+
+typedef enum{
+	CMMStageLightItemFadeInOutState_none,
+	CMMStageLightItemFadeInOutState_fadeIn,
+	CMMStageLightItemFadeInOutState_fadeOut,
+	CMMStageLightItemFadeInOutState_endedFade,
+} CMMStageLightItemFadeInOutState;
+
+@interface CMMStageLightItemFadeInOut : CMMStageLightItem{
+	ccTime fadeTime,_curFadeTime;
+	float _orginalRadius,_orginalBrightness;
+	
+	CMMStageLightItemFadeInOutState _fadeInOutState;
+}
+
+@property (nonatomic, readwrite) ccTime fadeTime;
 
 @end
 
 @interface CMMStageLight : CCLayer{
 	CMMStage *stage;
-	CCArray *lightList;
+	CMMTimeIntervalArray *lightList;
+	
+	Class defaultLightItemClass;
 	
 	BOOL useLights,useCulling;
 	uint segmentOfLights;
 	
 	CCRenderTexture *_lightRender;
-	CMMSimpleCache *cachedlightItems;
+	CMMSimpleCache *_cachedlightItems;
 }
 
 +(id)lightWithStage:(CMMStage *)stage_;
@@ -189,16 +218,18 @@ public:
 -(void)update:(ccTime)dt_;
 
 @property (nonatomic, assign) CMMStage *stage;
-@property (nonatomic, readonly) CCArray *lightList;
+@property (nonatomic, readonly) CMMTimeIntervalArray *lightList;
 @property (nonatomic, readonly) uint count;
 @property (nonatomic, readwrite) BOOL useLights,useCulling;
 @property (nonatomic, readwrite) uint segmentOfLights;
+@property (nonatomic, readwrite) ccBlendFunc lightBlendFunc;
 
 @end
 
 @interface CMMStageLight(Common)
 
 -(void)addLightItem:(CMMStageLightItem *)lightItem_;
+-(CMMStageLightItem *)addLightItemAtPoint:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_ duration:(ccTime)duration_ lightItemClass:(Class)lightItemClass_;
 -(CMMStageLightItem *)addLightItemAtPoint:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_ duration:(ccTime)duration_;
 -(CMMStageLightItem *)addLightItemAtPoint:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_;
 -(CMMStageLightItem *)addLightItemAtPoint:(CGPoint)point_ brightness:(float)brightness_;

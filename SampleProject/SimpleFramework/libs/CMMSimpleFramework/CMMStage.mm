@@ -37,13 +37,10 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	CMMb2ContactMask *b2CMaskA_ = (CMMb2ContactMask *)fixtureA->GetUserData();
 	CMMb2ContactMask *b2CMaskB_ = (CMMb2ContactMask *)fixtureB->GetUserData();
 	return cmmFuncCMMb2ContactMask_IsContact(b2CMaskA_,b2CMaskB_);
-	
-	//filter supported by Box2d - N/U
-	//return b2ContactFilter::ShouldCollide(fixtureA, fixtureB);
 }
 
 @implementation CMMStageWorld
-@synthesize stage,world,worldBody,obatchNode_list,object_list,count,countOfObatchNode,countOfObject;
+@synthesize stage,world,worldBody,obatchNode_list,object_list,velocityIterations, positionIterations,countOfObatchNode,countOfObject;
 
 +(id)worldWithStage:(CMMStage *)stage_ worldSize:(CGSize)worldSize_{
 	return [[[self alloc] initWithStage:stage_ worldSize:worldSize_] autorelease];
@@ -57,9 +54,40 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	obatchNode_list = [[CCArray alloc] init];
 	obatchNode_destroyList = [[CCArray alloc] init];
 	
-	object_list = [[CCArray alloc] init];
-	object_destroyList = [[CCArray alloc] init];
-	object_createList = [[CCArray alloc] init];
+	object_list = [[CMMTimeIntervalArray alloc] init];
+	
+	//add filter & callback
+	[object_list setFilter_whenRemovedObject:^(id object_){
+		[object_ whenRemovedToStage];
+		
+		//remove touch
+		[touchDispatcher cancelTouchAtNode:object_];
+		
+		//remove state view
+		[[stage stateView] removeStateViewAtTarget:object_];
+		
+		CMMStageLight *light_ = [stage light];
+		//remve light
+		if(light_){
+			[light_ removeLightItemsAtTarget:object_];
+		}
+		
+		//stage delegate
+		[stage stageWorld:self whenRemovedObject:object_];
+	}];
+	[object_list setCallback_whenRemovedObject:^(CCArray *objects_){
+		if([objects_ count]>0 && cmmFuncCommon_respondsToSelector(stage.delegate,@selector(stage:whenRemovedObjects:)))
+			[[stage delegate] stage:stage whenRemovedObjects:objects_];
+	}];
+	
+	[object_list setFilter_whenAddedObject:^(id object_){
+		[object_ whenAddedToStage];
+		[stage stageWorld:self whenAddedObject:object_];
+	}];
+	[object_list setCallback_whenAddedObject:^(CCArray * objects_){
+		if([objects_ count]>0 && cmmFuncCommon_respondsToSelector(stage.delegate,@selector(stage:whenAddedObjects:)))
+			[[stage delegate] stage:stage whenAddedObjects:objects_];
+	}];
 	
 	_contactLintener = new CMMStageWorldContactListener;
 	_contactFilter = new CMMStageWorldContactFilter;
@@ -103,6 +131,9 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	
 	groundBox.Set(b2Vec2_PTM_RATIO(contentSize_.width,contentSize_.height), b2Vec2_PTM_RATIO(contentSize_.width,0));
 	worldBody->CreateFixture(&groundBox,0)->SetUserData(&b2Mask4);
+		
+	velocityIterations = 8;
+	positionIterations = 3;
 	
 	_touchedObjects = nil;
 	
@@ -120,10 +151,6 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	world->DrawDebugData();
 }
 #endif
-
--(int)count{
-	return [self countOfObject];
-}
 
 -(int)countOfObatchNode{
 	return [obatchNode_list count];
@@ -146,58 +173,16 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 		[obatchNode_ removeFromParentAndCleanup:YES];
 	}
 	
-	CMMStageObjectSView *stateView_ = [stage stateView];
-	CMMStageLight *light_ = [stage light];
+	[object_list step];
 	
-	//destory object
-	data_ = object_destroyList->data;
-	uint count_ = data_->num;
-	for(uint index_=0;index_<count_;++index_){
-		CMMSObject *object_ = data_->arr[index_];
-		[object_list removeObject:object_];
-		[object_ whenRemovedToStage];
-		
-		//remove touch
-		[touchDispatcher cancelTouchAtNode:object_];
-		
-		//remove state view
-		[stateView_ removeStateViewAtTarget:object_];
-		
-		//remve light
-		if(light_){
-			[light_ removeLightItemsAtTarget:object_];
-		}
-		
-		//stage delegate
-		[stage stageWorld:self whenRemovedObject:object_];
-	}
-	
-	if(count_>0 && cmmFuncCommon_respondsToSelector(stage.delegate,@selector(stage:whenRemovedObjects:)))
-		[stage.delegate stage:stage whenRemovedObjects:object_destroyList];
-	[object_destroyList removeAllObjects];
-	
-	//add object
-	data_ = object_createList->data;
-	count_ = data_->num;
-	for(uint index_=0;index_<count_;++index_){
-		CMMSObject *object_ = data_->arr[index_];
-		[object_list addObject:object_];
-		[object_ whenAddedToStage];
-		[stage stageWorld:self whenAddedObject:object_];
-	}
-	
-	if(count_>0 && cmmFuncCommon_respondsToSelector(stage.delegate,@selector(stage:whenAddedObjects:)))
-		[stage.delegate stage:stage whenAddedObjects:object_createList];
-	[object_createList removeAllObjects];
-	
-	world->Step(dt_, 8, 3);
+	world->Step(dt_, velocityIterations, positionIterations);
 	
 	CMMSSpecStage *specStage_ = stage.spec;
 	b2Vec2 gravity_ = b2Vec2Fromccp([specStage_ gravity]);
 	
 	//object update
 	data_ = object_list->data;
-	count_ = data_->num;
+	uint count_ = data_->num;
 	for(int index_=0;index_<count_;++index_){
 		CMMSObject *object_ = data_->arr[index_];
 		b2Body *objectBody_ = object_.body;
@@ -275,8 +260,6 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 
 -(void)dealloc{
 	[_touchedObjects release];
-	[object_createList release];
-	[object_destroyList release];
 	[object_list release];
 	
 	[obatchNode_destroyList release];
@@ -355,12 +338,11 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 -(void)addObject:(CMMSObject *)object_{
 	[object_ setStage:stage];
 	[object_ setObjectTag:[self _nextObjectTag]];
-	[object_createList addObject:object_];
+	[object_list addObject:object_];
 }
 
 -(void)removeObject:(CMMSObject *)object_{
-	if([object_destroyList indexOfObject:object_] != NSNotFound) return;
-	[object_destroyList addObject:object_];
+	[object_list removeObject:object_];
 }
 -(void)removeObjectAtIndex:(int)index_{
 	return [self removeObject:[self objectAtIndex:index_]];
@@ -406,7 +388,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	return NSNotFound;
 }
 
--(CCArray *)objectsInTouched{
+-(CCArray *)objectsInTouches{
 	if(!_touchedObjects)
 		_touchedObjects = [[CCArray alloc] init];
 	
@@ -436,6 +418,32 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 
 @end
 
+@interface CMMStageParticle(Cache)
+
+-(void)cacheParticle:(CMMSParticle *)particle_;
+-(CMMSParticle *)cachedParticleAtClass:(Class)tClass_;
+
+@end
+
+@implementation CMMStageParticle(Cache)
+
+-(void)cacheParticle:(CMMSParticle *)particle_{
+	[_cachedParticles addObject:particle_];
+}
+-(CMMSParticle *)cachedParticleAtClass:(Class)tClass_{
+	ccArray *data_ = _cachedParticles->data;
+	uint count_ = data_->num;
+	for(uint index_=0;index_<count_;++index_){
+		CMMSParticle *particle_ = data_->arr[index_];
+		if([particle_ class] == tClass_){
+			return [_cachedParticles cachedObjectAtIndex:index_];
+		}
+	}
+	return nil;
+}
+
+@end
+
 @implementation CMMStageParticle
 @synthesize stage,particleList,particleCount;
 
@@ -448,15 +456,27 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	stage = stage_;
 	self.contentSize = stage.worldSize;
 	
-	particleList = [[CCArray alloc] init];
+	particleList = [[CMMTimeIntervalArray alloc] init];
+	
+	//add filter
+	[particleList setFilter_whenAddedObject:^(id particle_){
+		[self addChild:particle_];
+	}];
+	[particleList setFilter_whenRemovedObject:^(id particle_){
+		[particle_ resetSystem];
+		[self cacheParticle:particle_];
+	}];
+	
 	_cachedParticles = [[CMMSimpleCache alloc] init];
 	
 	return self;
 }
 
 -(void)update:(ccTime)dt_{
+	[particleList step];
+	
 	ccArray *data_ = particleList->data;
-	int count_ = data_->num;
+	uint count_ = data_->num;
 	for(uint index_=0;index_<count_;++index_){
 		CMMSParticle *particle_ = data_->arr[index_];
 		[particle_ update:dt_];
@@ -474,27 +494,27 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 @implementation CMMStageParticle(Particle)
 
 -(void)addParticle:(CMMSParticle *)particle_{
-	if([self indexOfParticle:particle_] != NSNotFound)
-		return;
-	
 	[particleList addObject:particle_];
-	[self addChild:particle_];
 }
--(CMMSParticle *)addParticleWithName:(NSString *)particleName_ point:(CGPoint)point_{
-	CMMSParticle *particle_ = [_cachedParticles cachedObject];
+
+-(CMMSParticle *)addParticleWithName:(NSString *)particleName_ point:(CGPoint)point_ particleClass:(Class)particleClass_{
+	NSAssert([CMMSParticle isSubclassOfClass:particleClass_], @"CMMStageParticle : target class is not sub class of CMMSParticle");
+	
+	CMMSParticle *particle_ = [self cachedParticleAtClass:particleClass_];
 	if(!particle_){
 		particle_ = [CMMSParticle particleWithParticleName:particleName_];
 	}
 	
-	particle_.position = point_;
+	[particle_ setPosition:point_];
 	[self addParticle:particle_];
 	return particle_;
+}
+-(CMMSParticle *)addParticleWithName:(NSString *)particleName_ point:(CGPoint)point_{
+	return [self addParticleWithName:particleName_ point:point_ particleClass:[CMMSParticle class]];
 }
 
 -(void)removeChild:(CMMSParticle *)particle_ cleanup:(BOOL)cleanup{
 	[super removeChild:particle_ cleanup:cleanup];
-	[particle_ resetSystem];
-	[_cachedParticles cacheObject:particle_];
 	[particleList removeObject:particle_];
 }
 -(void)removeParticle:(CMMSParticle *)particle_{
@@ -526,7 +546,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 @end
 
 @implementation CMMStageLightItem
-@synthesize stageLight,point,brightness,radius,duration,target;
+@synthesize stageLight,point,brightness,radius,duration,color,isBlendColor,target;
 
 +(id)lightItemWithStageLight:(CMMStageLight *)stageLight_ point:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_ duration:(ccTime)duration_{
 	return [[[self alloc] initWithStageLight:stageLight_ point:point_ brightness:brightness_ radius:radius_ duration:duration_] autorelease];
@@ -534,13 +554,12 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 -(id)initWithStageLight:(CMMStageLight *)stageLight_ point:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_ duration:(ccTime)duration_{
 	if(!(self = [super init])) return self;
 	
-	stageLight = stageLight_;
+	stageLight = [stageLight_ retain];
 	point = point_;
 	brightness = brightness_;
 	radius = radius_;
 	duration = duration_;
-	_curDuration = 0.0f;
-	target = nil;
+	[self reset];
 	
 	return self;
 }
@@ -560,14 +579,116 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 
 -(void)reset{
 	_curDuration = 0.0f;
-	target = nil;
-	stageLight = nil;
+	[self setTarget:nil];
+}
+
+-(void)dealloc{
+	[stageLight release];
+	[super dealloc];
+}
+
+@end
+
+@implementation CMMStageLightItemFadeInOut
+@synthesize fadeTime;
+
+-(id)initWithStageLight:(CMMStageLight *)stageLight_ point:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_ duration:(ccTime)duration_{
+	if(!(self = [super initWithStageLight:stageLight_ point:point_ brightness:brightness_ radius:radius_ duration:duration_])) return self;
+	
+	_orginalBrightness = brightness_;
+	_orginalRadius = radius_;
+	_fadeInOutState = CMMStageLightItemFadeInOutState_fadeIn;
+	
+	return self;
+}
+
+-(void)setBrightness:(float)brightness_{
+	_orginalBrightness = brightness_;
+}
+-(void)setRadius:(float)radius_{
+	_orginalRadius = radius_;
+}
+
+-(void)update:(ccTime)dt_{
+	[super update:dt_];
+	
+	switch(_fadeInOutState){
+		case CMMStageLightItemFadeInOutState_none:
+			if(duration - _curDuration <= fadeTime){
+				_fadeInOutState = CMMStageLightItemFadeInOutState_fadeOut;
+			}
+			break;
+		case CMMStageLightItemFadeInOutState_fadeIn:{
+			_curFadeTime += dt_;
+			float ratio_ = _curFadeTime/MAX(fadeTime,_curFadeTime);
+			brightness = _orginalBrightness * ratio_;
+			radius = _orginalRadius * ratio_;
+			
+			if(_curFadeTime >= fadeTime){
+				_fadeInOutState = CMMStageLightItemFadeInOutState_none;
+				_curFadeTime = 0.0f;
+			}
+			
+			break;
+		}
+		case CMMStageLightItemFadeInOutState_fadeOut:{
+			_curFadeTime += dt_;
+			float ratio_ = _curFadeTime/MAX(fadeTime,_curFadeTime);
+			brightness = _orginalBrightness - _orginalBrightness * ratio_;
+			radius = _orginalRadius - _orginalRadius * ratio_;
+			
+			if(_curFadeTime >= fadeTime){
+				_fadeInOutState = CMMStageLightItemFadeInOutState_endedFade;
+				_curFadeTime = 0.0f;
+			}
+			
+			break;
+		}
+		case CMMStageLightItemFadeInOutState_endedFade:
+		default:
+			break;
+	}
+}
+
+-(void)reset{
+	[super reset];
+	radius = 0.0f;
+	brightness = 0.0f;
+	_curFadeTime = 0.0f;
+	[self setFadeTime:0.0f];
+	_fadeInOutState = CMMStageLightItemFadeInOutState_fadeIn;
+}
+
+@end
+
+@interface CMMStageLight(Cache)
+
+-(void)cacheLightItem:(CMMStageLightItem *)lightItem_;
+-(CMMStageLightItem *)cachedLightItemAtClass:(Class)tClass_;
+
+@end
+
+@implementation CMMStageLight(Cache)
+
+-(void)cacheLightItem:(CMMStageLightItem *)lightItem_{
+	[_cachedlightItems addObject:lightItem_];
+}
+-(CMMStageLightItem *)cachedLightItemAtClass:(Class)tClass_{
+	ccArray *data_ = _cachedlightItems->data;
+	uint count_ = data_->num;
+	for(uint index_=0;index_<count_;++index_){
+		CMMStageLightItem *lightItem_ = data_->arr[index_];
+		if([lightItem_ class] == tClass_){
+			return [_cachedlightItems cachedObjectAtIndex:index_];
+		}
+	}
+	return nil;
 }
 
 @end
 
 @implementation CMMStageLight
-@synthesize stage,lightList,count,useLights,useCulling,segmentOfLights;
+@synthesize stage,lightList,count,useLights,useCulling,segmentOfLights,lightBlendFunc;
 
 +(id)lightWithStage:(CMMStage *)stage_{
 	return [[[self alloc] initWithStage:stage_] autorelease];
@@ -579,7 +700,13 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	[self setAnchorPoint:CGPointZero];
 	
 	stage = stage_;
-	lightList = [[CCArray alloc] init];
+	lightList = [[CMMTimeIntervalArray alloc] init];
+	
+	//register filter
+	[lightList setFilter_whenRemovedObject:^(id lightItem_){
+		[lightItem_ reset];
+		[self cacheLightItem:lightItem_];
+	}];
 	
 	useLights = useCulling = YES;
 	segmentOfLights = 15;
@@ -587,10 +714,10 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	_lightRender = [CCRenderTexture renderTextureWithWidth:contentSize_.width height:contentSize_.height];
 	[_lightRender setShaderProgram:[[CCShaderCache sharedShaderCache] programForKey:kCCShader_PositionColor]];
 	[_lightRender setPosition:ccp(contentSize_.width*0.5f,contentSize_.height*0.5f)];
-	[[_lightRender sprite] setBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA}];
+	[self setLightBlendFunc:(ccBlendFunc){GL_DST_COLOR, GL_ONE_MINUS_SRC_ALPHA}];
 	[self addChild:_lightRender];
 	
-	cachedlightItems = [[CMMSimpleCache alloc] init];
+	_cachedlightItems = [[CMMSimpleCache alloc] init];
 	
 	return self;
 }
@@ -599,7 +726,16 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	return [lightList count];
 }
 
+-(void)setLightBlendFunc:(ccBlendFunc)lightBlendFunc_{
+	[[_lightRender sprite] setBlendFunc:lightBlendFunc_];
+}
+-(ccBlendFunc)lightBlendFunc{
+	return [[_lightRender sprite] blendFunc];
+}
+
 -(void)update:(ccTime)dt_{
+	[lightList step];
+	
 	CMMSSpecStage *stageSpec_ = [stage spec];
 	CGRect worldRect_ = CGRectZero;
 	worldRect_.size = [[CCDirector sharedDirector] winSize];
@@ -609,7 +745,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	GLfloat	clearColor_[4];
 	glGetFloatv(GL_COLOR_CLEAR_VALUE,clearColor_);
 	
-	glClearColor(0.2f, 0.2f, 0.2f, (1.0f-[stageSpec_ brightness]));
+	glClearColor(0.0f, 0.0f, 0.0f, (1.0f-[stageSpec_ brightness]));
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(clearColor_[0], clearColor_[1], clearColor_[2], clearColor_[3]);
 	glColorMask(0, 0, 0, 1);
@@ -622,8 +758,6 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 		
 		ccGLEnableVertexAttribs(kCCVertexAttribFlag_Position | kCCVertexAttribFlag_Color);
 		
-		ccGLBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
-		
 		float coef_ = 2.0f * (float)M_PI/(segmentOfLights-2);
 		GLfloat *lightVertices_ = (GLfloat *)malloc(sizeof(GLfloat)*2*(segmentOfLights));
 		ccColor4B *lightColors_ = (ccColor4B *)malloc(sizeof(ccColor4B)*(segmentOfLights));
@@ -634,7 +768,9 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 			CMMStageLightItem *lightItem_ = data_->arr[index_];
 			[lightItem_ update:dt_];
 			CGPoint targetPoint_ = [lightItem_ point];
+			float targetBrightness_ = [lightItem_ brightness];
 			float radius_ = [lightItem_ radius];
+			ccColor3B targetColor_ = [lightItem_ color];
 			
 			if(useCulling){
 				CGPoint worldPoint_ = [self convertToWorldSpace:targetPoint_];
@@ -643,7 +779,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 				if(!CGRectIntersectsRect(worldRect_, lightRect_)) continue;
 			}
 			
-			ccColor4B tcolor_ = ccc4(0, 0, 0, 255.0f * [lightItem_ brightness]);
+			ccColor4B tcolor_ = ccc4(targetColor_.r, targetColor_.g, targetColor_.b, 255.0f * targetBrightness_);
 			
 			lightColors_[0] = tcolor_;
 			memset(lightVertices_,0,sizeof(GLfloat)*2*(segmentOfLights));
@@ -657,12 +793,25 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 				
 				lightVertices_[lightSegIndex_*2] = vertPoint_.x;
 				lightVertices_[lightSegIndex_*2+1] = vertPoint_.y;
-				lightColors_[lightSegIndex_] = ccc4(0,0,0,0);
+				lightColors_[lightSegIndex_] = ccc4(targetColor_.r,targetColor_.g,targetColor_.b,0);
 			}
+			
+			ccGLBlendFunc(GL_ZERO, GL_ONE_MINUS_SRC_ALPHA);
 			
 			glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, lightVertices_);
 			glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, lightColors_);
 			glDrawArrays(GL_TRIANGLE_FAN, 0, segmentOfLights);
+			
+			if([lightItem_ isBlendColor]){
+				glColorMask(1, 1, 1, 1);
+				
+				ccGLBlendFunc(GL_SRC_ALPHA, GL_ONE);
+				glVertexAttribPointer(kCCVertexAttrib_Position, 2, GL_FLOAT, GL_FALSE, 0, lightVertices_);
+				glVertexAttribPointer(kCCVertexAttrib_Color, 4, GL_UNSIGNED_BYTE, GL_TRUE, 0, lightColors_);
+				glDrawArrays(GL_TRIANGLE_FAN, 0, segmentOfLights);
+				
+				glColorMask(0, 0, 0, 1);
+			}
 		}
 		
 		free(lightVertices_);
@@ -675,7 +824,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 }
 
 -(void)dealloc{
-	[cachedlightItems release];
+	[_cachedlightItems release];
 	[lightList release];
 	[super dealloc];
 }
@@ -689,11 +838,17 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	if(index_ != NSNotFound) return;
 	[lightList addObject:lightItem_];
 }
--(CMMStageLightItem *)addLightItemAtPoint:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_ duration:(ccTime)duration_{
-	CMMStageLightItem *lightItem_ = [cachedlightItems cachedObject];
+-(CMMStageLightItem *)addLightItemAtPoint:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_ duration:(ccTime)duration_ lightItemClass:(Class)lightItemClass_{
+	
+	NSAssert([lightItemClass_ isSubclassOfClass:[CMMStageLightItem class]], @"CMMStageLight : target class is not sub class of CMMStageLightItem");
+	CMMStageLightItem *lightItem_ = [self cachedLightItemAtClass:lightItemClass_];
 	if(!lightItem_){
-		lightItem_ = [CMMStageLightItem lightItemWithStageLight:nil point:CGPointZero brightness:0.0f radius:0.0f duration:0.0f];
+		lightItem_ = [lightItemClass_ lightItemWithStageLight:nil point:CGPointZero brightness:0.0f radius:0.0f duration:0.0f];
 	}
+	
+	//reset option
+	[lightItem_ setColor:ccc3(0, 0, 0)];
+	[lightItem_ setIsBlendColor:NO];
 	
 	[lightItem_ setPoint:point_];
 	[lightItem_ setBrightness:brightness_];
@@ -703,6 +858,9 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	
 	[self addLightItem:lightItem_];
 	return lightItem_;
+}
+-(CMMStageLightItem *)addLightItemAtPoint:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_ duration:(ccTime)duration_{
+	return [self addLightItemAtPoint:point_ brightness:brightness_ radius:radius_ duration:duration_ lightItemClass:[CMMStageLightItem class]];
 }
 -(CMMStageLightItem *)addLightItemAtPoint:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_{
 	return [self addLightItemAtPoint:point_ brightness:brightness_ radius:radius_ duration:-1.0f];
@@ -718,8 +876,6 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	uint index_= [self indexOfLightItem:lightItem_];
 	if(index_ == NSNotFound) return;
 	
-	[lightItem_ reset];
-	[cachedlightItems cacheObject:lightItem_]; //issue
 	[lightList removeObjectAtIndex:index_];
 }
 -(void)removeLightItemAtIndex:(uint)index_{

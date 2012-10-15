@@ -22,46 +22,26 @@
 	return [sourceData_ subdataWithRange:targetRange_];
 }
 
++(NSData *)dataWithFilePath:(NSString *)filePath_ encryptionKey:(NSString *)encryptionKey_{
+	NSData *targetData_ = [NSData dataWithContentsOfFile:filePath_];
+	if(encryptionKey_){
+		targetData_ = [CMMEncryptionUtil decryptData:targetData_ withKey:encryptionKey_];
+	}
+	
+	return targetData_;
+}
 +(NSData *)dataWithFilePath:(NSString *)filePath_{
 	NSData *targetData_ = [NSData dataWithContentsOfFile:filePath_];
 	return targetData_;
 }
++(NSData *)dataWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ extension:(NSString *)extension_ encryptionKey:(NSString *)encryptionKey_{
+	return [self dataWithFilePath:[CMMStringUtil stringPathWithFileName:fileName_ isInDocument:isInDocument_ extension:extension_] encryptionKey:encryptionKey_];
+}
 +(NSData *)dataWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ extension:(NSString *)extension_{
-	return [self dataWithFilePath:[CMMStringUtil stringPathWithFileName:fileName_ isInDocument:isInDocument_ extension:extension_]];
+	return [self dataWithFileName:fileName_ isInDocument:isInDocument_ extension:extension_ encryptionKey:nil];
 }
 +(NSData *)dataWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
 	return [self dataWithFileName:fileName_ isInDocument:isInDocument_ extension:nil];
-}
-
-+(CCTexture2D *)textureWithData:(NSData *)data_ textureKey:(NSString *)textureKey_{
-	return [[CCTextureCache sharedTextureCache] addCGImage:[UIImage imageWithData:data_].CGImage forKey:textureKey_];
-}
-+(CCTexture2D *)textureWithFilePath:(NSString *)filePath_{
-	return [self textureWithData:[self dataWithFilePath:filePath_] textureKey:filePath_];
-}
-+(CCTexture2D *)textureWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ extension:(NSString *)extension_{
-	return [self textureWithFilePath:[CMMStringUtil stringPathWithFileName:fileName_ isInDocument:isInDocument_ extension:extension_]];
-}
-+(CCTexture2D *)textureWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
-	return [self textureWithFileName:fileName_ isInDocument:isInDocument_ extension:nil];
-}
-
-+(NSDictionary *)dictionaryWithData:(NSData *)data_{
-	NSPropertyListFormat format;
-	return (NSDictionary*)[NSPropertyListSerialization
-						   propertyListFromData:data_
-						   mutabilityOption:NSPropertyListMutableContainersAndLeaves
-						   format:&format
-						   errorDescription:nil];
-}
-+(NSDictionary *)dictionaryWithFilePath:(NSString *)filePath_{
-	return [self dictionaryWithData:[self dataWithFilePath:filePath_]];
-}
-+(NSDictionary *)dictionaryWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ extension:(NSString *)extension_{
-	return [self dictionaryWithFilePath:[CMMStringUtil stringPathWithFileName:fileName_ isInDocument:isInDocument_ extension:extension_]];
-}
-+(NSDictionary *)dictionaryWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
-	return [self dictionaryWithFileName:fileName_ isInDocument:isInDocument_ extension:nil];
 }
 
 +(void)deleteFileWithFileName:(NSString *)fileName_ extension:(NSString *)extension_{
@@ -73,7 +53,54 @@
 
 @end
 
+@implementation CMMFileUtil(Dictionary)
+
++(NSDictionary *)dictionaryWithData:(NSData *)data_{
+	NSPropertyListFormat format;
+	return (NSDictionary*)[NSPropertyListSerialization
+						   propertyListFromData:data_
+						   mutabilityOption:NSPropertyListMutableContainersAndLeaves
+						   format:&format
+						   errorDescription:nil];
+}
++(NSDictionary *)dictionaryWithFilePath:(NSString *)filePath_ encryptionKey:(NSString *)encryptionKey_{
+	return [self dictionaryWithData:[self dataWithFilePath:filePath_ encryptionKey:encryptionKey_]];
+}
++(NSDictionary *)dictionaryWithFilePath:(NSString *)filePath_{
+	return [self dictionaryWithFilePath:filePath_ encryptionKey:nil];
+}
++(NSDictionary *)dictionaryWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ extension:(NSString *)extension_ encryptionKey:(NSString *)encryptionKey_{
+	return [self dictionaryWithFilePath:[CMMStringUtil stringPathWithFileName:fileName_ isInDocument:isInDocument_ extension:extension_] encryptionKey:encryptionKey_];
+}
++(NSDictionary *)dictionaryWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ extension:(NSString *)extension_{
+	return [self dictionaryWithFileName:fileName_ isInDocument:isInDocument_ extension:extension_ encryptionKey:nil];
+}
++(NSDictionary *)dictionaryWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
+	return [self dictionaryWithFileName:fileName_ isInDocument:isInDocument_ extension:nil];
+}
+
+@end
+
 @implementation CMMFileUtil(ImageData)
+
++(CCTexture2D *)textureWithData:(NSData *)data_ textureKey:(NSString *)textureKey_{
+	return [[CCTextureCache sharedTextureCache] addCGImage:[UIImage imageWithData:data_].CGImage forKey:textureKey_];
+}
++(CCTexture2D *)textureWithFilePath:(NSString *)filePath_ encryptionKey:(NSString *)encryptionKey_{
+	return [self textureWithData:[self dataWithFilePath:filePath_ encryptionKey:encryptionKey_] textureKey:filePath_];
+}
++(CCTexture2D *)textureWithFilePath:(NSString *)filePath_{
+	return [self textureWithFilePath:filePath_ encryptionKey:nil];
+}
++(CCTexture2D *)textureWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ extension:(NSString *)extension_ encryptionKey:(NSString *)encryptionKey_{
+	return [self textureWithFilePath:[CMMStringUtil stringPathWithFileName:fileName_ isInDocument:isInDocument_ extension:extension_] encryptionKey:encryptionKey_];
+}
++(CCTexture2D *)textureWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ extension:(NSString *)extension_{
+	return [self textureWithFileName:fileName_ isInDocument:isInDocument_ extension:extension_ encryptionKey:nil];
+}
++(CCTexture2D *)textureWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
+	return [self textureWithFileName:fileName_ isInDocument:isInDocument_ extension:nil];
+}
 
 +(void *)imageDataWithCGImage:(CGImageRef)cgImage_{
 	if(!cgImage_){

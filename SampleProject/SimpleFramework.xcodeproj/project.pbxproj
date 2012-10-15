@@ -250,6 +250,7 @@
 		E0B4ED1F15FB0E3A00F640D0 /* IMG_STG_TEST_001.png in Resources */ = {isa = PBXBuildFile; fileRef = E0B4ED1E15FB0E3A00F640D0 /* IMG_STG_TEST_001.png */; };
 		E0B586CE15DCB406006C8B7F /* ScrollMenuTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0B586CD15DCB406006C8B7F /* ScrollMenuTestLayer.mm */; };
 		E0BEB0CF16217718000511C7 /* CMMPacketDataHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0BEB0CE16217718000511C7 /* CMMPacketDataHandler.mm */; };
+		E0C00034162BDE7D00414509 /* CMMTimeIntervalArray.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C00033162BDE7B00414509 /* CMMTimeIntervalArray.mm */; };
 		E0C1173615E89729000142B2 /* CMMScrollMenuH.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C1173515E89729000142B2 /* CMMScrollMenuH.mm */; };
 		E0C1173F15E8B110000142B2 /* CMMScrollMenuV.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C1173E15E8B110000142B2 /* CMMScrollMenuV.mm */; };
 		E0C1FE7F161428D800562E27 /* CMMDeprecated.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C1FE7E161428D800562E27 /* CMMDeprecated.mm */; };
@@ -771,6 +772,8 @@
 		E0B586CD15DCB406006C8B7F /* ScrollMenuTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ScrollMenuTestLayer.mm; sourceTree = "<group>"; };
 		E0BEB0CD16217718000511C7 /* CMMPacketDataHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMPacketDataHandler.h; path = libs/CMMSimpleFramework/CMMPacketDataHandler.h; sourceTree = "<group>"; };
 		E0BEB0CE16217718000511C7 /* CMMPacketDataHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMPacketDataHandler.mm; path = libs/CMMSimpleFramework/CMMPacketDataHandler.mm; sourceTree = "<group>"; };
+		E0C00032162BDE7A00414509 /* CMMTimeIntervalArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMTimeIntervalArray.h; path = libs/CMMSimpleFramework/CMMTimeIntervalArray.h; sourceTree = "<group>"; };
+		E0C00033162BDE7B00414509 /* CMMTimeIntervalArray.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMTimeIntervalArray.mm; path = libs/CMMSimpleFramework/CMMTimeIntervalArray.mm; sourceTree = "<group>"; };
 		E0C1173415E89729000142B2 /* CMMScrollMenuH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMScrollMenuH.h; path = libs/CMMSimpleFramework/CMMScrollMenuH.h; sourceTree = "<group>"; };
 		E0C1173515E89729000142B2 /* CMMScrollMenuH.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMScrollMenuH.mm; path = libs/CMMSimpleFramework/CMMScrollMenuH.mm; sourceTree = "<group>"; };
 		E0C1173D15E8B110000142B2 /* CMMScrollMenuV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMScrollMenuV.h; path = libs/CMMSimpleFramework/CMMScrollMenuV.h; sourceTree = "<group>"; };
@@ -1150,6 +1153,8 @@
 				E00E2E6915FF506A003551B4 /* CMMSimpleCache.mm */,
 				E0C4A8731622BF5A00C4B57E /* CMMConnectionMonitor.h */,
 				E0C4A8741622BF5A00C4B57E /* CMMConnectionMonitor.mm */,
+				E0C00032162BDE7A00414509 /* CMMTimeIntervalArray.h */,
+				E0C00033162BDE7B00414509 /* CMMTimeIntervalArray.mm */,
 			);
 			name = util;
 			sourceTree = "<group>";
@@ -2083,6 +2088,7 @@
 				E00857551625448B009C9BC4 /* NSData+Base64.m in Sources */,
 				E00857561625448B009C9BC4 /* NSData+Compression.m in Sources */,
 				E00857591625482B009C9BC4 /* CMMPacketData.mm in Sources */,
+				E0C00034162BDE7D00414509 /* CMMTimeIntervalArray.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

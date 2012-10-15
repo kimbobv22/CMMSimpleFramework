@@ -81,7 +81,7 @@
 }
 -(void)cacheObject:(CMMSObject *)object_{
 	[object_ resetObject];
-	[_cachedObjects cacheObject:object_];
+	[_cachedObjects addObject:object_];
 }
 
 @end

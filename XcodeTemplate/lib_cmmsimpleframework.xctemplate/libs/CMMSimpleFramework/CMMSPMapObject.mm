@@ -71,7 +71,7 @@ static CMMSimpleCache *_CMMSPMapObjectFixtureCache_ = nil;
 	if(!fixture_) return;
 	b2Fixture *tFixture_ = fixture_->fixture;
 	if(mapBody && tFixture_) mapBody->DestroyFixture(tFixture_);
-	[_CMMSPMapObjectFixtureCache_ cacheObject:fixture_];
+	[_CMMSPMapObjectFixtureCache_ addObject:fixture_];
 	[fixtureList removeObjectAtIndex:[self indexOfFixture:fixture_]];
 }
 -(void)removeFixtureAtRadians:(float)radians_{

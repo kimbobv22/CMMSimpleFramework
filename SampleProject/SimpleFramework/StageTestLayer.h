@@ -8,6 +8,7 @@ enum StageControlType{
 	StageControlType_dragMode,
 	StageControlType_paintMap,
 	StageControlType_eraseMap,
+	StageControlType_addLight,
 	
 	StageControlType_maxCount,
 };

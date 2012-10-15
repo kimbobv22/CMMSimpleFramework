@@ -6,6 +6,7 @@
 #import "CMMScrollMenu.h"
 #import "CMMStage.h"
 #import "CMMSParticle.h"
+#import "CMMSimpleCache.h"
 
 /*
  */
@@ -44,6 +45,12 @@ DEPRECATED_ATTRIBUTE @interface CMMControlItemBatchBar : CMMSpriteBatchBar
 
 @end
 
+@interface CMMStageWorld(Deprecated)
+
+-(CCArray *)objectsInTouched DEPRECATED_ATTRIBUTE;
+
+@end
+
 DEPRECATED_ATTRIBUTE @interface CMMSParticleFollow : CMMSParticle
 
 @end
@@ -52,5 +59,12 @@ DEPRECATED_ATTRIBUTE @interface CMMSParticleFollow : CMMSParticle
 
 -(CMMSParticle *)addParticleFollowWithName:(NSString *)particleName_ target:(CMMSObject *)target_ DEPRECATED_ATTRIBUTE;
 -(void)removeParticleFollowOfTarget:(CMMSObject *)target_ DEPRECATED_ATTRIBUTE;
+
+@end
+
+@interface CMMSimpleCache(Deprecated)
+
+-(void)cacheObject:(id)object_ DEPRECATED_ATTRIBUTE;
+-(void)clearCache DEPRECATED_ATTRIBUTE;
 
 @end

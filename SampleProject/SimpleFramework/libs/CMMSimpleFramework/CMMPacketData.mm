@@ -108,10 +108,10 @@ static CMMSimpleCache *_cachedCMMPacketData_ = nil;
 	if([_cachedCMMPacketData_ count] >= cmmVarCMMPacketData_maxCacheCount)
 		return;
 	[data_ resetData];
-	[_cachedCMMPacketData_ cacheObject:data_];
+	[_cachedCMMPacketData_ addObject:data_];
 }
 +(void)clearCache{
-	[_cachedCMMPacketData_ clearCache];
+	[_cachedCMMPacketData_ removeAllObjects];
 }
 
 @end

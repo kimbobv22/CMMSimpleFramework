@@ -58,7 +58,7 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 	if(!_cachedPopupItems_){
 		_cachedPopupItems_ = [[CMMSimpleCache alloc] init];
 		for(uint index_=0;index_<cmmVarCMMPopupDispather_defaultCacheCount;++index_)
-			[_cachedPopupItems_ cacheObject:[CMMPopupDispatcherItem popupItemWithPopup:nil delegate:nil]];
+			[_cachedPopupItems_ addObject:[CMMPopupDispatcherItem popupItemWithPopup:nil delegate:nil]];
 	}
 	
 	if([_cachedPopupItems_ count]<=0) return nil;
@@ -69,7 +69,7 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 -(void)cachePopupItem:(CMMPopupDispatcherItem *)popupItem_{
 	popupItem_.popup = nil;
 	popupItem_.delegate = nil;
-	[_cachedPopupItems_ cacheObject:popupItem_];
+	[_cachedPopupItems_ addObject:popupItem_];
 }
 
 @end

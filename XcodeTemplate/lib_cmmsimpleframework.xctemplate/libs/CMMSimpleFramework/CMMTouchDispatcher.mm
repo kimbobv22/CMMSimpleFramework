@@ -42,7 +42,7 @@ static CMMSimpleCache *_cachedTouchItems_ = nil;
 		_cachedTouchItems_ = [[CMMSimpleCache alloc] init];
 		
 		for(uint index_=0;index_<cmmVarCMMTouchDispather_defaultCacheCount;++index_)
-			[_cachedTouchItems_ cacheObject:[CMMTouchDispatcherItem touchItemWithTouch:nil node:nil]];
+			[_cachedTouchItems_ addObject:[CMMTouchDispatcherItem touchItemWithTouch:nil node:nil]];
 	}
 	
 	if(_cachedTouchItems_.count<=0) return nil;
@@ -53,7 +53,7 @@ static CMMSimpleCache *_cachedTouchItems_ = nil;
 -(void)cacheTouchItem:(CMMTouchDispatcherItem *)touchItem_{
 	touchItem_.touch = nil;
 	touchItem_.node = nil;
-	[_cachedTouchItems_ cacheObject:touchItem_];
+	[_cachedTouchItems_ addObject:touchItem_];
 }
 
 @end

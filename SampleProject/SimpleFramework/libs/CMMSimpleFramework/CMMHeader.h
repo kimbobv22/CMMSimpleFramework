@@ -37,6 +37,7 @@ static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.0.0";
 #import "CMMLoadingObject.h"
 #import "CMMSimpleCache.h"
 #import "CMMConnectionMonitor.h"
+#import "CMMTimeIntervalArray.h"
 
 #import "CMMPacket.h"
 #import "CMMPacketData.h"

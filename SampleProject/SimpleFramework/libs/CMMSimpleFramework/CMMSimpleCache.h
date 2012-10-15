@@ -2,17 +2,9 @@
 
 #import "cocos2d.h"
 
-@interface CMMSimpleCache : NSObject{
-	CCArray *itemList;
-}
+@interface CMMSimpleCache : CCArray
 
-+(id)cache;
-
+-(id)cachedObjectAtIndex:(uint)index_;
 -(id)cachedObject;
--(void)cacheObject:(id)object_;
--(void)clearCache;
-
-@property (nonatomic, readonly) CCArray *itemList;
-@property (nonatomic, readonly) NSUInteger count;
 
 @end
