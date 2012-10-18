@@ -6,6 +6,14 @@
 
 #define cmmVarCMMTouchDispather_defaultCacheCount 20
 
+typedef enum{
+	CMMTouchState_none,
+	CMMTouchState_onTouchChild,
+	CMMTouchState_onDrag,
+	CMMTouchState_onScroll, //none touch state
+	CMMTouchState_onFixed,
+} CMMTouchState;
+
 @class CMMTouchDispatcher;
 
 @protocol CMMTouchDispatcherDelegate<NSObject>

@@ -14,7 +14,6 @@
 @protocol CMMMenuItemDelegate<NSObject>
 
 @optional
--(BOOL)menuItem_isCanPush:(CMMMenuItem *)menuItem_ DEPRECATED_ATTRIBUTE;
 -(void)menuItem_whenPushdown:(CMMMenuItem *)menuItem_;
 -(void)menuItem_whenPushup:(CMMMenuItem *)menuItem_;
 -(void)menuItem_whenPushcancel:(CMMMenuItem *)menuItem_;

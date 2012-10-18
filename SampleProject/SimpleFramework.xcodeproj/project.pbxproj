@@ -70,7 +70,6 @@
 		E032FC5715E1EDE600B28B61 /* CMMLayerPopup.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC4F15E1EDE400B28B61 /* CMMLayerPopup.mm */; };
 		E032FC5815E1EDE600B28B61 /* CMMScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC5115E1EDE400B28B61 /* CMMScene.mm */; };
 		E032FC5915E1EDE600B28B61 /* CMMSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC5315E1EDE500B28B61 /* CMMSprite.mm */; };
-		E032FC5B15E1EE0D00B28B61 /* CMMLayerMask.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC5A15E1EE0B00B28B61 /* CMMLayerMask.mm */; };
 		E032FC6315E1F22700B28B61 /* CMMMotionDispatcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC5E15E1F22400B28B61 /* CMMMotionDispatcher.mm */; };
 		E032FC6415E1F22700B28B61 /* CMMPopupDispatcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC6015E1F22500B28B61 /* CMMPopupDispatcher.mm */; };
 		E032FC6515E1F22700B28B61 /* CMMTouchDispatcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC6215E1F22700B28B61 /* CMMTouchDispatcher.mm */; };
@@ -78,6 +77,7 @@
 		E0376CC415E36AAD00742AC4 /* IMG_CMN_BFRAME_000-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0376CC215E36AAD00742AC4 /* IMG_CMN_BFRAME_000-hd.png */; };
 		E03DD9F915F4B8580001257B /* NoticeTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E03DD9F815F4B8580001257B /* NoticeTestLayer.mm */; };
 		E03E267215D7676100F5EC4D /* SND_EFT_00003.caf in Resources */ = {isa = PBXBuildFile; fileRef = E03E267115D7676100F5EC4D /* SND_EFT_00003.caf */; };
+		E040C932162FAD67004C2B47 /* TransitionTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E040C931162FAD67004C2B47 /* TransitionTestLayer.mm */; };
 		E0431BA615E780C900E724E2 /* CMMCustomUI.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0431BA515E780C900E724E2 /* CMMCustomUI.mm */; };
 		E043F26515E2176200DCB7AF /* CMMSSpecObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = E043F26415E2176100DCB7AF /* CMMSSpecObject.mm */; };
 		E043F26815E2186200DCB7AF /* CMMSStateObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = E043F26715E2186200DCB7AF /* CMMSStateObject.mm */; };
@@ -152,6 +152,8 @@
 		E08DE63215F5AA62003E0D84 /* CMMSObjectSView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E08DE63115F5AA62003E0D84 /* CMMSObjectSView.mm */; };
 		E095571515D8A5FE00615954 /* GyroTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E095571415D8A5FE00615954 /* GyroTestLayer.mm */; };
 		E09D8382161577A1003E39A7 /* MenuItemSetTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E09D8381161577A1003E39A7 /* MenuItemSetTestLayer.mm */; };
+		E0A1CE60162E543D0008EF60 /* CMMLayerM.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0A1CE5F162E543D0008EF60 /* CMMLayerM.mm */; };
+		E0A1CE67162E59250008EF60 /* CMMLayerMD.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0A1CE66162E59250008EF60 /* CMMLayerMD.mm */; };
 		E0A4D635160ACABA00D17935 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A4D632160ACABA00D17935 /* Default-568h@2x.png */; };
 		E0A4D636160ACABA00D17935 /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A4D633160ACABA00D17935 /* Default-Landscape~ipad.png */; };
 		E0A4D637160ACABA00D17935 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E0A4D634160ACABA00D17935 /* Default@2x.png */; };
@@ -394,7 +396,6 @@
 		E032FC4115E1EAB300B28B61 /* CMMTouchUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMTouchUtil.mm; path = libs/CMMSimpleFramework/CMMTouchUtil.mm; sourceTree = "<group>"; };
 		E032FC4815E1EDE200B28B61 /* CMMLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMLayer.h; path = libs/CMMSimpleFramework/CMMLayer.h; sourceTree = "<group>"; };
 		E032FC4915E1EDE200B28B61 /* CMMLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMLayer.mm; path = libs/CMMSimpleFramework/CMMLayer.mm; sourceTree = "<group>"; };
-		E032FC4A15E1EDE200B28B61 /* CMMLayerMask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMLayerMask.h; path = libs/CMMSimpleFramework/CMMLayerMask.h; sourceTree = "<group>"; };
 		E032FC4C15E1EDE300B28B61 /* CMMLayerPinchZoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMLayerPinchZoom.h; path = libs/CMMSimpleFramework/CMMLayerPinchZoom.h; sourceTree = "<group>"; };
 		E032FC4D15E1EDE300B28B61 /* CMMLayerPinchZoom.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMLayerPinchZoom.mm; path = libs/CMMSimpleFramework/CMMLayerPinchZoom.mm; sourceTree = "<group>"; };
 		E032FC4E15E1EDE400B28B61 /* CMMLayerPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMLayerPopup.h; path = libs/CMMSimpleFramework/CMMLayerPopup.h; sourceTree = "<group>"; };
@@ -402,7 +403,6 @@
 		E032FC5115E1EDE400B28B61 /* CMMScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMScene.mm; path = libs/CMMSimpleFramework/CMMScene.mm; sourceTree = "<group>"; };
 		E032FC5215E1EDE500B28B61 /* CMMSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSprite.h; path = libs/CMMSimpleFramework/CMMSprite.h; sourceTree = "<group>"; };
 		E032FC5315E1EDE500B28B61 /* CMMSprite.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSprite.mm; path = libs/CMMSimpleFramework/CMMSprite.mm; sourceTree = "<group>"; };
-		E032FC5A15E1EE0B00B28B61 /* CMMLayerMask.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMLayerMask.mm; path = libs/CMMSimpleFramework/CMMLayerMask.mm; sourceTree = "<group>"; };
 		E032FC5C15E1EE2900B28B61 /* CMMScene.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMMScene.h; path = libs/CMMSimpleFramework/CMMScene.h; sourceTree = "<group>"; };
 		E032FC5D15E1F22400B28B61 /* CMMMotionDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMMotionDispatcher.h; path = libs/CMMSimpleFramework/CMMMotionDispatcher.h; sourceTree = "<group>"; };
 		E032FC5E15E1F22400B28B61 /* CMMMotionDispatcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMMotionDispatcher.mm; path = libs/CMMSimpleFramework/CMMMotionDispatcher.mm; sourceTree = "<group>"; };
@@ -414,6 +414,8 @@
 		E03DD9F715F4B8580001257B /* NoticeTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NoticeTestLayer.h; sourceTree = "<group>"; };
 		E03DD9F815F4B8580001257B /* NoticeTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = NoticeTestLayer.mm; sourceTree = "<group>"; };
 		E03E267115D7676100F5EC4D /* SND_EFT_00003.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SND_EFT_00003.caf; path = Resources/SND_EFT_00003.caf; sourceTree = "<group>"; };
+		E040C930162FAD67004C2B47 /* TransitionTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TransitionTestLayer.h; sourceTree = "<group>"; };
+		E040C931162FAD67004C2B47 /* TransitionTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TransitionTestLayer.mm; sourceTree = "<group>"; };
 		E0431BA415E780C900E724E2 /* CMMCustomUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMCustomUI.h; path = libs/CMMSimpleFramework/CMMCustomUI.h; sourceTree = "<group>"; };
 		E0431BA515E780C900E724E2 /* CMMCustomUI.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMCustomUI.mm; path = libs/CMMSimpleFramework/CMMCustomUI.mm; sourceTree = "<group>"; };
 		E043F26115E2175600DCB7AF /* CMMSSpecObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSSpecObject.h; path = libs/CMMSimpleFramework/CMMSSpecObject.h; sourceTree = "<group>"; };
@@ -553,6 +555,10 @@
 		E095571415D8A5FE00615954 /* GyroTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GyroTestLayer.mm; sourceTree = "<group>"; };
 		E09D8381161577A1003E39A7 /* MenuItemSetTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MenuItemSetTestLayer.mm; sourceTree = "<group>"; };
 		E09D838416157839003E39A7 /* MenuItemSetTestLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MenuItemSetTestLayer.h; sourceTree = "<group>"; };
+		E0A1CE5E162E543D0008EF60 /* CMMLayerM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMLayerM.h; path = libs/CMMSimpleFramework/CMMLayerM.h; sourceTree = "<group>"; };
+		E0A1CE5F162E543D0008EF60 /* CMMLayerM.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMLayerM.mm; path = libs/CMMSimpleFramework/CMMLayerM.mm; sourceTree = "<group>"; };
+		E0A1CE65162E59250008EF60 /* CMMLayerMD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; name = CMMLayerMD.h; path = libs/CMMSimpleFramework/CMMLayerMD.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		E0A1CE66162E59250008EF60 /* CMMLayerMD.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; lineEnding = 0; name = CMMLayerMD.mm; path = libs/CMMSimpleFramework/CMMLayerMD.mm; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		E0A4D632160ACABA00D17935 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "Resources/Default-568h@2x.png"; sourceTree = "<group>"; };
 		E0A4D633160ACABA00D17935 /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape~ipad.png"; path = "Resources/Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		E0A4D634160ACABA00D17935 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/Default@2x.png"; sourceTree = "<group>"; };
@@ -1224,6 +1230,8 @@
 		E047704615D4BC690079EAE9 /* TestMenu */ = {
 			isa = PBXGroup;
 			children = (
+				E040C930162FAD67004C2B47 /* TransitionTestLayer.h */,
+				E040C931162FAD67004C2B47 /* TransitionTestLayer.mm */,
 				E047704715D4BC7F0079EAE9 /* MenuItemTestLayer.h */,
 				E047704815D4BC7F0079EAE9 /* MenuItemTestLayer.mm */,
 				E09D838416157839003E39A7 /* MenuItemSetTestLayer.h */,
@@ -1269,8 +1277,10 @@
 				E032FC5115E1EDE400B28B61 /* CMMScene.mm */,
 				E032FC4815E1EDE200B28B61 /* CMMLayer.h */,
 				E032FC4915E1EDE200B28B61 /* CMMLayer.mm */,
-				E032FC4A15E1EDE200B28B61 /* CMMLayerMask.h */,
-				E032FC5A15E1EE0B00B28B61 /* CMMLayerMask.mm */,
+				E0A1CE5E162E543D0008EF60 /* CMMLayerM.h */,
+				E0A1CE5F162E543D0008EF60 /* CMMLayerM.mm */,
+				E0A1CE65162E59250008EF60 /* CMMLayerMD.h */,
+				E0A1CE66162E59250008EF60 /* CMMLayerMD.mm */,
 				E032FC4C15E1EDE300B28B61 /* CMMLayerPinchZoom.h */,
 				E032FC4D15E1EDE300B28B61 /* CMMLayerPinchZoom.mm */,
 				E032FC4E15E1EDE400B28B61 /* CMMLayerPopup.h */,
@@ -1947,7 +1957,6 @@
 				E032FC5715E1EDE600B28B61 /* CMMLayerPopup.mm in Sources */,
 				E032FC5815E1EDE600B28B61 /* CMMScene.mm in Sources */,
 				E032FC5915E1EDE600B28B61 /* CMMSprite.mm in Sources */,
-				E032FC5B15E1EE0D00B28B61 /* CMMLayerMask.mm in Sources */,
 				E032FC6315E1F22700B28B61 /* CMMMotionDispatcher.mm in Sources */,
 				E032FC6415E1F22700B28B61 /* CMMPopupDispatcher.mm in Sources */,
 				E032FC6515E1F22700B28B61 /* CMMTouchDispatcher.mm in Sources */,
@@ -2089,6 +2098,9 @@
 				E00857561625448B009C9BC4 /* NSData+Compression.m in Sources */,
 				E00857591625482B009C9BC4 /* CMMPacketData.mm in Sources */,
 				E0C00034162BDE7D00414509 /* CMMTimeIntervalArray.mm in Sources */,
+				E0A1CE60162E543D0008EF60 /* CMMLayerM.mm in Sources */,
+				E0A1CE67162E59250008EF60 /* CMMLayerMD.mm in Sources */,
+				E040C932162FAD67004C2B47 /* TransitionTestLayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

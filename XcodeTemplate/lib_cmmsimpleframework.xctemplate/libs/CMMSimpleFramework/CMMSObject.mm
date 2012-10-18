@@ -195,13 +195,6 @@
 	[self updateBodyLinearVelocity:linearVelocity angularVelocity:body->GetAngularVelocity()];
 }
 
--(void)updateBodyWithPosition:(CGPoint)point_ andRotation:(float)tRotation_{
-	[self updateBodyPosition:point_ rotation:tRotation_];
-}
--(void)updateBodyWithPosition:(CGPoint)point_{
-	[self updateBodyPosition:point_];
-}
-
 @end
 
 @implementation CMMSObject(Stage)

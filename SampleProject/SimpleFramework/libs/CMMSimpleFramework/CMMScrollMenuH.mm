@@ -42,36 +42,47 @@
 	return self;
 }
 
+-(void)setIndex:(int)index_{
+	[super setIndex:index_];
+	_isOnSnap = YES && isSnapAtItem;
+}
+
 -(void)update:(ccTime)dt_{
 	[super update:dt_];
 	
 	switch(touchState){
 		case CMMTouchState_none:{
-			if(!isSnapAtItem) break;
+			if(!_isOnSnap) break;
 			CMMMenuItem *item_ = [self itemAtIndex:index];
 			if(!item_) break;
 			
-			CGSize itemSize_ = item_.contentSize;
-			CGPoint itemPoint_ = item_.position;
-			itemPoint_.x += itemSize_.width*(0.5f-item_.anchorPoint.x);
-			itemPoint_.y += itemSize_.height*(0.5f-item_.anchorPoint.y);
-			itemPoint_ = [_innerLayer convertToWorldSpace:itemPoint_];
+			CGSize itemSize_ = [item_ contentSize];
+			CGPoint itemPoint_ = [item_ position];
+			CGPoint itemAnchorPoint_ = [item_ anchorPoint];
+			
+			itemPoint_.x += itemSize_.width*(0.5f-itemAnchorPoint_.x);
+			itemPoint_.y += itemSize_.height*(0.5f-itemAnchorPoint_.y);
+			itemPoint_ = [innerLayer convertToWorldSpace:itemPoint_];
 			CGPoint centerPoint_ = [self convertToWorldSpace:ccp(contentSize_.width/2.0f,contentSize_.height/2.0f)];
 			CGPoint diffPoint_ = ccpSub(itemPoint_,centerPoint_);
-			diffPoint_ = ccpMult(diffPoint_, dt_*dragAccelRate);
 			
-			CGPoint orgPoint_ = [self innerPosition];
+			diffPoint_ = ccpMult(diffPoint_, dt_*dragSpeed);
+			
+			CGPoint orgPoint_ = [innerLayer position];
 			CGPoint targetPoint_ = ccpSub(orgPoint_,diffPoint_);
 			targetPoint_.y = orgPoint_.y;
 			
-			[self setInnerPosition:targetPoint_];
+			if(ccpDistance(targetPoint_, [innerLayer position]) > 0.1f){
+				[innerLayer setPosition:targetPoint_];
+			}else{
+				_isOnSnap = NO;
+			}
 			
 			break;
 		}
 		case CMMTouchState_onScroll:{
-			if(!isSnapAtItem || minScrollAccelToSnap < ABS(_scrollAccelX) || [self count] <= 0) break;
+			if(!isSnapAtItem || [itemList count] <= 0 || minScrollAccelToSnap < ABS(_curScrollSpeedX)) break;
 			
-			self.touchState = CMMTouchState_none;
 			int minIndex_ = -1;
 			float minDistance_ = contentSize_.width;
 			CGPoint centerPoint_ = [self convertToWorldSpace:ccp(contentSize_.width/2.0f,contentSize_.height/2.0f)];
@@ -83,7 +94,7 @@
 				CGPoint targetPoint_ = item_.position;
 				targetPoint_.x += itemSize_.width*(0.5f-item_.anchorPoint.x);
 				targetPoint_.y += itemSize_.height*(0.5f-item_.anchorPoint.y);
-				targetPoint_ = [_innerLayer convertToWorldSpace:targetPoint_];
+				targetPoint_ = [innerLayer convertToWorldSpace:targetPoint_];
 				float targetDistance_ = ccpDistance(centerPoint_, targetPoint_);
 				
 				if(minDistance_>targetDistance_){
@@ -92,8 +103,10 @@
 				}
 			}
 			
-			if(minIndex_ >= 0)
+			if(minIndex_ >= 0){
 				[self setIndex:minIndex_];
+				[self setTouchState:CMMTouchState_none];
+			}
 			
 			break;
 		}
@@ -115,7 +128,7 @@
 	}
 	targetWidth_-= marginPerItem;
 	targetWidth_ = MAX(targetWidth_, contentSize_.width);
-	self.innerSize = CGSizeMake(targetWidth_,contentSize_.height);
+	[innerLayer setContentSize:CGSizeMake(targetWidth_,contentSize_.height)];
 }
 -(void)updateMenuArrangeWithInterval:(ccTime)dt_{
 	float totalItemWidth_ = marginPerItem;
@@ -127,7 +140,7 @@
 		CGPoint targetPoint_ = cmmFuncCommon_position_center(self, item_);
 		targetPoint_.x = totalItemWidth_+itemSize_.width*(item_.anchorPoint.x);
 		targetPoint_ = ccpAdd(item_.position, ccpMult(ccpSub(targetPoint_,item_.position), dt_*cmmVarCMMScrollMenu_defaultOrderingAccelRate));
-		item_.position = targetPoint_;
+		[item_ setPosition:targetPoint_];
 		totalItemWidth_ += itemSize_.width+marginPerItem;
 	}
 }
@@ -144,7 +157,7 @@
 	targetPoint_.x = marginPerItem;
 	CMMMenuItem *preItem_ = [self itemAtIndex:index_-1];
 	if(preItem_) targetPoint_.x = preItem_.position.x+preItem_.contentSize.width+marginPerItem;
-	item_.position = targetPoint_;
+	[item_ setPosition:targetPoint_];
 }
 
 @end

@@ -27,6 +27,39 @@ static CMMScene *_sharedScene_ = nil;
 
 @end
 
+@implementation CMMSceneTransitionLayer
+
+//override under method
+-(void)startFadeInTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_{
+	[self runAction:[CCCallFunc actionWithTarget:target_ selector:selector_]];
+}
+-(void)startFadeOutTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_{
+	[self runAction:[CCCallFunc actionWithTarget:target_ selector:selector_]];
+}
+
+@end
+
+@implementation CMMSceneTransitionLayer_FadeInOut
+@synthesize fadeTime;
+
+-(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
+	if(!(self = [super initWithColor:color width:w height:h])) return self;
+	
+	fadeTime = 0.2f;
+	
+	return self;
+}
+
+-(void)startFadeInTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_{
+	[self setOpacity:0.0f];
+	[self runAction:[CCSequence actionOne:[CCFadeTo actionWithDuration:fadeTime opacity:255] two:[CCCallFunc actionWithTarget:target_ selector:selector_]]];
+}
+-(void)startFadeOutTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_{
+	[self runAction:[CCSequence actionOne:[CCFadeTo actionWithDuration:fadeTime opacity:0] two:[CCCallFunc actionWithTarget:target_ selector:selector_]]];
+}
+
+@end
+
 @interface CMMScene(Private)
 
 -(void)startTransition;
@@ -42,10 +75,9 @@ static CMMScene *_sharedScene_ = nil;
 	isOnTransition = YES;
 	runningLayer.isTouchEnabled = NO;
 	
-	_transitionLayer.opacity = 0.0f;
-	[_transitionLayer setContentSize:contentSize_];
-	[self addChild:_transitionLayer z:1];
-	[_transitionLayer runAction:[CCSequence actionOne:[CCFadeTo actionWithDuration:fadeTime/2.0f opacity:255] two:[CCCallFunc actionWithTarget:self selector:@selector(transition001)]]];
+	[transitionLayer setContentSize:contentSize_];
+	[self addChild:transitionLayer z:1];
+	[transitionLayer startFadeInTransitionWithTarget:self callbackSelector:@selector(transition001)];
 }
 -(void)transition001{
 	CMMLayer *targetLayer_ = [_pushLayerList objectAtIndex:0];
@@ -56,8 +88,7 @@ static CMMScene *_sharedScene_ = nil;
 	
 	runningLayer = targetLayer_;
 	[self addChild:targetLayer_ z:0];
-	
-	[_transitionLayer runAction:[CCSequence actionOne:[CCFadeTo actionWithDuration:fadeTime/2.0f opacity:0] two:[CCCallFunc actionWithTarget:self selector:@selector(transition002)]]];
+	[transitionLayer startFadeOutTransitionWithTarget:self callbackSelector:@selector(transition002)];
 }
 -(void)transition002{
 	[_loadingObject setDelegate:self];
@@ -66,7 +97,7 @@ static CMMScene *_sharedScene_ = nil;
 
 -(void)loadingObject_whenLoadingEnded:(CMMLoadingObject *)loadingLayer_{
 	[_pushLayerList removeObjectAtIndex:0];
-	[_transitionLayer removeFromParentAndCleanup:YES];
+	[transitionLayer removeFromParentAndCleanup:YES];
 	runningLayer.isTouchEnabled = YES;
 	isOnTransition = NO;
 	[runningLayer whenLoadingEnded];
@@ -77,7 +108,7 @@ static CMMScene *_sharedScene_ = nil;
 @end
 
 @implementation CMMScene
-@synthesize runningLayer,transitionColor,isOnTransition,fadeTime,staticLayerItemList,countOfStaticLayerItem,touchDispatcher,popupDispatcher,noticeDispatcher;
+@synthesize runningLayer,transitionLayer,isOnTransition,staticLayerItemList,countOfStaticLayerItem,touchDispatcher,popupDispatcher,noticeDispatcher;
 
 +(CMMScene *)sharedScene{
 	if(!_sharedScene_){
@@ -95,8 +126,7 @@ static CMMScene *_sharedScene_ = nil;
 	runningLayer = nil;
 	_pushLayerList = [[CCArray alloc] init];
 	isOnTransition = NO;
-	_transitionLayer = [[CCLayerColor alloc] init];
-	fadeTime = 0.4f;
+	transitionLayer = [[CMMSceneTransitionLayer_FadeInOut alloc] init];
 	
 	staticLayerItemList = [[CCArray alloc] init];
 	
@@ -109,13 +139,6 @@ static CMMScene *_sharedScene_ = nil;
 	_touchPoints = [[CCArray alloc] init];
 #endif	
 	return self;
-}
-
--(void)setTransitionColor:(ccColor3B)transitionColor_{
-	[_transitionLayer setColor:transitionColor_];
-}
--(ccColor3B)transitionColor{
-	return _transitionLayer.color;
 }
 
 -(uint)countOfStaticLayerItem{
@@ -176,7 +199,7 @@ static CMMScene *_sharedScene_ = nil;
 	[staticLayerItemList release];
 	[_loadingObject release];
 	[_pushLayerList release];
-	[_transitionLayer release];
+	[transitionLayer release];
 	
 #if COCOS2D_DEBUG >= 1
 	[_touchPoints release];

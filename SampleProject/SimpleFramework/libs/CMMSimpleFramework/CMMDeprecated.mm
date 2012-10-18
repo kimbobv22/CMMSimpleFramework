@@ -2,6 +2,28 @@
 
 #import "CMMDeprecated.h"
 
+@implementation CMMScene(Deprecated)
+
+-(ccTime)fadeTime{
+	return 0.0f;
+}
+-(void)setFadeTime:(ccTime)fadeTime{}
+
+-(ccColor3B)transitionColor{
+	return ccc3(0, 0, 0);
+}
+-(void)setTransitionColor:(ccColor3B)transitionColor{}
+
+@end
+
+@implementation CMMLayerMask
+
+@end
+
+@implementation CMMLayerMaskDrag
+
+@end
+
 @implementation CMMDrawingManager(Deprecated)
 
 -(CCTexture2D *)textureFrameWithFrameSeq:(int)frameSeq_ size:(CGSize)size_ backGroundYN:(BOOL)backGroundYN_ barYN:(BOOL)barYN_{
@@ -41,6 +63,17 @@
 
 +(id)scrollMenuWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_{
 	return [self scrollMenuWithFrameSeq:frameSeq_ batchBarSeq:0 frameSize:frameSize_];
+}
+
+@end
+
+@implementation CMMSObject(Deprecated)
+
+-(void)updateBodyWithPosition:(CGPoint)point_ andRotation:(float)tRotation_{
+	[self updateBodyPosition:point_ rotation:tRotation_];
+}
+-(void)updateBodyWithPosition:(CGPoint)point_{
+	[self updateBodyPosition:point_];
 }
 
 @end

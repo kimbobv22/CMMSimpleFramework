@@ -19,13 +19,27 @@
 
 @end
 
+@interface CMMSceneTransitionLayer : CCLayerColor
+
+-(void)startFadeInTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_;
+-(void)startFadeOutTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_;
+
+@end
+
+@interface CMMSceneTransitionLayer_FadeInOut : CMMSceneTransitionLayer{
+	ccTime fadeTime;
+}
+
+@property (nonatomic, readwrite) ccTime fadeTime;
+
+@end
+
 @interface CMMScene : CCScene<CMMGLViewTouchDelegate,CMMLoadingObjectDelegate>{
 	CMMLayer *runningLayer;
 	
 	CCArray *_pushLayerList;
-	CCLayerColor *_transitionLayer;
+	CMMSceneTransitionLayer *transitionLayer;
 	BOOL isOnTransition;
-	ccTime fadeTime;
 	
 	CCArray *staticLayerItemList;
 	
@@ -44,9 +58,8 @@
 -(void)pushLayer:(CMMLayer *)layer_;
 
 @property (nonatomic, readonly) CMMLayer *runningLayer;
-@property (nonatomic, readwrite) ccColor3B transitionColor;
+@property (nonatomic, retain) CMMSceneTransitionLayer *transitionLayer;
 @property (nonatomic, readonly) BOOL isOnTransition;
-@property (nonatomic, readwrite) ccTime fadeTime;
 @property (nonatomic, readonly) CCArray *staticLayerItemList;
 @property (nonatomic, readonly) uint countOfStaticLayerItem;
 @property (nonatomic, readonly) CMMTouchDispatcherScene *touchDispatcher;

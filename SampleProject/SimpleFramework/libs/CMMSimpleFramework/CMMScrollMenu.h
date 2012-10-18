@@ -1,7 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 // 12.08.15
 
-#import "CMMLayerMask.h"
+#import "CMMLayerMD.h"
 #import "CMMMenuItem.h"
 #import "CMMDrawingUtil.h"
 
@@ -33,7 +33,7 @@
 #define cmmVarCMMScrollMenu_defaultChildZOrder 1
 #define cmmVarCMMScrollMenu_defaultOrderingAccelRate 10.0f
 
-@interface CMMScrollMenu : CMMLayerMaskDrag<NSFastEnumeration>{
+@interface CMMScrollMenu : CMMLayerMD<NSFastEnumeration>{
 	int index;
 	CCArray *itemList;
 	id<CMMScrollMenuDelegate> delegate;

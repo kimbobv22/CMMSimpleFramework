@@ -12,7 +12,7 @@
 @implementation CMMScrollMenuV(Private)
 
 -(void)_moveDragViewItemTo:(CCNode *)item_{
-	[_dragItemView runAction:[CCSequence actions:[CCEaseOut actionWithAction:[CCMoveTo actionWithDuration:0.2 position:[self convertToNodeSpace:[_innerLayer convertToWorldSpace:item_.position]]] rate:3], [CCCallFunc actionWithTarget:self selector:@selector(_clearDragViewItem)], nil]];
+	[_dragItemView runAction:[CCSequence actions:[CCEaseOut actionWithAction:[CCMoveTo actionWithDuration:0.2 position:[self convertToNodeSpace:[innerLayer convertToWorldSpace:item_.position]]] rate:3], [CCCallFunc actionWithTarget:self selector:@selector(_clearDragViewItem)], nil]];
 }
 -(void)_clearDragViewItem{
 	_dragItemView.opacity = 0;
@@ -43,7 +43,7 @@
 	dragStartDelayTime = 1.0f;
 	dragStartDistance = 30.0f;
 	_dragItemView = [CMMScrollMenuDragItem node];
-	[self addChildDirect:_dragItemView z:9];
+	[self addChild:_dragItemView z:9];
 	[self setIsCanDragY:YES];
 	
 	return self;
@@ -54,8 +54,7 @@
 
 	switch(touchState){
 		case CMMTouchState_onTouchChild:{
-			CMMTouchDispatcher *innerTouchDispatcher_ = _innerLayer.touchDispatcher;
-			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher_ touchItemAtIndex:0];
+			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher touchItemAtIndex:0];
 			if(!touchItem_) break;
 			
 			CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
@@ -77,28 +76,26 @@
 				_dragItemView.opacity = 180;
 				_dragItemView.position = ccpSub([self convertToNodeSpace:[CMMTouchUtil pointFromTouch:touchItem_.touch]], ccp(self.contentSize.width/4.0f,0));
 				
-				self.touchState = CMMTouchState_onDragChild;
+				[self setTouchState:CMMTouchState_onFixed];
 			}
 			break;
 		}
-		case CMMTouchState_onDragChild:{
-			CMMTouchDispatcher *innerTouchDispatcher_ = _innerLayer.touchDispatcher;
-			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher_ touchItemAtIndex:0];
+		case CMMTouchState_onFixed:{
+			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher touchItemAtIndex:0];
 			
-			CGSize frameSize_ = [self contentSize];
-			CGSize innerSize_ = [self innerSize];
+			CGSize innerSize_ = [innerLayer contentSize];
 			CGPoint touchPoint_ = [self convertToNodeSpace:[CMMTouchUtil pointFromTouch:touchItem_.touch]];
 			touchPoint_.x = 0;
-			touchPoint_.y -= frameSize_.height/2.0f;
-			touchPoint_.y = (touchPoint_.y/frameSize_.height) * 6.0f;
-			touchPoint_ = ccpSub([self innerPosition], touchPoint_);
+			touchPoint_.y -= contentSize_.height/2.0f;
+			touchPoint_.y = (touchPoint_.y/contentSize_.height) * 6.0f;
+			touchPoint_ = ccpSub([innerLayer position], touchPoint_);
 			
 			if(touchPoint_.y>0)
 				touchPoint_.y = 0;
-			else if(touchPoint_.y<-(innerSize_.height-frameSize_.height))
-				touchPoint_.y = -(innerSize_.height-frameSize_.height);
+			else if(touchPoint_.y<-(innerSize_.height-contentSize_.height))
+				touchPoint_.y = -(innerSize_.height-contentSize_.height);
 			
-			[self setInnerPosition:touchPoint_];
+			[innerLayer setPosition:touchPoint_];
 			break;
 		}
 		default: break;
@@ -110,24 +107,21 @@
 	_firstTouchPoint = [CMMTouchUtil pointFromTouch:touch_];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
+	[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
 	_curDragStartDelayTime = 0.0f;
 	
 	switch(touchState){
 		case CMMTouchState_onTouchChild:{
-			[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
-			if(touchState == CMMTouchState_onDrag) break;
-			
 			CGPoint touchPoint_ = [CMMTouchUtil pointFromTouch:touch_];
 			if(ABS(ccpSub(touchPoint_,_firstTouchPoint).x)>dragStartDistance)
 				_curDragStartDelayTime = dragStartDelayTime;
 			
 			break;
-		}case CMMTouchState_onDragChild:{
+		}case CMMTouchState_onFixed:{
 			_dragItemView.position = ccpSub([self convertToNodeSpace:[CMMTouchUtil pointFromTouch:touch_]], ccp(self.contentSize.width/4.0f,0));
 			break;
 		}
 		default:
-			[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
 			break;
 	}
 }
@@ -135,9 +129,8 @@
 	_curDragStartDelayTime = 0;
 	
 	switch(touchState){
-		case CMMTouchState_onDragChild:{
-			CMMTouchDispatcher *innerTouchDispatcher_ = _innerLayer.touchDispatcher;
-			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher_ touchItemAtTouch:touch_];
+		case CMMTouchState_onFixed:{
+			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher touchItemAtTouch:touch_];
 			CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
 			BOOL isRestoreDragItemView_ = YES;
 			CGPoint touchPoint_ = [CMMTouchUtil pointFromTouch:touch_];
@@ -188,20 +181,17 @@
 	_curDragStartDelayTime = 0;
 	
 	switch(touchState){
-		case CMMTouchState_onDragChild:{
-			CMMTouchDispatcher *innerTouchDispatcher_ = _innerLayer.touchDispatcher;
-			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher_ touchItemAtTouch:touch_];
+		case CMMTouchState_onFixed:{
+			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher touchItemAtTouch:touch_];
 			CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
 			[self _moveDragViewItemTo:item_];
-			[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
 			
 			break;
 		}
-		default:{
-			[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
-			break;
-		}
+		default: break;
 	}
+	
+	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
 }
 
 @end
@@ -209,7 +199,7 @@
 @implementation CMMScrollMenuV(Display)
 
 -(void)doUpdateInnerSize{
-	CGSize innerSize_ = [self innerSize];
+	CGSize innerSize_ = [innerLayer contentSize];
 	
 	float beforeHeight_ = innerSize_.height;
 	float targetHeight_ = 0;
@@ -222,23 +212,23 @@
 	}
 	targetHeight_-= marginPerItem;
 	targetHeight_ = MAX(targetHeight_, contentSize_.height);
-	self.innerSize = CGSizeMake(contentSize_.width, targetHeight_);
+	[innerLayer setContentSize:CGSizeMake(contentSize_.width, targetHeight_)];
 	
-	CGPoint targetPoint_ = ccpAdd([self innerPosition], ccp(0,beforeHeight_-targetHeight_));
-	[self setInnerPosition:targetPoint_];
+	CGPoint targetPoint_ = ccpAdd([innerLayer position], ccp(0,beforeHeight_-targetHeight_));
+	[innerLayer setPosition:targetPoint_];
 	for(uint index_=0;index_<count_;++index_){
 		CMMMenuItem *item_ = data_->arr[index_];
 		item_.position = ccpSub(item_.position, ccp(0,beforeHeight_-targetHeight_));
 	}
 }
 -(void)updateMenuArrangeWithInterval:(ccTime)dt_{
-	CGSize innerSize_ = [self innerSize];
+	CGSize innerSize_ = [innerLayer contentSize];
 	float totalItemHeight_ = 0;
 	ccArray *data_ = itemList->data;
 	int count_ = data_->num;
 	for(int index_=0;index_<count_;++index_){
 		CMMMenuItem *item_ = data_->arr[index_];
-		CGSize itemSize_ = item_.contentSize;
+		CGSize itemSize_ = [item_ contentSize];
 		CGPoint targetPoint_ = cmmFuncCommon_position_center(self, item_);
 		targetPoint_.y = innerSize_.height-(totalItemHeight_+itemSize_.height*(1.0f-item_.anchorPoint.y));
 		targetPoint_ = ccpAdd(item_.position, ccpMult(ccpSub(targetPoint_,item_.position), dt_*cmmVarCMMScrollMenu_defaultOrderingAccelRate));
@@ -256,7 +246,7 @@
 	[super addItem:item_ atIndex:index_];
 	
 	CGPoint targetPoint_ = cmmFuncCommon_position_center(self, item_);
-	targetPoint_.y = self.innerSize.height;
+	targetPoint_.y = [innerLayer contentSize].height;
 	CMMMenuItem *preItem_ = [self itemAtIndex:index_-1];
 	if(preItem_) targetPoint_.y = preItem_.position.y-preItem_.contentSize.height;
 	item_.position = targetPoint_;

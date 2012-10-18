@@ -18,7 +18,7 @@
 
 @interface CMMScrollMenuH : CMMScrollMenu{
 	float fouceItemScale,nonefouceItemScale,minScrollAccelToSnap;
-	BOOL isSnapAtItem;
+	BOOL isSnapAtItem,_isOnSnap;
 }
 
 @property (nonatomic, readwrite) float fouceItemScale,nonefouceItemScale,minScrollAccelToSnap;

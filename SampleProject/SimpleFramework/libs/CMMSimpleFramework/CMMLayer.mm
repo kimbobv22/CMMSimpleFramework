@@ -9,6 +9,7 @@
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	[self setAnchorPoint:CGPointZero];
 	[self setIgnoreAnchorPointForPosition:NO];
+	[self setIsTouchEnabled:YES];
 	
 	touchDispatcher = [[CMMTouchDispatcher alloc] initWithTarget:self];
 	
@@ -38,6 +39,9 @@
 }
 #endif
 
+-(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
+	return isTouchEnabled_;
+}
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
 	[touchDispatcher whenTouchBegan:touch_ event:event_];
 }

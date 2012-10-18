@@ -407,7 +407,7 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMLayer.mm</string>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMLayerMask.h</key>
+		<key>libs/CMMSimpleFramework/CMMLayerM.h</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -415,11 +415,11 @@
 				<string>CMMSimpleFramework</string>
 			</array>
 			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMLayerMask.h</string>
+			<string>libs/CMMSimpleFramework/CMMLayerM.h</string>
 			<key>TargetIndices</key>
 			<array/>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMLayerMask.mm</key>
+		<key>libs/CMMSimpleFramework/CMMLayerM.mm</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -427,7 +427,29 @@
 				<string>CMMSimpleFramework</string>
 			</array>
 			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMLayerMask.mm</string>
+			<string>libs/CMMSimpleFramework/CMMLayerM.mm</string>
+		</dict>
+		<key>libs/CMMSimpleFramework/CMMLayerMD.h</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>libs</string>
+				<string>CMMSimpleFramework</string>
+			</array>
+			<key>Path</key>
+			<string>libs/CMMSimpleFramework/CMMLayerMD.h</string>
+			<key>TargetIndices</key>
+			<array/>
+		</dict>
+		<key>libs/CMMSimpleFramework/CMMLayerMD.mm</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>libs</string>
+				<string>CMMSimpleFramework</string>
+			</array>
+			<key>Path</key>
+			<string>libs/CMMSimpleFramework/CMMLayerMD.mm</string>
 		</dict>
 		<key>libs/CMMSimpleFramework/CMMLayerPinchZoom.h</key>
 		<dict>
@@ -1408,8 +1430,10 @@
 		<string>libs/CMMSimpleFramework/CMMHeader.h</string>
 		<string>libs/CMMSimpleFramework/CMMLayer.h</string>
 		<string>libs/CMMSimpleFramework/CMMLayer.mm</string>
-		<string>libs/CMMSimpleFramework/CMMLayerMask.h</string>
-		<string>libs/CMMSimpleFramework/CMMLayerMask.mm</string>
+		<string>libs/CMMSimpleFramework/CMMLayerM.h</string>
+		<string>libs/CMMSimpleFramework/CMMLayerM.mm</string>
+		<string>libs/CMMSimpleFramework/CMMLayerMD.h</string>
+		<string>libs/CMMSimpleFramework/CMMLayerMD.mm</string>
 		<string>libs/CMMSimpleFramework/CMMLayerPinchZoom.h</string>
 		<string>libs/CMMSimpleFramework/CMMLayerPinchZoom.mm</string>
 		<string>libs/CMMSimpleFramework/CMMLayerPopup.h</string>

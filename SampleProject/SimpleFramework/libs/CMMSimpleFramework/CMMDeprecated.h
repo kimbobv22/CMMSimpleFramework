@@ -5,8 +5,32 @@
 #import "CMMMenuItem.h"
 #import "CMMScrollMenu.h"
 #import "CMMStage.h"
+#import "CMMSObject.h"
 #import "CMMSParticle.h"
 #import "CMMSimpleCache.h"
+#import "CMMScene.h"
+#import "CMMLayerMD.h"
+
+@interface CMMScene(Deprecated)
+
+@property (nonatomic, readwrite) ccColor3B transitionColor DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readwrite) ccTime fadeTime DEPRECATED_ATTRIBUTE;
+
+@end
+
+DEPRECATED_ATTRIBUTE @interface CMMLayerMask : CMMLayerM
+
+//use CMMLayerM class
+
+@end
+
+DEPRECATED_ATTRIBUTE typedef CMMLayerMDScrollbar CMMScrollbarDesign;
+
+DEPRECATED_ATTRIBUTE @interface CMMLayerMaskDrag : CMMLayerMD
+
+//use CMMLayerMD class
+
+@end
 
 /*
  */
@@ -42,6 +66,13 @@ DEPRECATED_ATTRIBUTE @interface CMMControlItemBatchBar : CMMSpriteBatchBar
 @interface CMMScrollMenu(Deprecated)
 
 +(id)scrollMenuWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_ DEPRECATED_ATTRIBUTE;
+
+@end
+
+@interface CMMSObject(Deprecated)
+
+-(void)updateBodyWithPosition:(CGPoint)point_ andRotation:(float)tRotation_ DEPRECATED_ATTRIBUTE;
+-(void)updateBodyWithPosition:(CGPoint)point_ DEPRECATED_ATTRIBUTE;
 
 @end
 

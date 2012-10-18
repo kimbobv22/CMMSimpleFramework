@@ -86,9 +86,6 @@
 -(void)updateBodyLinearVelocity:(b2Vec2)linearVelocity angularVelocity:(float)angularVelocity_;
 -(void)updateBodyLinearVelocity:(b2Vec2)linearVelocity;
 
--(void)updateBodyWithPosition:(CGPoint)point_ andRotation:(float)tRotation_ DEPRECATED_ATTRIBUTE;
--(void)updateBodyWithPosition:(CGPoint)point_ DEPRECATED_ATTRIBUTE;
-
 @end
 
 @interface CMMSObject(Stage)

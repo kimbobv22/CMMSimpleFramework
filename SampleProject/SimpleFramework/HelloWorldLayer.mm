@@ -2,6 +2,7 @@
 
 #import "CMMMenuItem.h"
 
+#import "TransitionTestLayer.h"
 #import "MenuItemTestLayer.h"
 #import "MenuItemSetTestLayer.h"
 #import "DragLayerTestLayer.h"
@@ -38,6 +39,11 @@
 	CGSize menuItemSize_ = CGSizeMake(mainMenu.contentSize.width, 55);
 	
 	CMMMenuItemLabelTTF *menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[TransitionTestLayer node]];};
+	[menuItem_ setTitle:@"Transition Test"];
+ 	[mainMenu addItem:menuItem_];
+	
+	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[MenuItemTestLayer node]];};
 	[menuItem_ setTitle:@"MenuItem Test"];
  	[mainMenu addItem:menuItem_];

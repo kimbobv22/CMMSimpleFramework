@@ -3,7 +3,7 @@
 #import "CMMHeader.h"
 
 @interface DragLayerTestLayer : CMMLayer<CMMMenuItemDelegate>{
-	CMMLayerMaskDrag *dragLayer;
+	CMMLayerMD *dragLayer;
 }
 
 @end

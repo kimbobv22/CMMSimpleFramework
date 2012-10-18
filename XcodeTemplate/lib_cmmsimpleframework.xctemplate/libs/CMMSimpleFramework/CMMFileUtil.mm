@@ -24,7 +24,7 @@
 
 +(NSData *)dataWithFilePath:(NSString *)filePath_ encryptionKey:(NSString *)encryptionKey_{
 	NSData *targetData_ = [NSData dataWithContentsOfFile:filePath_];
-	if(encryptionKey_){
+	if(targetData_ && encryptionKey_){
 		targetData_ = [CMMEncryptionUtil decryptData:targetData_ withKey:encryptionKey_];
 	}
 	

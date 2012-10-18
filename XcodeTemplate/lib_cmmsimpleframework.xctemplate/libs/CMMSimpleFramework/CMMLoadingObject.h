@@ -19,17 +19,18 @@
 	id<CMMLoadingObjectDelegate> delegate;
 	
 	id _loadingTarget;
-	NSString *_loadingMethodFormatter;
+	NSString *loadingMethodFormatter;
 	uint _curSequence;
 }
 
 +(id)loadingObject;
 
--(void)startLoadingWithMethodFormatter:(NSString *)methodFormatter_ target:(id)target_;
--(void)startLoadingWithMethodFormatter:(NSString *)methodFormatter_;
 -(void)startLoadingWithTarget:(id)target_;
 -(void)startLoading;
+-(void)startLoadingWithMethodFormatter:(NSString *)methodFormatter_ target:(id)target_;
+-(void)startLoadingWithMethodFormatter:(NSString *)methodFormatter_;
 
 @property (nonatomic, retain) id<CMMLoadingObjectDelegate> delegate;
+@property (nonatomic, copy) NSString *loadingMethodFormatter;
 
 @end
