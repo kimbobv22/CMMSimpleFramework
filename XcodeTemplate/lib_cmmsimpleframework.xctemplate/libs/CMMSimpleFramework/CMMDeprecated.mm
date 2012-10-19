@@ -24,6 +24,34 @@
 
 @end
 
+@implementation CMMLoadingObject
+
++(id)loadingObject{
+	return [self sequenceMaker];
+}
+
+-(void)startLoadingWithTarget:(id)target_{
+	return [self startWithTarget:target_];
+}
+-(void)startLoading{
+	return [self start];
+}
+-(void)startLoadingWithMethodFormatter:(NSString *)methodFormatter_ target:(id)target_{
+	return [self startWithMethodFormatter:methodFormatter_ target:target_];
+}
+-(void)startLoadingWithMethodFormatter:(NSString *)methodFormatter_{
+	return [self startWithMethodFormatter:methodFormatter_];
+}
+
+-(void)setLoadingMethodFormatter:(NSString *)loadingMethodFormatter_{
+	[self setSequenceMethodFormatter:loadingMethodFormatter_];
+}
+-(NSString *)loadingMethodFormatter{
+	return [self sequenceMethodFormatter];
+}
+
+@end
+
 @implementation CMMDrawingManager(Deprecated)
 
 -(CCTexture2D *)textureFrameWithFrameSeq:(int)frameSeq_ size:(CGSize)size_ backGroundYN:(BOOL)backGroundYN_ barYN:(BOOL)barYN_{

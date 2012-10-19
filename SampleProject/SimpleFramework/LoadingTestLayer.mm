@@ -55,6 +55,7 @@
 }
 
 -(void)dealloc{
+	[menuItemBack release];
 	[super dealloc];
 }
 

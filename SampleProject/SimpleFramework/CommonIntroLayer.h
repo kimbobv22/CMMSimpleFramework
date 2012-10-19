@@ -2,15 +2,9 @@
 
 #import "CMMHeader.h"
 
-enum testIntroState{
-	testIntroState_000,
-	testIntroState_001,
-	testIntroState_002,
-};
-
-@interface CommonIntroLayer1 : CMMLayer{
+@interface CommonIntroLayer1 : CMMLayer<CMMSequenceMakerDelegate>{
 	CCSprite *profileSprite;
-	testIntroState introState;
+	CMMSequenceMaker *sequencer;
 }
 
 @end

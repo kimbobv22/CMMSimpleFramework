@@ -62,7 +62,6 @@
 		E032FC4215E1EAB300B28B61 /* CMMDrawingUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC3715E1EAB200B28B61 /* CMMDrawingUtil.mm */; };
 		E032FC4315E1EAB300B28B61 /* CMMFileUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC3915E1EAB200B28B61 /* CMMFileUtil.mm */; };
 		E032FC4415E1EAB300B28B61 /* CMMFontUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = E032FC3B15E1EAB200B28B61 /* CMMFontUtil.m */; };
-		E032FC4515E1EAB300B28B61 /* CMMLoadingObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC3D15E1EAB300B28B61 /* CMMLoadingObject.mm */; };
 		E032FC4615E1EAB300B28B61 /* CMMStringUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC3F15E1EAB300B28B61 /* CMMStringUtil.mm */; };
 		E032FC4715E1EAB300B28B61 /* CMMTouchUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC4115E1EAB300B28B61 /* CMMTouchUtil.mm */; };
 		E032FC5415E1EDE600B28B61 /* CMMLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC4915E1EDE200B28B61 /* CMMLayer.mm */; };
@@ -256,6 +255,7 @@
 		E0BB297D16303C5B0005A90F /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0BB297C16303C5B0005A90F /* StoreKit.framework */; };
 		E0BEB0CF16217718000511C7 /* CMMPacketDataHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0BEB0CE16217718000511C7 /* CMMPacketDataHandler.mm */; };
 		E0C00034162BDE7D00414509 /* CMMTimeIntervalArray.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C00033162BDE7B00414509 /* CMMTimeIntervalArray.mm */; };
+		E0C009F01631253500BE918E /* CMMSequenceMaker.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C009EF1631253500BE918E /* CMMSequenceMaker.mm */; };
 		E0C1173615E89729000142B2 /* CMMScrollMenuH.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C1173515E89729000142B2 /* CMMScrollMenuH.mm */; };
 		E0C1173F15E8B110000142B2 /* CMMScrollMenuV.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C1173E15E8B110000142B2 /* CMMScrollMenuV.mm */; };
 		E0C1FE7F161428D800562E27 /* CMMDeprecated.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C1FE7E161428D800562E27 /* CMMDeprecated.mm */; };
@@ -391,8 +391,6 @@
 		E032FC3915E1EAB200B28B61 /* CMMFileUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMFileUtil.mm; path = libs/CMMSimpleFramework/CMMFileUtil.mm; sourceTree = "<group>"; };
 		E032FC3A15E1EAB200B28B61 /* CMMFontUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMFontUtil.h; path = libs/CMMSimpleFramework/CMMFontUtil.h; sourceTree = "<group>"; };
 		E032FC3B15E1EAB200B28B61 /* CMMFontUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMMFontUtil.m; path = libs/CMMSimpleFramework/CMMFontUtil.m; sourceTree = "<group>"; };
-		E032FC3C15E1EAB200B28B61 /* CMMLoadingObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMLoadingObject.h; path = libs/CMMSimpleFramework/CMMLoadingObject.h; sourceTree = "<group>"; };
-		E032FC3D15E1EAB300B28B61 /* CMMLoadingObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMLoadingObject.mm; path = libs/CMMSimpleFramework/CMMLoadingObject.mm; sourceTree = "<group>"; };
 		E032FC3E15E1EAB300B28B61 /* CMMStringUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMStringUtil.h; path = libs/CMMSimpleFramework/CMMStringUtil.h; sourceTree = "<group>"; };
 		E032FC3F15E1EAB300B28B61 /* CMMStringUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMStringUtil.mm; path = libs/CMMSimpleFramework/CMMStringUtil.mm; sourceTree = "<group>"; };
 		E032FC4015E1EAB300B28B61 /* CMMTouchUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMTouchUtil.h; path = libs/CMMSimpleFramework/CMMTouchUtil.h; sourceTree = "<group>"; };
@@ -788,6 +786,8 @@
 		E0BEB0CE16217718000511C7 /* CMMPacketDataHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMPacketDataHandler.mm; path = libs/CMMSimpleFramework/CMMPacketDataHandler.mm; sourceTree = "<group>"; };
 		E0C00032162BDE7A00414509 /* CMMTimeIntervalArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMTimeIntervalArray.h; path = libs/CMMSimpleFramework/CMMTimeIntervalArray.h; sourceTree = "<group>"; };
 		E0C00033162BDE7B00414509 /* CMMTimeIntervalArray.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMTimeIntervalArray.mm; path = libs/CMMSimpleFramework/CMMTimeIntervalArray.mm; sourceTree = "<group>"; };
+		E0C009EE1631253500BE918E /* CMMSequenceMaker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSequenceMaker.h; path = libs/CMMSimpleFramework/CMMSequenceMaker.h; sourceTree = "<group>"; };
+		E0C009EF1631253500BE918E /* CMMSequenceMaker.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSequenceMaker.mm; path = libs/CMMSimpleFramework/CMMSequenceMaker.mm; sourceTree = "<group>"; };
 		E0C1173415E89729000142B2 /* CMMScrollMenuH.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMScrollMenuH.h; path = libs/CMMSimpleFramework/CMMScrollMenuH.h; sourceTree = "<group>"; };
 		E0C1173515E89729000142B2 /* CMMScrollMenuH.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMScrollMenuH.mm; path = libs/CMMSimpleFramework/CMMScrollMenuH.mm; sourceTree = "<group>"; };
 		E0C1173D15E8B110000142B2 /* CMMScrollMenuV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMScrollMenuV.h; path = libs/CMMSimpleFramework/CMMScrollMenuV.h; sourceTree = "<group>"; };
@@ -1163,8 +1163,8 @@
 				E032FC4115E1EAB300B28B61 /* CMMTouchUtil.mm */,
 				E008574B162543EC009C9BC4 /* CMMEncryptionUtil.h */,
 				E008574C162543EC009C9BC4 /* CMMEncryptionUtil.mm */,
-				E032FC3C15E1EAB200B28B61 /* CMMLoadingObject.h */,
-				E032FC3D15E1EAB300B28B61 /* CMMLoadingObject.mm */,
+				E0C009EE1631253500BE918E /* CMMSequenceMaker.h */,
+				E0C009EF1631253500BE918E /* CMMSequenceMaker.mm */,
 				E00E2E6815FF506A003551B4 /* CMMSimpleCache.h */,
 				E00E2E6915FF506A003551B4 /* CMMSimpleCache.mm */,
 				E0C4A8731622BF5A00C4B57E /* CMMConnectionMonitor.h */,
@@ -1963,7 +1963,6 @@
 				E032FC4215E1EAB300B28B61 /* CMMDrawingUtil.mm in Sources */,
 				E032FC4315E1EAB300B28B61 /* CMMFileUtil.mm in Sources */,
 				E032FC4415E1EAB300B28B61 /* CMMFontUtil.m in Sources */,
-				E032FC4515E1EAB300B28B61 /* CMMLoadingObject.mm in Sources */,
 				E032FC4615E1EAB300B28B61 /* CMMStringUtil.mm in Sources */,
 				E032FC4715E1EAB300B28B61 /* CMMTouchUtil.mm in Sources */,
 				E032FC5415E1EDE600B28B61 /* CMMLayer.mm in Sources */,
@@ -2117,6 +2116,7 @@
 				E040C932162FAD67004C2B47 /* TransitionTestLayer.mm in Sources */,
 				E098B24E162FDE1600E3C546 /* CMMInAppPurchasesManager.mm in Sources */,
 				E0BB297A16303AD00005A90F /* InAppPurchaseTestLayer.mm in Sources */,
+				E0C009F01631253500BE918E /* CMMSequenceMaker.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

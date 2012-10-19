@@ -10,6 +10,7 @@
 #import "CMMSimpleCache.h"
 #import "CMMScene.h"
 #import "CMMLayerMD.h"
+#import "CMMSequenceMaker.h"
 
 @interface CMMScene(Deprecated)
 
@@ -29,6 +30,34 @@ DEPRECATED_ATTRIBUTE typedef CMMLayerMDScrollbar CMMScrollbarDesign;
 DEPRECATED_ATTRIBUTE @interface CMMLayerMaskDrag : CMMLayerMD
 
 //use CMMLayerMD class
+
+@end
+
+@class CMMLoadingObject;
+
+DEPRECATED_ATTRIBUTE @protocol CMMLoadingObjectDelegate <CMMSequenceMakerDelegate>
+
+@optional
+
+//use -(void)sequenceMakerDidStart:(CMMSequenceMaker *)sequenceMaker_;
+-(void)loadingObject_whenLoadingStart:(CMMLoadingObject *)loadingObject_;
+// use -(void)sequenceMakerDidEnd:(CMMSequenceMaker *)sequenceMaker_;
+-(void)loadingObject_whenLoadingEnded:(CMMLoadingObject *)loadingObject_;
+
+@end
+
+DEPRECATED_ATTRIBUTE @interface CMMLoadingObject : CMMSequenceMakerAuto
+
+//use CMMSequenceMakerAuto class
+
++(id)loadingObject;
+
+-(void)startLoadingWithTarget:(id)target_;
+-(void)startLoading;
+-(void)startLoadingWithMethodFormatter:(NSString *)methodFormatter_ target:(id)target_;
+-(void)startLoadingWithMethodFormatter:(NSString *)methodFormatter_;
+
+@property (nonatomic, copy) NSString *loadingMethodFormatter;
 
 @end
 

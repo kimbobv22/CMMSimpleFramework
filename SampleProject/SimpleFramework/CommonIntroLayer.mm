@@ -9,23 +9,32 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	introState = testIntroState_000;
 	profileSprite = [CCSprite spriteWithFile:@"develop.png"];
 	[profileSprite setPosition:ccp(contentSize_.width/2.0f,contentSize_.height/2.0f)];
-	[profileSprite runAction:[CCSequence actions:[CCFadeIn actionWithDuration:0.5f],[CCDelayTime actionWithDuration:2.0f],[CCCallFunc actionWithTarget:self selector:@selector(seq001)], nil]];
+	[profileSprite setOpacity:0];
 	[self addChild:profileSprite];
+	
+	sequencer = [[CMMSequenceMaker alloc] init];
+	[sequencer setDelegate:self];
+	[sequencer setSequenceMethodFormatter:@"seq%03d"];
 	
 	return self;
 }
+-(void)whenLoadingEnded{
+	[sequencer start];
+}
+
+-(void)seq000{
+	[profileSprite runAction:[CCSequence actions:[CCFadeIn actionWithDuration:0.5f],[CCDelayTime actionWithDuration:2.0f],[CCCallFunc actionWithTarget:sequencer selector:@selector(doSequence)], nil]];
+}
 
 -(void)seq001{
-	introState = testIntroState_001;
 	[profileSprite stopAllActions];
 	[profileSprite setOpacity:255];
-	[profileSprite runAction:[CCSequence actions:[CCFadeOut actionWithDuration:0.5f],[CCCallFunc actionWithTarget:self selector:@selector(seq002)], nil]];
+	[profileSprite runAction:[CCSequence actions:[CCFadeOut actionWithDuration:0.5f],[CCCallFunc actionWithTarget:sequencer selector:@selector(doSequence)], nil]];
 }
--(void)seq002{
-	introState = testIntroState_002;
+
+-(void)sequenceMakerDidEnd:(CMMSequenceMaker *)sequenceMaker_{
 	[profileSprite stopAllActions];
 	[profileSprite setOpacity:0];
 	[[CMMScene sharedScene] pushLayer:[CommonIntroLayer2 node]];
@@ -33,17 +42,17 @@
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
-	switch(introState){
-		case testIntroState_000:{
-			[self seq001];
-			break;
-		};
-		case testIntroState_001:{
-			[self seq002];
-			break;
-		};
-		default: break;
-	}
+	[sequencer doSequence];
+}
+
+-(void)cleanup{
+	[sequencer setDelegate:nil];
+	[super cleanup];
+}
+
+-(void)dealloc{
+	[sequencer release];
+	[super dealloc];
 }
 
 @end

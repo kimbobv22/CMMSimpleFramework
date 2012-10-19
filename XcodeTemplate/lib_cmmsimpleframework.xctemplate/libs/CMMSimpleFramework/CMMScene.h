@@ -4,7 +4,7 @@
 #import "CMMLayerPopup.h"
 #import "CMMTouchDispatcherScene.h"
 #import "CMMNoticeDispatcher.h"
-#import "CMMLoadingObject.h"
+#import "CMMSequenceMaker.h"
 
 @interface CMMSceneStaticLayerItem : NSObject{
 	NSString *key;
@@ -34,7 +34,7 @@
 
 @end
 
-@interface CMMScene : CCScene<CMMGLViewTouchDelegate,CMMLoadingObjectDelegate>{
+@interface CMMScene : CCScene<CMMGLViewTouchDelegate,CMMSequenceMakerDelegate>{
 	CMMLayer *runningLayer;
 	
 	CCArray *_pushLayerList;
@@ -43,7 +43,7 @@
 	
 	CCArray *staticLayerItemList;
 	
-	CMMLoadingObject *_loadingObject;
+	CMMSequenceMakerAuto *_preSequencer;
 	CMMTouchDispatcherScene *touchDispatcher;
 	CMMPopupDispatcher *popupDispatcher;
 	CMMNoticeDispatcher *noticeDispatcher;

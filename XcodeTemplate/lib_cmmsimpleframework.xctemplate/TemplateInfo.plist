@@ -517,7 +517,7 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMLayerPopup.mm</string>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMLoadingObject.h</key>
+		<key>libs/CMMSimpleFramework/CMMSequenceMaker.h</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -525,11 +525,11 @@
 				<string>CMMSimpleFramework</string>
 			</array>
 			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMLoadingObject.h</string>
+			<string>libs/CMMSimpleFramework/CMMSequenceMaker.h</string>
 			<key>TargetIndices</key>
 			<array/>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMLoadingObject.mm</key>
+		<key>libs/CMMSimpleFramework/CMMSequenceMaker.mm</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -537,7 +537,7 @@
 				<string>CMMSimpleFramework</string>
 			</array>
 			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMLoadingObject.mm</string>
+			<string>libs/CMMSimpleFramework/CMMSequenceMaker.mm</string>
 		</dict>
 		<key>libs/CMMSimpleFramework/CMMMacro.h</key>
 		<dict>
@@ -1445,6 +1445,8 @@
 		<string>libs/CMMSimpleFramework/CMMFileUtil.mm</string>
 		<string>libs/CMMSimpleFramework/CMMFontUtil.h</string>
 		<string>libs/CMMSimpleFramework/CMMFontUtil.m</string>
+		<string>libs/CMMSimpleFramework/CMMSequenceMaker.h</string>
+		<string>libs/CMMSimpleFramework/CMMSequenceMaker.mm</string>
 		<string>libs/CMMSimpleFramework/CMMGameKit.h</string>
 		<string>libs/CMMSimpleFramework/CMMGameKit.mm</string>
 		<string>libs/CMMSimpleFramework/CMMGLView.h</string>
@@ -1462,8 +1464,6 @@
 		<string>libs/CMMSimpleFramework/CMMLayerPinchZoom.mm</string>
 		<string>libs/CMMSimpleFramework/CMMLayerPopup.h</string>
 		<string>libs/CMMSimpleFramework/CMMLayerPopup.mm</string>
-		<string>libs/CMMSimpleFramework/CMMLoadingObject.h</string>
-		<string>libs/CMMSimpleFramework/CMMLoadingObject.mm</string>
 		<string>libs/CMMSimpleFramework/CMMMacro.h</string>
 		<string>libs/CMMSimpleFramework/CMMMenuItem.h</string>
 		<string>libs/CMMSimpleFramework/CMMMenuItem.mm</string>

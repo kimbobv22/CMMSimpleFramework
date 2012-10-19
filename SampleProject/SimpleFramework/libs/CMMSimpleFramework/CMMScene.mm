@@ -91,11 +91,11 @@ static CMMScene *_sharedScene_ = nil;
 	[transitionLayer startFadeOutTransitionWithTarget:self callbackSelector:@selector(transition002)];
 }
 -(void)transition002{
-	[_loadingObject setDelegate:self];
-	[_loadingObject startLoadingWithTarget:runningLayer];
+	[_preSequencer setDelegate:self];
+	[_preSequencer startWithTarget:runningLayer];
 }
 
--(void)loadingObject_whenLoadingEnded:(CMMLoadingObject *)loadingLayer_{
+-(void)sequenceMakerDidEnd:(CMMSequenceMaker *)sequenceMaker_{
 	[_pushLayerList removeObjectAtIndex:0];
 	[transitionLayer removeFromParentAndCleanup:YES];
 	runningLayer.isTouchEnabled = YES;
@@ -130,7 +130,8 @@ static CMMScene *_sharedScene_ = nil;
 	
 	staticLayerItemList = [[CCArray alloc] init];
 	
-	_loadingObject = [[CMMLoadingObject alloc] init];
+	_preSequencer = [[CMMSequenceMakerAuto alloc] init];
+	[_preSequencer setSequenceMethodFormatter:@"loadingProcess%03d"];
 	touchDispatcher = [[CMMTouchDispatcherScene alloc] initWithTarget:self];
 	popupDispatcher = [[CMMPopupDispatcher alloc] initWithScene:self];
 	noticeDispatcher = [[CMMNoticeDispatcher alloc] initWithTarget:self];
@@ -197,7 +198,7 @@ static CMMScene *_sharedScene_ = nil;
 	[popupDispatcher release];
 	[touchDispatcher release];
 	[staticLayerItemList release];
-	[_loadingObject release];
+	[_preSequencer release];
 	[_pushLayerList release];
 	[transitionLayer release];
 	
