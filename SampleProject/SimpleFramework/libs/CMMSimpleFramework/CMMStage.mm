@@ -583,6 +583,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 }
 
 -(void)dealloc{
+	[target release];
 	[stageLight release];
 	[super dealloc];
 }

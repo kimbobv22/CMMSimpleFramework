@@ -11,6 +11,7 @@
 	
 	_playerNameLb = [CMMFontUtil labelWithstring:@" " fontSize:9.0f];
 	[self addChild:_playerNameLb];
+	[self setTitleAlign:kCCTextAlignmentRight];
 	
 	return self;
 }
@@ -22,11 +23,6 @@
 	labelPoint_.x = [_playerNameLb contentSize].width*0.5f + 10.0f;
 	labelPoint_.y = contentSize_.height - [_playerNameLb contentSize].height*0.5f - 10.0f;
 	[_playerNameLb setPosition:labelPoint_];
-	
-	CGPoint titlePoint_;
-	titlePoint_.x = contentSize_.width - labelTitle.contentSize.width*0.5f - 10.0f;
-	titlePoint_.y = contentSize_.height*0.5f;
-	[labelTitle setPosition:titlePoint_];
 }
 
 -(void)setPlayerName:(NSString *)playerName_{

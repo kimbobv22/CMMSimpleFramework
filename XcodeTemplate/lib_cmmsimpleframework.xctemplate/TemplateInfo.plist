@@ -385,6 +385,28 @@
 			<key>TargetIndices</key>
 			<array/>
 		</dict>
+		<key>libs/CMMSimpleFramework/CMMInAppPurchasesManager.h</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>libs</string>
+				<string>CMMSimpleFramework</string>
+			</array>
+			<key>Path</key>
+			<string>libs/CMMSimpleFramework/CMMInAppPurchasesManager.h</string>
+			<key>TargetIndices</key>
+			<array/>
+		</dict>
+		<key>libs/CMMSimpleFramework/CMMInAppPurchasesManager.mm</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>libs</string>
+				<string>CMMSimpleFramework</string>
+			</array>
+			<key>Path</key>
+			<string>libs/CMMSimpleFramework/CMMInAppPurchasesManager.mm</string>
+		</dict>
 		<key>libs/CMMSimpleFramework/CMMLayer.h</key>
 		<dict>
 			<key>Group</key>
@@ -1428,6 +1450,8 @@
 		<string>libs/CMMSimpleFramework/CMMGLView.h</string>
 		<string>libs/CMMSimpleFramework/CMMGLView.mm</string>
 		<string>libs/CMMSimpleFramework/CMMHeader.h</string>
+		<string>libs/CMMSimpleFramework/CMMInAppPurchasesManager.h</string>
+		<string>libs/CMMSimpleFramework/CMMInAppPurchasesManager.mm</string>
 		<string>libs/CMMSimpleFramework/CMMLayer.h</string>
 		<string>libs/CMMSimpleFramework/CMMLayer.mm</string>
 		<string>libs/CMMSimpleFramework/CMMLayerM.h</string>
@@ -1528,6 +1552,7 @@
 			<array>
 				<string>SystemConfiguration</string>
 				<string>CoreMotion</string>
+				<string>StoreKit</string>
 			</array>
 		</dict>
 	</array>

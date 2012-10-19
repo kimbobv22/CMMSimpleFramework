@@ -12,6 +12,6 @@
 -(id)initWithParticleName:(NSString *)particleName_;
 
 @property (nonatomic, readonly) NSString *particleName;
-@property (nonatomic, assign) CMMSObject *target;
+@property (nonatomic, retain) CMMSObject *target;
 
 @end

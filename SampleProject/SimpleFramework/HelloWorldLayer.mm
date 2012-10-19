@@ -20,6 +20,7 @@
 #import "AchievementsTestLayer.h"
 #import "GameCenterTestLayer.h"
 #import "CameraTestLayer.h"
+#import "InAppPurchaseTestLayer.h"
 
 @implementation HelloWorldLayer
 
@@ -126,6 +127,11 @@
 	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[CameraTestLayer node]];};
 	[menuItem_ setTitle:@"Camera Test"];
+	[mainMenu addItem:menuItem_];
+	
+	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[InAppPurchaseTestLayer node]];};
+	[menuItem_ setTitle:@"In-App Purchase Test"];
 	[mainMenu addItem:menuItem_];
 	
 	return self;

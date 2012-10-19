@@ -49,6 +49,7 @@ static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.0.0";
 
 #import "CMMDrawingManager.h"
 #import "CMMCaremaManager.h"
+#import "CMMInAppPurchasesManager.h"
 
 #import "CMMSType.h"
 

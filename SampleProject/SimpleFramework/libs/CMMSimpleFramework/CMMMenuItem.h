@@ -57,8 +57,10 @@
 
 @interface CMMMenuItemLabelTTF : CMMMenuItem{
 	CCLabelTTF *labelTitle;
+	CCTextAlignment titleAlign;
 }
 
 @property (nonatomic, assign) NSString *title;
+@property (nonatomic, readwrite) CCTextAlignment titleAlign;
 
 @end

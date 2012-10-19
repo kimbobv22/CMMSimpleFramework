@@ -30,7 +30,7 @@
 	[super resetSystem];
 	[self setPositionType:kCCPositionTypeRelative]; // issue..
 	[self setAutoRemoveOnFinish:YES];
-	target = nil;
+	[self setTarget:nil];
 }
 
 -(void)update:(ccTime)dt_{
@@ -43,6 +43,7 @@
 -(void)scheduleUpdate{}
 
 -(void)dealloc{
+	[target release];
 	[particleName release];
 	[super dealloc];
 }

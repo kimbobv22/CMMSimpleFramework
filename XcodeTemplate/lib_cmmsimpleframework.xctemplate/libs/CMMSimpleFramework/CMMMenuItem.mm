@@ -162,12 +162,13 @@
 @end
 
 @implementation CMMMenuItemLabelTTF
-@synthesize title;
+@synthesize title,titleAlign;
 
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
 	
 	labelTitle = [CMMFontUtil labelWithstring:@" "];
+	titleAlign = kCCTextAlignmentCenter;
 	[self addChild:labelTitle z:1];
 	[self updateDisplay];
 	
@@ -177,9 +178,29 @@
 	[super setContentSize:contentSize];
 	[self updateDisplay];
 }
+-(void)setTitleAlign:(CCTextAlignment)titleAlign_{
+	titleAlign = titleAlign_;
+	[self updateDisplay];
+}
+
 -(void)updateDisplay{
 	[super updateDisplay];
-	[labelTitle setPosition:ccp(self.contentSize.width/2,self.contentSize.height/2)];
+	CGPoint targetPoint_ = CGPointZero;
+	
+	switch(titleAlign){
+		case kCCTextAlignmentLeft:
+			targetPoint_ = ccp(labelTitle.contentSize.width/2.0f + 10.0f,contentSize_.height/2);
+			break;
+		case kCCTextAlignmentRight:
+			targetPoint_ = ccp(contentSize_.width-(labelTitle.contentSize.width/2.0f + 10.0f),contentSize_.height/2);
+			break;
+		case kCCTextAlignmentCenter:
+		default:
+			targetPoint_ = ccp(contentSize_.width/2,contentSize_.height/2);
+			break;
+	}
+	
+	[labelTitle setPosition:targetPoint_];
 }
 
 -(void)setTitle:(NSString *)title_{

@@ -16,7 +16,7 @@ static void cmmFuncCMMConnectionMonitor_ReachabilityCallback(SCNetworkReachabili
 	NSAutoreleasePool* pool_ = [[NSAutoreleasePool alloc] init];
 	
 	CMMConnectionMonitor *noteObject_ = (CMMConnectionMonitor *) info;
-	[[NSNotificationCenter defaultCenter] postNotificationName:cmmVarCMMConnectionMonitor_reachabilityChangedNotification object: noteObject_];
+	[[NSNotificationCenter defaultCenter] postNotificationName:cmmVarCMMConnectionMonitor_reachabilityChangedNotification object:noteObject_];
 	
 	[pool_ release];
 }

@@ -177,7 +177,7 @@ public:
 @property (nonatomic, readwrite) ccTime duration;
 @property (nonatomic, readwrite) ccColor3B color;
 @property (nonatomic, readwrite) BOOL isBlendColor;
-@property (nonatomic, assign) CMMSObject *target; //weak ref
+@property (nonatomic, retain) CMMSObject *target;
 
 @end
 
