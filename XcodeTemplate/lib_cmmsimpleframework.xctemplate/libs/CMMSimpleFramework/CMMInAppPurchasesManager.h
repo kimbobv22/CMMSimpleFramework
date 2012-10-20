@@ -12,6 +12,7 @@
 @optional
 -(void)inAppPurchasesManagerDidReceiveProducts:(CMMInAppPurchasesManager *)manager_;
 -(void)inAppPurchasesManager:(CMMInAppPurchasesManager *)manager_ didFailedReceivingProductsWithError:(NSError *)error_;
+-(void)inAppPurchasesManager:(CMMInAppPurchasesManager *)manager_ didFailedRestoreWithError:(NSError *)error_;
 
 @end
 

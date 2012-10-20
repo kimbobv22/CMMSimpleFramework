@@ -134,6 +134,21 @@
 	return ![indicatorLayer isOnShow];
 }
 
+-(void)inAppPurchasesManagerDidReceiveProducts:(CMMInAppPurchasesManager *)manager_{
+	CCLOG(@"received products count : %d",[manager_ productsCount]);
+	[inAppList removeAllItems];
+	CGSize itemSize_ = CGSizeMake(inAppList.contentSize.width, 40);
+	CCArray *productList_ = [manager_ products];
+	for(SKProduct *product_ in productList_){
+		InAppMenuItem *item_ = [InAppMenuItem menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:itemSize_];
+		[item_ setTitleAlign:kCCTextAlignmentRight];
+		[item_ setProductID:[product_ productIdentifier]];
+		[item_ setProductName:[product_ localizedTitle]];
+		[item_ setTitle:[[product_ price] descriptionWithLocale:[product_ priceLocale]]];
+		[inAppList addItem:item_];
+	}
+	[self switchIndicatorTo:NO withState:nil];
+}
 -(void)inAppPurchasesManager:(CMMInAppPurchasesManager *)manager_ paymentTransaction:(SKPaymentTransaction *)paymentTransaction_ didUpdateState:(SKPaymentTransactionState)state_{
 	switch(state_){
 		case SKPaymentTransactionStatePurchased:
@@ -158,22 +173,12 @@
 		case SKPaymentTransactionStatePurchasing:
 		default: break;
 	}
-	
 }
--(void)inAppPurchasesManagerDidReceiveProducts:(CMMInAppPurchasesManager *)manager_{
-	CCLOG(@"received products count : %d",[manager_ productsCount]);
-	[inAppList removeAllItems];
-	CGSize itemSize_ = CGSizeMake(inAppList.contentSize.width, 40);
-	CCArray *productList_ = [manager_ products];
-	for(SKProduct *product_ in productList_){
-		InAppMenuItem *item_ = [InAppMenuItem menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:itemSize_];
-		[item_ setTitleAlign:kCCTextAlignmentRight];
-		[item_ setProductID:[product_ productIdentifier]];
-		[item_ setProductName:[product_ localizedTitle]];
-		[item_ setTitle:[[product_ price] descriptionWithLocale:[product_ priceLocale]]];
-		[inAppList addItem:item_];
-	}
-	[self switchIndicatorTo:NO withState:nil];
+-(void)inAppPurchasesManager:(CMMInAppPurchasesManager *)manager_ didFailedRestoreWithError:(NSError *)error_{
+	[self switchIndicatorTo:YES withState:@"Failed restore!"];
+	[self runAction:[CCSequence actionOne:[CCDelayTime actionWithDuration:1.0f] two:[CCCallBlock actionWithBlock:^{
+		[self switchIndicatorTo:NO withState:nil];
+	}]]];
 }
 
 -(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenPushupWithItem:(CMMMenuItem *)item_{

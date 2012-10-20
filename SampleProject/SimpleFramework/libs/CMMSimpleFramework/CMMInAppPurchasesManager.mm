@@ -92,6 +92,11 @@ static CMMInAppPurchasesManager *_sharedCMMInAppPurchasesManager_ = nil;
 		}
 	}
 }
+-(void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error{
+	if(cmmFuncCommon_respondsToSelector(delegate, @selector(inAppPurchasesManager:didFailedRestoreWithError:))){
+		[delegate inAppPurchasesManager:self didFailedRestoreWithError:error];
+	}
+}
 
 -(void)dealloc{
 	[products release];
