@@ -153,11 +153,6 @@
 	return [[[self alloc] initWithSoundSource:soundSource_ trackNode:trackNode_] autorelease];
 }
 
--(id)initWithSoundSource:(CDSoundSource *)soundSource_ soundPoint:(CGPoint)soundPoint_{
-	if(!(self = [super initWithSoundSource:soundSource_ soundPoint:soundPoint_])) return self;
-	
-	return self;
-}
 -(id)initWithSoundSource:(CDSoundSource *)soundSource_ trackNode:(CCNode *)trackNode_{
 	if(!(self = [self initWithSoundSource:soundSource_ soundPoint:CGPointZero])) return self;
 	

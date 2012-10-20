@@ -31,30 +31,41 @@
 	}
 	
 	[[CMMCaremaManager sharedManager] setDelegate:self];
-	[[CMMCaremaManager sharedManager] setImageLimitSize:CGSizeMake(200.0f, 200.0f)];
+	[[CMMCaremaManager sharedManager] setImageLimitSize:CGSizeMake(100.0f, 100.0f)];
+	
+	CGSize stageSize_ = CGSizeSub(contentSize_, CGSizeMake(0, 50.0f));
+	stage = [CMMStage stageWithStageSpecDef:CMMStageSpecDefMake(stageSize_, stageSize_, CGPointZero)];
+	[stage setPosition:ccp(0,50.0f)];
+	[self addChild:stage];
+	
+	[[CMMMotionDispatcher sharedDispatcher] addTarget:self];
+	
+	[self scheduleUpdate];
 	
 	return self;
 }
 
+-(void)update:(ccTime)dt_{
+	[stage update:dt_];
+}
+
 -(void)cameraManager:(CMMCaremaManager *)cameraManger_ whenReturnedImageTexture:(CCTexture2D *)imageTexture_{
-	if(cameraSprite){
-		[cameraSprite removeFromParentAndCleanup:YES];
-	}
-	
-	cameraSprite = [CCSprite spriteWithTexture:imageTexture_];
-	[cameraSprite setPosition:cmmFuncCommon_positionInParent(self, cameraSprite)];
-	[self addChild:cameraSprite];
-	
-	CGSize spriteSize_ = [cameraSprite contentSize];
-	CCLOG(@"ReturnedImageTexture size : %1.1f x %1.1f",spriteSize_.width,spriteSize_.height);
+	CMMSObject *object_ = [CMMSObject spriteWithTexture:imageTexture_];
+	[object_ setPosition:[stage convertToStageWorldSpace:ccp(contentSize_.width/2.0f,contentSize_.height/2.0f)]];
+	[[stage world] addObject:object_];
 }
 -(void)cameraManager_whenCancelled:(CMMCaremaManager *)cameraManger_{
 	CCLOG(@"cameraManager_whenCancelled");
 }
 
--(void)onExit{
-	[super onExit];
+-(void)motionDispatcher:(CMMMotionDispatcher *)motionDispatcher_ updateMotion:(CMMMotionState)state_{
+	[stage.spec setGravity:ccp(state_.pitch*5.0f,state_.roll*5.0f)];
+}
+
+-(void)cleanup{
+	[[CMMMotionDispatcher sharedDispatcher] removeTarget:self];
 	[[CMMCaremaManager sharedManager] setDelegate:nil];
+	[super cleanup];
 }
 
 -(void)dealloc{

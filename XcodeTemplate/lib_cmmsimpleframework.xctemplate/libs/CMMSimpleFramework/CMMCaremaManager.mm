@@ -51,7 +51,7 @@ static CMMCaremaManager *_sharedCMMCaremaManager_ = nil;
 		
 		targetImageSize_ = CGSizeMult(targetImageSize_, resultResizeRate_);
 #if COCOS2D_DEBUG >= 1
-		CCLOG(@"CMMCaremaManager : UIImage resize [ %1.1f x %1.1f, resize rate : %1.1f ]",targetImageSize_.width,targetImageSize_.height,resultResizeRate_);
+		CCLOG(@"CMMCaremaManager : UIImage resize [ %1.1f x %1.1f, resize ratio : %1.1f ]",targetImageSize_.width,targetImageSize_.height,resultResizeRate_);
 #endif
 		
 		CGRect resizeRect_ = CGRectMake(0.0f, 0.0f, targetImageSize_.width * CC_CONTENT_SCALE_FACTOR(), targetImageSize_.height * CC_CONTENT_SCALE_FACTOR());

@@ -2,8 +2,8 @@
 
 #import "CMMHeader.h"
 
-@interface CameraTestLayer : CMMLayer<CMMCaremaManagerDelegate>{
-	CCSprite *cameraSprite;
+@interface CameraTestLayer : CMMLayer<CMMCaremaManagerDelegate,CMMMotionDispatcherDelegate>{
+	CMMStage *stage;
 }
 
 @end
