@@ -1071,6 +1071,8 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	
 	isAllowTouch = NO;
 	
+	[self setWorldPoint:CGPointZero];
+	
 	return self;
 }
 
@@ -1090,8 +1092,8 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	[backGround updatePosition];
 	
 	//update sound center position
-	CGPoint soundPoint_ = [self convertToStageWorldSpace:ccp(stageSize_.width/2,stageSize_.height/2)];
-	sound.centerPoint = soundPoint_;
+	CGPoint soundPoint_ = [self convertToStageWorldSpace:ccp(stageSize_.width/2.0f,stageSize_.height/2.0f)];
+	[sound setCenterPoint:soundPoint_];
 }
 -(CGPoint)worldPoint{
 	return ccpMult([world position], -1.0f);

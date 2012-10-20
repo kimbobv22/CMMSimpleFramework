@@ -26,7 +26,7 @@
 	
 	if(TARGET_IPHONE_SIMULATOR){
 		CCLabelTTF *noticeLabel_ = [CMMFontUtil labelWithstring:@"Simulator not supported camera. support photo library only"];
-		[noticeLabel_ setPosition:cmmFuncCommon_position_center(self, noticeLabel_)];
+		[noticeLabel_ setPosition:cmmFuncCommon_positionInParent(self, noticeLabel_)];
 		[self addChild:noticeLabel_];
 	}
 	
@@ -42,7 +42,7 @@
 	}
 	
 	cameraSprite = [CCSprite spriteWithTexture:imageTexture_];
-	[cameraSprite setPosition:cmmFuncCommon_position_center(self, cameraSprite)];
+	[cameraSprite setPosition:cmmFuncCommon_positionInParent(self, cameraSprite)];
 	[self addChild:cameraSprite];
 	
 	CGSize spriteSize_ = [cameraSprite contentSize];

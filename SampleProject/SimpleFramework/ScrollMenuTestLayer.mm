@@ -46,7 +46,7 @@
 	scrollMenu.index = 0;
 	scrollMenu.marginPerItem = 150.0f;
 	//scrollMenu.isSnapAtItem = NO;
-	scrollMenu.position = cmmFuncCommon_position_center(self, scrollMenu);
+	scrollMenu.position = cmmFuncCommon_positionInParent(self, scrollMenu);
 	[self addChild:scrollMenu];
 	
 	CMMMenuItemLabelTTF *menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
@@ -63,7 +63,7 @@
 	menuItemButton_.callback_pushup = ^(id sender_){
 		CMMScrollMenuHItem *item_ = [CMMScrollMenuHItem menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake((arc4random()%200 + 200), 150)];
 		CMMControlItemSlider *slider_ = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:180];
-		slider_.position = cmmFuncCommon_position_center(item_, slider_);
+		slider_.position = cmmFuncCommon_positionInParent(item_, slider_);
 		
 		[item_ addChild:slider_];
 		
@@ -84,12 +84,12 @@
 	
 	scrollMenu1 = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(200,220)];
 	scrollMenu1.delegate = self;
-	scrollMenu1.position = ccpSub(cmmFuncCommon_position_center(self, scrollMenu1),ccp(scrollMenu1.contentSize.width/2+20,-40));
+	scrollMenu1.position = ccpSub(cmmFuncCommon_positionInParent(self, scrollMenu1),ccp(scrollMenu1.contentSize.width/2+20,-40));
 	[self addChild:scrollMenu1];
 	
 	scrollMenu2 = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(200,220)];
 	scrollMenu2.delegate = self;
-	scrollMenu2.position = ccpAdd(cmmFuncCommon_position_center(self, scrollMenu2),ccp(scrollMenu2.contentSize.width/2+20,40));
+	scrollMenu2.position = ccpAdd(cmmFuncCommon_positionInParent(self, scrollMenu2),ccp(scrollMenu2.contentSize.width/2+20,40));
 	[self addChild:scrollMenu2];
 	
 	CMMMenuItemLabelTTF *menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];

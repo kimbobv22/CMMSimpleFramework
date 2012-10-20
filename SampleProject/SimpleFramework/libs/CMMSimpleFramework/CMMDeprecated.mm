@@ -137,3 +137,54 @@
 }
 
 @end
+
+@implementation CMMSoundHandlerItem(Deprecated)
+
+-(CMMSoundHandlerItemType)type{
+	return (CMMSoundHandlerItemType)0;
+}
+-(void)setType:(CMMSoundHandlerItemType)type_{}
+
+@end
+
+@implementation CMMSoundHandlerItemFollow
+
++(id)itemWithSoundSource:(CDSoundSource *)soundSource_ trackNode:(CCNode *)trackNode_{
+	return [[[self alloc] initWithSoundSource:soundSource_ trackNode:trackNode_] autorelease];
+}
+
+-(id)initWithSoundSource:(CDSoundSource *)soundSource_ soundPoint:(CGPoint)soundPoint_{
+	if(!(self = [super initWithSoundSource:soundSource_ soundPoint:soundPoint_])) return self;
+	
+	return self;
+}
+-(id)initWithSoundSource:(CDSoundSource *)soundSource_ trackNode:(CCNode *)trackNode_{
+	if(!(self = [self initWithSoundSource:soundSource_ soundPoint:CGPointZero])) return self;
+	
+	[self setTrackNode:trackNode_];
+	
+	return self;
+}
+
+@end
+
+@implementation CMMSoundHandler(Deprecated)
+
+-(CMMSoundHandlerItem *)addSoundItem:(NSString*)soundPath_ soundPoint:(CGPoint)soundPoint_{
+	return [self addSoundItemWithSoundPath:soundPath_ soundPoint:soundPoint_];
+}
+-(CMMSoundHandlerItem *)addSoundItem:(NSString*)soundPath_{
+	return [self addSoundItemWithSoundPath:soundPath_];
+}
+
+-(CMMSoundHandlerItem *)addSoundItemFollow:(NSString*)soundPath_ trackNode:(CCNode *)trackNode_{
+	CMMSoundHandlerItem *soundItem_ = [self addSoundItem:soundPath_ soundPoint:CGPointZero];
+	soundItem_.trackNode = trackNode_;
+	return soundItem_;
+}
+
+-(CMMSoundHandlerItem *)cachedSoundItem:(CMMSoundHandlerItemType)soundItemType_{
+	return [_cachedElements cachedObject];
+}
+
+@end

@@ -9,6 +9,7 @@
 #import "PinchZoomTestLayer.h"
 #import "StageTestLayer.h"
 #import "LoadingTestLayer.h"
+#import "SequenceMakerTestLayer.h"
 #import "SoundTestLayer.h"
 #import "PopupTestLayer.h"
 #import "GyroTestLayer.h"
@@ -28,7 +29,7 @@
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	mainMenu = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(contentSize_.width * 0.5f, contentSize_.height * 0.8f)];
-	mainMenu.position = cmmFuncCommon_position_center(self, mainMenu);
+	[mainMenu setPosition:ccpAdd(cmmFuncCommon_positionInParent(self, mainMenu), ccp(0,-10.0f))];
 	[self addChild:mainMenu];
 	
 	connectionStatusLabel = [CMMFontUtil labelWithstring:@" "];
@@ -72,6 +73,11 @@
 	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[LoadingTestLayer node]];};
 	[menuItem_ setTitle:@"Loading Test"];
+ 	[mainMenu addItem:menuItem_];
+	
+	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[SequenceMakerTestLayer node]];};
+	[menuItem_ setTitle:@"Sequence Maker Test"];
  	[mainMenu addItem:menuItem_];
 	
 	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
@@ -154,7 +160,7 @@
 	}
 	
 	[connectionStatusLabel setString:connectionStatusStr_];
-	[connectionStatusLabel setPosition:ccp(contentSize_.width*0.5f,mainMenu.position.y+mainMenu.contentSize.height+connectionStatusLabel.contentSize.height*0.5f+10.0f)];
+	[connectionStatusLabel setPosition:cmmFuncCommon_positionFromOtherNode(mainMenu, connectionStatusLabel, ccp(0,1.0f), ccp(0,5.0f))];
 }
 
 @end

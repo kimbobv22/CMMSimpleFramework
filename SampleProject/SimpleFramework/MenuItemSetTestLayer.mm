@@ -54,7 +54,7 @@
 	}];*/
 	[menuItemSet setDelegate:self];
 	[menuItemSet setLineHAlignType:CMMMenuItemSetLineHAlignType_middle];
-	[menuItemSet setPosition:ccpAdd(cmmFuncCommon_position_center(self, menuItemSet), ccp(0,20.0f))];
+	[menuItemSet setPosition:ccpAdd(cmmFuncCommon_positionInParent(self, menuItemSet), ccp(0,20.0f))];
 	[self addChild:menuItemSet];
 	
 	for(uint index_=0;index_<15;++index_){

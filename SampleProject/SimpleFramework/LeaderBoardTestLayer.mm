@@ -56,7 +56,7 @@
 	
 	CGSize frameSize_ = CGSizeMake(contentSize_.width * 0.6f, contentSize_.height * 0.55f);
 	leaderBoardScrollMenu = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:frameSize_];
-	CGPoint targetPoint_ = cmmFuncCommon_position_center(self, leaderBoardScrollMenu);
+	CGPoint targetPoint_ = cmmFuncCommon_positionInParent(self, leaderBoardScrollMenu);
 	targetPoint_.y += 40.0f;
 	[leaderBoardScrollMenu setPosition:targetPoint_];
 	[self addChild:leaderBoardScrollMenu];

@@ -19,7 +19,7 @@
 	[menu setAlignType:CMMMenuItemSetAlignType_vertical];
 	[menu setLineVAlignType:CMMMenuItemSetLineVAlignType_center];
 	[menu setUnitPerLine:2];
-	[menu setPosition:cmmFuncCommon_position_center(self, menu)];
+	[menu setPosition:cmmFuncCommon_positionInParent(self, menu)];
 	[self addChild:menu];
 	
 	useGameCenterBanner = NO;

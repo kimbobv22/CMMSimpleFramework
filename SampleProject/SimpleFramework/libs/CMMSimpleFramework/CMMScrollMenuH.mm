@@ -137,7 +137,7 @@
 	for(int index_=0;index_<count_;++index_){
 		CMMMenuItem *item_ = data_->arr[index_];
 		CGSize itemSize_ = item_.contentSize;
-		CGPoint targetPoint_ = cmmFuncCommon_position_center(self, item_);
+		CGPoint targetPoint_ = cmmFuncCommon_positionInParent(self, item_);
 		targetPoint_.x = totalItemWidth_+itemSize_.width*(item_.anchorPoint.x);
 		targetPoint_ = ccpAdd(item_.position, ccpMult(ccpSub(targetPoint_,item_.position), dt_*cmmVarCMMScrollMenu_defaultOrderingAccelRate));
 		[item_ setPosition:targetPoint_];
@@ -153,7 +153,7 @@
 	NSAssert([item_ isKindOfClass:[CMMScrollMenuHItem class]], @"CMMScrolMenuV only support CMMScrolMenuVItem as children.");
 	[super addItem:item_ atIndex:index_];
 	
-	CGPoint targetPoint_ = cmmFuncCommon_position_center(self, item_);
+	CGPoint targetPoint_ = cmmFuncCommon_positionInParent(self, item_);
 	targetPoint_.x = marginPerItem;
 	CMMMenuItem *preItem_ = [self itemAtIndex:index_-1];
 	if(preItem_) targetPoint_.x = preItem_.position.x+preItem_.contentSize.width+marginPerItem;

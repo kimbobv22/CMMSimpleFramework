@@ -40,7 +40,7 @@
 	
 	CCSprite *frameSprite_ = [CCSprite spriteWithTexture:[[CMMDrawingManager sharedManager] textureBatchBarWithFrameSeq:frameSeq_ batchBarSeq:batchBarSeq_ size:frameSize_]];
 	[scrollMenu_ addChild:frameSprite_];
-	frameSprite_.position = cmmFuncCommon_position_center(scrollMenu_, frameSprite_);
+	frameSprite_.position = cmmFuncCommon_positionInParent(scrollMenu_, frameSprite_);
 	CMMLayerMDScrollbar scrollBar_ = CMMLayerMDScrollbar();
 	scrollBar_.distanceX = scrollBar_.distanceY = 6.0f;
 	[scrollMenu_ setScrollbar:scrollBar_];

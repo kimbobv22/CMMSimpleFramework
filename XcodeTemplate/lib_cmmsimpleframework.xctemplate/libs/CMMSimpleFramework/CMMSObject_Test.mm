@@ -113,7 +113,7 @@
 	if(state_.bounceCount>=spec_.bounceCount)
 		[stage.world removeObject:self];
 	[stage.particle addParticleWithName:@"PAR_EFT_0001" point:contactPoint_];
-	CMMSoundHandlerItem *soundItem_ = [stage.sound addSoundItem:@"SND_EFT_00003.caf" soundPoint:contactPoint_];
+	CMMSoundHandlerItem *soundItem_ = [stage.sound addSoundItemWithSoundPath:@"SND_EFT_00003.caf" soundPoint:contactPoint_];
 	soundItem_.deregWhenStop = YES;
 	[soundItem_ play];
 }

@@ -10,7 +10,7 @@
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	profileSprite = [CCSprite spriteWithFile:@"develop.png"];
-	[profileSprite setPosition:ccp(contentSize_.width/2.0f,contentSize_.height/2.0f)];
+	[profileSprite setPosition:cmmFuncCommon_positionInParent(self, profileSprite)];
 	[profileSprite setOpacity:0];
 	[self addChild:profileSprite];
 	
@@ -25,13 +25,13 @@
 }
 
 -(void)seq000{
-	[profileSprite runAction:[CCSequence actions:[CCFadeIn actionWithDuration:0.5f],[CCDelayTime actionWithDuration:2.0f],[CCCallFunc actionWithTarget:sequencer selector:@selector(doSequence)], nil]];
+	[profileSprite runAction:[CCSequence actions:[CCFadeIn actionWithDuration:0.5f],[CCDelayTime actionWithDuration:2.0f],[CCCallFunc actionWithTarget:sequencer selector:@selector(stepSequence)], nil]];
 }
 
 -(void)seq001{
 	[profileSprite stopAllActions];
 	[profileSprite setOpacity:255];
-	[profileSprite runAction:[CCSequence actions:[CCFadeOut actionWithDuration:0.5f],[CCCallFunc actionWithTarget:sequencer selector:@selector(doSequence)], nil]];
+	[profileSprite runAction:[CCSequence actions:[CCFadeOut actionWithDuration:0.5f],[CCCallFunc actionWithTarget:sequencer selector:@selector(stepSequence)], nil]];
 }
 
 -(void)sequenceMakerDidEnd:(CMMSequenceMaker *)sequenceMaker_{
@@ -42,7 +42,7 @@
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
-	[sequencer doSequence];
+	[sequencer stepSequence];
 }
 
 -(void)cleanup{
@@ -71,7 +71,7 @@
 
 -(void)_setDisplayStr:(NSString *)str_{
 	[labelDisplay setString:str_];
-	labelDisplay.position = ccp(self.contentSize.width/2,self.contentSize.height/2);
+	[labelDisplay setPosition:cmmFuncCommon_positionInParent(self, labelDisplay)];
 }
 
 -(void)loadingProcess000{

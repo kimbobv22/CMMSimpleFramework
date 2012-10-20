@@ -144,7 +144,7 @@
 	
 	[render_ begin];
 	[render_ addChild:_maskSprite];
-	[_maskSprite setPosition:cmmFuncCommon_position_center(self,_maskSprite)];
+	[_maskSprite setPosition:cmmFuncCommon_positionInParent(self,_maskSprite)];
 	[_maskSprite visit];
 	[_maskSprite removeFromParentAndCleanup:YES];
 	
@@ -166,7 +166,7 @@
 	targetTextureRect_.size = contentSize_;
 	[_resultBackSprite setTextureRect:targetTextureRect_];
 	_resultBackSprite.position = ccp(contentSize_.width/2,contentSize_.height/2);
-	[_barSprite setPosition:cmmFuncCommon_position_center(self, _barSprite)];
+	[_barSprite setPosition:cmmFuncCommon_positionInParent(self, _barSprite)];
 }
 
 -(void)redrawWithBar{

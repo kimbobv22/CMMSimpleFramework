@@ -65,15 +65,49 @@ static CGRect cmmFuncCommon_nodeToworldRect(CCNode *node_){
 	return CGRectApplyAffineTransform(rect_, [node_ nodeToWorldTransform]);
 }
 
-static CGPoint cmmFuncCommon_position_center(CGRect parentRect_,CGRect targetRect_,CGPoint targetAPoint_){
-	return CGPointMake((parentRect_.origin.x+parentRect_.size.width*0.5f)-(targetRect_.origin.x+targetRect_.size.width*(0.5f-targetAPoint_.x)),(parentRect_.origin.y+parentRect_.size.height*0.5f)-(targetRect_.origin.y+targetRect_.size.height*(0.5f-targetAPoint_.y)));
+static CGPoint cmmFuncCommon_positionInParent(CGRect sourceRect_,CGRect targetRect_,CGPoint targetAPoint_,CGPoint ratio_){
+	return CGPointMake((sourceRect_.origin.x+sourceRect_.size.width*ratio_.x)-(targetRect_.origin.x+targetRect_.size.width*(0.5f-targetAPoint_.x)),(sourceRect_.origin.y+sourceRect_.size.height*ratio_.y)-(targetRect_.origin.y+targetRect_.size.height*(0.5f-targetAPoint_.y)));
 }
-static CGPoint cmmFuncCommon_position_center(CCNode *parent_,CCNode *target_){
+static CGPoint cmmFuncCommon_positionInParent(CCNode *parentNode_,CCNode *targetNode_,CGPoint ratio_){
 	CGRect parentRect_ = CGRectZero;
-	parentRect_.size = [parent_ contentSize];
+	parentRect_.size = [parentNode_ contentSize];
 	CGRect targetRect_ = CGRectZero;
-	targetRect_.size = [target_ contentSize];
-	return cmmFuncCommon_position_center(parentRect_, targetRect_, [target_ anchorPoint]);
+	targetRect_.size = [targetNode_ contentSize];
+	return cmmFuncCommon_positionInParent(parentRect_, targetRect_, [targetNode_ anchorPoint],ratio_);
+}
+static CGPoint cmmFuncCommon_positionInParent(CCNode *parentNode_,CCNode *targetNode_){
+	return cmmFuncCommon_positionInParent(parentNode_,targetNode_,CGPointMake(0.5f, 0.5f));
+}
+
+static CGPoint varFuncCommon_positionFromOtherNode_defaultMargin = ccp(0,0);
+
+static CGPoint cmmFuncCommon_positionFromOtherNode(CCNode *otherNode_,CCNode *targetNode_,CGPoint ratio_,CGPoint margin_){
+	CGPoint otherPoint_ = [otherNode_ position];
+	CGPoint otherAnchorPoint_ = [otherNode_ anchorPoint];
+	CGSize otherSize_ = [otherNode_ contentSize];
+	CGSize targetSize_ = [targetNode_ contentSize];
+	CGPoint targetAnchorPoint_ = [targetNode_ anchorPoint];
+	
+	// set combine size
+	CGPoint resultPoint_ = otherPoint_;
+	CGSize resultSize_ = CGSizeDiv(CGSizeAdd(otherSize_, targetSize_), 2.0f);
+	resultSize_ = CGSizeMake((resultSize_.width+ABS(margin_.x))*ratio_.x, (resultSize_.height+ABS(margin_.y))*ratio_.y);
+	
+	// set center point
+	resultPoint_.x -= otherSize_.width * otherAnchorPoint_.x;
+	resultPoint_.y -= otherSize_.height * otherAnchorPoint_.y;
+	resultPoint_ = ccpAdd(resultPoint_, ccpDiv(ccpFromSize(otherSize_),2.0f));
+	resultPoint_.x += targetSize_.width * targetAnchorPoint_.x;
+	resultPoint_.y += targetSize_.height * targetAnchorPoint_.y;
+	resultPoint_ = ccpSub(resultPoint_, ccpDiv(ccpFromSize(targetSize_),2.0f));
+	
+	return ccpAdd(resultPoint_, ccpFromSize(resultSize_));
+}
+static CGPoint cmmFuncCommon_positionFromOtherNode(CCNode *otherNode_,CCNode *targetNode_,CGPoint ratio_){
+	return cmmFuncCommon_positionFromOtherNode(otherNode_, targetNode_, ratio_, varFuncCommon_positionFromOtherNode_defaultMargin);
+}
+static void cmmFuncCommon_positionFromOtherNode_setDefaultMargin(CGPoint margin_){
+	varFuncCommon_positionFromOtherNode_defaultMargin = margin_;
 }
 
 static BOOL cmmFuncCommon_respondsToSelector(id target_,SEL selector_){

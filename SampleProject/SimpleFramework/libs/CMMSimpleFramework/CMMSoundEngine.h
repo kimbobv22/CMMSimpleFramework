@@ -1,5 +1,6 @@
 #import "cocos2d.h"
 #import "CDAudioManager.h"
+#import "CMMSimpleCache.h"
 
 typedef int SoundID;
 
@@ -98,19 +99,15 @@ typedef int SoundID;
 
 @end
 
-typedef enum{
-	CMMSoundHandlerItemType_default,
-	CMMSoundHandlerItemType_follow,
-} CMMSoundHandlerItemType;
-
 @interface CMMSoundHandlerItem : NSObject{
 	CDSoundSource *soundSource;
-	CMMSoundHandlerItemType type;
 	
 	CGPoint soundPoint;
 	float gainRate,panRate;
 	BOOL isLoop,deregWhenStop;
 	ccTime loopDelayTime,_curLoopDelayTime;
+	
+	CCNode *trackNode;
 }
 
 +(id)itemWithSoundSource:(CDSoundSource *)soundSource_ soundPoint:(CGPoint)soundPoint_;
@@ -125,7 +122,6 @@ typedef enum{
 
 @property (nonatomic, readonly) SoundID soundID;
 @property (nonatomic, retain) CDSoundSource *soundSource;
-@property (nonatomic, readonly) CMMSoundHandlerItemType type;
 
 @property (nonatomic, readwrite) CGPoint soundPoint;
 @property (nonatomic, readwrite) float gainRate,panRate,gain,pan,pitch;
@@ -133,15 +129,6 @@ typedef enum{
 @property (nonatomic, readwrite) BOOL isLoop;
 @property (nonatomic, readwrite) ccTime loopDelayTime;
 @property (nonatomic, readwrite) BOOL deregWhenStop;
-
-@end
-
-@interface CMMSoundHandlerItemFollow : CMMSoundHandlerItem{
-	CCNode *trackNode;
-}
-
-+(id)itemWithSoundSource:(CDSoundSource *)soundSource_ trackNode:(CCNode *)trackNode_;
--(id)initWithSoundSource:(CDSoundSource *)soundSource_ trackNode:(CCNode *)trackNode_;
 
 @property (nonatomic, retain) CCNode *trackNode;
 
@@ -155,7 +142,7 @@ typedef enum{
 	float soundDistance,panRate;
 	int maxItemPerSound;
 	
-	CCArray *_cachedElements;
+	CMMSimpleCache *_cachedElements;
 }
 
 +(id)soundHandler:(CGPoint)centerPoint_ soundDistance:(float)soundDistance_ panRate:(float)panRate_;
@@ -176,22 +163,16 @@ typedef enum{
 
 @interface CMMSoundHandler(Common)
 
--(int)indexOfSoundItem:(CMMSoundHandlerItem *)soundItem_;
+-(CMMSoundHandlerItem *)addSoundItemWithSoundPath:(NSString*)soundPath_ soundPoint:(CGPoint)soundPoint_;
+-(CMMSoundHandlerItem *)addSoundItemWithSoundPath:(NSString*)soundPath_;
 
--(CMMSoundHandlerItem *)addSoundItem:(NSString*)soundPath_ soundPoint:(CGPoint)soundPoint_;
--(CMMSoundHandlerItemFollow *)addSoundItemFollow:(NSString*)soundPath_ trackNode:(CCNode *)trackNode_;
-
--(CMMSoundHandlerItem *)soundElementAtIndex:(int)index_;
-
--(void)removeSoundItemAtIndex:(int)index_;
+-(void)removeSoundItemAtIndex:(uint)index_;
 -(void)removeSoundItem:(CMMSoundHandlerItem *)soundItem_;
 -(void)removeSoundItemOfTrackNode:(CCNode *)trackNode_;
 -(void)removeAllSoundItem;
 
-@end
+-(CMMSoundHandlerItem *)soundElementAtIndex:(uint)index_;
 
-@interface CMMSoundHandler(Cache)
-
--(CMMSoundHandlerItem *)cachedSoundItem:(CMMSoundHandlerItemType)soundItemType_;
+-(uint)indexOfSoundItem:(CMMSoundHandlerItem *)soundItem_;
 
 @end

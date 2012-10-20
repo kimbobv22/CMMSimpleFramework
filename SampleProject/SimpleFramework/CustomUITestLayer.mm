@@ -16,7 +16,7 @@
 	[self addChild:stage z:1];
 	
 	target = [CMMSObject spriteWithFile:@"Icon-Small.png"];
-	target.position = cmmFuncCommon_position_center(stage, target);
+	target.position = cmmFuncCommon_positionInParent(stage, target);
 	[stage.world addObject:target];
 	
 	for(uint index_=0;index_<10;++index_){

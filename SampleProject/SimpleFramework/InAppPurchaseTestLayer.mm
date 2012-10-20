@@ -59,7 +59,7 @@
 
 -(void)setState:(NSString *)state_{
 	[labelState setString:state_];
-	[labelState setPosition:cmmFuncCommon_position_center(self, labelState)];
+	[labelState setPosition:cmmFuncCommon_positionInParent(self, labelState)];
 }
 -(NSString *)state{
 	return [labelState string];
@@ -96,7 +96,7 @@
 	
 	inAppList = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(contentSize_.width*0.6f, contentSize_.height*0.6f)];
 	[inAppList setDelegate:self];
-	[inAppList setPosition:ccpAdd(cmmFuncCommon_position_center(self, inAppList), ccp(0,20.0f))];
+	[inAppList setPosition:ccpAdd(cmmFuncCommon_positionInParent(self, inAppList), ccp(0,20.0f))];
 	[self addChild:inAppList];
 	
 	restorBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];

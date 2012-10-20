@@ -11,6 +11,14 @@
 #import "CMMScene.h"
 #import "CMMLayerMD.h"
 #import "CMMSequenceMaker.h"
+#import "CMMSoundEngine.h"
+
+DEPRECATED_ATTRIBUTE static CGPoint cmmFuncCommon_position_center(CGRect parentRect_,CGRect targetRect_,CGPoint targetAPoint_){
+	return cmmFuncCommon_positionInParent(parentRect_, targetRect_, targetAPoint_, ccp(0.5f,0.5f));
+}
+DEPRECATED_ATTRIBUTE static CGPoint cmmFuncCommon_position_center(CCNode *parent_,CCNode *target_){
+	return cmmFuncCommon_positionInParent(parent_, target_, ccp(0.5f,0.5f));
+}
 
 @interface CMMScene(Deprecated)
 
@@ -126,5 +134,34 @@ DEPRECATED_ATTRIBUTE @interface CMMSParticleFollow : CMMSParticle
 
 -(void)cacheObject:(id)object_ DEPRECATED_ATTRIBUTE;
 -(void)clearCache DEPRECATED_ATTRIBUTE;
+
+@end
+
+typedef enum{
+	CMMSoundHandlerItemType_default DEPRECATED_ATTRIBUTE,
+	CMMSoundHandlerItemType_follow DEPRECATED_ATTRIBUTE,
+} CMMSoundHandlerItemType;
+
+@interface CMMSoundHandlerItem(Deprecated)
+
+@property (nonatomic, readwrite) CMMSoundHandlerItemType type DEPRECATED_ATTRIBUTE;
+
+@end
+
+DEPRECATED_ATTRIBUTE @interface CMMSoundHandlerItemFollow : CMMSoundHandlerItem
+
++(id)itemWithSoundSource:(CDSoundSource *)soundSource_ trackNode:(CCNode *)trackNode_;
+-(id)initWithSoundSource:(CDSoundSource *)soundSource_ soundPoint:(CGPoint)soundPoint_;
+-(id)initWithSoundSource:(CDSoundSource *)soundSource_ trackNode:(CCNode *)trackNode_;
+
+@end
+
+@interface CMMSoundHandler(Deprecated)
+
+-(CMMSoundHandlerItem *)addSoundItem:(NSString*)soundPath_ soundPoint:(CGPoint)soundPoint_;
+-(CMMSoundHandlerItem *)addSoundItem:(NSString*)soundPath_;
+
+-(CMMSoundHandlerItemFollow *)addSoundItemFollow:(NSString*)soundPath_ trackNode:(CCNode *)trackNode_ DEPRECATED_ATTRIBUTE;
+-(CMMSoundHandlerItem *)cachedSoundItem:(CMMSoundHandlerItemType)soundItemType_ DEPRECATED_ATTRIBUTE;
 
 @end

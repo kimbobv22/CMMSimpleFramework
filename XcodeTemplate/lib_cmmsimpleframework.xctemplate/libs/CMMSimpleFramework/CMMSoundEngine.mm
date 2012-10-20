@@ -251,7 +251,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 @end
 
 @implementation CMMSoundHandlerItem
-@synthesize soundID,soundPoint,soundSource,type,gainRate,panRate,gain,pan,pitch,isPlaying,isLoop,loopDelayTime,deregWhenStop;
+@synthesize soundID,soundPoint,soundSource,gainRate,panRate,gain,pan,pitch,isPlaying,isLoop,loopDelayTime,deregWhenStop,trackNode;
 
 +(id)itemWithSoundSource:(CDSoundSource *)soundSource_ soundPoint:(CGPoint)soundPoint_{
 	return [[[self alloc] initWithSoundSource:soundSource_ soundPoint:soundPoint_] autorelease];
@@ -260,7 +260,6 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 	if(!(self = [super init])) return self;
 	
 	self.soundSource = soundSource_;
-	type = CMMSoundHandlerItemType_default;
 	soundPoint = soundPoint_;
 	gainRate = panRate = 1.0f;
 	deregWhenStop = NO;
@@ -316,6 +315,9 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 }
 
 -(void)update:(ccTime)dt_{
+	if(trackNode)
+		soundPoint = [trackNode position];
+	
 	if(isLoop){
 		if(!self.isPlaying){
 			_curLoopDelayTime += dt_;
@@ -329,46 +331,73 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 
 -(void)resetState{
 	soundPoint = CGPointZero;
+	[self setTrackNode:nil];
 }
 
 -(void)dealloc{
 	[soundSource release];
+	[trackNode release];
 	[super dealloc];
 }
 
 @end
 
-@implementation CMMSoundHandlerItemFollow
-@synthesize trackNode;
+@interface CMMSoundHandler(Private)
 
-+(id)itemWithSoundSource:(CDSoundSource *)soundSource_ trackNode:(CCNode *)trackNode_{
-	return [[[self alloc] initWithSoundSource:soundSource_ trackNode:trackNode_] autorelease];
+-(CMMSoundHandlerItem *)_addSoundItemWithSoundPath:(NSString*)soundPath_;
+-(BOOL)_isExistSoundID:(SoundID)soundID_;
+
+@end
+
+@implementation CMMSoundHandler(Private)
+
+-(CMMSoundHandlerItem *)_addSoundItemWithSoundPath:(NSString*)soundPath_{
+	SoundID soundID_ = [sharedEngine.buffer bufferSound:soundPath_];
+	ccArray *data_ = itemList->data;
+	int targetSoundCount = 0;
+	int targetIndex_ = -1;
+	for(uint index_=0;index_<data_->num;++index_){
+		CMMSoundHandlerItem *soundItem_ = data_->arr[index_];
+		if(soundItem_.soundID == soundID_){
+			if(targetIndex_<0) targetIndex_ = index_;
+			targetSoundCount++;
+		}
+	}
+	
+	CMMSoundHandlerItem *soundItem_;
+	if(targetSoundCount>maxItemPerSound){
+		soundItem_ = [[data_->arr[targetIndex_] retain] autorelease];
+		[itemList removeObjectAtIndex:targetIndex_];
+		[itemList addObject:soundItem_];
+		CCLOG(@"reuse soundItem %d -> %d",targetIndex_,data_->num-1);
+	}else{
+		soundItem_ = [_cachedElements cachedObject];
+#if CD_DEBUG >= 1
+		if(soundItem_) CCLOG(@"cached soundItem");
+#endif
+		
+		if(!soundItem_){
+			soundItem_ = [CMMSoundHandlerItem itemWithSoundSource:nil soundPoint:CGPointZero];
+			CCLOG(@"new soundElement");
+		}
+		
+		soundItem_.soundSource = [sharedEngine.effect soundSource:soundID_];
+		soundItem_.gainRate = soundItem_.panRate = 1.0f;
+		soundItem_.deregWhenStop = NO;
+		[itemList addObject:soundItem_];
+	}
+	
+	return soundItem_;
 }
 
--(id)initWithSoundSource:(CDSoundSource *)soundSource_ soundPoint:(CGPoint)soundPoint_{
-	if(!(self = [super initWithSoundSource:soundSource_ soundPoint:soundPoint_])) return self;
-	
-	type = CMMSoundHandlerItemType_follow;
-	
-	return self;
-}
--(id)initWithSoundSource:(CDSoundSource *)soundSource_ trackNode:(CCNode *)trackNode_{
-	if(!(self = [self initWithSoundSource:soundSource_ soundPoint:CGPointZero])) return self;
-	
-	self.trackNode = trackNode_;
-	
-	return self;
-}
-
--(void)update:(ccTime)dt_{
-	[super update:dt_];
-	if(trackNode)
-		soundPoint = trackNode.position;
-}
-
--(void)resetState{
-	[super resetState];
-	trackNode = nil;
+-(BOOL)_isExistSoundID:(SoundID)soundID_{
+	ccArray *data_ = itemList->data;
+	for(uint index_=0;index_>data_->num;++index_){
+		CMMSoundHandlerItem *soundItem_ = data_->arr[index_];
+		if(soundItem_.soundID == soundID_)
+			return YES;
+	}
+	return NO;
 }
 
 @end
@@ -396,7 +425,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 	
 	itemList = [[CCArray alloc] init];
 	sharedEngine = [CMMSoundEngine sharedEngine];
-	_cachedElements = [[CCArray alloc] init];
+	_cachedElements = [[CMMSimpleCache alloc] init];
 	
 	return self;
 }
@@ -447,105 +476,38 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 
 @implementation CMMSoundHandler(Common)
 
--(CMMSoundHandlerItem *)_addSoundItem:(CMMSoundHandlerItemType)soundItemType_ soundPath:(NSString*)soundPath_{
-	SoundID soundID_ = [sharedEngine.buffer bufferSound:soundPath_];
-	ccArray *data_ = itemList->data;
-	int targetSoundCount = 0;
-	int targetIndex_ = -1;
-	for(uint index_=0;index_<data_->num;++index_){
-		CMMSoundHandlerItem *soundItem_ = data_->arr[index_];
-		if(soundItem_.soundID == soundID_
-		   && soundItem_.type == soundItemType_){
-			if(targetIndex_<0) targetIndex_ = index_;
-			targetSoundCount++;
-		}
-	}
-	
-	CMMSoundHandlerItem *soundItem_;
-	if(targetSoundCount>maxItemPerSound){
-		soundItem_ = [[data_->arr[targetIndex_] retain] autorelease];
-		[itemList removeObjectAtIndex:targetIndex_];
-		[itemList addObject:soundItem_];
-		CCLOG(@"reuse soundItem %d -> %d",targetIndex_,data_->num-1);
-	}else{
-		soundItem_ = [self cachedSoundItem:soundItemType_];
-#if CD_DEBUG >= 1
-		if(soundItem_) CCLOG(@"cached soundItem");
-#endif
-		
-		if(!soundItem_){
-			switch(soundItemType_){
-				case CMMSoundHandlerItemType_default:{
-					soundItem_ = [CMMSoundHandlerItem itemWithSoundSource:nil soundPoint:CGPointZero];
-					break;
-				}case CMMSoundHandlerItemType_follow:{
-					soundItem_ = [CMMSoundHandlerItemFollow itemWithSoundSource:nil trackNode:nil];
-					break;
-				}default: break;
-			}
-			CCLOG(@"new soundElement");
-		}
-		
-		soundItem_.soundSource = [sharedEngine.effect soundSource:soundID_];
-		soundItem_.gainRate = soundItem_.panRate = 1.0f;
-		soundItem_.deregWhenStop = NO;
-		[itemList addObject:soundItem_];
-	}
-	
+-(CMMSoundHandlerItem *)addSoundItemWithSoundPath:(NSString*)soundPath_ soundPoint:(CGPoint)soundPoint_{
+	CMMSoundHandlerItem *soundItem_ = [self _addSoundItemWithSoundPath:soundPath_];
+	[soundItem_ setSoundPoint:soundPoint_];
 	return soundItem_;
 }
-
--(int)indexOfSoundItem:(CMMSoundHandlerItem *)soundItem_{
-	return [itemList indexOfObject:soundItem_];
+-(CMMSoundHandlerItem *)addSoundItemWithSoundPath:(NSString*)soundPath_{
+	return [self addSoundItemWithSoundPath:soundPath_ soundPoint:CGPointZero];
 }
 
--(CMMSoundHandlerItem *)addSoundItem:(NSString*)soundPath_ soundPoint:(CGPoint)soundPoint_{
-	CMMSoundHandlerItem *soundItem_ = [self _addSoundItem:CMMSoundHandlerItemType_default soundPath:soundPath_];
-	soundItem_.soundPoint = soundPoint_;
-	return soundItem_;
-}
--(CMMSoundHandlerItemFollow *)addSoundItemFollow:(NSString*)soundPath_ trackNode:(CCNode *)trackNode_{
-	CMMSoundHandlerItemFollow *soundItem_ = (CMMSoundHandlerItemFollow *)[self _addSoundItem:CMMSoundHandlerItemType_follow soundPath:soundPath_];
-	soundItem_.trackNode = trackNode_;
-	return soundItem_;
-}
-
--(CMMSoundHandlerItem *)soundElementAtIndex:(int)index_{
-	return [itemList objectAtIndex:index_];
-}
-
--(BOOL)_isExistSoundID:(SoundID)soundID_{
-	ccArray *data_ = itemList->data;
-	for(uint index_=0;index_>data_->num;++index_){
-		CMMSoundHandlerItem *soundItem_ = data_->arr[index_];
-		if(soundItem_.soundID == soundID_)
-			return YES;
-	}
-	return NO;
-}
--(void)removeSoundItemAtIndex:(int)index_{
+-(void)removeSoundItem:(CMMSoundHandlerItem *)soundItem_{
+	uint index_ = [self indexOfSoundItem:soundItem_];
 	if(index_ == NSNotFound){
 		CCLOG(@"removeSoundItemAtIndex : can't find soundElement / index: %d",index_);
 		return;
 	}
 	
-	CMMSoundHandlerItem *soundItem_ = [self soundElementAtIndex:index_];
 	[soundItem_ stop];
 	[soundItem_ resetState];
-	soundItem_.soundSource = nil;
+	[soundItem_ setSoundSource:nil];
 	
 	[_cachedElements addObject:soundItem_];
 	[itemList removeObjectAtIndex:index_];
 }
--(void)removeSoundItem:(CMMSoundHandlerItem *)soundItem_{
-	[self removeSoundItemAtIndex:[self indexOfSoundItem:soundItem_]];
+-(void)removeSoundItemAtIndex:(uint)index_{
+	[self removeSoundItem:[self soundElementAtIndex:index_]];
 }
+
 -(void)removeSoundItemOfTrackNode:(CCNode *)trackNode_{
 	ccArray *data_ = itemList->data;
 	for(int index_=data_->num-1;index_>=0;--index_){
 		CMMSoundHandlerItem *soundItem_ = data_->arr[index_];
-		if(soundItem_.type == CMMSoundHandlerItemType_follow
-		   && ((CMMSoundHandlerItemFollow *)soundItem_).trackNode == trackNode_)
+		if(soundItem_.trackNode == trackNode_)
 			[self removeSoundItemAtIndex:index_];
 		
 	}
@@ -557,23 +519,12 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 	}
 }
 
-@end
+-(CMMSoundHandlerItem *)soundElementAtIndex:(uint)index_{
+	return [itemList objectAtIndex:index_];
+}
 
-@implementation CMMSoundHandler(Cache)
-
--(CMMSoundHandlerItem *)cachedSoundItem:(CMMSoundHandlerItemType)soundItemType_{
-	ccArray *data_ = _cachedElements->data;
-	int count_ = data_->num;
-	for(uint index_=0;index_<count_;++index_){
-		CMMSoundHandlerItem *soundItem_ = data_->arr[index_];
-		if(soundItem_.type == soundItemType_){
-			soundItem_ = [[soundItem_ retain] autorelease];
-			[_cachedElements removeObject:soundItem_];
-			return soundItem_;
-		}
-	}
-	
-	return nil;
+-(uint)indexOfSoundItem:(CMMSoundHandlerItem *)soundItem_{
+	return [itemList indexOfObject:soundItem_];
 }
 
 @end

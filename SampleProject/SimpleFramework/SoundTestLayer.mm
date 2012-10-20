@@ -19,7 +19,8 @@
 	soundSprite1.position = ccp(soundSprite1.contentSize.width/2+20,self.contentSize.height/2);
 	[self addChild:soundSprite1];
 
-	CMMSoundHandlerItem *element_ = [handler addSoundItemFollow:@"SND_EFT_00001.caf" trackNode:soundSprite1];
+	CMMSoundHandlerItem *element_ = [handler addSoundItemWithSoundPath:@"SND_EFT_00001.caf"];
+	[element_ setTrackNode:soundSprite1];
 	element_.isLoop = YES;
 	element_.loopDelayTime = 1.0f;
 	
@@ -30,7 +31,8 @@
 	
 	listenSprite.touchCancelDistance = soundSprite1.touchCancelDistance = soundSprite2.touchCancelDistance = 100.0f;
 	
-	element_ = [handler addSoundItemFollow:@"SND_EFT_00002.caf" trackNode:soundSprite2];
+	element_ = [handler addSoundItemWithSoundPath:@"SND_EFT_00002.caf"];
+	[element_ setTrackNode:soundSprite2];
 	element_.isLoop = YES;
 	element_.loopDelayTime = 0.5f;
 	

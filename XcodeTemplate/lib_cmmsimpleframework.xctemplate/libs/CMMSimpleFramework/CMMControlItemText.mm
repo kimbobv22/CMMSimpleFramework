@@ -83,7 +83,7 @@
 
 -(void)redraw{
 	[super redraw];
-	[_barSprite setPosition:cmmFuncCommon_position_center(self, _barSprite)];
+	[_barSprite setPosition:cmmFuncCommon_positionInParent(self, _barSprite)];
 }
 -(void)redrawWithBar{
 	CGRect targetTextureRect_ = CGRectZero;

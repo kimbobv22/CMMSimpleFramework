@@ -3,7 +3,7 @@
 #import "CMMSequenceMaker.h"
 
 @implementation CMMSequenceMaker
-@synthesize delegate,sequenceMethodFormatter,curSequence,isOnProcess;
+@synthesize delegate,sequenceMethodFormatter,curSequence,sequenceState,sequenceTimeInterval;
 
 +(id)sequenceMaker{
 	return [[[self alloc] init] autorelease];
@@ -15,22 +15,46 @@
 	delegate = nil;
 	sequenceMethodFormatter = cmmVarCMMSequenceMaker_defaultSequenceFormatter;
 	curSequence = -1;
-	isOnProcess = NO;
+	sequenceState = CMMSequenceMakerState_stop;
+	sequenceTimeInterval = 0.1f;
 	
 	return self;
 }
 
+-(void)setSequenceState:(CMMSequenceMakerState)sequenceState_{
+	BOOL didChangeState_ = sequenceState != sequenceState_;
+	sequenceState = sequenceState_;
+	CCScheduler *tempScheduler_ = [[CCDirector sharedDirector] scheduler];
+	[tempScheduler_ unscheduleAllSelectorsForTarget:self];
+	
+	switch(sequenceState){
+		case CMMSequenceMakerState_stop:
+			curSequence = -1;
+			break;
+		case CMMSequenceMakerState_pause:
+			break;
+		case CMMSequenceMakerState_waitingNextSequence:
+			break;
+		case CMMSequenceMakerState_onSequence:
+			[tempScheduler_ scheduleSelector:@selector(_doSequence) forTarget:self interval:sequenceTimeInterval paused:NO];
+			break;
+		default: break;
+	}
+	
+	if(didChangeState_ && cmmFuncCommon_respondsToSelector(delegate, @selector(sequenceMaker:didChangeState:))){
+		[delegate sequenceMaker:self didChangeState:sequenceState];
+	}
+}
+
 -(void)startWithTarget:(id)target_{
 	if(!target_) return;
-	[[[CCDirector sharedDirector] scheduler] unscheduleAllSelectorsForTarget:self];
 	
+	[self setSequenceState:CMMSequenceMakerState_stop];
 	_target = target_;
-	curSequence = -1;
-	isOnProcess = YES;
 	
 	if(cmmFuncCommon_respondsToSelector(delegate,@selector(sequenceMakerDidStart:)))
 		[delegate sequenceMakerDidStart:self];
-	[self doSequence];
+	[self stepSequence];
 }
 -(void)start{
 	[self startWithTarget:delegate];
@@ -43,16 +67,16 @@
 	[self startWithMethodFormatter:methodFormatter_ target:delegate];
 }
 
--(void)doSequenceTo:(uint)sequence_{
+-(void)stepSequenceTo:(uint)sequence_{
 	curSequence = sequence_;
-	[[[CCDirector sharedDirector] scheduler] unscheduleAllSelectorsForTarget:self];
-	[[[CCDirector sharedDirector] scheduler] scheduleSelector:@selector(_doSequence) forTarget:self interval:0.1f paused:NO];
+	[self setSequenceState:CMMSequenceMakerState_onSequence];
 }
--(void)doSequence{
-	[self doSequenceTo:curSequence+1];
+-(void)stepSequence{
+	[self stepSequenceTo:curSequence+1];
 }
 
 -(void)dealloc{
+	[[[CCDirector sharedDirector] scheduler] unscheduleAllSelectorsForTarget:self];
 	[delegate release];
 	[sequenceMethodFormatter release];
 	[super dealloc];
@@ -63,8 +87,6 @@
 @implementation CMMSequenceMaker(System)
 
 -(void)_doSequence{
-	[[[CCDirector sharedDirector] scheduler] unscheduleAllSelectorsForTarget:self];
-	
 	BOOL isEnd_ = NO;
 	if(!sequenceMethodFormatter){
 		isEnd_ = YES;
@@ -76,11 +98,14 @@
 	}
 	
 	if(isEnd_){
-		if(isOnProcess && cmmFuncCommon_respondsToSelector(delegate,@selector(sequenceMakerDidEnd:))){
+		[self setSequenceState:CMMSequenceMakerState_stop];
+		if(CMMSequenceMakerState_onSequence && cmmFuncCommon_respondsToSelector(delegate,@selector(sequenceMakerDidEnd:))){
 			[delegate sequenceMakerDidEnd:self];
 		}
-		isOnProcess = NO;
+		return;
 	}
+	
+	[self setSequenceState:CMMSequenceMakerState_waitingNextSequence];
 }
 
 @end
@@ -93,8 +118,8 @@
 
 -(void)_doSequence{
 	[super _doSequence];
-	if(isOnProcess){
-		[self doSequence];
+	if(sequenceState == CMMSequenceMakerState_waitingNextSequence){
+		[self stepSequence];
 	}
 }
 

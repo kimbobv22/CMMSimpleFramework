@@ -11,7 +11,7 @@
 	stageSelector = [CMMMenuItemSet menuItemSetWithMenuSize:CGSizeMake(contentSize_.width*0.8f, contentSize_.height*0.6f)];
 	[stageSelector setLineVAlignType:CMMMenuItemSetLineVAlignType_center];
 	[stageSelector setUnitPerLine:2];
-	[stageSelector setPosition:cmmFuncCommon_position_center(self, stageSelector)];
+	[stageSelector setPosition:cmmFuncCommon_positionInParent(self, stageSelector)];
 	[self addChild:stageSelector];
 	
 	CMMMenuItemLabelTTF *menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
@@ -121,7 +121,7 @@
 	gravitySlider.maxValue = 10.0f;
 	gravitySlider.unitValue = 0.5f;
 	gravitySlider.itemValue = 0.0f;
-	CGPoint targetPoint_ = cmmFuncCommon_position_center(self, gravitySlider);
+	CGPoint targetPoint_ = cmmFuncCommon_positionInParent(self, gravitySlider);
 	targetPoint_.x += 40.0f;
 	targetPoint_.y = 5.0f;
 	gravitySlider.position = targetPoint_;

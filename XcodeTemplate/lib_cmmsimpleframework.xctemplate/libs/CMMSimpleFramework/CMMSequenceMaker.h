@@ -7,11 +7,20 @@
 
 @class CMMSequenceMaker;
 
+typedef enum{
+	CMMSequenceMakerState_stop,
+	CMMSequenceMakerState_onSequence,
+	CMMSequenceMakerState_waitingNextSequence,
+	CMMSequenceMakerState_pause,
+} CMMSequenceMakerState;
+
 @protocol CMMSequenceMakerDelegate <NSObject>
 
 @optional
 -(void)sequenceMakerDidStart:(CMMSequenceMaker *)sequenceMaker_;
 -(void)sequenceMakerDidEnd:(CMMSequenceMaker *)sequenceMaker_;
+
+-(void)sequenceMaker:(CMMSequenceMaker *)sequenceMaker_ didChangeState:(CMMSequenceMakerState)state_;
 
 @end
 
@@ -21,7 +30,8 @@
 	id _target;
 	NSString *sequenceMethodFormatter;
 	uint curSequence;
-	BOOL isOnProcess;
+	CMMSequenceMakerState sequenceState;
+	ccTime sequenceTimeInterval;
 }
 
 +(id)sequenceMaker;
@@ -31,13 +41,14 @@
 -(void)startWithMethodFormatter:(NSString *)methodFormatter_ target:(id)target_;
 -(void)startWithMethodFormatter:(NSString *)methodFormatter_;
 
--(void)doSequenceTo:(uint)sequence_;
--(void)doSequence;
+-(void)stepSequenceTo:(uint)sequence_;
+-(void)stepSequence;
 
 @property (nonatomic, retain) id<CMMSequenceMakerDelegate> delegate;
 @property (nonatomic, copy) NSString *sequenceMethodFormatter;
 @property (nonatomic, readonly) uint curSequence;
-@property (nonatomic, readonly) BOOL isOnProcess;
+@property (nonatomic, readwrite) CMMSequenceMakerState sequenceState;
+@property (nonatomic, readwrite) ccTime sequenceTimeInterval;
 
 @end
 
