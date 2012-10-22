@@ -46,11 +46,9 @@
 	}];
 	[self addChild:prevBtn];
 	
-	cmmFuncCommon_positionFromOtherNode_setDefaultMargin(ccp(10,0));
-	[startBtn setPosition:cmmFuncCommon_positionFromOtherNode(testSprite, startBtn,ccp(0, -1.0f),ccp(0,contentSize_.height*0.08f))];
-	[nextBtn setPosition:cmmFuncCommon_positionFromOtherNode(startBtn, nextBtn,ccp(1.0f, 0))];
-	[prevBtn setPosition:cmmFuncCommon_positionFromOtherNode(startBtn, prevBtn,ccp(-1.0f, 0))];
-	cmmFuncCommon_positionFromOtherNode_setDefaultMargin(CGPointZero);
+	[startBtn setPosition:cmmFuncCommon_positionFromOtherNode(testSprite, startBtn,ccp(0, -1.0f),ccp(0,-contentSize_.height*0.08f))];
+	[nextBtn setPosition:cmmFuncCommon_positionFromOtherNode(startBtn, nextBtn,ccp(1.0f, 0),ccp(10,0))];
+	[prevBtn setPosition:cmmFuncCommon_positionFromOtherNode(startBtn, prevBtn,ccp(-1.0f, 0),ccp(-10,0))];
 	
 	CMMMenuItemLabelTTF *backBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[backBtn_ setTitle:@"BACK"];

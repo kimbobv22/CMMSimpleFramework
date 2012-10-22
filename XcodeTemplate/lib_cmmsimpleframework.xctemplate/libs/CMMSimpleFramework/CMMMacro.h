@@ -79,9 +79,7 @@ static CGPoint cmmFuncCommon_positionInParent(CCNode *parentNode_,CCNode *target
 	return cmmFuncCommon_positionInParent(parentNode_,targetNode_,CGPointMake(0.5f, 0.5f));
 }
 
-static CGPoint varFuncCommon_positionFromOtherNode_defaultMargin = ccp(0,0);
-
-static CGPoint cmmFuncCommon_positionFromOtherNode(CCNode *otherNode_,CCNode *targetNode_,CGPoint ratio_,CGPoint margin_){
+static CGPoint cmmFuncCommon_positionFromOtherNode(CCNode *otherNode_,CCNode *targetNode_,CGPoint ratio_,CGPoint offset_){
 	CGPoint otherPoint_ = [otherNode_ position];
 	CGPoint otherAnchorPoint_ = [otherNode_ anchorPoint];
 	CGSize otherSize_ = [otherNode_ contentSize];
@@ -91,7 +89,7 @@ static CGPoint cmmFuncCommon_positionFromOtherNode(CCNode *otherNode_,CCNode *ta
 	// set combine size
 	CGPoint resultPoint_ = otherPoint_;
 	CGSize resultSize_ = CGSizeDiv(CGSizeAdd(otherSize_, targetSize_), 2.0f);
-	resultSize_ = CGSizeMake((resultSize_.width+ABS(margin_.x))*ratio_.x, (resultSize_.height+ABS(margin_.y))*ratio_.y);
+	resultSize_ = CGSizeMake((resultSize_.width)*ratio_.x, (resultSize_.height)*ratio_.y);
 	
 	// set center point
 	resultPoint_.x -= otherSize_.width * otherAnchorPoint_.x;
@@ -100,14 +98,12 @@ static CGPoint cmmFuncCommon_positionFromOtherNode(CCNode *otherNode_,CCNode *ta
 	resultPoint_.x += targetSize_.width * targetAnchorPoint_.x;
 	resultPoint_.y += targetSize_.height * targetAnchorPoint_.y;
 	resultPoint_ = ccpSub(resultPoint_, ccpDiv(ccpFromSize(targetSize_),2.0f));
+	resultPoint_ = ccpAdd(resultPoint_, offset_);
 	
 	return ccpAdd(resultPoint_, ccpFromSize(resultSize_));
 }
 static CGPoint cmmFuncCommon_positionFromOtherNode(CCNode *otherNode_,CCNode *targetNode_,CGPoint ratio_){
-	return cmmFuncCommon_positionFromOtherNode(otherNode_, targetNode_, ratio_, varFuncCommon_positionFromOtherNode_defaultMargin);
-}
-static void cmmFuncCommon_positionFromOtherNode_setDefaultMargin(CGPoint margin_){
-	varFuncCommon_positionFromOtherNode_defaultMargin = margin_;
+	return cmmFuncCommon_positionFromOtherNode(otherNode_, targetNode_, ratio_, CGPointZero);
 }
 
 static BOOL cmmFuncCommon_respondsToSelector(id target_,SEL selector_){
