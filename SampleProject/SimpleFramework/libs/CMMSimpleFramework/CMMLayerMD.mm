@@ -74,40 +74,41 @@
 -(void)update:(ccTime)dt_{
 	switch(touchState){
 		case CMMTouchState_onScroll:{
-			CGPoint innerLayerPoint_ = [innerLayer position];
-			CGSize itemLimitSize_ = [innerLayer contentSize];
+			CGPoint innerLayerOrgPoint_ = [innerLayer position];
+			CGPoint innerLayerPoint_ = innerLayerOrgPoint_;
+			CGPoint innerLayerAnchorPoint_ = [innerLayer anchorPoint];
+			CGSize innerLayerSize_ = [innerLayer contentSize];
+			CGSize innerLayerOffsetSize_ = CGSizeMake(innerLayerSize_.width*0.5f-contentSize_.width*0.5f, innerLayerSize_.height*0.5f-contentSize_.height*0.5f);
 			CGPoint addPoint_ = CGPointZero;
-			if(innerLayerPoint_.x>MIN(itemLimitSize_.width-contentSize_.width,0) && innerLayerPoint_.x+itemLimitSize_.width>contentSize_.width){
-				addPoint_.x = -(innerLayerPoint_.x+MIN(itemLimitSize_.width-contentSize_.width,0))*dt_*dragSpeed;
-				_curScrollSpeedX = 0;
-			}else if(innerLayerPoint_.x<MAX(itemLimitSize_.width-contentSize_.width,0) && innerLayerPoint_.x+itemLimitSize_.width<contentSize_.width){
-				addPoint_.x = -(innerLayerPoint_.x+MAX(itemLimitSize_.width-contentSize_.width,0))*dt_*dragSpeed;
-				_curScrollSpeedX = 0;
-			}else addPoint_.x = 0;
+			innerLayerPoint_ = ccpSub(innerLayerPoint_, ccp((innerLayerSize_.width * innerLayerAnchorPoint_.x),(innerLayerSize_.height * innerLayerAnchorPoint_.y))); //set zero point.
+			innerLayerPoint_ = ccpAdd(innerLayerPoint_, ccpFromSize(innerLayerOffsetSize_)); //set center point
+		
+			float tempABSValue_ = ABS(innerLayerPoint_.x);
+			if(tempABSValue_ > innerLayerOffsetSize_.width){
+				_curScrollSpeedX = ((tempABSValue_ - innerLayerOffsetSize_.width) * dt_ * dragSpeed) * (innerLayerPoint_.x>0?1.0f:-1.0f);
+			}
 			
-			if(innerLayerPoint_.y>MIN(itemLimitSize_.height-contentSize_.height,0) && innerLayerPoint_.y+itemLimitSize_.height>contentSize_.height){
-				addPoint_.y = -(innerLayerPoint_.y+MIN(itemLimitSize_.height-contentSize_.height,0))*dt_*dragSpeed;
-				_curScrollSpeedY = 0;
-			}else if(innerLayerPoint_.y<MAX(itemLimitSize_.height-contentSize_.height,0) && innerLayerPoint_.y+itemLimitSize_.height<contentSize_.height){
-				addPoint_.y = -(innerLayerPoint_.y+MAX(itemLimitSize_.height-contentSize_.height,0))*dt_*dragSpeed;
-				_curScrollSpeedY = 0;
-			}else addPoint_.y = 0;
+			tempABSValue_ = ABS(innerLayerPoint_.y);
+			if(tempABSValue_ > innerLayerOffsetSize_.height){
+				_curScrollSpeedY = ((tempABSValue_ - innerLayerOffsetSize_.height) * dt_ * dragSpeed) * (innerLayerPoint_.y>0?1.0f:-1.0f);
+			}
 			
 			addPoint_.x -= _curScrollSpeedX;
 			addPoint_.y -= _curScrollSpeedY;
 			
-			[innerLayer setPosition:ccpAdd(innerLayerPoint_, addPoint_)];
+			_curScrollSpeedX -= _curScrollSpeedX*dt_*dragSpeed;
+			_curScrollSpeedY -= _curScrollSpeedY*dt_*dragSpeed;
 			
-			if(ABS(ccpLength(addPoint_)) <= 0.1f)
+			if(ABS(ccpLength(addPoint_)) <= 0.1f){
+				addPoint_.x -= _curScrollSpeedX;
+				addPoint_.y -= _curScrollSpeedY;
 				[self setTouchState:CMMTouchState_none];
-	
+			}
+			[innerLayer setPosition:ccpAdd(innerLayerOrgPoint_, addPoint_)];
 			break;
 		}
 		default: break;
 	}
-	
-	_curScrollSpeedX -= _curScrollSpeedX*dt_*dragSpeed;
-	_curScrollSpeedY -= _curScrollSpeedY*dt_*dragSpeed;
 }
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
@@ -137,20 +138,25 @@
 			if(!isCanDragY) diffPoint_.y = 0;
 			CGPoint addPoint_ = diffPoint_;
 			
-			CGPoint innerLayerPoint_ = [innerLayer position];
-			CGSize itemLimitSize_ = [innerLayer contentSize];
+			CGPoint innerLayerOrgPoint_ = [innerLayer position];
+			CGPoint innerLayerPoint_ = innerLayerOrgPoint_;
+			CGPoint innerLayerAnchorPoint_ = [innerLayer anchorPoint];
+			CGSize innerLayerSize_ = [innerLayer contentSize];
+			CGSize innerLayerOffsetSize_ = CGSizeMake(innerLayerSize_.width*0.5f-contentSize_.width*0.5f, innerLayerSize_.height*0.5f-contentSize_.height*0.5f);
+			innerLayerPoint_ = ccpSub(innerLayerPoint_, ccp((innerLayerSize_.width * innerLayerAnchorPoint_.x),(innerLayerSize_.height * innerLayerAnchorPoint_.y))); //set zero point.
+			innerLayerPoint_ = ccpAdd(innerLayerPoint_, ccpFromSize(innerLayerOffsetSize_)); //set center point
 			
-			if(innerLayerPoint_.x>0)
-				addPoint_.x *= 1.0f-MIN(innerLayerPoint_.x/contentSize_.width,1);
-			else if(innerLayerPoint_.x+itemLimitSize_.width<itemLimitSize_.width)
-				addPoint_.x *= MIN((innerLayerPoint_.x+itemLimitSize_.width)/contentSize_.width,1);
+			float tempABSValue_ = ABS(innerLayerPoint_.x+addPoint_.x);
+			if(tempABSValue_>innerLayerOffsetSize_.width){
+				addPoint_.x *= MAX(0.8f - (tempABSValue_ - innerLayerOffsetSize_.width) / contentSize_.width,0.0f);
+			}
 			
-			if(innerLayerPoint_.y>0)
-				addPoint_.y *= 1.0f-MIN(innerLayerPoint_.y/contentSize_.height,1);
-			else if(innerLayerPoint_.y+itemLimitSize_.height<itemLimitSize_.height)
-				addPoint_.y *= MIN((innerLayerPoint_.y+itemLimitSize_.height)/contentSize_.height,1);
+			tempABSValue_ = ABS(innerLayerPoint_.y+addPoint_.y);
+			if(tempABSValue_>innerLayerOffsetSize_.height){
+				addPoint_.y *= MAX(0.8f - (tempABSValue_ - innerLayerOffsetSize_.height) / contentSize_.height,0.0f);
+			}
 			
-			[innerLayer setPosition:ccpAdd(innerLayerPoint_, addPoint_)];
+			[innerLayer setPosition:ccpAdd(innerLayerOrgPoint_, addPoint_)];
 			
 			_curScrollSpeedX = -diffPoint_.x;
 			_curScrollSpeedY = -diffPoint_.y;

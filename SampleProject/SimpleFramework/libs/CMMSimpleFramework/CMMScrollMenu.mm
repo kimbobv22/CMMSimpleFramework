@@ -76,7 +76,7 @@
 }
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
-	if(!isCanSelectItem){
+	if(!isCanSelectItem || touchState == CMMTouchState_onScroll){
 		[self setTouchState:CMMTouchState_onDrag];
 		return;
 	}
