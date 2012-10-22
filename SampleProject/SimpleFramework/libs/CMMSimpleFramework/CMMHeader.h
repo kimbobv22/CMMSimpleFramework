@@ -8,6 +8,7 @@ static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.0.0";
 #import "cocos2d.h"
 
 #import "CMMConfig.h"
+#import "CMMType.h"
 #import "CMMMacro.h"
 #import "CMMDeprecated.h"
 

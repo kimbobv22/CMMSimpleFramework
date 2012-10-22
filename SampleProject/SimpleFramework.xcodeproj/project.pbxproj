@@ -802,6 +802,7 @@
 		E0C4A8741622BF5A00C4B57E /* CMMConnectionMonitor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMConnectionMonitor.mm; path = libs/CMMSimpleFramework/CMMConnectionMonitor.mm; sourceTree = "<group>"; };
 		E0C4A8761622C15600C4B57E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		E0C5B41F15F4622200E0D6C9 /* CMMSType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSType.h; path = libs/CMMSimpleFramework/CMMSType.h; sourceTree = "<group>"; };
+		E0C604EC1635109400F096F2 /* CMMType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMType.h; path = libs/CMMSimpleFramework/CMMType.h; sourceTree = "<group>"; };
 		E0C6B481161EB592005F5749 /* AchievementsTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AchievementsTestLayer.h; sourceTree = "<group>"; };
 		E0C6B482161EB592005F5749 /* AchievementsTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AchievementsTestLayer.mm; sourceTree = "<group>"; };
 		E0CA18C515F9DBAB0064EF9F /* CMMStagePXL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMStagePXL.h; path = libs/CMMSimpleFramework/CMMStagePXL.h; sourceTree = "<group>"; };
@@ -1135,6 +1136,7 @@
 			isa = PBXGroup;
 			children = (
 				E032FC2F15E1E7F200B28B61 /* CMMHeader.h */,
+				E0C604EC1635109400F096F2 /* CMMType.h */,
 				E0ED521615E20E250070712E /* CMMMacro.h */,
 				E0C1FE7D161428D800562E27 /* CMMDeprecated.h */,
 				E0C1FE7E161428D800562E27 /* CMMDeprecated.mm */,

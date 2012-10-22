@@ -1,5 +1,6 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
+#import "CMMType.h"
 #import "CMMGLView.h"
 #import "CMMLayerPopup.h"
 #import "CMMTouchDispatcherScene.h"
@@ -34,7 +35,7 @@
 
 @end
 
-@interface CMMScene : CCScene<CMMGLViewTouchDelegate,CMMSequenceMakerDelegate>{
+@interface CMMScene : CCScene<CMMApplicationProtocol,CMMGLViewTouchDelegate,CMMSequenceMakerDelegate>{
 	CMMLayer *runningLayer;
 	
 	CCArray *_pushLayerList;

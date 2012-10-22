@@ -60,6 +60,14 @@
 -(void)whenLoadingEnded{}
 -(void)popupDispatcher:(CMMPopupDispatcherItem *)popupItem_ whenClosedWithReceivedData:(id)data_{}
 
+//delegate method of application status
+-(void)applicationDidBecomeActive{}
+-(void)applicationWillResignActive{}
+-(void)applicationWillTerminate{}
+-(void)applicationDidEnterBackground{}
+-(void)applicationWillEnterForeground{}
+-(void)applicationDidReceiveMemoryWarning{}
+
 -(void)dealloc{
 	[touchDispatcher release];
 	[super dealloc];

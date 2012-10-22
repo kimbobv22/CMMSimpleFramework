@@ -10,12 +10,12 @@
 	
 	scrollMenu1 = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(contentSize_.width * 0.4f, contentSize_.height * 0.8f)];
 	[scrollMenu1 setDelegate:self];
-	[scrollMenu1 setPosition:ccpAdd(cmmFuncCommon_position_center(self, scrollMenu1), ccp(scrollMenu1.contentSize.width/2.0f+10.0f,0))];
+	[scrollMenu1 setPosition:ccpAdd(cmmFuncCommon_positionInParent(self, scrollMenu1), ccp(scrollMenu1.contentSize.width/2.0f+10.0f,0))];
 	[self addChild:scrollMenu1];
 	
 	scrollMenu2 = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(contentSize_.width * 0.4f, contentSize_.height * 0.8f)];
 	[scrollMenu2 setDelegate:self];
-	[scrollMenu2 setPosition:ccpSub(cmmFuncCommon_position_center(self, scrollMenu2), ccp(scrollMenu2.contentSize.width/2.0f+10.0f,0))];
+	[scrollMenu2 setPosition:ccpSub(cmmFuncCommon_positionInParent(self, scrollMenu2), ccp(scrollMenu2.contentSize.width/2.0f+10.0f,0))];
 	[self addChild:scrollMenu2];
 	
 	[self addMenuItem];
@@ -44,6 +44,25 @@
 	};
 	[menuItem_ setTitle:[NSString stringWithFormat:@"Hello world :) [%d]",tempCount]];
  	[scrollMenu1 addItem:menuItem_];
+}
+
+-(void)applicationDidBecomeActive{
+	CCLOG(@"HelloWorldLayer : applicationDidBecomeActive");
+}
+-(void)applicationWillResignActive{
+	CCLOG(@"HelloWorldLayer : applicationWillResignActive");
+}
+-(void)applicationWillTerminate{
+	CCLOG(@"HelloWorldLayer : applicationWillTerminate");
+}
+-(void)applicationDidEnterBackground{
+	CCLOG(@"HelloWorldLayer : applicationDidEnterBackground");
+}
+-(void)applicationWillEnterForeground{
+	CCLOG(@"HelloWorldLayer : applicationWillEnterForeground");
+}
+-(void)applicationDidReceiveMemoryWarning{
+	CCLOG(@"HelloWorldLayer : applicationDidReceiveMemoryWarning");
 }
 
 @end

@@ -89,41 +89,52 @@
 	return UIInterfaceOrientationMaskAll;
 }
 
+
 // getting a call, pause the game
 -(void) applicationWillResignActive:(UIApplication *)application
 {
-	if( [navController_ visibleViewController] == director_ )
+	if( [navController_ visibleViewController] == director_ ){
 		[director_ pause];
+		[[CMMScene sharedScene] applicationWillResignActive];
+	}
 }
 
 // call got rejected
 -(void) applicationDidBecomeActive:(UIApplication *)application
 {
-	if( [navController_ visibleViewController] == director_ )
+	if( [navController_ visibleViewController] == director_ ){
 		[director_ resume];
+		[[CMMScene sharedScene] applicationDidBecomeActive];
+	}
 }
 
 -(void) applicationDidEnterBackground:(UIApplication*)application
 {
-	if( [navController_ visibleViewController] == director_ )
+	if( [navController_ visibleViewController] == director_ ){
 		[director_ stopAnimation];
+		[[CMMScene sharedScene] applicationDidEnterBackground];
+	}
 }
 
 -(void) applicationWillEnterForeground:(UIApplication*)application
 {
-	if( [navController_ visibleViewController] == director_ )
+	if( [navController_ visibleViewController] == director_ ){
 		[director_ startAnimation];
+		[[CMMScene sharedScene] applicationWillEnterForeground];
+	}
 }
 
 // application will be killed
 - (void)applicationWillTerminate:(UIApplication *)application
 {
+	[[CMMScene sharedScene] applicationWillTerminate];
 	CC_DIRECTOR_END();
 }
 
 // purge memory
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
+	[[CMMScene sharedScene] applicationDidReceiveMemoryWarning];
 	[[CCDirector sharedDirector] purgeCachedData];
 }
 

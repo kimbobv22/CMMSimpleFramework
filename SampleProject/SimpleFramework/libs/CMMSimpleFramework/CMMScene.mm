@@ -193,6 +193,27 @@ static CMMScene *_sharedScene_ = nil;
 	[self startTransition];
 }
 
+-(void)applicationDidBecomeActive{
+	if(runningLayer) [runningLayer applicationDidBecomeActive];
+}
+-(void)applicationWillResignActive{
+	if(runningLayer) [runningLayer applicationWillResignActive];
+}
+
+-(void)applicationWillTerminate{
+	if(runningLayer) [runningLayer applicationWillTerminate];
+}
+-(void)applicationDidEnterBackground{
+	if(runningLayer) [runningLayer applicationDidEnterBackground];
+}
+-(void)applicationWillEnterForeground{
+	if(runningLayer) [runningLayer applicationWillEnterForeground];
+}
+
+-(void)applicationDidReceiveMemoryWarning{
+	if(runningLayer) [runningLayer applicationDidReceiveMemoryWarning];
+}
+
 -(void)dealloc{
 	[noticeDispatcher release];
 	[popupDispatcher release];
