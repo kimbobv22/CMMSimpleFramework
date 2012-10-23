@@ -132,13 +132,10 @@ static CMMScene *_sharedScene_ = nil;
 	
 	_preSequencer = [[CMMSequenceMakerAuto alloc] init];
 	[_preSequencer setSequenceMethodFormatter:@"loadingProcess%03d"];
-	touchDispatcher = [[CMMTouchDispatcherScene alloc] initWithTarget:self];
+	touchDispatcher = [[CMMTouchDispatcher alloc] initWithTarget:self];
 	popupDispatcher = [[CMMPopupDispatcher alloc] initWithScene:self];
 	noticeDispatcher = [[CMMNoticeDispatcher alloc] initWithTarget:self];
-	
-#if COCOS2D_DEBUG >= 1
-	_touchPoints = [[CCArray alloc] init];
-#endif	
+
 	return self;
 }
 
@@ -153,10 +150,11 @@ static CMMScene *_sharedScene_ = nil;
 	kmGLPushMatrix();
 	[self transform];
 	
-	ccArray *data_ = _touchPoints->data;
+	ccArray *data_ = [touchDispatcher touchList]->data;
 	uint count_ = data_->num;
 	for(uint index_=0;index_<count_;++index_){
-		CGPoint point_ = [self convertToNodeSpace:[CMMTouchUtil pointFromTouch:data_->arr[index_]]];
+		CMMTouchDispatcherItem *touchItem_ = data_->arr[index_];
+		CGPoint point_ = [self convertToNodeSpace:[CMMTouchUtil pointFromTouch:[touchItem_ touch]]];
 		glLineWidth(2.0f);
 		ccDrawColor4F(1.0, 1.0, 1.0, 0.7);
 		ccDrawCircle(point_, 20, 0, 15, NO);
@@ -167,25 +165,26 @@ static CMMScene *_sharedScene_ = nil;
 #endif
 
 -(void)glViewTouch:(CMMGLView *)glView_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
-	[touchDispatcher whenTouchBegan:touch_ event:event_];
-#if COCOS2D_DEBUG >= 1
-	[_touchPoints addObject:touch_];
-#endif
+	CMMPopupDispatcherItem *popupItem_ = [popupDispatcher popupItemAtIndex:0];
+	
+	//handling popup
+	if(popupItem_){
+		CMMLayerPopup *popupNode_ = [popupItem_ popup];
+		[touchDispatcher addTouchItemWithTouch:touch_ node:popupNode_];
+		[popupNode_ touchDispatcher:touchDispatcher whenTouchBegan:touch_ event:event_];
+	}else{
+		if(isOnTransition || !runningLayer) return;
+		[touchDispatcher whenTouchBegan:touch_ event:event_];
+	}
 }
 -(void)glViewTouch:(CMMGLView *)glView_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
 	[touchDispatcher whenTouchMoved:touch_ event:event_];
 }
 -(void)glViewTouch:(CMMGLView *)glView_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
 	[touchDispatcher whenTouchEnded:touch_ event:event_];
-#if COCOS2D_DEBUG >= 1
-	[_touchPoints removeObject:touch_];
-#endif
 }
 -(void)glViewTouch:(CMMGLView *)glView_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
 	[touchDispatcher whenTouchCancelled:touch_ event:event_];
-#if COCOS2D_DEBUG >= 1
-	[_touchPoints removeObject:touch_];
-#endif
 }
 
 -(void)pushLayer:(CMMLayer *)layer_{
@@ -222,10 +221,6 @@ static CMMScene *_sharedScene_ = nil;
 	[_preSequencer release];
 	[_pushLayerList release];
 	[transitionLayer release];
-	
-#if COCOS2D_DEBUG >= 1
-	[_touchPoints release];
-#endif
 	
 	[super dealloc];
 }

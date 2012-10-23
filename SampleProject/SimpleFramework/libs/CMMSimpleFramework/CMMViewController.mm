@@ -5,7 +5,8 @@
 @implementation CMMViewController
 
 -(NSUInteger)supportedInterfaceOrientations{
-	return [[UIApplication sharedApplication] supportedInterfaceOrientationsForWindow:[[[CCDirector sharedDirector] view] window]];
+	UIApplication *application_ = [UIApplication sharedApplication];
+	return [application_ supportedInterfaceOrientationsForWindow:[application_ keyWindow]];
 }
 -(BOOL)shouldAutorotate{
 	return YES;

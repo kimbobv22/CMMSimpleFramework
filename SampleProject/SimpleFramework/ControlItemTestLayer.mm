@@ -10,10 +10,11 @@
 	
 	CMMControlItemText *testTextItem_ = [CMMControlItemText controlItemTextWithFrameSeq:0 width:150];
 	testTextItem_.itemValue = @"test";
+	testTextItem_.itemTitle = @"Test Label";
 	testTextItem_.callback_whenChangedItemVale = ^(id sender_, NSString *itemValue_){
 		CCLOG(@"test value : %@",itemValue_);
 	};
-	testTextItem_.position = ccp(self.contentSize.width/2-testTextItem_.contentSize.width/2,240.0f);
+	testTextItem_.position = cmmFuncCommon_positionInParent(self, testTextItem_,ccp(0.5f,0.8f));
 	[self addChild:testTextItem_];
 	
 	CMMControlItemSwitch *testSwitchItem_ = [CMMControlItemSwitch controlItemSwitchWithFrameSeq:0];

@@ -3,7 +3,7 @@
 #import "CMMType.h"
 #import "CMMGLView.h"
 #import "CMMLayerPopup.h"
-#import "CMMTouchDispatcherScene.h"
+#import "CMMTouchDispatcher.h"
 #import "CMMNoticeDispatcher.h"
 #import "CMMSequenceMaker.h"
 
@@ -45,13 +45,9 @@
 	CCArray *staticLayerItemList;
 	
 	CMMSequenceMakerAuto *_preSequencer;
-	CMMTouchDispatcherScene *touchDispatcher;
+	CMMTouchDispatcher *touchDispatcher;
 	CMMPopupDispatcher *popupDispatcher;
 	CMMNoticeDispatcher *noticeDispatcher;
-
-#if COCOS2D_DEBUG >= 1
-	CCArray *_touchPoints;
-#endif
 }
 
 +(CMMScene *)sharedScene;
@@ -63,7 +59,7 @@
 @property (nonatomic, readonly) BOOL isOnTransition;
 @property (nonatomic, readonly) CCArray *staticLayerItemList;
 @property (nonatomic, readonly) uint countOfStaticLayerItem;
-@property (nonatomic, readonly) CMMTouchDispatcherScene *touchDispatcher;
+@property (nonatomic, readonly) CMMTouchDispatcher *touchDispatcher;
 @property (nonatomic, readonly) CMMPopupDispatcher *popupDispatcher;
 @property (nonatomic, readonly) CMMNoticeDispatcher *noticeDispatcher;
 

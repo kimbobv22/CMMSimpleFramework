@@ -12,6 +12,7 @@
 #import "CMMLayerMD.h"
 #import "CMMSequenceMaker.h"
 #import "CMMSoundEngine.h"
+#import "CMMControlItemText.h"
 
 DEPRECATED_ATTRIBUTE static CGPoint cmmFuncCommon_position_center(CGRect parentRect_,CGRect targetRect_,CGPoint targetAPoint_){
 	return cmmFuncCommon_positionInParent(parentRect_, targetRect_, targetAPoint_, ccp(0.5f,0.5f));
@@ -24,6 +25,10 @@ DEPRECATED_ATTRIBUTE static CGPoint cmmFuncCommon_position_center(CCNode *parent
 
 @property (nonatomic, readwrite) ccColor3B transitionColor DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readwrite) ccTime fadeTime DEPRECATED_ATTRIBUTE;
+
+@end
+
+DEPRECATED_ATTRIBUTE @interface CMMTouchDispatcherScene : CMMTouchDispatcher
 
 @end
 
@@ -83,6 +88,13 @@ DEPRECATED_ATTRIBUTE @interface CMMLoadingObject : CMMSequenceMakerAuto
  CMMControlItemBatchBar -> CMMSpriteBatchBar
  */
 DEPRECATED_ATTRIBUTE @interface CMMControlItemBatchBar : CMMSpriteBatchBar
+
+@end
+
+@interface CMMControlItemText(Deprecated)
+
++(id)controlItemTextWithWidth:(float)width_ barSprite:(CCSprite *)barSprite_ DEPRECATED_ATTRIBUTE;
+-(id)initWithWidth:(float)width_ barSprite:(CCSprite *)barSprite_ DEPRECATED_ATTRIBUTE;
 
 @end
 

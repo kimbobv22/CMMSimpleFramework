@@ -288,7 +288,6 @@
 		E0ED520C15E2037B0070712E /* CMMSObject_Test.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0ED520B15E2037A0070712E /* CMMSObject_Test.mm */; };
 		E0ED521115E204680070712E /* CMMMenuItem.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0ED520E15E204680070712E /* CMMMenuItem.mm */; };
 		E0ED521215E204680070712E /* CMMScrollMenu.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0ED521015E204680070712E /* CMMScrollMenu.mm */; };
-		E0ED521915E20E590070712E /* CMMTouchDispatcherScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0ED521815E20E590070712E /* CMMTouchDispatcherScene.mm */; };
 		E0F8979616200F8600B34567 /* LeaderBoardTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0F8979516200F8600B34567 /* LeaderBoardTestLayer.mm */; };
 		E0FA89B115DD495C006732BC /* IMG_CMN_BFRAME_000.plist in Resources */ = {isa = PBXBuildFile; fileRef = E0FA89AF15DD495C006732BC /* IMG_CMN_BFRAME_000.plist */; };
 		E0FA89B215DD495C006732BC /* IMG_CMN_BFRAME_000.png in Resources */ = {isa = PBXBuildFile; fileRef = E0FA89B015DD495C006732BC /* IMG_CMN_BFRAME_000.png */; };
@@ -849,8 +848,6 @@
 		E0ED520F15E204680070712E /* CMMScrollMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMScrollMenu.h; path = libs/CMMSimpleFramework/CMMScrollMenu.h; sourceTree = "<group>"; };
 		E0ED521015E204680070712E /* CMMScrollMenu.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMScrollMenu.mm; path = libs/CMMSimpleFramework/CMMScrollMenu.mm; sourceTree = "<group>"; };
 		E0ED521615E20E250070712E /* CMMMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMMMacro.h; path = libs/CMMSimpleFramework/CMMMacro.h; sourceTree = "<group>"; };
-		E0ED521715E20E590070712E /* CMMTouchDispatcherScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMTouchDispatcherScene.h; path = libs/CMMSimpleFramework/CMMTouchDispatcherScene.h; sourceTree = "<group>"; };
-		E0ED521815E20E590070712E /* CMMTouchDispatcherScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMTouchDispatcherScene.mm; path = libs/CMMSimpleFramework/CMMTouchDispatcherScene.mm; sourceTree = "<group>"; };
 		E0F8979416200F8600B34567 /* LeaderBoardTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LeaderBoardTestLayer.h; sourceTree = "<group>"; };
 		E0F8979516200F8600B34567 /* LeaderBoardTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = LeaderBoardTestLayer.mm; sourceTree = "<group>"; };
 		E0FA89AF15DD495C006732BC /* IMG_CMN_BFRAME_000.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = IMG_CMN_BFRAME_000.plist; path = Resources/IMG_CMN_BFRAME_000.plist; sourceTree = "<group>"; };
@@ -1236,8 +1233,6 @@
 				E032FC6015E1F22500B28B61 /* CMMPopupDispatcher.mm */,
 				E032FC6115E1F22600B28B61 /* CMMTouchDispatcher.h */,
 				E032FC6215E1F22700B28B61 /* CMMTouchDispatcher.mm */,
-				E0ED521715E20E590070712E /* CMMTouchDispatcherScene.h */,
-				E0ED521815E20E590070712E /* CMMTouchDispatcherScene.mm */,
 				E070503915EC701500CFC81E /* CMMNoticeDispatcher.h */,
 				E070503A15EC701500CFC81E /* CMMNoticeDispatcher.mm */,
 			);
@@ -1992,7 +1987,6 @@
 				E0ED520C15E2037B0070712E /* CMMSObject_Test.mm in Sources */,
 				E0ED521115E204680070712E /* CMMMenuItem.mm in Sources */,
 				E0ED521215E204680070712E /* CMMScrollMenu.mm in Sources */,
-				E0ED521915E20E590070712E /* CMMTouchDispatcherScene.mm in Sources */,
 				E043F26515E2176200DCB7AF /* CMMSSpecObject.mm in Sources */,
 				E043F26815E2186200DCB7AF /* CMMSStateObject.mm in Sources */,
 				E0AA4BD415E3CBF6006D0C7F /* CMMControlItem.mm in Sources */,

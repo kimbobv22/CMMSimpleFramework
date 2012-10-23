@@ -1257,28 +1257,6 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMTouchDispatcher.mm</string>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMTouchDispatcherScene.h</key>
-		<dict>
-			<key>Group</key>
-			<array>
-				<string>libs</string>
-				<string>CMMSimpleFramework</string>
-			</array>
-			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMTouchDispatcherScene.h</string>
-			<key>TargetIndices</key>
-			<array/>
-		</dict>
-		<key>libs/CMMSimpleFramework/CMMTouchDispatcherScene.mm</key>
-		<dict>
-			<key>Group</key>
-			<array>
-				<string>libs</string>
-				<string>CMMSimpleFramework</string>
-			</array>
-			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMTouchDispatcherScene.mm</string>
-		</dict>
 		<key>libs/CMMSimpleFramework/CMMTouchUtil.h</key>
 		<dict>
 			<key>Group</key>
@@ -1541,8 +1519,6 @@
 		<string>libs/CMMSimpleFramework/CMMType.h</string>
 		<string>libs/CMMSimpleFramework/CMMTouchDispatcher.h</string>
 		<string>libs/CMMSimpleFramework/CMMTouchDispatcher.mm</string>
-		<string>libs/CMMSimpleFramework/CMMTouchDispatcherScene.h</string>
-		<string>libs/CMMSimpleFramework/CMMTouchDispatcherScene.mm</string>
 		<string>libs/CMMSimpleFramework/CMMTouchUtil.h</string>
 		<string>libs/CMMSimpleFramework/CMMTouchUtil.mm</string>
 		<string>libs/CMMSimpleFramework/CMMTimeIntervalArray.h</string>

@@ -16,6 +16,10 @@
 
 @end
 
+@implementation CMMTouchDispatcherScene
+
+@end
+
 @implementation CMMLayerMask
 
 @end
@@ -62,6 +66,17 @@
 }
 -(CCTexture2D *)textureFrameWithFrameSeq:(int)frameSeq_ size:(CGSize)size_{
 	return [self textureBatchBarWithFrameSeq:frameSeq_ batchBarSeq:0 size:size_];
+}
+
+@end
+
+@implementation CMMControlItemText(Deprecated)
+
++(id)controlItemTextWithWidth:(float)width_ barSprite:(CCSprite *)barSprite_{
+	return [self controlItemTextWithBarSprite:barSprite_ width:width_];
+}
+-(id)initWithWidth:(float)width_ barSprite:(CCSprite *)barSprite_{
+	return [self initWithBarSprite:barSprite_ width:width_];
 }
 
 @end

@@ -59,6 +59,7 @@ static CMMSimpleCache *_cachedTouchItems_ = nil;
 @end
 
 static SEL _sharedTouchSelectors_[TouchSelectorID_maxCount];
+static BOOL _sharedCMMTouchDispatcher_allTouchDispatcherEnable_ = YES;
 
 @implementation CMMTouchDispatcher
 @synthesize touchList,target,touchCount,maxMultiTouchCount;
@@ -87,6 +88,13 @@ static SEL _sharedTouchSelectors_[TouchSelectorID_maxCount];
 	return [touchList count];
 }
 
++(void)setAllTouchDispatcherEnable:(BOOL)enable_{
+	_sharedCMMTouchDispatcher_allTouchDispatcherEnable_ = enable_;
+}
++(BOOL)isAllTouchDispatcherEnable{
+	return _sharedCMMTouchDispatcher_allTouchDispatcherEnable_;
+}
+
 -(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained [])buffer count:(NSUInteger)len{
 	return [touchList countByEnumeratingWithState:state objects:buffer count:len];
 }
@@ -101,6 +109,7 @@ static SEL _sharedTouchSelectors_[TouchSelectorID_maxCount];
 @implementation CMMTouchDispatcher(Handler)
 
 -(void)whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
+	if(!_sharedCMMTouchDispatcher_allTouchDispatcherEnable_) return;
 	if([self touchCount] >= maxMultiTouchCount+1) return;
 	if(![target children]) return;
 	

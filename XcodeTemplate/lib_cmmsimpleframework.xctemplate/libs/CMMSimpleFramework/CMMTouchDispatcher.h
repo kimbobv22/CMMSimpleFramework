@@ -60,6 +60,9 @@ typedef enum{
 +(id)touchDispatherWithTarget:(CCNode *)target_;
 -(id)initWithTarget:(CCNode *)target_;
 
++(void)setAllTouchDispatcherEnable:(BOOL)enable_;
++(BOOL)isAllTouchDispatcherEnable;
+
 @property (nonatomic, readonly) CCArray *touchList;
 @property (nonatomic, readonly) CCNode *target;
 @property (nonatomic, readonly) int touchCount;

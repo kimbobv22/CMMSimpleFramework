@@ -18,22 +18,31 @@
 	CMMSpriteBatchBar *_barSprite;
 	NSString *itemValue;
 	
-	UIToolbar *_toolBar;
+	UIView *_backView;
+	UILabel *_textTitleLabel;
 	UITextField *_textField;
 	void (^callback_whenChangedItemVale)(id sender_,NSString *itemValue_);
 }
 
-+(id)controlItemTextWithWidth:(float)width_ barSprite:(CCSprite *)barSprite_;
++(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ width:(float)width_ height:(float)height_;
++(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ width:(float)width_;
+
++(id)controlItemTextWithFrameSeq:(int)frameSeq_ width:(float)width_ height:(float)height_;
 +(id)controlItemTextWithFrameSeq:(int)frameSeq_ width:(float)width_;
 
--(id)initWithWidth:(float)width_ barSprite:(CCSprite *)barSprite_;
+-(id)initWithBarSprite:(CCSprite *)barSprite_ width:(float)width_ height:(float)height_;
+-(id)initWithBarSprite:(CCSprite *)barSprite_ width:(float)width_;
+
+-(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_ height:(float)height_;
 -(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_;
 
 -(void)redrawWithBar;
 
--(void)update:(ccTime)dt_;
+-(void)showTextField;
+-(void)hideTextField;
 
-@property (nonatomic, retain) NSString *itemValue;
+@property (nonatomic, copy) NSString *itemValue;
+@property (nonatomic, assign) NSString *itemTitle;
 @property (nonatomic, readwrite) ccColor3B textColor;
 @property (nonatomic, copy) void (^callback_whenChangedItemVale)(id sender_,NSString *itemValue_);
 
