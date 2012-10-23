@@ -45,7 +45,7 @@ static NSString *_documentPath_ = nil;
 		_documentPath_ = [[NSString stringWithFormat:@"%@/",[paths objectAtIndex:0]] retain];
 	}
 	
-	NSString *resultStr_ = _resourcePath_;
+	NSString *resultStr_ = _documentPath_;
 	if(fileName_){
 		resultStr_ = [resultStr_ stringByAppendingString:fileName_];
 		if(extension_)
