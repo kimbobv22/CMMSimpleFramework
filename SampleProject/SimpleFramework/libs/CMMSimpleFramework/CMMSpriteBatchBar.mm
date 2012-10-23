@@ -42,6 +42,36 @@
 	_isDirty = YES;
 }
 
+-(void)setColor:(ccColor3B)color{
+	[_barTopSprite setColor:color];
+	[_barBottomSprite setColor:color];
+	[_barLeftSprite setColor:color];
+	[_barRightSprite setColor:color];
+	[_backSprite setColor:color];
+	[_edge1Sprite setColor:color];
+	[_edge2Sprite setColor:color];
+	[_edge3Sprite setColor:color];
+	[_edge4Sprite setColor:color];
+}
+-(ccColor3B)color{
+	return [_backSprite color];
+}
+
+-(GLubyte)opacity{
+	return [_backSprite opacity];
+}
+-(void)setOpacity:(GLubyte)opacity{
+	[_barTopSprite setOpacity:opacity];
+	[_barBottomSprite setOpacity:opacity];
+	[_barLeftSprite setOpacity:opacity];
+	[_barRightSprite setOpacity:opacity];
+	[_backSprite setOpacity:opacity];
+	[_edge1Sprite setOpacity:opacity];
+	[_edge2Sprite setOpacity:opacity];
+	[_edge3Sprite setOpacity:opacity];
+	[_edge4Sprite setOpacity:opacity];
+}
+
 -(void)setTargetSprite:(CCSprite *)targetSprite_{
 	[self removeAllChildrenWithCleanup:YES];
 	[targetSprite release];

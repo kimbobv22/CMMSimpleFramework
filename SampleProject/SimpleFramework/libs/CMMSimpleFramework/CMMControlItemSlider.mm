@@ -11,18 +11,18 @@
 @implementation CMMControlItemSlider
 @synthesize buttonItem,backColorL,backColorR,itemValue,unitValue,minValue,maxValue,callback_whenChangedItemVale;
 
-+(id)controlItemSliderWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor4B)backColorL_ backColorR:(ccColor4B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_{
++(id)controlItemSliderWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_{
 	return [[[self alloc] initWithWidth:width_ maskSprite:maskSprite_ barSprite:barSprite_ backColorL:backColorL_ backColorR:backColorR_ buttonSprite:buttonSprite_] autorelease];
 }
 
-+(id)controlItemSliderWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor4B)backColorL_ backColorR:(ccColor4B)backColorR_{
++(id)controlItemSliderWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_{
 	return [[[self alloc] initWithFrameSeq:frameSeq_ width:width_ backColorL:backColorL_ backColorR:backColorR_] autorelease];
 }
 +(id)controlItemSliderWithFrameSeq:(int)frameSeq_ width:(float)width_{
 	return [[[self alloc] initWithFrameSeq:frameSeq_ width:width_] autorelease];
 }
 
--(id)initWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor4B)backColorL_ backColorR:(ccColor4B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_{
+-(id)initWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_{
 	
 	CGSize sliderSize_ = CGSizeMake(width_, [maskSprite_ contentSize].height);
 	_maskSprite = [[CMMSpriteBatchBar batchBarWithTargetSprite:maskSprite_  batchBarSize:sliderSize_] retain];
@@ -57,7 +57,7 @@
 	return self;
 }
 
--(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor4B)backColorL_ backColorR:(ccColor4B)backColorR_{
+-(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_{
 	CMMDrawingManager *sharedDrawingManager_ = [CMMDrawingManager sharedManager];
 	CMMDrawingManagerItem *drawingItem_ = [sharedDrawingManager_ drawingItemAtIndex:frameSeq_];
 	if(!drawingItem_){
@@ -72,12 +72,25 @@
 	return [self initWithWidth:width_ maskSprite:maskSprite_ barSprite:barSprite_ backColorL:backColorL_ backColorR:backColorR_ buttonSprite:buttonSprite_];
 }
 -(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_{
-	return [self initWithFrameSeq:frameSeq_ width:width_ backColorL:ccc4(80, 100, 200, 255) backColorR:ccc4(200, 200, 200, 255)];
+	return [self initWithFrameSeq:frameSeq_ width:width_ backColorL:ccc3(80, 100, 200) backColorR:ccc3(200, 200, 200)];
 }
 
 -(void)setContentSize:(CGSize)contentSize{
 	[super setContentSize:contentSize];
 	[self redrawWithBar];
+}
+
+-(void)setColor:(ccColor3B)color{
+	[super setColor:color];
+	[_barSprite setColor:color];
+	[buttonItem setColor:color];
+	[_resultBackSprite setColor:color];
+}
+-(void)setOpacity:(GLubyte)opacity{
+	[super setOpacity:opacity];
+	[_barSprite setOpacity:opacity];
+	[buttonItem setOpacity:opacity];
+	[_resultBackSprite setOpacity:opacity];
 }
 
 -(void)setButtonSprite:(CCSprite *)buttonSprite_{
@@ -86,11 +99,11 @@
 	_doRedraw = YES;
 }
 
--(void)setBackColorL:(ccColor4B)backColorL_{
+-(void)setBackColorL:(ccColor3B)backColorL_{
 	backColorL = backColorL_;
 	_doRedraw = YES;
 }
--(void)setBackColorR:(ccColor4B)backColorR_{
+-(void)setBackColorR:(ccColor3B)backColorR_{
 	backColorR = backColorR_;
 	_doRedraw = YES;
 }
@@ -153,10 +166,10 @@
 	ccGLBlendFunc(GL_DST_ALPHA, GL_ZERO);
 	glLineWidth(contentSize_.height);
 	
-	ccDrawColor4B(backColorL.r, backColorL.g, backColorL.b, backColorL.a);
+	ccDrawColor4B(backColorL.r, backColorL.g, backColorL.b, opacity_);
 	ccDrawLine(ccp(0.0f,contentSize_.height/2.0f), ccp(buttonPoint_.x,contentSize_.height/2.0f));
 	
-	ccDrawColor4B(backColorR.r, backColorR.g, backColorR.b, backColorR.a);
+	ccDrawColor4B(backColorR.r, backColorR.g, backColorR.b, opacity_);
 	ccDrawLine(ccp(buttonPoint_.x,contentSize_.height/2.0f), ccp(contentSize_.width,contentSize_.height/2.0f));
 	
 	[render_ end];

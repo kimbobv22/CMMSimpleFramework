@@ -96,6 +96,15 @@
 	[self redrawWithBar];
 }
 
+-(void)setOpacity:(GLubyte)opacity{
+	[super setOpacity:opacity];
+	[_barSprite setOpacity:opacity];
+}
+-(void)setColor:(ccColor3B)color{
+	[super setColor:color];
+	[_barSprite setColor:color];
+}
+
 -(void)setItemTitle:(NSString *)itemTitle_{
 	[_textTitleLabel setText:itemTitle_];
 	CGRect curRect_ = [_textTitleLabel frame];
@@ -137,12 +146,25 @@
 
 -(void)showTextField{
 	if([_backView superview]) return;
+	
+	if(cmmFuncCommon_respondsToSelector(delegate, @selector(controlItemTextShouldShow:))){
+		if(![((id<CMMControlItemTextDelegate>)delegate) controlItemTextShouldShow:self])
+			return;
+	}
+	
 	_textField.text = itemValue;
 	[[[CCDirectorIOS sharedDirector] view] addSubview:_backView];
 	[_textField becomeFirstResponder];
 	[CMMTouchDispatcher setAllTouchDispatcherEnable:NO];
 }
 -(void)hideTextField{
+	if(![_backView superview]) return;
+	
+	if(cmmFuncCommon_respondsToSelector(delegate, @selector(controlItemTextShouldHide:))){
+		if(![((id<CMMControlItemTextDelegate>)delegate) controlItemTextShouldHide:self])
+			return;
+	}
+	
 	[CMMTouchDispatcher setAllTouchDispatcherEnable:YES];
 	[_textField resignFirstResponder];
 	[_backView removeFromSuperview];
@@ -155,6 +177,7 @@
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
+	[self setItemValue:[_textField text]];
 	[self hideTextField];
 	return NO;
 }

@@ -53,6 +53,19 @@
 	return [self initWithMaskSprite:maskSprite_ backSprite:backSprite_ buttonSprite:buttonSprite_];
 }
 
+-(void)setColor:(ccColor3B)color{
+	[super setColor:color];
+	[_backSprite setColor:color];
+	[buttonItem setColor:color];
+	[_resultBackSprite setColor:color];
+}
+-(void)setOpacity:(GLubyte)opacity{
+	[super setOpacity:opacity];
+	[_backSprite setOpacity:opacity];
+	[buttonItem setOpacity:opacity];
+	[_resultBackSprite setOpacity:opacity];
+}
+
 -(void)setButtonSprite:(CCSprite *)buttonSprite_{
 	[buttonItem setNormalImage:buttonSprite_];
 	[buttonItem setSelectedImage:buttonSprite_];

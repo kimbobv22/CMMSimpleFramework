@@ -4,7 +4,7 @@
 #import "CMMMacro.h"
 #import "CMMTouchDispatcher.h"
 
-@interface CMMSpriteBatchBar : CCSpriteBatchNode<CMMTouchDispatcherDelegate>{
+@interface CMMSpriteBatchBar : CCSpriteBatchNode<CMMTouchDispatcherDelegate,CCRGBAProtocol>{
 	CCSprite *targetSprite;
 	CGSize edgeSize;
 	float barCropWidth;

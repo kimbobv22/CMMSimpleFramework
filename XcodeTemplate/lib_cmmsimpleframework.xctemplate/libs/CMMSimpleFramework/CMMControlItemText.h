@@ -11,6 +11,9 @@
 @optional
 -(void)controlItemText:(CMMControlItemText *)controlItem_ whenChangedItemValue:(NSString *)itemValue_;
 
+-(BOOL)controlItemTextShouldShow:(CMMControlItemText *)controlItem_;
+-(BOOL)controlItemTextShouldHide:(CMMControlItemText *)controlItem_;
+
 @end
 
 @interface CMMControlItemText : CMMControlItem<UITextFieldDelegate>{
