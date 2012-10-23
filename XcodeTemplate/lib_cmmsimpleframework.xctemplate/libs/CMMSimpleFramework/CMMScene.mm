@@ -169,6 +169,7 @@ static CMMScene *_sharedScene_ = nil;
 	
 	//handling popup
 	if(popupItem_){
+		if(![CMMTouchDispatcher isAllTouchDispatcherEnable]) return;
 		CMMLayerPopup *popupNode_ = [popupItem_ popup];
 		[touchDispatcher addTouchItemWithTouch:touch_ node:popupNode_];
 		[popupNode_ touchDispatcher:touchDispatcher whenTouchBegan:touch_ event:event_];
