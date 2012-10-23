@@ -9,7 +9,7 @@
 	return [[[self alloc] initWithFrameSize:frameSize_] autorelease];
 }
 -(id)initWithFrameSize:(CGSize)frameSize_{
-	if(!(self = [super initWithColor:ccc4(0.0f, 0.0f, 0.0f, 0.0f) width:frameSize_.width height:frameSize_.height])) return self;
+	if(!(self = [super initWithColor:ccc4(0, 0, 0, 255) width:frameSize_.width height:frameSize_.height])) return self;
 	
 	isEnable = YES;
 	userData = nil;
@@ -18,14 +18,13 @@
 	return self;
 }
 
-#if COCOS2D_DEBUG >= 1
 -(void)draw{
+#if COCOS2D_DEBUG >= 1
 	ccDrawColor4B(0, 255, 0, 180);
 	glLineWidth(1.0f);
 	ccDrawRect(CGPointZero, ccpFromSize(contentSize_));
-	[super draw];
-}
 #endif
+}
 
 -(void)redraw{
 	_doRedraw = NO;
@@ -37,8 +36,11 @@
 		[self redraw];
 }
 
+-(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
+	return isEnable;
+}
+
 -(void)dealloc{
-	[delegate release];
 	[userData release];
 	[super dealloc];
 }

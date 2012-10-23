@@ -19,9 +19,4 @@
 
 -(void)update:(ccTime)dt_{}
 
--(void)dealloc{
-	[delegate release];
-	[super dealloc];
-}
-
 @end

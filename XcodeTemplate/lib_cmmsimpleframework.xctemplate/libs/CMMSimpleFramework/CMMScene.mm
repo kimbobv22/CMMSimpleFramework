@@ -83,7 +83,7 @@ static CMMScene *_sharedScene_ = nil;
 	CMMLayer *targetLayer_ = [_pushLayerList objectAtIndex:0];
 	targetLayer_.isTouchEnabled = NO;
 	if(runningLayer){
-		[self removeChild:runningLayer cleanup:NO];
+		[self removeChild:runningLayer cleanup:([self indexOfStaticLayerItemWithLayer:runningLayer] == NSNotFound)];
 	}
 	
 	runningLayer = targetLayer_;

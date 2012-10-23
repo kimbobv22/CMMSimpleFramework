@@ -100,7 +100,6 @@ static CMMInAppPurchasesManager *_sharedCMMInAppPurchasesManager_ = nil;
 
 -(void)dealloc{
 	[products release];
-	[delegate release];
 	[super dealloc];
 }
 

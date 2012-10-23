@@ -61,8 +61,6 @@
 	
 	callback_pushdown = callback_pushup = callback_pushcancel = nil;
 	
-	[self initializeTouchDispatcher];
-	
 	return self;
 }
 -(id)initWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ frameSize:(CGSize)frameSize_{
@@ -120,10 +118,19 @@
 
 -(void)updateDisplay{}
 
+-(void)cleanup{
+	[callback_pushdown release];
+	callback_pushdown = nil;
+	[callback_pushup release];
+	callback_pushup = nil;
+	[callback_pushcancel release];
+	callback_pushcancel = nil;
+	[super cleanup];
+}
+
 -(void)dealloc{
 	[selectedImage release];
 	[normalImage release];
-	[delegate release];
 	[callback_pushdown release];
 	[callback_pushup release];
 	[callback_pushcancel release];

@@ -235,6 +235,7 @@ static CCArray *_cachedNoticeDispatcherItems_ = nil;
 	if(noticeItem_.callback_notice)
 		noticeItem_.callback_notice(noticeItem_);
 	
+	[noticeItem_ setCallback_notice:nil];
 	[CMMNoticeDispatcher cacheNoticeItem:noticeItem_];
 	[itemList removeObject:noticeItem_];
 	[target removeChild:noticeTemplate cleanup:YES];

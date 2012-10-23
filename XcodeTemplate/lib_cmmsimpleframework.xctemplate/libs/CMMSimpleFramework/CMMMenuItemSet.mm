@@ -197,8 +197,15 @@
 	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
 }
 
+-(void)cleanup{
+	[callback_pushdown release];
+	callback_pushdown = nil;
+	[callback_pushup release];
+	callback_pushup = nil;
+	[super cleanup];
+}
+
 -(void)dealloc{
-	[delegate release];
 	[itemList release];
 	[callback_pushdown release];
 	[callback_pushup release];

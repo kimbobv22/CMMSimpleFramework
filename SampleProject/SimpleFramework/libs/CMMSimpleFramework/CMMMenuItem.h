@@ -40,7 +40,7 @@
 
 @property (nonatomic, retain) id key,userData;
 @property (nonatomic, retain) CCSprite *normalImage,*selectedImage;
-@property (nonatomic, retain) id<CMMMenuItemDelegate> delegate;
+@property (nonatomic, assign) id<CMMMenuItemDelegate> delegate;
 @property (nonatomic, readwrite) BOOL isEnable;
 @property (nonatomic, readonly) BOOL isOnSelected;
 @property (nonatomic, copy) void (^callback_pushdown)(id sender_),(^callback_pushup)(id sender_),(^callback_pushcancel)(id sender_);

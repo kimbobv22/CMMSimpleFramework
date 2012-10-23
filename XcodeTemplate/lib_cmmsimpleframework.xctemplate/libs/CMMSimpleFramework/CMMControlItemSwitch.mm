@@ -27,7 +27,6 @@
 	
 	if(!(self = [super initWithFrameSize:_maskSprite.contentSize])) return self;
 	
-	callback_whenChangedItemVale = nil;
 	[self addChild:buttonItem z:1];
 	[self setButtonSprite:buttonSprite_];
 	[self addChild:_resultBackSprite z:0];
@@ -48,7 +47,7 @@
 	
 	CCSprite *maskSprite_ = [CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_switch_mask]];
 	CCSprite *backSprite_ = [CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_switch_back]];
-	CCSprite *buttonSprite_ = [CMMMenuItem spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_switch_button]];
+	CCSprite *buttonSprite_ = [CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_switch_button]];
 	
 	return [self initWithMaskSprite:maskSprite_ backSprite:backSprite_ buttonSprite:buttonSprite_];
 }
@@ -75,7 +74,7 @@
 -(void)setItemValue:(BOOL)itemValue_{
 	BOOL doCallback_ = itemValue != itemValue_;
 	itemValue = itemValue_;
-	[self _setPointXOfButton:(itemValue?self.contentSize.width-buttonItem.contentSize.width/2:buttonItem.contentSize.width/2)];
+	[self _setPointXOfButton:(itemValue?contentSize_.width-buttonItem.contentSize.width/2:buttonItem.contentSize.width/2)];
 	
 	if(doCallback_){
 		if(!callback_whenChangedItemVale && cmmFuncCommon_respondsToSelector(delegate, @selector(controlItemSwitch:whenChangedItemValue:)))
@@ -86,7 +85,7 @@
 }
 
 -(void)_setPointXOfButton:(float)x_{
-	CGSize frameSize_ = self.contentSize;
+	CGSize frameSize_ = contentSize_;
 	CGSize buttonSize_ = [buttonItem contentSize];
 	
 	if(x_<buttonSize_.width/2.0f)
@@ -122,7 +121,6 @@
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
-	if(!isEnable) return;
 	CMMTouchDispatcherItem *touchItem_ = [touchDispatcher touchItemAtTouch:touch_];
 	if(!touchItem_){
 		[touchDispatcher_ cancelTouchAtTouch:touch_];
@@ -136,7 +134,6 @@
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
-	if(!isEnable) return;
 	if(_isTouchMoved){
 		CGPoint convertPoint_ = [self convertToNodeSpace:[CMMTouchUtil pointFromTouch:touch_]];
 		[self setItemValue:(convertPoint_.x > self.contentSize.width/2)];
@@ -147,9 +144,14 @@
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
-	if(!isEnable) return;
 	[self setItemValue:itemValue];
 	_isTouchMoved = NO;
+}
+
+-(void)cleanup{
+	[callback_whenChangedItemVale release];
+	callback_whenChangedItemVale = nil;
+	[super cleanup];
 }
 
 -(void)dealloc{

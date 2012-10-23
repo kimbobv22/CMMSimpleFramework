@@ -17,7 +17,7 @@
 	id<CMMControlItemDelegate> delegate;
 	BOOL isEnable;
 	id userData;
-	
+
 	ccTime _redrawDelayTime;
 	BOOL _doRedraw;
 }
@@ -28,7 +28,7 @@
 -(void)redraw;
 -(void)update:(ccTime)dt_;
 
-@property (nonatomic, retain) id<CMMControlItemDelegate> delegate;
+@property (nonatomic, assign) id<CMMControlItemDelegate> delegate;
 @property (nonatomic, readwrite) BOOL isEnable;
 @property (nonatomic, retain) id userData;
 

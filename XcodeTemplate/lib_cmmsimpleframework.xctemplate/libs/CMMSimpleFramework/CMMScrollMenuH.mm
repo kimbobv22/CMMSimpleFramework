@@ -10,6 +10,8 @@
 	touchCancelDistance = 30.0f;
 	_firstTouchPoint = CGPointZero;
 	
+	[self initializeTouchDispatcher];
+	
 	return self;
 }
 

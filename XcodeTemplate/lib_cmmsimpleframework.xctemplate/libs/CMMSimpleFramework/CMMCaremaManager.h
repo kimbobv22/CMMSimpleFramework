@@ -23,7 +23,7 @@
 
 -(void)openCameraWithSourceType:(UIImagePickerControllerSourceType)sourceType_;
 
-@property (nonatomic, retain) id<CMMCaremaManagerDelegate> delegate;
+@property (nonatomic, assign) id<CMMCaremaManagerDelegate> delegate;
 @property (nonatomic, readwrite) CGSize imageLimitSize;
 
 @end

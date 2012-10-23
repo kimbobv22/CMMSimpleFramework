@@ -22,7 +22,6 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 
 -(void)dealloc{
 	[popup release];
-	[delegate release];
 	[super dealloc];
 }
 

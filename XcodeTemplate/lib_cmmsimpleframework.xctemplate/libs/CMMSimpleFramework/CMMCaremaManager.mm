@@ -79,9 +79,4 @@ static CMMCaremaManager *_sharedCMMCaremaManager_ = nil;
 	[picker dismissViewControllerAnimated:YES completion:nil];
 }
 
--(void)dealloc{
-	[delegate release];
-	[super dealloc];
-}
-
 @end

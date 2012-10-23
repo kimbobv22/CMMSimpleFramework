@@ -31,4 +31,9 @@
 	[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
 }
 
+-(void)dealloc{
+	CCLOG(@"test!");
+	[super dealloc];
+}
+
 @end

@@ -27,7 +27,7 @@
 -(id)initWithPopup:(CMMLayerPopup *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_;
 
 @property (nonatomic, retain) CMMLayerPopup *popup;
-@property (nonatomic, retain) id<CMMPopupDispatcherDelegate> delegate;
+@property (nonatomic, assign) id<CMMPopupDispatcherDelegate> delegate;
 
 @end
 

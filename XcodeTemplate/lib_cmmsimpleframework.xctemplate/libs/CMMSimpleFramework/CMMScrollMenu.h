@@ -49,7 +49,7 @@
 @property (nonatomic, readwrite) int index;
 @property (nonatomic, readonly) int count;
 @property (nonatomic, readonly) CCArray *itemList;
-@property (nonatomic, retain) id<CMMScrollMenuDelegate> delegate;
+@property (nonatomic, assign) id<CMMScrollMenuDelegate> delegate;
 @property (nonatomic, readwrite) float marginPerItem;
 @property (nonatomic, readwrite) BOOL isCanSelectItem;
 

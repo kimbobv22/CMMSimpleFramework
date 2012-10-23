@@ -32,7 +32,7 @@ typedef enum{
 -(void)loadProductsWithProductIDs:(NSSet *)productIDs_;
 -(void)restorePurchases;
 
-@property (nonatomic, retain) id<CMMInAppPurchasesManagerDelegate> delegate;
+@property (nonatomic, assign) id<CMMInAppPurchasesManagerDelegate> delegate;
 @property (nonatomic, retain) CCArray *products;
 @property (nonatomic, readonly) uint productsCount;
 @property (nonatomic, readonly) CMMInAppPurchasesManagerState state;

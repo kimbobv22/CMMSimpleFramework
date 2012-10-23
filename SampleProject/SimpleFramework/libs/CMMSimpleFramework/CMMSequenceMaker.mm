@@ -77,7 +77,6 @@
 
 -(void)dealloc{
 	[[[CCDirector sharedDirector] scheduler] unscheduleAllSelectorsForTarget:self];
-	[delegate release];
 	[sequenceMethodFormatter release];
 	[super dealloc];
 }

@@ -13,7 +13,7 @@
 
 -(void)update:(ccTime)dt_;
 
-@property (nonatomic, retain) id<CMMCustomUIDelegate>delegate;
+@property (nonatomic, assign) id<CMMCustomUIDelegate>delegate;
 @property (nonatomic, readwrite) BOOL isEnable;
 
 @end

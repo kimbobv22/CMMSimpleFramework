@@ -341,7 +341,7 @@ typedef enum{
 -(void)initializeLightSystem;
 
 @property (nonatomic, retain) CMMSSpecStage *spec;
-@property (nonatomic, retain) id<CMMStageDelegate>delegate;
+@property (nonatomic, assign) id<CMMStageDelegate>delegate;
 @property (nonatomic, readonly) CMMStageWorld *world;
 @property (nonatomic, readonly) CMMStageParticle *particle;
 @property (nonatomic, readonly) CMMStageObjectSView *stateView;

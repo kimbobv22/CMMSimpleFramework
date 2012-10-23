@@ -185,14 +185,21 @@
 -(void)redrawWithBar{
 	CGSize buttonSize_ = [buttonItem contentSize];
 	_maskSprite.contentSize = _barSprite.contentSize = CGSizeMake(contentSize_.width-buttonSize_.width/2.0f, [_maskSprite contentSize].height);
-		
+	
 	[self redraw];
 	[self setItemValue:itemValue];
 }
 
+-(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
+	return [super touchDispatcher:touchDispatcher_ shouldAllowTouch:touch_ event:event_] && [CMMTouchUtil isNodeInTouch:buttonItem touch:touch_];
+}
+
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
+	[touchDispatcher addTouchItemWithTouch:touch_ node:buttonItem];
+	[buttonItem touchDispatcher:touchDispatcher whenTouchBegan:touch_ event:event_];
+}
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
-	if(!isEnable) return;
 	CMMTouchDispatcherItem *touchItem_ = [touchDispatcher touchItemAtTouch:touch_];
 	if(!touchItem_){
 		[touchDispatcher_ cancelTouchAtTouch:touch_];
@@ -203,6 +210,12 @@
 	CGSize buttonSize_ = [buttonItem contentSize];
 	float itemValue_ = (maxValue-minValue) * ((convertPoint_.x-buttonSize_.width/2.0f)/(self.contentSize.width-buttonSize_.width)) +minValue;
 	[self setItemValue:itemValue_];
+}
+
+-(void)cleanup{
+	[callback_whenChangedItemVale release];
+	callback_whenChangedItemVale = nil;
+	[super cleanup];
 }
 
 -(void)dealloc{

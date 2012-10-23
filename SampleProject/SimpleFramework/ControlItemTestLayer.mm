@@ -22,7 +22,6 @@
 	testSwitchItem_.callback_whenChangedItemVale = ^(id sender_, BOOL itemValue_){
 		[self controlItemSwitch:sender_ whenChangedItemValue:itemValue_];
 	};
-	//testSwitchItem_.isEnable = NO;
 	[self addChild:testSwitchItem_];
 	
 	testSwitchItem_ = [CMMControlItemSwitch controlItemSwitchWithFrameSeq:0];

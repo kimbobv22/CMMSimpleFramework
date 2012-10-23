@@ -186,9 +186,15 @@
 	[self hideTextField];
 }
 
+-(void)cleanup{
+	[callback_whenChangedItemVale release];
+	callback_whenChangedItemVale = nil;
+	[super cleanup];
+}
+
 -(void)dealloc{
+	[callback_whenChangedItemVale release];
 	[_backView release];
-	[_barSprite release];
 	[super dealloc];
 }
 

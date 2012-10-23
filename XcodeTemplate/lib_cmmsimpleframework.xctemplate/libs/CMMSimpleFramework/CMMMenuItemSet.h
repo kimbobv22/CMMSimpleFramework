@@ -59,7 +59,7 @@ enum CMMMenuItemSetLineVAlignType{
 @property (nonatomic, readwrite) uint unitPerLine;
 @property (nonatomic, readwrite) BOOL isEnable;
 @property (nonatomic, readonly) uint count;
-@property (nonatomic, retain) id<CMMMenuItemSetDelegate> delegate;
+@property (nonatomic, assign) id<CMMMenuItemSetDelegate> delegate;
 @property (nonatomic, copy) void (^callback_pushdown)(id sender_,CMMMenuItem *menuItem_),(^callback_pushup)(id sender_,CMMMenuItem *menuItem_);
 
 @end

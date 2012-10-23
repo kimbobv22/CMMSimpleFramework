@@ -44,7 +44,7 @@ typedef enum{
 -(void)stepSequenceTo:(uint)sequence_;
 -(void)stepSequence;
 
-@property (nonatomic, retain) id<CMMSequenceMakerDelegate> delegate;
+@property (nonatomic, assign) id<CMMSequenceMakerDelegate> delegate;
 @property (nonatomic, copy) NSString *sequenceMethodFormatter;
 @property (nonatomic, readonly) uint curSequence;
 @property (nonatomic, readwrite) CMMSequenceMakerState sequenceState;

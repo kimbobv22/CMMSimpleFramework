@@ -29,7 +29,7 @@
 
 +(CMMGameKitPA *)sharedPA;
 
-@property (nonatomic, retain) id<CMMGameKitPADelegate> delegate;
+@property (nonatomic, assign) id<CMMGameKitPADelegate> delegate;
 @property (nonatomic, readonly) BOOL isAvailableGameCenter,isAuthenticated;
 
 @end
@@ -64,7 +64,7 @@
 
 -(void)reportScore:(int64_t)score_ category:(NSString*)category_;
 
-@property (nonatomic, retain) id<CMMGameKitLeaderBoardDelegate> delegate;
+@property (nonatomic, assign) id<CMMGameKitLeaderBoardDelegate> delegate;
 
 @end
 
@@ -96,7 +96,7 @@
 -(void)setAchievementWithIdentifier:(NSString *)identifier_ percentComplete:(double)percentComplete_;
 -(void)resetAchievements;
 
-@property (nonatomic, retain) id<CMMGameKitAchievementsDelegate> delegate;
+@property (nonatomic, assign) id<CMMGameKitAchievementsDelegate> delegate;
 @property (nonatomic, readonly) NSArray *cachedAchievements,*reportedAchievements;
 
 @end
@@ -141,7 +141,7 @@
 
 +(id)gameKitHandler;
 
-@property (nonatomic, retain) id<CMMGameKitHandlerDelegate> delegate;
+@property (nonatomic, assign) id<CMMGameKitHandlerDelegate> delegate;
 @property (nonatomic, copy) NSString *serverID;
 @property (nonatomic, readonly) NSString *myIdentifier;
 

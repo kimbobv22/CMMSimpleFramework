@@ -123,11 +123,6 @@
 	[self resetSprite];
 }
 
--(void)cleanup{
-	[sequencer setDelegate:nil];
-	[super cleanup];
-}
-
 -(void)dealloc{
 	[sequencer release];
 	[super dealloc];

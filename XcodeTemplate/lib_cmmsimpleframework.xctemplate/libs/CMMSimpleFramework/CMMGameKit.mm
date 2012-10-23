@@ -391,7 +391,6 @@ static CMMGameKitAchievements *_sharedCMMGameKitAchievements_ = nil;
 }
 
 -(void)dealloc{
-	[delegate release];
 	[serverID release];
 	[super dealloc];
 }
