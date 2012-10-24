@@ -113,7 +113,7 @@
 	return self;
 }
 
--(void)whenLoadingEnded{
+-(void)sceneDidEndLoading:(CMMScene *)scene_{
 	[self loadLeaderBoard];
 }
 

@@ -23,7 +23,7 @@
 
 @end
 
-@interface InAppPurchaseTestLayer : CMMLayer<CMMInAppPurchasesManagerDelegate,CMMScrollMenuVDelegate>{
+@interface InAppPurchaseTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMInAppPurchasesManagerDelegate,CMMScrollMenuVDelegate>{
 	CMMScrollMenuV *inAppList;
 	CMMMenuItemLabelTTF *restorBtn;
 	InAppPurchaseTestLayerIndicator *indicatorLayer;

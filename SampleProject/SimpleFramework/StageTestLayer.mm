@@ -423,7 +423,7 @@
 
 @implementation StageTestLayerTile
 
--(void)loadingProcess000{
+-(void)sceneLoadingProcess000{
 	[self unscheduleUpdate];
 	[backBtn setIsEnable:NO];
 	
@@ -450,12 +450,12 @@
 	
 	[gravitySlider setItemValue:-9.8f];
 }
--(void)loadingProcess001{
+-(void)sceneLoadingProcess001{
 	CMMStageTMX *stage_ = (CMMStageTMX *)stage;
 	[stage_ addGroundTMXLayerAtLayerName:@"ground"];
 	[stage_ buildupTilemap];
 }
--(void)whenLoadingEnded{
+-(void)sceneDidEndLoading:(CMMScene *)scene_{
 	[self scheduleUpdate];
 	[backBtn setIsEnable:YES];
 }

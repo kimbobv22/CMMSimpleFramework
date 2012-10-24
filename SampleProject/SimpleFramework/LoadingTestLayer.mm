@@ -20,32 +20,32 @@
 	return self;
 }
 
--(void)loadingProcess000{
+-(void)sceneLoadingProcess000{
 	[displayLabel setString:@"000"];
 }
--(void)loadingProcess001{
+-(void)sceneLoadingProcess001{
 	[displayLabel setString:@"001"];
 }
--(void)loadingProcess002{
+-(void)sceneLoadingProcess002{
 	[displayLabel setString:@"002"];
 }
--(void)loadingProcess003{
+-(void)sceneLoadingProcess003{
 	[displayLabel setString:@"003"];
 }
--(void)loadingProcess004{
+-(void)sceneLoadingProcess004{
 	[displayLabel setString:@"004"];
 }
--(void)loadingProcess005{
+-(void)sceneLoadingProcess005{
 	[displayLabel setString:@"005"];
 }
--(void)loadingProcess006{
+-(void)sceneLoadingProcess006{
 	[displayLabel setString:@"006"];
 }
--(void)loadingProcess007{
+-(void)sceneLoadingProcess007{
 	[displayLabel setString:@"007"];
 }
 
--(void)whenLoadingEnded{
+-(void)sceneDidEndLoading:(CMMScene *)scene_{
 	[displayLabel setString:@"completed"];
 	[self addChild:menuItemBack];
 }

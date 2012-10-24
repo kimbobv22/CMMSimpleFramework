@@ -27,13 +27,13 @@ struct TestPacketType1{
 
 @end
 
-@interface GameCenterTestLayer : CMMLayer{
+@interface GameCenterTestLayer : CMMLayer<CMMSceneLoadingProtocol>{
 	CMMMenuItemSet *menuSelector;
 }
 
 @end
 
-@interface GameCenterTestLayerMaster : CMMLayer<CMMGameKitHandlerDelegate>{
+@interface GameCenterTestLayerMaster : CMMLayer<CMMSceneLoadingProtocol,CMMGameKitHandlerDelegate>{
 	CMMGameKitHandler *gameKitHandler;
 	CMMStage *stage;
 	CMMSObject *player,*opponent;

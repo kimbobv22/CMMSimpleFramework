@@ -14,8 +14,8 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 -(id)initWithPopup:(CMMLayerPopup *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_{
 	if(!(self = [super init])) return self;
 	
-	self.popup = popup_;
-	self.delegate = delegate_;
+	[self setPopup:popup_];
+	[self setDelegate:delegate_];;
 	
 	return self;
 }
@@ -93,9 +93,9 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 }
 
 -(void)addPopupItem:(CMMPopupDispatcherItem *)popupItem_ atIndex:(int)index_{
-	if([self indexOfPopup:popupItem_.popup] != NSNotFound) return;
+	if([self indexOfPopup:[popupItem_ popup]] != NSNotFound) return;
 	[popupList insertObject:popupItem_ atIndex:index_];
-	[scene addChild:popupItem_.popup z:-1];
+	[scene addChild:[popupItem_ popup] z:-1];
 	[self _resortPopup];
 }
 -(CMMPopupDispatcherItem *)addPopupItemWithPopup:(CMMLayerPopup *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_ atIndex:(int)index_{

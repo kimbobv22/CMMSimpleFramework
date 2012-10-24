@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface AchievementsTestLayer : CMMLayer<CMMGameKitAchievementsDelegate>{
+@interface AchievementsTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMGameKitAchievementsDelegate>{
 	CMMMenuItemSet *menu;
 	CCLabelTTF *displayLb;
 	BOOL useGameCenterBanner;

@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface ScrollMenuTestLayer : CMMLayer{
+@interface ScrollMenuTestLayer : CMMLayer<CMMSceneLoadingProtocol>{
 	
 }
 

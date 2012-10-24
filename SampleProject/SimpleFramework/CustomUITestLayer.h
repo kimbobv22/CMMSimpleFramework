@@ -2,7 +2,7 @@
 
 #import "CMMheader.h"
 
-@interface CustomUITestLayer : CMMLayer<CMMCustomUIJoypadDelegate>{
+@interface CustomUITestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMCustomUIJoypadDelegate>{
 	CMMStage *stage;
 	
 	CMMSObject *target;

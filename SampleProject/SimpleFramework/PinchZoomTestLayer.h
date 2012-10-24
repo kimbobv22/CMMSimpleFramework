@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface PinchZoomTestLayer : CMMLayer<CMMMenuItemDelegate>{
+@interface PinchZoomTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMMenuItemDelegate>{
 	CMMLayerPinchZoom *pinchZoomLayer;
 }
 

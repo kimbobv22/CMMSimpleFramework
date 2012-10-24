@@ -8,6 +8,6 @@
 
 @end
 
-@interface TransitionTestLayer : CMMLayer
+@interface TransitionTestLayer : CMMLayer<CMMSceneLoadingProtocol>
 
 @end

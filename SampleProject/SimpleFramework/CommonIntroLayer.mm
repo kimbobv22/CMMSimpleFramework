@@ -20,7 +20,7 @@
 	
 	return self;
 }
--(void)whenLoadingEnded{
+-(void)sceneDidEndLoading:(CMMScene *)scene_{
 	[sequencer start];
 }
 
@@ -74,40 +74,40 @@
 	[labelDisplay setPosition:cmmFuncCommon_positionInParent(self, labelDisplay)];
 }
 
--(void)loadingProcess000{
+-(void)sceneLoadingProcess000{
 //	[[CCDirector sharedDirector] setAnimationInterval:1.0f/30.0f];
 	[self _setDisplayStr:@"Loading sprite frame..."];
 }
--(void)loadingProcess001{
+-(void)sceneLoadingProcess001{
 	[[CMMDrawingManager sharedManager] addDrawingItemWithFileName:@"IMG_CMN_BFRAME_000"];
 }
 
--(void)loadingProcess002{
+-(void)sceneLoadingProcess002{
 	[self _setDisplayStr:@"Initializing gyroscope..."];
 }
--(void)loadingProcess003{
+-(void)sceneLoadingProcess003{
 	[CMMMotionDispatcher sharedDispatcher];
 }
 
--(void)loadingProcess004{
+-(void)sceneLoadingProcess004{
 	[self _setDisplayStr:@"Initializing sound engine..."];
 }
--(void)loadingProcess005{
+-(void)sceneLoadingProcess005{
 	[CMMSoundEngine sharedEngine];
 }
 
--(void)loadingProcess006{
+-(void)sceneLoadingProcess006{
 	[self _setDisplayStr:@"Initializing notice template..."];
 }
--(void)loadingProcess007{
+-(void)sceneLoadingProcess007{
 	[[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [CMMNoticeDispatcherTemplate_DefaultScale templateWithNoticeDispatcher:[[CMMScene sharedScene] noticeDispatcher]];
 }
 
--(void)loadingProcess008{
+-(void)sceneLoadingProcess008{
 	[self _setDisplayStr:@"connecting to Game Center..."];
 }
 
--(void)whenLoadingEnded{
+-(void)sceneDidEndLoading:(CMMScene *)scene_{
 	if(![[CMMGameKitPA sharedPA] isAvailableGameCenter]){
 		[self forwardScene];
 		return;

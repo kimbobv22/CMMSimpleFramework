@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface MenuItemSetTestLayer : CMMLayer<CMMMenuItemSetDelegate>{
+@interface MenuItemSetTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMMenuItemSetDelegate>{
 	CMMMenuItemSet *menuItemSet;
 	CMMMenuItemLabelTTF *alignTypeChangeBtn,*lineHAlignTypeChangeBtn,*lineVAlignTypeChangeBtn;
 }

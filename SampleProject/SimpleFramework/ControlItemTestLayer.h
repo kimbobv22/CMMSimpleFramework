@@ -2,13 +2,13 @@
 
 #import "CMMHeader.h"
 
-@interface ControlItemTestLayer : CMMLayer<CMMControlItemSwitchDelegate,CMMControlItemSliderDelegate>{
+@interface ControlItemTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMControlItemSwitchDelegate,CMMControlItemSliderDelegate>{
 	CMMControlItemSlider *slider2;
 }
 
 @end
 
-@interface ControlItemTestLayer2 : CMMLayer{
+@interface ControlItemTestLayer2 : CMMLayer<CMMSceneLoadingProtocol>{
 	CMMSpriteBatchBar *batchBar;
 	CCLabelTTF *label;
 }

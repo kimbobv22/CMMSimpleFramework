@@ -2,14 +2,14 @@
 
 #import "CMMHeader.h"
 
-@interface CommonIntroLayer1 : CMMLayer<CMMSequenceMakerDelegate>{
+@interface CommonIntroLayer1 : CMMLayer<CMMSceneLoadingProtocol,CMMSequenceMakerDelegate>{
 	CCSprite *profileSprite;
 	CMMSequenceMaker *sequencer;
 }
 
 @end
 
-@interface CommonIntroLayer2 : CMMLayer<CMMGameKitPADelegate,CMMGameKitAchievementsDelegate>{
+@interface CommonIntroLayer2 : CMMLayer<CMMSceneLoadingProtocol,CMMGameKitPADelegate,CMMGameKitAchievementsDelegate>{
 	CCLabelTTF *labelDisplay;
 }
 

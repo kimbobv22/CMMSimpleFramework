@@ -8,7 +8,7 @@
 
 #import "CMMHeader.h"
 
-@interface SequenceMakerTestLayer : CMMLayer<CMMSequenceMakerDelegate>{
+@interface SequenceMakerTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMSequenceMakerDelegate>{
 	CMMSequenceMaker *sequencer;
 	CCSprite *testSprite;
 	CMMMenuItemLabelTTF *startBtn,*nextBtn,*prevBtn;

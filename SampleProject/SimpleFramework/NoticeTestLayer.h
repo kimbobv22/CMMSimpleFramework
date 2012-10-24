@@ -2,6 +2,6 @@
 
 #import "CMMHeader.h"
 
-@interface NoticeTestLayer : CMMLayer
+@interface NoticeTestLayer : CMMLayer<CMMSceneLoadingProtocol>
 
 @end

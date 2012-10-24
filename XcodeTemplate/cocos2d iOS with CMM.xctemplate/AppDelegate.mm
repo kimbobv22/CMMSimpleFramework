@@ -95,7 +95,6 @@
 {
 	if( [navController_ visibleViewController] == director_ ){
 		[director_ pause];
-		[[CMMScene sharedScene] applicationWillResignActive];
 	}
 }
 
@@ -104,7 +103,6 @@
 {
 	if( [navController_ visibleViewController] == director_ ){
 		[director_ resume];
-		[[CMMScene sharedScene] applicationDidBecomeActive];
 	}
 }
 
@@ -112,7 +110,6 @@
 {
 	if( [navController_ visibleViewController] == director_ ){
 		[director_ stopAnimation];
-		[[CMMScene sharedScene] applicationDidEnterBackground];
 	}
 }
 
@@ -120,21 +117,18 @@
 {
 	if( [navController_ visibleViewController] == director_ ){
 		[director_ startAnimation];
-		[[CMMScene sharedScene] applicationWillEnterForeground];
 	}
 }
 
 // application will be killed
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-	[[CMMScene sharedScene] applicationWillTerminate];
 	CC_DIRECTOR_END();
 }
 
 // purge memory
 - (void)applicationDidReceiveMemoryWarning:(UIApplication *)application
 {
-	[[CMMScene sharedScene] applicationDidReceiveMemoryWarning];
 	[[CCDirector sharedDirector] purgeCachedData];
 }
 

@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface CameraTestLayer : CMMLayer<CMMCaremaManagerDelegate,CMMMotionDispatcherDelegate>{
+@interface CameraTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMCaremaManagerDelegate,CMMMotionDispatcherDelegate>{
 	CMMStage *stage;
 }
 

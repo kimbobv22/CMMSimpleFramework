@@ -13,13 +13,13 @@ enum StageControlType{
 	StageControlType_maxCount,
 };
 
-@interface StageTestLayer : CMMLayer{
+@interface StageTestLayer : CMMLayer<CMMSceneLoadingProtocol>{
 	CMMMenuItemSet *stageSelector;
 }
 
 @end
 
-@interface StageTestLayerMaster : CMMLayer<CMMStageDelegate,CMMStageTouchDelegate,CMMScrollMenuDelegate>{
+@interface StageTestLayerMaster : CMMLayer<CMMSceneLoadingProtocol,CMMStageDelegate,CMMStageTouchDelegate,CMMScrollMenuDelegate>{
 	CMMStage *stage;
 	CMMScrollMenuV *controlMenu;
 	CMMControlItemSlider *gravitySlider;
