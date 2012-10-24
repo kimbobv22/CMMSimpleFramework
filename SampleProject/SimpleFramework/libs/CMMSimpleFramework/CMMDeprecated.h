@@ -21,6 +21,20 @@ DEPRECATED_ATTRIBUTE static CGPoint cmmFuncCommon_position_center(CCNode *parent
 	return cmmFuncCommon_positionInParent(parent_, target_, ccp(0.5f,0.5f));
 }
 
+UNAVAILABLE_ATTRIBUTE @protocol CMMApplicationProtocol <NSObject>
+
+@optional
+-(void)applicationDidBecomeActive;
+-(void)applicationWillResignActive;
+
+-(void)applicationWillTerminate;
+-(void)applicationDidEnterBackground;
+-(void)applicationWillEnterForeground;
+
+-(void)applicationDidReceiveMemoryWarning;
+
+@end
+
 @interface CMMScene(Deprecated)
 
 @property (nonatomic, readwrite) ccColor3B transitionColor DEPRECATED_ATTRIBUTE;
@@ -29,6 +43,13 @@ DEPRECATED_ATTRIBUTE static CGPoint cmmFuncCommon_position_center(CCNode *parent
 @end
 
 DEPRECATED_ATTRIBUTE @interface CMMTouchDispatcherScene : CMMTouchDispatcher
+
+@end
+
+@interface CMMLayer(Deprecated)
+
+-(void)loadingProcess000 UNAVAILABLE_ATTRIBUTE;
+-(void)whenLoadingEnded UNAVAILABLE_ATTRIBUTE;
 
 @end
 

@@ -20,6 +20,17 @@
 
 @end
 
+@implementation CMMLayer(Deprecated)
+
+-(void)loadingProcess000{
+	// change to protocol -> CMMSceneLoadingProtocol
+}
+-(void)whenLoadingEnded{
+	// change to protocol -> CMMSceneLoadingProtocol
+}
+
+@end
+
 @implementation CMMLayerMask
 
 @end

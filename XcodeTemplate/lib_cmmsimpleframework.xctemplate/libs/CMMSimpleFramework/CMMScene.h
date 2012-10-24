@@ -7,16 +7,28 @@
 #import "CMMNoticeDispatcher.h"
 #import "CMMSequenceMaker.h"
 
+@protocol CMMSceneLoadingProtocol <NSObject>
+
+@optional
+-(void)sceneDidStartLoading:(CMMScene *)scene_;
+-(void)sceneDidEndLoading:(CMMScene *)scene_;
+
+-(void)sceneLoadingProcess000; //first loading seq
+
+@end
+
 @interface CMMSceneStaticLayerItem : NSObject{
 	NSString *key;
-	CMMLayer *layer;
+	BOOL isFirstLoad;
+	CMMLayer<CMMSceneLoadingProtocol> *layer;
 }
 
-+(id)staticLayerItemWithLayer:(CMMLayer *)layer_ key:(NSString *)key_;
--(id)initWithLayer:(CMMLayer *)layer_ key:(NSString *)key_;
++(id)staticLayerItemWithLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_ key:(NSString *)key_;
+-(id)initWithLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_ key:(NSString *)key_;
 
 @property (nonatomic, copy) NSString *key;
-@property (nonatomic, retain) CMMLayer *layer;
+@property (nonatomic, readwrite) BOOL isFirstLoad;
+@property (nonatomic, retain) CMMLayer<CMMSceneLoadingProtocol> *layer;
 
 @end
 
@@ -35,8 +47,8 @@
 
 @end
 
-@interface CMMScene : CCScene<CMMApplicationProtocol,CMMGLViewTouchDelegate,CMMSequenceMakerDelegate>{
-	CMMLayer *runningLayer;
+@interface CMMScene : CCScene<CMMGLViewTouchDelegate,CMMSequenceMakerDelegate>{
+	CMMLayer<CMMSceneLoadingProtocol> *runningLayer;
 	
 	CCArray *_pushLayerList;
 	CMMSceneTransitionLayer *transitionLayer;
@@ -52,9 +64,9 @@
 
 +(CMMScene *)sharedScene;
 
--(void)pushLayer:(CMMLayer *)layer_;
+-(void)pushLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_;
 
-@property (nonatomic, readonly) CMMLayer *runningLayer;
+@property (nonatomic, readonly) CMMLayer<CMMSceneLoadingProtocol> *runningLayer;
 @property (nonatomic, retain) CMMSceneTransitionLayer *transitionLayer;
 @property (nonatomic, readonly) BOOL isOnTransition;
 @property (nonatomic, readonly) CCArray *staticLayerItemList;
@@ -71,7 +83,7 @@
 -(void)pushStaticLayerItemAtKey:(NSString *)key_;
 
 -(void)addStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_;
--(CMMSceneStaticLayerItem *)addStaticLayerItemWithLayer:(CMMLayer *)layer_ atKey:(NSString *)key_;
+-(CMMSceneStaticLayerItem *)addStaticLayerItemWithLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_ atKey:(NSString *)key_;
 
 -(void)removeStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_;
 -(void)removeStaticLayerItemAtIndex:(uint)index_;
@@ -80,9 +92,10 @@
 
 -(CMMSceneStaticLayerItem *)staticLayerItemAtIndex:(uint)index_;
 -(CMMSceneStaticLayerItem *)staticLayerItemAtKey:(NSString *)key_;
+-(CMMSceneStaticLayerItem *)staticLayerItemAtLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_;
 
 -(uint)indexOfStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_;
--(uint)indexOfStaticLayerItemWithLayer:(CMMLayer *)layer_;
+-(uint)indexOfStaticLayerItemWithLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_;
 -(uint)indexOfStaticLayerItemWithKey:(NSString *)key_;
 
 @end

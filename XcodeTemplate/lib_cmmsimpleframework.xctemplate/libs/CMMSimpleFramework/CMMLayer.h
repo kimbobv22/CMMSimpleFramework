@@ -7,12 +7,9 @@
 #import "CMMPopupDispatcher.h"
 #import "CMMMotionDispatcher.h"
 
-@interface CMMLayer : CCLayerColor<CMMApplicationProtocol,CMMTouchDispatcherDelegate,CMMPopupDispatcherDelegate>{
+@interface CMMLayer : CCLayerColor<CMMTouchDispatcherDelegate>{
 	CMMTouchDispatcher *touchDispatcher;
 }
-
--(void)loadingProcess000; //first loading seq
--(void)whenLoadingEnded;
 
 @property (nonatomic, readonly) CMMTouchDispatcher *touchDispatcher;
 

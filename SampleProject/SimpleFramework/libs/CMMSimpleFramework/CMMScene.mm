@@ -5,16 +5,17 @@
 static CMMScene *_sharedScene_ = nil;
 
 @implementation CMMSceneStaticLayerItem
-@synthesize key,layer;
+@synthesize key,isFirstLoad,layer;
 
-+(id)staticLayerItemWithLayer:(CMMLayer *)layer_ key:(NSString *)key_{
++(id)staticLayerItemWithLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_ key:(NSString *)key_{
 	return [[[self alloc] initWithLayer:layer_ key:key_] autorelease];
 }
--(id)initWithLayer:(CMMLayer *)layer_ key:(NSString *)key_{
+-(id)initWithLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_ key:(NSString *)key_{
 	if(!(self = [super init])) return self;
 	
-	[self setLayer:layer_];
 	[self setKey:key_];
+	[self setLayer:layer_];
+	isFirstLoad = YES;
 	
 	return self;
 }
@@ -80,7 +81,7 @@ static CMMScene *_sharedScene_ = nil;
 	[transitionLayer startFadeInTransitionWithTarget:self callbackSelector:@selector(transition001)];
 }
 -(void)transition001{
-	CMMLayer *targetLayer_ = [_pushLayerList objectAtIndex:0];
+	CMMLayer<CMMSceneLoadingProtocol> *targetLayer_ = [_pushLayerList objectAtIndex:0];
 	targetLayer_.isTouchEnabled = NO;
 	if(runningLayer){
 		[self removeChild:runningLayer cleanup:([self indexOfStaticLayerItemWithLayer:runningLayer] == NSNotFound)];
@@ -91,17 +92,30 @@ static CMMScene *_sharedScene_ = nil;
 	[transitionLayer startFadeOutTransitionWithTarget:self callbackSelector:@selector(transition002)];
 }
 -(void)transition002{
-	[_preSequencer setDelegate:self];
-	[_preSequencer startWithTarget:runningLayer];
+	CMMSceneStaticLayerItem *staticLayerItem_ = [self staticLayerItemAtIndex:[self indexOfStaticLayerItemWithLayer:runningLayer]];
+	
+	BOOL doLoadSequence_ = !staticLayerItem_ || (staticLayerItem_ && [staticLayerItem_ isFirstLoad]);
+	if(doLoadSequence_){
+		[_preSequencer setDelegate:self];
+		[_preSequencer startWithTarget:runningLayer];
+		if(cmmFuncCommon_respondsToSelector(runningLayer, @selector(sceneDidStartLoading:))){
+			[runningLayer sceneDidStartLoading:self];
+		}
+	}else if(staticLayerItem_){
+		[staticLayerItem_ setIsFirstLoad:NO];
+		[self sequenceMakerDidEnd:_preSequencer];
+	}
 }
 
 -(void)sequenceMakerDidEnd:(CMMSequenceMaker *)sequenceMaker_{
 	[_pushLayerList removeObjectAtIndex:0];
 	[transitionLayer removeFromParentAndCleanup:YES];
-	runningLayer.isTouchEnabled = YES;
+	[runningLayer setIsTouchEnabled:YES];
 	isOnTransition = NO;
-	[runningLayer whenLoadingEnded];
-	if(_pushLayerList.count>0)
+	if(cmmFuncCommon_respondsToSelector(runningLayer, @selector(sceneDidEndLoading:))){
+		[runningLayer sceneDidEndLoading:self];
+	}
+	if([_pushLayerList count]>0)
 		[self startTransition];
 }
 
@@ -131,7 +145,7 @@ static CMMScene *_sharedScene_ = nil;
 	staticLayerItemList = [[CCArray alloc] init];
 	
 	_preSequencer = [[CMMSequenceMakerAuto alloc] init];
-	[_preSequencer setSequenceMethodFormatter:@"loadingProcess%03d"];
+	[_preSequencer setSequenceMethodFormatter:@"sceneLoadingProcess%03d"];
 	touchDispatcher = [[CMMTouchDispatcher alloc] initWithTarget:self];
 	popupDispatcher = [[CMMPopupDispatcher alloc] initWithScene:self];
 	noticeDispatcher = [[CMMNoticeDispatcher alloc] initWithTarget:self];
@@ -188,30 +202,9 @@ static CMMScene *_sharedScene_ = nil;
 	[touchDispatcher whenTouchCancelled:touch_ event:event_];
 }
 
--(void)pushLayer:(CMMLayer *)layer_{
+-(void)pushLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_{
 	[_pushLayerList addObject:layer_];
 	[self startTransition];
-}
-
--(void)applicationDidBecomeActive{
-	if(runningLayer) [runningLayer applicationDidBecomeActive];
-}
--(void)applicationWillResignActive{
-	if(runningLayer) [runningLayer applicationWillResignActive];
-}
-
--(void)applicationWillTerminate{
-	if(runningLayer) [runningLayer applicationWillTerminate];
-}
--(void)applicationDidEnterBackground{
-	if(runningLayer) [runningLayer applicationDidEnterBackground];
-}
--(void)applicationWillEnterForeground{
-	if(runningLayer) [runningLayer applicationWillEnterForeground];
-}
-
--(void)applicationDidReceiveMemoryWarning{
-	if(runningLayer) [runningLayer applicationDidReceiveMemoryWarning];
 }
 
 -(void)dealloc{
@@ -243,7 +236,7 @@ static CMMScene *_sharedScene_ = nil;
 	if(index_ != NSNotFound) return;
 	[staticLayerItemList addObject:staticLayerItem_];
 }
--(CMMSceneStaticLayerItem *)addStaticLayerItemWithLayer:(CMMLayer *)layer_ atKey:(NSString *)key_{
+-(CMMSceneStaticLayerItem *)addStaticLayerItemWithLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_ atKey:(NSString *)key_{
 	CMMSceneStaticLayerItem *staticLayerItem_ = [self staticLayerItemAtKey:key_];
 	[self removeStaticLayerItem:staticLayerItem_];
 	staticLayerItem_ = [CMMSceneStaticLayerItem staticLayerItemWithLayer:layer_ key:key_];
@@ -277,11 +270,14 @@ static CMMScene *_sharedScene_ = nil;
 -(CMMSceneStaticLayerItem *)staticLayerItemAtKey:(NSString *)key_{
 	return [self staticLayerItemAtIndex:[self indexOfStaticLayerItemWithKey:key_]];
 }
+-(CMMSceneStaticLayerItem *)staticLayerItemAtLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_{
+	return [self staticLayerItemAtIndex:[self indexOfStaticLayerItemWithLayer:layer_]];
+}
 
 -(uint)indexOfStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_{
 	return [staticLayerItemList indexOfObject:staticLayerItem_];
 }
--(uint)indexOfStaticLayerItemWithLayer:(CMMLayer *)layer_{
+-(uint)indexOfStaticLayerItemWithLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_{
 	ccArray *data_ = staticLayerItemList->data;
 	uint count_ = data_->num;
 	for(uint index_ = 0;index_<count_;++index_){

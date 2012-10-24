@@ -16,7 +16,7 @@
 	return self;
 }
 
--(void)registerWithTouchDispatcher{}
+-(void)registerWithTouchDispatcher{} // do not use CCTouchDispatcher
 
 #if COCOS2D_DEBUG >= 1
 -(void)visit{
@@ -54,19 +54,6 @@
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
 	[touchDispatcher whenTouchCancelled:touch_ event:event_];
 }
-
-//for reference
--(void)loadingProcess000{}
--(void)whenLoadingEnded{}
--(void)popupDispatcher:(CMMPopupDispatcherItem *)popupItem_ whenClosedWithReceivedData:(id)data_{}
-
-//delegate method of application status
--(void)applicationDidBecomeActive{}
--(void)applicationWillResignActive{}
--(void)applicationWillTerminate{}
--(void)applicationDidEnterBackground{}
--(void)applicationWillEnterForeground{}
--(void)applicationDidReceiveMemoryWarning{}
 
 -(void)dealloc{
 	[touchDispatcher release];
