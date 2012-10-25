@@ -137,6 +137,11 @@
 	return [itemList countByEnumeratingWithState:state objects:stackbuf count:len];
 }
 
+-(void)cleanup{
+	delegate = nil;
+	[super cleanup];
+}
+
 -(void)dealloc{
 	[itemList release];
 	[super dealloc];

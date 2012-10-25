@@ -19,4 +19,9 @@
 
 -(void)update:(ccTime)dt_{}
 
+-(void)cleanup{
+	delegate = nil;
+	[super cleanup];
+}
+
 @end

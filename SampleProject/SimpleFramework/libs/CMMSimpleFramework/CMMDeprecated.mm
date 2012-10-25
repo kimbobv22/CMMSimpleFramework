@@ -39,6 +39,22 @@
 
 @end
 
+@implementation CMMSpriteBatchBar(Deprecated)
+
++(id)batchBarWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_ barCropWidth:(float)barCropWidth_{
+	return [self batchBarWithTargetSprite:targetSprite_ batchBarSize:batchBarSize_ edgeSize:edgeSize_];
+}
+-(id)initWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_ barCropWidth:(float)barCropWidth_{
+	return [self initWithTargetSprite:targetSprite_ batchBarSize:batchBarSize_ edgeSize:edgeSize_];
+}
+
+-(void)setBarCropWidth:(float)barCropWidth{}
+-(float)barCropWidth{
+	return 0.0f;
+}
+
+@end
+
 @implementation CMMLoadingObject
 
 +(id)loadingObject{

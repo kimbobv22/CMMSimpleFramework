@@ -40,6 +40,11 @@
 	return isEnable;
 }
 
+-(void)cleanup{
+	delegate = nil;
+	[super cleanup];
+}
+
 -(void)dealloc{
 	[userData release];
 	[super dealloc];

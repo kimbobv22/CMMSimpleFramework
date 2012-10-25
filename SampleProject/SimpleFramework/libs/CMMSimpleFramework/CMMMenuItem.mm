@@ -125,6 +125,9 @@
 	callback_pushup = nil;
 	[callback_pushcancel release];
 	callback_pushcancel = nil;
+	
+	delegate = nil;
+	
 	[super cleanup];
 }
 

@@ -1,7 +1,6 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMDrawingManager.h"
-#import "CMMSpriteBatchBar.h"
 #import "CMMMenuItem.h"
 #import "CMMScrollMenu.h"
 #import "CMMStage.h"
@@ -10,6 +9,7 @@
 #import "CMMSimpleCache.h"
 #import "CMMScene.h"
 #import "CMMLayerMD.h"
+#import "CMMSpriteBatchBar.h"
 #import "CMMSequenceMaker.h"
 #import "CMMSoundEngine.h"
 #import "CMMControlItemText.h"
@@ -77,6 +77,15 @@ DEPRECATED_ATTRIBUTE @protocol CMMLoadingObjectDelegate <CMMSequenceMakerDelegat
 -(void)loadingObject_whenLoadingStart:(CMMLoadingObject *)loadingObject_;
 // use -(void)sequenceMakerDidEnd:(CMMSequenceMaker *)sequenceMaker_;
 -(void)loadingObject_whenLoadingEnded:(CMMLoadingObject *)loadingObject_;
+
+@end
+
+@interface CMMSpriteBatchBar(Deprecated)
+
++(id)batchBarWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_ barCropWidth:(float)barCropWidth_ DEPRECATED_ATTRIBUTE;
+-(id)initWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_ barCropWidth:(float)barCropWidth_ DEPRECATED_ATTRIBUTE;
+
+@property (nonatomic, readwrite) float barCropWidth DEPRECATED_ATTRIBUTE;
 
 @end
 

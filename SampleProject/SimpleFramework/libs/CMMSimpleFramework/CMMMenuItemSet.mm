@@ -202,6 +202,7 @@
 	callback_pushdown = nil;
 	[callback_pushup release];
 	callback_pushup = nil;
+	delegate = nil;
 	[super cleanup];
 }
 
