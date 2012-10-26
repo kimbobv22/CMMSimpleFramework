@@ -61,6 +61,7 @@
 }
 
 @property (nonatomic, assign) NSString *title;
+@property (nonatomic, readonly) CCLabelTTF *labelTitle;
 @property (nonatomic, readwrite) CCTextAlignment titleAlign;
 
 @end

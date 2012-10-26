@@ -85,4 +85,21 @@
 	}
 }
 
+-(void)addChildToInner:(CCNode *)node z:(NSInteger)z tag:(NSInteger)tag{
+	[innerLayer addChild:node z:z tag:tag];
+}
+-(void)addChildToInner:(CCNode *)node z:(NSInteger)z{
+	[self addChildToInner:node z:z tag:[node tag]];
+}
+-(void)addChildToInner:(CCNode *)node{
+	[self addChildToInner:node z:[node zOrder]];
+}
+
+-(void)removeChildFromInner:(CCNode *)node cleanup:(BOOL)cleanup{
+	[innerLayer removeChild:node cleanup:cleanup];
+}
+-(void)removeChildByTagFromInner:(NSInteger)tag cleanup:(BOOL)cleanup{
+	[innerLayer removeChildByTag:tag cleanup:cleanup];
+}
+
 @end

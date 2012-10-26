@@ -172,7 +172,7 @@
 @end
 
 @implementation CMMMenuItemLabelTTF
-@synthesize title,titleAlign;
+@synthesize title,labelTitle,titleAlign;
 
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;

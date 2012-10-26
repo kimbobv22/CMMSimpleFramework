@@ -23,13 +23,6 @@ struct CMMLayerMDScrollbar{
 	CGPoint _innerLayerBeforePoint;
 }
 
--(void)addChildToInner:(CCNode *)node z:(NSInteger)z tag:(NSInteger)tag;
--(void)addChildToInner:(CCNode *)node z:(NSInteger)z;
--(void)addChildToInner:(CCNode *)node;
-
--(void)removeChildFromInner:(CCNode *)node cleanup:(BOOL)cleanup;
--(void)removeChildByTagFromInner:(NSInteger)tag cleanup:(BOOL)cleanup;
-
 @property (nonatomic, readwrite) CMMTouchState touchState;
 @property (nonatomic, readwrite) CMMLayerMDScrollbar scrollbar;
 @property (nonatomic, readwrite) BOOL isCanDragX,isCanDragY,isAlwaysShowScrollbar;
