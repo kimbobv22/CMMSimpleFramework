@@ -27,6 +27,29 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 
 @end
 
+@implementation CMMPopupDispatcherTemplate
+
+//override this!
+-(void)startPopupWithPopupLayer:(CMMLayerPopup *)popupLayer_{}
+-(void)endPopupWithPopupLayer:(CMMLayerPopup *)popupLayer_ callbackAction:(CCCallBlock *)callbackAction_{
+	[popupLayer_ runAction:callbackAction_];
+}
+
+@end
+
+@implementation CMMPopupDispatcherTemplate_FadeInOut
+
+-(void)startPopupWithPopupLayer:(CMMLayerPopup *)popupLayer_{
+	_orginalOpacity = [popupLayer_ opacity];
+	[popupLayer_ setOpacity:0];
+	[popupLayer_ runAction:[CCFadeTo actionWithDuration:0.1f opacity:_orginalOpacity]];
+}
+-(void)endPopupWithPopupLayer:(CMMLayerPopup *)popupLayer_ callbackAction:(CCCallBlock *)callbackAction_{
+	[popupLayer_ runAction:[CCSequence actionOne:[CCFadeTo actionWithDuration:0.1f opacity:0] two:callbackAction_]];
+}
+
+@end
+
 @interface CMMPopupDispatcher(Private)
 
 -(void)_resortPopup;
@@ -43,10 +66,9 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 	if(count_<=0) return;
 	
 	CMMPopupDispatcherItem *popupItem_ = data_->arr[0];
-	CCNode *firstPopup_ = popupItem_.popup;
+	CMMLayerPopup *firstPopup_ = (CMMLayerPopup *)[popupItem_ popup];
 	[scene reorderChild:firstPopup_ z:cmmVarCMMPopupDispatcher_defaultPopupZOrder];
-	firstPopup_.scale = 0.98f;
-	[firstPopup_ runAction:[CCScaleTo actionWithDuration:0.1 scale:1.0f]];
+	[popupTemplate startPopupWithPopupLayer:firstPopup_];
 	
 	for(uint index_=1;index_<count_;++index_){
 		popupItem_ = data_->arr[index_];
@@ -74,7 +96,7 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 @end
 
 @implementation CMMPopupDispatcher
-@synthesize scene,popupList,popupCount,curPopup;
+@synthesize scene,popupList,popupCount,curPopup,popupTemplate;
 
 +(id)popupDispatcherWithScene:(CMMScene *)scene_{
 	return [[[self alloc] initWithScene:scene_] autorelease];
@@ -84,12 +106,13 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 	
 	scene = scene_;
 	popupList = [[CCArray alloc] init];
+	popupTemplate = [[CMMPopupDispatcherTemplate_FadeInOut alloc] init];
 	
 	return self;
 }
 
 -(int)popupCount{
-	return popupList.count;
+	return [popupList count];
 }
 
 -(void)addPopupItem:(CMMPopupDispatcherItem *)popupItem_ atIndex:(int)index_{
@@ -112,8 +135,8 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 	return [self addPopupItemWithPopup:popup_ delegate:delegate_ atIndex:[self popupCount]];
 }
 
--(void)removePopupItem:(CMMPopupDispatcherItem *)popupItem_ withData:(id)data_{
-	[popupItem_.popup removeFromParentAndCleanup:YES];
+-(void)_callbackRemovePopup:(CMMPopupDispatcherItem *)popupItem_ withData:(id)data_{
+	[[popupItem_ popup] removeFromParentAndCleanup:YES];
 	
 	id<CMMPopupDispatcherDelegate> delegate_ = popupItem_.delegate;
 	if(cmmFuncCommon_respondsToSelector(delegate_, @selector(popupDispatcher:whenClosedWithReceivedData:)))
@@ -122,6 +145,11 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 	[self cachePopupItem:popupItem_];
 	[popupList removeObject:popupItem_];
 	[self _resortPopup];
+}
+-(void)removePopupItem:(CMMPopupDispatcherItem *)popupItem_ withData:(id)data_{
+	[popupTemplate endPopupWithPopupLayer:[popupItem_ popup] callbackAction:[CCCallBlock actionWithBlock:^{
+		[self _callbackRemovePopup:popupItem_ withData:data_];
+	}]];
 }
 -(void)removePopupItem:(CMMPopupDispatcherItem *)popupItem_{
 	[self removePopupItem:popupItem_ withData:nil];
@@ -159,6 +187,7 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 }
 
 -(void)dealloc{
+	[popupTemplate release];
 	[popupList release];
 	[super dealloc];
 }

@@ -31,10 +31,24 @@
 
 @end
 
+@interface CMMPopupDispatcherTemplate : NSObject
+
+-(void)startPopupWithPopupLayer:(CMMLayerPopup *)popupLayer_;
+-(void)endPopupWithPopupLayer:(CMMLayerPopup *)popupLayer_ callbackAction:(CCCallBlock *)callbackAction_;
+
+@end
+
+@interface CMMPopupDispatcherTemplate_FadeInOut : CMMPopupDispatcherTemplate{
+	GLubyte _orginalOpacity;
+}
+
+@end
+
 @interface CMMPopupDispatcher : NSObject{
 	CMMScene *scene;
 	CCArray *popupList;
 	CMMLayerPopup *curPopup;
+	CMMPopupDispatcherTemplate *popupTemplate;
 }
 
 +(id)popupDispatcherWithScene:(CMMScene *)scene_;
@@ -44,6 +58,7 @@
 @property (nonatomic, readonly) CCArray *popupList;
 @property (nonatomic, readonly) int popupCount;
 @property (nonatomic, readonly) CMMLayerPopup *curPopup;
+@property (nonatomic, retain) CMMPopupDispatcherTemplate *popupTemplate;
 
 @end
 

@@ -3,7 +3,7 @@
 #import "CMMSequenceMaker.h"
 
 @implementation CMMSequenceMaker
-@synthesize delegate,sequenceMethodFormatter,curSequence,sequenceState,sequenceTimeInterval;
+@synthesize delegate,sequenceMethodFormatter,curSequence,sequenceCount,sequenceState,sequenceTimeInterval;
 
 +(id)sequenceMaker{
 	return [[[self alloc] init] autorelease];
@@ -15,6 +15,7 @@
 	delegate = nil;
 	sequenceMethodFormatter = cmmVarCMMSequenceMaker_defaultSequenceFormatter;
 	curSequence = -1;
+	sequenceCount = 0;
 	sequenceState = CMMSequenceMakerState_stop;
 	sequenceTimeInterval = 0.1f;
 	
@@ -30,6 +31,7 @@
 	switch(sequenceState){
 		case CMMSequenceMakerState_stop:
 			curSequence = -1;
+			sequenceCount = 0;
 			break;
 		case CMMSequenceMakerState_pause:
 			break;
@@ -51,6 +53,17 @@
 	
 	[self setSequenceState:CMMSequenceMakerState_stop];
 	_target = target_;
+	
+	do{
+		SEL targetSelector_ = NSSelectorFromString([NSString stringWithFormat:sequenceMethodFormatter,sequenceCount]);
+		if(cmmFuncCommon_respondsToSelector(_target,targetSelector_)){
+			sequenceCount ++;
+		}else break;
+	}while(1);
+
+#if COCOS2D_DEBUG >= 1
+	CCLOG(@"CMMSequenceMaker : Sequence Start! total sequence count : %d",sequenceCount);
+#endif
 	
 	if(cmmFuncCommon_respondsToSelector(delegate,@selector(sequenceMakerDidStart:)))
 		[delegate sequenceMakerDidStart:self];
@@ -90,15 +103,14 @@
 	if(!sequenceMethodFormatter){
 		isEnd_ = YES;
 	}else{
-		SEL targetSelector_ = NSSelectorFromString([NSString stringWithFormat:sequenceMethodFormatter,curSequence]);
-		if(cmmFuncCommon_respondsToSelector(_target,targetSelector_))
-			[_target performSelector:targetSelector_];
-		else isEnd_ = YES;
+		if(curSequence<sequenceCount){
+			[_target performSelector:NSSelectorFromString([NSString stringWithFormat:sequenceMethodFormatter,curSequence])];
+		}else isEnd_ = YES;
 	}
 	
 	if(isEnd_){
 		[self setSequenceState:CMMSequenceMakerState_stop];
-		if(CMMSequenceMakerState_onSequence && cmmFuncCommon_respondsToSelector(delegate,@selector(sequenceMakerDidEnd:))){
+		if(cmmFuncCommon_respondsToSelector(delegate,@selector(sequenceMakerDidEnd:))){
 			[delegate sequenceMakerDidEnd:self];
 		}
 		return;

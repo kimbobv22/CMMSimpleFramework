@@ -29,7 +29,7 @@ typedef enum{
 	
 	id _target;
 	NSString *sequenceMethodFormatter;
-	uint curSequence;
+	uint curSequence,sequenceCount;
 	CMMSequenceMakerState sequenceState;
 	ccTime sequenceTimeInterval;
 }
@@ -46,7 +46,7 @@ typedef enum{
 
 @property (nonatomic, assign) id<CMMSequenceMakerDelegate> delegate;
 @property (nonatomic, copy) NSString *sequenceMethodFormatter;
-@property (nonatomic, readonly) uint curSequence;
+@property (nonatomic, readonly) uint curSequence,sequenceCount;
 @property (nonatomic, readwrite) CMMSequenceMakerState sequenceState;
 @property (nonatomic, readwrite) ccTime sequenceTimeInterval;
 
