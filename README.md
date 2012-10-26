@@ -5,10 +5,14 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 ##How to use
 
-	// 1. Download template files.
-	// 1. 템플릿 파일을 다운로드
-
-
+>required Cocos2d v2.x library<br>
+>Cocos2d v2.x 라이브러리 필요<br>
+<br>
+>1. Download template files.
+>1. 템플릿 파일을 다운로드.
+<br>
+>2. copy files to ${USER}/Library/Developer/Xcode/Templates/cocos2d v2.x/<br>
+>2. ${USER}/Library/Developer/Xcode/Templates/cocos2d v2.x/ 로 파일을 복사합니다.<br>
 <br>
     
 ##Class List - Common
