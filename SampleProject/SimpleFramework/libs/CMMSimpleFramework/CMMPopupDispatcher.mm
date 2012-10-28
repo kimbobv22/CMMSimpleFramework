@@ -147,7 +147,9 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 	[self _resortPopup];
 }
 -(void)removePopupItem:(CMMPopupDispatcherItem *)popupItem_ withData:(id)data_{
-	[popupTemplate endPopupWithPopupLayer:[popupItem_ popup] callbackAction:[CCCallBlock actionWithBlock:^{
+	CMMLayerPopup *popupLayer_ = [popupItem_ popup];
+	[popupLayer_ setIsTouchEnabled:NO];
+	[popupTemplate endPopupWithPopupLayer:popupLayer_ callbackAction:[CCCallBlock actionWithBlock:^{
 		[self _callbackRemovePopup:popupItem_ withData:data_];
 	}]];
 }
