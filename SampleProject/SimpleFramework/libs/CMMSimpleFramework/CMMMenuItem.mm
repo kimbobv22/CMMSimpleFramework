@@ -13,8 +13,8 @@
 @implementation CMMMenuItem(Private)
 
 -(void)_stopFadeAction{
-	[self stopAction:_fadeInAction];
-	[self stopAction:_fadeOutAction];
+	[self stopAction:pushUpAction];
+	[self stopAction:pushDownAction];
 }
 -(void)_setMenuItemImage:(CCSprite *)sprite_{
 	[self setTexture:[sprite_ texture]];
@@ -24,10 +24,10 @@
 	_isOnSelected = isOnSelected_;
 	[self _stopFadeAction];
 	if(_isOnSelected){
-		[self runAction:_fadeOutAction];
+		[self runAction:pushDownAction];
 		[self _setMenuItemImage:selectedImage];
 	}else{
-		[self runAction:isEnable?_fadeInAction:_fadeOutAction];
+		[self runAction:isEnable?pushUpAction:pushDownAction];
 		[self _setMenuItemImage:normalImage];
 	}
 }
@@ -35,7 +35,7 @@
 @end
 
 @implementation CMMMenuItem
-@synthesize key,userData,normalImage,selectedImage,delegate,isEnable,callback_pushdown,callback_pushup,callback_pushcancel;
+@synthesize key,userData,normalImage,selectedImage,delegate,isEnable,callback_pushdown,callback_pushup,callback_pushcancel,pushDownAction,pushUpAction;
 
 +(id)menuItemWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ frameSize:(CGSize)frameSize_{
 	return [[[self alloc] initWithFrameSeq:frameSeq_ batchBarSeq:batchBarSeq_ frameSize:frameSize_] autorelease];
@@ -46,8 +46,8 @@
 
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
 	
-	_fadeInAction = [[CCTintTo actionWithDuration:0.1f red:255 green:255 blue:255] retain];
-	_fadeOutAction = [[CCTintTo actionWithDuration:0.1f red:140 green:140 blue:140] retain];
+	pushUpAction = [[CCTintTo actionWithDuration:0.1f red:255 green:255 blue:255] retain];
+	pushDownAction = [[CCTintTo actionWithDuration:0.1f red:140 green:140 blue:140] retain];
 	
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
 	
@@ -137,8 +137,8 @@
 	[callback_pushdown release];
 	[callback_pushup release];
 	[callback_pushcancel release];
-	[_fadeOutAction release];
-	[_fadeInAction release];
+	[pushUpAction release];
+	[pushDownAction release];
 	[key release];
 	[userData release];
 	[super dealloc];
@@ -172,7 +172,7 @@
 @end
 
 @implementation CMMMenuItemLabelTTF
-@synthesize title,labelTitle,titleAlign;
+@synthesize title,labelTitle,titleAlign,titleSize,titleColor;
 
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
@@ -191,6 +191,18 @@
 -(void)setTitleAlign:(CCTextAlignment)titleAlign_{
 	titleAlign = titleAlign_;
 	[self updateDisplay];
+}
+-(void)setTitleSize:(float)titleSize_{
+	[labelTitle setFontSize:titleSize_];
+}
+-(float)titleSize{
+	return [labelTitle fontSize];
+}
+-(void)setTitleColor:(ccColor3B)titleColor_{
+	[labelTitle setColor:titleColor_];
+}
+-(ccColor3B)titleColor{
+	return [labelTitle color];
 }
 
 -(void)updateDisplay{

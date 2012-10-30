@@ -113,7 +113,7 @@ static BOOL _sharedCMMTouchDispatcher_allTouchDispatcherEnable_ = YES;
 	if([self touchCount] >= maxMultiTouchCount+1) return;
 	if(![target children]) return;
 	
-	ccArray *data_ = target.children->data;
+	ccArray *data_ = [target children]->data;
 	int count_ = data_->num;
 	for(uint index_=0;index_<count_;++index_){
 		CCNode<CMMTouchDispatcherDelegate> *child_ = data_->arr[index_];

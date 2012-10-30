@@ -29,8 +29,8 @@
 	return [[[self alloc] initWithMenuSize:menuSize_ menuItemArray:array_] autorelease];
 }
 
--(id)initWithMenuSize:(CGSize)menuSize_{
-	if(!(self = [super initWithColor:ccc4(0, 0, 0, 0) width:menuSize_.width height:menuSize_.height])) return self;
+-(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
+	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	itemList = [[CCArray alloc] init];
 	alignType = CMMMenuItemSetAlignType_vertical;
@@ -40,6 +40,9 @@
 	isEnable  = YES;
 	
 	return self;
+}
+-(id)initWithMenuSize:(CGSize)menuSize_{
+	return [self initWithColor:ccc4(0, 0, 0, 0) width:menuSize_.width height:menuSize_.height];
 }
 -(id)initWithMenuSize:(CGSize)menuSize_ menuItemArray:(CCArray *)array_{
 	if(!(self = [self initWithMenuSize:menuSize_])) return self;

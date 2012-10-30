@@ -1020,7 +1020,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	
 	if(backGroundNode){
 		[self updatePosition];
-		[stage addChild:backGroundNode z:1];
+		[stage addChild:backGroundNode z:-1];
 	}
 }
 -(void)setDistanceRate:(float)distanceRate_{

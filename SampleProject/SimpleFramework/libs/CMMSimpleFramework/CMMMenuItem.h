@@ -26,7 +26,7 @@
 	id<CMMMenuItemDelegate> delegate;
 	BOOL isEnable,_isOnSelected;
 	
-	CCAction *_fadeInAction,*_fadeOutAction;
+	CCAction *pushDownAction,*pushUpAction;
 	void (^callback_pushdown)(id sender_),(^callback_pushup)(id sender_),(^callback_pushcancel)(id sender_);
 }
 
@@ -44,6 +44,7 @@
 @property (nonatomic, readwrite) BOOL isEnable;
 @property (nonatomic, readonly) BOOL isOnSelected;
 @property (nonatomic, copy) void (^callback_pushdown)(id sender_),(^callback_pushup)(id sender_),(^callback_pushcancel)(id sender_);
+@property (nonatomic, retain) CCAction *pushDownAction,*pushUpAction;
 
 @end
 
@@ -63,5 +64,7 @@
 @property (nonatomic, assign) NSString *title;
 @property (nonatomic, readonly) CCLabelTTF *labelTitle;
 @property (nonatomic, readwrite) CCTextAlignment titleAlign;
+@property (nonatomic, readwrite) float titleSize;
+@property (nonatomic, readwrite) ccColor3B titleColor;
 
 @end
