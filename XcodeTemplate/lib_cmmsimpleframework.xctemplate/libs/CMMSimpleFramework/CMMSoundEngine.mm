@@ -18,7 +18,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 	return self;
 }
 
--(BOOL)bufferSoundDirect:(SoundID)soundId_ soundPath:(NSString *)soundPath_{
+-(BOOL)bufferSoundDirect:(CMMSoundID)soundId_ soundPath:(NSString *)soundPath_{
 	if(soundId_>=_soundIDSeq_)
 		_soundIDSeq_ = soundId_+1;
 	
@@ -28,19 +28,19 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 	}return NO;
 }
 
--(SoundID)bufferSound:(NSString *)soundPath_{
+-(CMMSoundID)bufferSound:(NSString *)soundPath_{
 	NSArray *soundPaths_ = [sharedBufferList allKeys];
 	uint count_ = soundPaths_.count;
 	for(int index_=0; index_<count_;++index_){
 		NSNumber *soundId_ = [soundPaths_ objectAtIndex:index_];
 		NSString *existsPath_ = [sharedBufferList objectForKey:soundId_];
 		if([existsPath_ isEqualToString:soundPath_]){
-			CCLOG(@"bufferSound : Shared SoundID %d",[soundId_ intValue]);
-			return (SoundID)[soundId_ intValue];
+			CCLOG(@"bufferSound : Shared CMMSoundID %d",[soundId_ intValue]);
+			return (CMMSoundID)[soundId_ intValue];
 		}
 	}
 	
-	SoundID targetSoundId_;
+	CMMSoundID targetSoundId_;
 	if([freedSoundIDs count] > 0){
 		targetSoundId_ = [[freedSoundIDs lastObject] intValue];
 		[freedSoundIDs removeLastObject]; 
@@ -48,7 +48,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 	
 	
 	if([self bufferSoundDirect:targetSoundId_ soundPath:soundPath_]){
-		CCLOG(@"bufferSound : New SoundID %d",targetSoundId_);
+		CCLOG(@"bufferSound : New CMMSoundID %d",targetSoundId_);
 		return targetSoundId_;
 	}else{
 		CCLOG(@"bufferSound: Error!");
@@ -56,7 +56,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 	}
 }
 
--(void)debufferSound:(SoundID)soundId_{
+-(void)debufferSound:(CMMSoundID)soundId_{
 	NSNumber *soundIDO_ = [NSNumber numberWithInt:soundId_];
 	if(![sharedBufferList objectForKey:soundIDO_])
 		return;
@@ -72,7 +72,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 		[self debufferSound:[soundId_ intValue]];
 }
 
--(BOOL)isBuffered:(SoundID)soundId_{
+-(BOOL)isBuffered:(CMMSoundID)soundId_{
 	if([sharedBufferList objectForKey:[NSNumber numberWithInt:soundId_]])
 		return YES;
 	return NO;
@@ -154,36 +154,36 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 	return self;
 }
 
--(void)play:(SoundID)soundId_ gain:(Float32)gain_ pan:(Float32)pan_ pitch:(Float32)pitch_{
+-(void)play:(CMMSoundID)soundId_ gain:(Float32)gain_ pan:(Float32)pan_ pitch:(Float32)pitch_{
 	if([engine.buffer isBuffered:soundId_])
 		[engine.soundEngine playSound:soundId_ sourceGroupId:0 pitch:pitch_ pan:pan_ gain:gain_ loop:false];
 }
--(void)play:(SoundID)soundId_ gain:(Float32)gain_ pan:(Float32)pan_{
+-(void)play:(CMMSoundID)soundId_ gain:(Float32)gain_ pan:(Float32)pan_{
 	[self play:soundId_ gain:gain_ pan:pan_ pitch:1.0f];
 }
--(void)play:(SoundID)soundId_ gain:(Float32)gain_{
+-(void)play:(CMMSoundID)soundId_ gain:(Float32)gain_{
 	[self play:soundId_ gain:gain_ pan:0];
 }
--(void)play:(SoundID)soundId_{
+-(void)play:(CMMSoundID)soundId_{
 	[self play:soundId_ gain:1.0f];
 }
 
--(void)stop:(SoundID)soundId_{
+-(void)stop:(CMMSoundID)soundId_{
 	[engine.soundEngine stopSound:soundId_];
 }
 
--(SoundID)bufferAndplay:(NSString*)filePath_ gain:(Float32)gain_ pan:(Float32)pan_ pitch:(Float32)pitch_{
+-(CMMSoundID)bufferAndplay:(NSString*)filePath_ gain:(Float32)gain_ pan:(Float32)pan_ pitch:(Float32)pitch_{
 	int soundId_ = [engine.buffer bufferSound:filePath_];
 	[self play:soundId_ gain:gain_ pan:pan_ pitch:pitch_];
 	return soundId_;
 }
--(SoundID)bufferAndplay:(NSString*)filePath_ gain:(Float32)gain_ pan:(Float32)pan_{
+-(CMMSoundID)bufferAndplay:(NSString*)filePath_ gain:(Float32)gain_ pan:(Float32)pan_{
 	return [self bufferAndplay:filePath_ gain:gain_ pan:pan_ pitch:1.0f];
 }
--(SoundID)bufferAndplay:(NSString*)filePath_ gain:(Float32)gain_{
+-(CMMSoundID)bufferAndplay:(NSString*)filePath_ gain:(Float32)gain_{
 	return [self bufferAndplay:filePath_ gain:gain_ pan:0];
 }
--(SoundID)bufferAndplay:(NSString*)filePath_{
+-(CMMSoundID)bufferAndplay:(NSString*)filePath_{
 	return [self bufferAndplay:filePath_ gain:1.0f];
 }
 
@@ -195,7 +195,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 	engine.soundEngine.masterGain = volume_;
 }
 
--(CDSoundSource *)soundSource:(SoundID)soundId_{
+-(CDSoundSource *)soundSource:(CMMSoundID)soundId_{
 	return [engine.soundEngine soundSourceForSound:soundId_ sourceGroupId:0];
 }	
 
@@ -269,10 +269,10 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 	return self;
 }
 
--(SoundID)soundID{
+-(CMMSoundID)soundID{
 	if(soundSource)
 		return soundSource.soundId;
-	else return (SoundID)-1;
+	else return (CMMSoundID)-1;
 }
 
 -(void)setGain:(float)gain_{
@@ -345,14 +345,14 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 @interface CMMSoundHandler(Private)
 
 -(CMMSoundHandlerItem *)_addSoundItemWithSoundPath:(NSString*)soundPath_;
--(BOOL)_isExistSoundID:(SoundID)soundID_;
+-(BOOL)_isExistSoundID:(CMMSoundID)soundID_;
 
 @end
 
 @implementation CMMSoundHandler(Private)
 
 -(CMMSoundHandlerItem *)_addSoundItemWithSoundPath:(NSString*)soundPath_{
-	SoundID soundID_ = [sharedEngine.buffer bufferSound:soundPath_];
+	CMMSoundID soundID_ = [sharedEngine.buffer bufferSound:soundPath_];
 	ccArray *data_ = itemList->data;
 	int targetSoundCount = 0;
 	int targetIndex_ = -1;
@@ -390,7 +390,7 @@ static CMMSoundEngine* sharedsoundEngine = nil;
 	return soundItem_;
 }
 
--(BOOL)_isExistSoundID:(SoundID)soundID_{
+-(BOOL)_isExistSoundID:(CMMSoundID)soundID_{
 	ccArray *data_ = itemList->data;
 	for(uint index_=0;index_>data_->num;++index_){
 		CMMSoundHandlerItem *soundItem_ = data_->arr[index_];

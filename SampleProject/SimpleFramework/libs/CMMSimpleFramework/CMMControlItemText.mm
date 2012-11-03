@@ -27,7 +27,7 @@
 	
 	if(!(self = [super initWithFrameSize:frameSize_])) return self;
 	
-	_textLabel = [CMMFontUtil labelWithstring:@"" fontSize:cmmVarCMMFontUtil_defaultFontSize dimensions:CGSizeMake(frameSize_.width-10.0f, cmmVarCMMFontUtil_defaultFontSize) hAlignment:kCCTextAlignmentLeft vAlignment:kCCVerticalTextAlignmentCenter lineBreakMode:kCCLineBreakModeHeadTruncation];
+	_textLabel = [CMMFontUtil labelWithstring:@"" fontSize:[CMMFontUtil defaultFontSize] dimensions:CGSizeMake(frameSize_.width-10.0f, [CMMFontUtil defaultFontSize]) hAlignment:kCCTextAlignmentLeft vAlignment:kCCVerticalTextAlignmentCenter lineBreakMode:kCCLineBreakModeHeadTruncation];
 	_textLabel.position = ccp(contentSize_.width/2,contentSize_.height/2);
 	[self setTextColor:ccBLACK];
 	

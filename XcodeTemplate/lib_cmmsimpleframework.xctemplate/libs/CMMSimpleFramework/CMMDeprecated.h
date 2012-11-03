@@ -179,6 +179,8 @@ DEPRECATED_ATTRIBUTE @interface CMMSParticleFollow : CMMSParticle
 
 @end
 
+typedef CMMSoundID SoundID DEPRECATED_ATTRIBUTE;
+
 typedef enum{
 	CMMSoundHandlerItemType_default DEPRECATED_ATTRIBUTE,
 	CMMSoundHandlerItemType_follow DEPRECATED_ATTRIBUTE,

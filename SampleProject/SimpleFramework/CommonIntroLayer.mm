@@ -42,7 +42,9 @@
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
-	[sequencer stepSequence];
+	if([sequencer sequenceState] == CMMSequenceMakerState_waitingNextSequence){
+		[sequencer stepSequence];
+	}
 }
 
 -(void)cleanup{

@@ -2,7 +2,7 @@
 #import "CDAudioManager.h"
 #import "CMMSimpleCache.h"
 
-typedef int SoundID;
+typedef int CMMSoundID;
 
 @class CMMSoundEngine;
 
@@ -17,13 +17,13 @@ typedef int SoundID;
 
 -(id)initSoundEngineBuffer:(CMMSoundEngine *)engine_;
 
--(BOOL)bufferSoundDirect:(SoundID)soundId_ soundPath:(NSString *)soundPath_;
--(SoundID)bufferSound:(NSString *)soundPath_;
+-(BOOL)bufferSoundDirect:(CMMSoundID)soundId_ soundPath:(NSString *)soundPath_;
+-(CMMSoundID)bufferSound:(NSString *)soundPath_;
 
--(void)debufferSound:(SoundID)soundID_;
+-(void)debufferSound:(CMMSoundID)soundID_;
 -(void)debufferAllSounds;
 
--(BOOL)isBuffered:(SoundID)soundId_;
+-(BOOL)isBuffered:(CMMSoundID)soundId_;
 
 @property (nonatomic, assign) CMMSoundEngine *engine;
 @property (nonatomic, readonly) NSMutableDictionary *sharedBufferList;
@@ -56,19 +56,19 @@ typedef int SoundID;
 
 -(id)initSoundEngineEffect:(CMMSoundEngine *)engine_;
 
--(void)play:(SoundID)soundId_ gain:(Float32)gain_ pan:(Float32)pan_ pitch:(Float32)pitch_;
--(void)play:(SoundID)soundId_ gain:(Float32)gain_ pan:(Float32)pan_;
--(void)play:(SoundID)soundId_ gain:(Float32)gain_;
--(void)play:(SoundID)soundId_;
+-(void)play:(CMMSoundID)soundId_ gain:(Float32)gain_ pan:(Float32)pan_ pitch:(Float32)pitch_;
+-(void)play:(CMMSoundID)soundId_ gain:(Float32)gain_ pan:(Float32)pan_;
+-(void)play:(CMMSoundID)soundId_ gain:(Float32)gain_;
+-(void)play:(CMMSoundID)soundId_;
 
--(void)stop:(SoundID)soundId_;
+-(void)stop:(CMMSoundID)soundId_;
 
--(SoundID)bufferAndplay:(NSString*)filePath_ gain:(Float32)gain_ pan:(Float32)pan_ pitch:(Float32)pitch_;
--(SoundID)bufferAndplay:(NSString*)filePath_ gain:(Float32)gain_ pan:(Float32)pan_;
--(SoundID)bufferAndplay:(NSString*)filePath_ gain:(Float32)gain_;
--(SoundID)bufferAndplay:(NSString*)filePath_;
+-(CMMSoundID)bufferAndplay:(NSString*)filePath_ gain:(Float32)gain_ pan:(Float32)pan_ pitch:(Float32)pitch_;
+-(CMMSoundID)bufferAndplay:(NSString*)filePath_ gain:(Float32)gain_ pan:(Float32)pan_;
+-(CMMSoundID)bufferAndplay:(NSString*)filePath_ gain:(Float32)gain_;
+-(CMMSoundID)bufferAndplay:(NSString*)filePath_;
 
--(CDSoundSource *)soundSource:(SoundID)soundId_;
+-(CDSoundSource *)soundSource:(CMMSoundID)soundId_;
 
 @property (nonatomic, assign) CMMSoundEngine *engine;
 @property (nonatomic, readwrite) float volume;
@@ -120,7 +120,7 @@ typedef int SoundID;
 
 -(void)resetState;
 
-@property (nonatomic, readonly) SoundID soundID;
+@property (nonatomic, readonly) CMMSoundID soundID;
 @property (nonatomic, retain) CDSoundSource *soundSource;
 
 @property (nonatomic, readwrite) CGPoint soundPoint;
