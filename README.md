@@ -1,6 +1,6 @@
 #CMMSimpleFramework
 
-CMMSimpleframework which coded based on the cocos2d 2.x will be helpful to develop your cocos2d project!<br>
+CMMSimpleframework which coded based on Cocos2d 2.x will be helpful to develop your cocos2d project!<br>
 cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프로젝트 개발에 도움이 될 것입니다!
 
 ##How to use
@@ -88,38 +88,33 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 <br>
 
-#####CMMLayerMask
+#####CMMLayerM
 
->CMMLayerMask supports mask for children. also you can change size,position,color,opacity of inner layer.<br>
->CMMLayerMask 는 자식들의 마스크기능을 제공합니다. 또한 내부레이어의 크기,위치,색,투명도 를 설정할 수 있습니다.
-    
-	// How to set property inner layer
-	// 내부레이어의 속성을 설정하는 방법
-	[(CMMLayerMask *) setInnerColor:(ccColor3B)];
-	[(CMMLayerMask *) setInnerOpacity:(GLubyte)];
-	[(CMMLayerMask *) setInnerPosition:(CGPoint):];
-	[(CMMLayerMask *) setInnerSize:(CGSize)];
+>CMMLayerM supports mask for child node. also you can change size,position,color,opacity of inner layer.<br>
+>CMMLayerM 는 자식들의 마스크기능을 제공합니다. 또한 내부레이어의 크기,위치,색,투명도 를 설정할 수 있습니다.
+
+	[(CMMLayerM *) innerLayer]; // Access the inner layer.
 
 <br>
 
-#####CMMLayerMaskDrag
+#####CMMLayerMD
 
->CMMLayerMaskDrag is that from CMMLayerMask added dragging feature.<br>
->CMMLayerMaskDrag는 CMMLayerMask에서 드래그기능을 추가한 것 입니다.
+>CMMLayerMD is that from CMMLayerMask added dragging feature.<br>
+>CMMLayerMD는 CMMLayerMask에서 드래그기능을 추가한 것 입니다.
 
 	// How to allow dragging
 	// 드래그 허용하는 방법
-	[(CMMLayerMaskDrag *) setIsCanDragX:(BOOL)]; //X-Axis X축
-	[(CMMLayerMaskDrag *) setIsCanDragY:(BOOL)]; //Y-Axis Y축
+	[(CMMLayerMD *) setIsCanDragX:(BOOL)]; //X-Axis X축
+	[(CMMLayerMD *) setIsCanDragY:(BOOL)]; //Y-Axis Y축
 	
 <br>	
 
->You can change the design of the scrollbar conditionally.<br>
+>You can change scrollbar design conditionally.<br>
 >스크롤바의 디자인을 제약적으로 변경할 수 있습니다.
 
-	// How to change design of scrollbar
+	// How to change scrollbar design.
 	// 스크롤바 디자인 변경방법
-	[(CMMLayerMaskDrag *) setScrollbarDesign:(CMMScrollbarDesign)];
+	[(CMMLayerMD *) setScrollbarDesign:(CMMScrollbarDesign)];
 
 <br>
 
@@ -139,7 +134,7 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 
 #####CMMSprite
 
->CMMSprite is "the Sprite node that can be received the touch input" in CMMSimpleFramework.<br>
+>CMMSprite is a Sprite node that can be received the touch input in CMMSimpleFramework.<br>
 >CMMSprite는 CMMSimpleFramework에서 터치를 입력받을 수 있는 스프라이트 노드입니다.
 
 <br>
@@ -151,8 +146,8 @@ cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프�
 >Support Multi-touch Management and Separation.<br>
 >멀티터치 관리 및 분리를 지원합니다.
 
-    // How to set max count of multi-touch.(default : 4)
-    // 최대멀티터치수 설정하는 방법 
+    // How to set count of multi-touch.(default : 4)
+    // 멀티터치수 설정하는 방법 
     [(CMMTouchDispatcher *) setMaxMultiTouchCount:(int)]
     
 <br>
