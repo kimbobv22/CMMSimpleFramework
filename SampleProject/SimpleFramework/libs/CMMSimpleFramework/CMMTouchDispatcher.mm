@@ -116,8 +116,7 @@ static SEL _sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_maxCount
 	[target sortAllChildren];
 	
 	ccArray *data_ = children_->data;
-	int count_ = data_->num;
-	for(uint index_=0;index_<count_;++index_){
+	for(int index_=data_->num-1;index_>=0;--index_){
 		CCNode<CMMTouchDispatcherDelegate> *child_ = data_->arr[index_];
 		if([CMMTouchUtil isNodeInTouch:child_ touch:touch_]
 		   && cmmFuncCommon_respondsToSelector(child_, _sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_TouchBegan])){
