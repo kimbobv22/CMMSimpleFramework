@@ -5,7 +5,6 @@
 enum StageControlType{
 	StageControlType_addBox = 0,
 	StageControlType_addBall,
-	StageControlType_dragMode,
 	StageControlType_paintMap,
 	StageControlType_eraseMap,
 	StageControlType_addLight,
@@ -26,7 +25,7 @@ enum StageControlType{
 	CCLabelTTF *labelGravity;
 	CMMMenuItemLabelTTF *backBtn;
 	
-	BOOL _isOnTouch,_isTouchObject;
+	BOOL _isOnTouch,_isTouchObject,_isOnDrag;
 	CGPoint _curTouchPoint;
 	CMMSObject *_curTouchObject;
 	

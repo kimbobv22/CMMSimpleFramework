@@ -8,27 +8,23 @@
 -(id)initWithFrame:(CGRect)frame pixelFormat:(NSString *)format depthFormat:(GLuint)depth preserveBackbuffer:(BOOL)retained sharegroup:(EAGLSharegroup *)sharegroup multiSampling:(BOOL)sampling numberOfSamples:(unsigned int)nSamples{
 	if(!(self = [super initWithFrame:frame pixelFormat:format depthFormat:depth preserveBackbuffer:retained sharegroup:sharegroup multiSampling:sampling numberOfSamples:nSamples])) return self;
 	
-	self.multipleTouchEnabled = YES;
+	[self setMultipleTouchEnabled:YES];
 	
 	return self;
 }
 
 //handling touch directly
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-	for(UITouch *touch_ in touches)
-		[[CMMScene sharedScene] glViewTouch:self whenTouchBegan:touch_ event:event];
+	[[CMMScene sharedScene] glView:self whenTouchesBegan:touches event:event];
 }
 -(void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event{
-	for(UITouch *touch_ in touches)
-		[[CMMScene sharedScene] glViewTouch:self whenTouchMoved:touch_ event:event];
+	[[CMMScene sharedScene] glView:self whenTouchesMoved:touches event:event];
 }
 -(void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event{
-	for(UITouch *touch_ in touches)
-		[[CMMScene sharedScene] glViewTouch:self whenTouchEnded:touch_ event:event];
+	[[CMMScene sharedScene] glView:self whenTouchesEnded:touches event:event];
 }
 -(void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event{
-	for(UITouch *touch_ in touches)
-		[[CMMScene sharedScene] glViewTouch:self whenTouchCancelled:touch_ event:event];
+	[[CMMScene sharedScene] glView:self whenTouchesCancelled:touches event:event];
 }
 
 @end

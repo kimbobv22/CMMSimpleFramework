@@ -98,13 +98,6 @@
 	}];
 	[controlMenu addItem:tempMenuItem_];
 	
-	tempMenuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:tempMenuItemSize_];
-	[tempMenuItem_ setTitle:@"drag mode"];
-	[tempMenuItem_ setCallback_pushup:^(id) {
-		stageControlType = StageControlType_dragMode;
-	}];
-	[controlMenu addItem:tempMenuItem_];
-	
 	////gravity control
 	labelGravity = [CMMFontUtil labelWithstring:@" "];
 	[self addChild:labelGravity];
@@ -160,67 +153,81 @@
 
 //stage touch delegate method
 -(void)stage:(CMMStage *)stage_ whenTouchBegan:(UITouch *)touch_ withObject:(CMMSObject *)object_{
+	if(object_){
+		_isTouchObject = YES;
+		_curTouchObject = object_;
+	}
+}
+-(void)stage:(CMMStage *)stage_ whenTouchMoved:(UITouch *)touch_ withObject:(CMMSObject *)object_{}
+-(void)stage:(CMMStage *)stage_ whenTouchEnded:(UITouch *)touch_ withObject:(CMMSObject *)object_{}
+-(void)stage:(CMMStage *)stage_ whenTouchCancelled:(UITouch *)touch_ withObject:(CMMSObject *)object_{}
+
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
 	_isOnTouch = YES;
 	_curTouchObject = nil;
+	_isTouchObject = NO;
 	_curTouchPoint = [CMMTouchUtil pointFromTouch:touch_];
-	switch(stageControlType){
-		case StageControlType_dragMode:
-			if(!object_) return;
-			_isTouchObject = YES;
-			_curTouchObject = object_;
-			break;
-		default: break;
-	}
+	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
 }
--(void)stage:(CMMStage *)stage_ whenTouchMoved:(UITouch *)touch_ withObject:(CMMSObject *)object_{
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
 	_curTouchPoint = [CMMTouchUtil pointFromTouch:touch_];
-	
-	switch(stageControlType){
-		case StageControlType_dragMode:{
-			if(!_isTouchObject){
-				CGPoint diffPoint_ = ccpSub(_curTouchPoint,[CMMTouchUtil prepointFromTouch:touch_]);
-				stage.worldPoint = ccpSub(stage.worldPoint, diffPoint_);
-			}
-			break;
+	[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
+}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
+	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
+	if(!_isTouchObject && !_isOnDrag){
+		switch(stageControlType){
+			case StageControlType_addBox:
+				[self addBox:[stage convertToStageWorldSpace:_curTouchPoint]];
+				break;
+			case StageControlType_addBall:
+				[self addBall:[stage convertToStageWorldSpace:_curTouchPoint]];
+				break;
+			default: break;
 		}
-		default: break;
 	}
-}
--(void)stage:(CMMStage *)stage_ whenTouchEnded:(UITouch *)touch_ withObject:(CMMSObject *)object_{
-	switch(stageControlType){
-		case StageControlType_addBox:
-			[self addBox:[stage convertToStageWorldSpace:_curTouchPoint]];
-			break;
-		case StageControlType_addBall:
-			[self addBall:[stage convertToStageWorldSpace:_curTouchPoint]];
-			break;
-		default: break;
-	}
-	
 	_isOnTouch = _isTouchObject = NO;
 	_curTouchObject = nil;
+	
+	if([[stage touchDispatcher] touchCount] == 0){
+		_isOnDrag = NO;
+	}
 }
--(void)stage:(CMMStage *)stage_ whenTouchCancelled:(UITouch *)touch_ withObject:(CMMSObject *)object_{
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
+	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
+	
 	_isOnTouch = _isTouchObject = NO;
 	_curTouchObject = nil;
 }
 
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenPinchBegan:(CMMPinchState)pinchState_{
+	_isOnDrag = YES;
+	_curTouchObject = nil;
+	_isTouchObject = NO;
+}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenPinchMoved:(CMMPinchState)pinchState_{
+//	float curWorldScale_ = [stage worldScale];
+//	[stage setWorldScale:curWorldScale_ - (curWorldScale_ * (pinchState_.lastScale - pinchState_.scale))];
+	UITouch *touch1_ = pinchState_.touch1;
+	UITouch *touch2_ = pinchState_.touch2;
+	CGPoint touch1DiffPoint_ = ccpSub([CMMTouchUtil pointFromTouch:touch1_], [CMMTouchUtil prepointFromTouch:touch1_]);
+	CGPoint touch2DiffPoint_ = ccpSub([CMMTouchUtil pointFromTouch:touch2_], [CMMTouchUtil prepointFromTouch:touch2_]);
+	[stage setWorldPoint:ccpSub([stage worldPoint], ccpDiv(ccpAdd(touch1DiffPoint_, touch2DiffPoint_), 2.0f))];
+	
+}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenPinchEnded:(CMMPinchState)pinchState_{}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenPinchCancelled:(CMMPinchState)pinchState_{}
+
 -(void)update:(ccTime)dt_{
-	switch(stageControlType){
-		case StageControlType_dragMode:{
-			if(_isTouchObject){
-				b2Vec2 beforeVector_ = _curTouchObject.body->GetTransform().p;
-				[_curTouchObject updateBodyPosition:[stage convertToStageWorldSpace:_curTouchPoint]];
-				b2Vec2 curVector_ = _curTouchObject.body->GetTransform().p;
-				b2Vec2 velocity_ = curVector_-beforeVector_;
-				velocity_*=10.0f;
-				[_curTouchObject updateBodyLinearVelocity:velocity_];
-				CGPoint diffPoint_ = ccpSub(ccp(self.contentSize.width/2,self.contentSize.height/2),_curTouchPoint);
-				stage.worldPoint = ccpSub(stage.worldPoint, ccpMult(diffPoint_, dt_*2.0f));
-			}
-			break;
-		}
-		default: break;
+	if(_isTouchObject){
+		b2Vec2 beforeVector_ = _curTouchObject.body->GetTransform().p;
+		[_curTouchObject updateBodyPosition:[stage convertToStageWorldSpace:_curTouchPoint]];
+		b2Vec2 curVector_ = _curTouchObject.body->GetTransform().p;
+		b2Vec2 velocity_ = curVector_-beforeVector_;
+		velocity_*=10.0f;
+		[_curTouchObject updateBodyLinearVelocity:velocity_];
+		CGPoint diffPoint_ = ccpSub(ccp(self.contentSize.width/2,self.contentSize.height/2),_curTouchPoint);
+		stage.worldPoint = ccpSub(stage.worldPoint, ccpMult(diffPoint_, dt_*2.0f));
 	}
 	
 	if(stage){
@@ -274,7 +281,7 @@
 	stage.sound.soundDistance = 300.0f;
 	stage.position = ccp(0,contentSize_.height-stage.contentSize.height);
 	stage.delegate = self;
-	stage.isAllowTouch = YES;
+	stage.isTouchEnabled = YES;
 	[stage initializeLightSystem]; // lazy initialization
 	
 	[self addChild:stage z:0];
@@ -308,13 +315,13 @@
 	return self;
 }
 
--(void)stage:(CMMStage *)stage_ whenTouchEnded:(UITouch *)touch_ withObject:(CMMSObject *)object_{
-	[super stage:stage_ whenTouchEnded:touch_ withObject:object_];
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
+	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
 	
 	switch(stageControlType){
 		case StageControlType_addLight:{
-			CGPoint targetPoint_ = [stage_ convertToStageWorldSpace:[CMMTouchUtil pointFromTouch:touch_]];
-			CMMStageLightItemFadeInOut *lightItem_ = (CMMStageLightItemFadeInOut *)[[stage_ light] addLightItemAtPoint:targetPoint_ brightness:1.0f radius:100.0f duration:1.0f lightItemClass:[CMMStageLightItemFadeInOut class]];
+			CGPoint targetPoint_ = [stage convertToStageWorldSpace:[CMMTouchUtil pointFromTouch:touch_]];
+			CMMStageLightItemFadeInOut *lightItem_ = (CMMStageLightItemFadeInOut *)[[stage light] addLightItemAtPoint:targetPoint_ brightness:1.0f radius:100.0f duration:1.0f lightItemClass:[CMMStageLightItemFadeInOut class]];
 			[lightItem_ setFadeTime:0.2f];
 			[lightItem_ setIsBlendColor:YES];
 			[lightItem_ setColor:ccc3(arc4random()%255, arc4random()%255, arc4random()%255)];
@@ -344,7 +351,7 @@
 	stage.sound.soundDistance = 300.0f;
 	stage.position = ccp(0,self.contentSize.height-stage.contentSize.height);
 	stage.delegate = self;
-	stage.isAllowTouch = YES;
+	stage.isTouchEnabled = YES;
 	[stage initializeLightSystem]; // lazy initialization
 	
 	[self addChild:stage z:0];
@@ -435,7 +442,7 @@
 	[stage light];
 	stage.position = ccp(0,contentSize_.height-stage.contentSize.height);
 	stage.delegate = self;
-	stage.isAllowTouch = YES;
+	stage.isTouchEnabled = YES;
 	[stage initializeLightSystem]; // lazy initialization
 	
 	[self addChild:stage];
@@ -461,7 +468,7 @@
 }
 
 -(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
-	return [backBtn isEnable];
+	return [((CMMStageTMX *)stage) isTilemapBuiltup];
 }
 
 -(void)tilemapStage:(CMMStageTMX *)stage_ whenTileBuiltupAtTMXLayer:(CCTMXLayer *)tmxLayer_ fromXIndex:(float)fromXIndex_ toXIndex:(float)toXIndex_ yIndex:(float)yIndex_ tileFixture:(b2Fixture *)tileFixture_{

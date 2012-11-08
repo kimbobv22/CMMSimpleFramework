@@ -42,6 +42,13 @@ UNAVAILABLE_ATTRIBUTE @protocol CMMApplicationProtocol <NSObject>
 
 @end
 
+@interface CMMTouchDispatcher(Deprecated)
+
++(void)setAllTouchDispatcherEnable:(BOOL)enable_ DEPRECATED_ATTRIBUTE;
++(BOOL)isAllTouchDispatcherEnable DEPRECATED_ATTRIBUTE;
+
+@end
+
 DEPRECATED_ATTRIBUTE @interface CMMTouchDispatcherScene : CMMTouchDispatcher
 
 @end
@@ -64,6 +71,10 @@ DEPRECATED_ATTRIBUTE typedef CMMLayerMDScrollbar CMMScrollbarDesign;
 DEPRECATED_ATTRIBUTE @interface CMMLayerMaskDrag : CMMLayerMD
 
 //use CMMLayerMD class
+
+@end
+
+DEPRECATED_ATTRIBUTE @interface CMMLayerPinchZoom : CMMLayer
 
 @end
 
@@ -152,6 +163,12 @@ DEPRECATED_ATTRIBUTE @interface CMMControlItemBatchBar : CMMSpriteBatchBar
 
 -(void)updateBodyWithPosition:(CGPoint)point_ andRotation:(float)tRotation_ DEPRECATED_ATTRIBUTE;
 -(void)updateBodyWithPosition:(CGPoint)point_ DEPRECATED_ATTRIBUTE;
+
+@end
+
+@interface CMMStage(Deprecated)
+
+@property (nonatomic, readwrite) BOOL isAllowTouch DEPRECATED_ATTRIBUTE;
 
 @end
 

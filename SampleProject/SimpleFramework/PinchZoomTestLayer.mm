@@ -8,32 +8,35 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	pinchZoomLayer = [CMMLayerPinchZoom layerWithColor:ccc4(100, 0, 0, 120) width:250 height:250];
-	pinchZoomLayer.position = ccp(180,50);
-	[self addChild:pinchZoomLayer];
-	
-	//add menuitem to dragLayer
-	CMMMenuItemLabelTTF *menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
-	[menuItem_ setTitle:@"TESTBUTTON"];
-	menuItem_.position = ccp(menuItem_.contentSize.width/2+20,menuItem_.contentSize.height/2+20);
-	[pinchZoomLayer addChild:menuItem_];
+	tempSprite = [CCSprite spriteWithFile:@"Default.png"];
+	[tempSprite setPosition:cmmFuncCommon_positionInParent(self, tempSprite)];
+	[tempSprite setScale:0.5];
+	[self addChild:tempSprite];
 	
 	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
 	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,menuItemBack_.contentSize.height/2+20);
-	menuItemBack_.delegate = self;
+	[menuItemBack_ setCallback_pushup:^(id) {
+		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
+	}];
 	[self addChild:menuItemBack_];
 	
 	return self;
 }
 
--(void)menuItem_whenPushup:(CMMMenuItem *)menuItem_{
-	[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenPinchBegan:(CMMPinchState)pinchState_{
+	CCLOG(@"pinch start %1.1f / %1.1f ",pinchState_.scale,pinchState_.distance);
 }
-
--(void)dealloc{
-	CCLOG(@"test!");
-	[super dealloc];
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenPinchMoved:(CMMPinchState)pinchState_{
+	float curScale_ = [tempSprite scale];
+	[tempSprite setScale:curScale_ - (curScale_ * (pinchState_.lastScale - pinchState_.scale))];
+	CCLOG(@"pinch change %1.1f / %1.1f ",pinchState_.scale,pinchState_.distance);
+}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenPinchEnded:(CMMPinchState)pinchState_{
+	CCLOG(@"pinch ended %1.1f / %1.1f ",pinchState_.scale,pinchState_.distance);
+}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenPinchCancelled:(CMMPinchState)pinchState_{
+	CCLOG(@"pinch cancelled %1.1f / %1.1f ",pinchState_.scale,pinchState_.distance);
 }
 
 @end

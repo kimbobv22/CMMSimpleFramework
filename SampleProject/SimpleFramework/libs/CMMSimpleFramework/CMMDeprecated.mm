@@ -16,6 +16,17 @@
 
 @end
 
+@implementation CMMTouchDispatcher(Deprecated)
+
++(void)setAllTouchDispatcherEnable:(BOOL)enable_{
+	[[CMMScene sharedScene] setIsTouchEnable:enable_];
+}
++(BOOL)isAllTouchDispatcherEnable{
+	return [[CMMScene sharedScene] isTouchEnable];
+}
+
+@end
+
 @implementation CMMTouchDispatcherScene
 
 @end
@@ -36,6 +47,11 @@
 @end
 
 @implementation CMMLayerMaskDrag
+
+@end
+
+@implementation CMMLayerPinchZoom
+
 
 @end
 
@@ -144,6 +160,17 @@
 }
 -(void)updateBodyWithPosition:(CGPoint)point_{
 	[self updateBodyPosition:point_];
+}
+
+@end
+
+@implementation CMMStage(Deprecated)
+
+-(void)setIsAllowTouch:(BOOL)isAllowTouch_{
+	[self setIsTouchEnabled:isAllowTouch_];
+}
+-(BOOL)isAllowTouch{
+	return [self isTouchEnabled];
 }
 
 @end
