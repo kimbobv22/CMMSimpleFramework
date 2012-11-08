@@ -210,6 +210,9 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	}
 }
 
+-(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
+	return [super touchDispatcher:touchDispatcher_ shouldAllowTouch:touch_ event:event_] && [CMMTouchUtil nodeCountInTouch:object_list touch:touch_];
+}
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
 	CMMSObject *touchedObject_ = nil;
 	ccArray *data_ = object_list->data;
@@ -931,6 +934,10 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	}
 }
 
+-(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
+	return [super touchDispatcher:touchDispatcher_ shouldAllowTouch:touch_ event:event_] && [CMMTouchUtil nodeCountInTouch:stateViewList touch:touch_];
+}
+
 -(void)dealloc{
 	[stateViewList release];
 	[super dealloc];
@@ -1031,16 +1038,18 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 -(void)updatePosition{
 	if(!backGroundNode) return;
 
-	CGPoint worldPoint_ = stage.worldPoint;
+	CGPoint worldPoint_ = [stage worldPoint];
 	CGPoint targetPoint_ = ccpMult(worldPoint_, distanceRate);
+	[backGroundNode setPosition:ccpMult(targetPoint_, -1.0f)];
 	
-	backGroundNode.position = ccpMult(targetPoint_, -1.0f);
+	float worldScale_ = [stage worldScale];
+	[backGroundNode setScale:1.0f - ((1.0f - worldScale_) * distanceRate)];
 }
 
 @end
 
 @implementation CMMStage
-@synthesize spec,delegate,world,particle,stateView,light,backGround,sound,worldSize,worldPoint,isAllowTouch,timeInterval,maxTimeIntervalProcessCount;
+@synthesize spec,delegate,world,particle,stateView,light,backGround,sound,worldSize,worldPoint,worldScale,timeInterval,maxTimeIntervalProcessCount;
 
 +(id)stageWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
 	return [[[self alloc] initWithStageSpecDef:stageSpecDef_] autorelease];
@@ -1048,6 +1057,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 -(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
 	if(!(self = [super init])) return self;
 	[self setContentSize:stageSpecDef_.stageSize];
+	[self setIsTouchEnabled:NO];
 	
 	spec = [[CMMSSpecStage alloc] initWithTarget:self];
 	
@@ -1068,8 +1078,6 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	timeInterval = 1.0f/30.0f;
 	maxTimeIntervalProcessCount = 10;
 	_stackTime = 0.0f;
-	
-	isAllowTouch = NO;
 	
 	[self setWorldPoint:CGPointZero];
 	
@@ -1097,6 +1105,16 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 }
 -(CGPoint)worldPoint{
 	return ccpMult([world position], -1.0f);
+}
+
+-(void)setWorldScale:(float)worldScale_{
+	[world setScale:worldScale_];
+	[particle setScale:worldScale_];
+	[stateView setScale:worldScale_];
+	if(light) [light setScale:worldScale_];
+}
+-(float)worldScale{
+	return [world scale];
 }
 
 -(void)visit{
@@ -1136,14 +1154,6 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	if(light) return;
 	light = [CMMStageLight lightWithStage:self];
 	[self addChild:light z:4];
-}
-
--(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
-	return isAllowTouch;
-}
--(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
-	if(!isAllowTouch) return;
-	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
 }
 
 -(void)stageWorld:(CMMStageWorld *)world_ whenAddedObject:(CMMSObject *)object_{}

@@ -1,7 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#define CMMSimpleFrameworkVersion 0x00010000
-static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.0.0";
+#define CMMSimpleFrameworkVersion 0x00010100
+static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.1.0";
 
 //common
 
@@ -20,7 +20,6 @@ static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.0.0";
 #import "CMMLayerPopup.h"
 #import "CMMLayerM.h"
 #import "CMMLayerMD.h"
-#import "CMMLayerPinchZoom.h"
 #import "CMMSprite.h"
 #import "CMMSpriteBatchBar.h"
 

@@ -325,8 +325,6 @@ typedef enum{
 	CMMStageBackGround *backGround;
 	CMMSoundHandler *sound;
 	
-	BOOL isAllowTouch;
-	
 	ccTime timeInterval,_stackTime;
 	uint maxTimeIntervalProcessCount;
 }
@@ -350,7 +348,8 @@ typedef enum{
 @property (nonatomic, readonly) CMMSoundHandler *sound;
 @property (nonatomic, readonly) CGSize worldSize;
 @property (nonatomic, readwrite) CGPoint worldPoint;
-@property (nonatomic, readwrite) BOOL isAllowTouch;
+@property (nonatomic, readwrite) float worldScale;
+@property (nonatomic, readwrite) BOOL isPinchMoveEnable;
 @property (nonatomic, readwrite) ccTime timeInterval;
 @property (nonatomic, readwrite) uint maxTimeIntervalProcessCount;
 

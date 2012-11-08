@@ -122,7 +122,7 @@ static CMMScene *_sharedScene_ = nil;
 @end
 
 @implementation CMMScene
-@synthesize runningLayer,transitionLayer,isOnTransition,staticLayerItemList,countOfStaticLayerItem,touchDispatcher,popupDispatcher,noticeDispatcher;
+@synthesize runningLayer,transitionLayer,isOnTransition,staticLayerItemList,countOfStaticLayerItem,touchDispatcher,popupDispatcher,noticeDispatcher,isTouchEnable;
 
 +(CMMScene *)sharedScene{
 	if(!_sharedScene_){
@@ -149,6 +149,8 @@ static CMMScene *_sharedScene_ = nil;
 	touchDispatcher = [[CMMTouchDispatcher alloc] initWithTarget:self];
 	popupDispatcher = [[CMMPopupDispatcher alloc] initWithScene:self];
 	noticeDispatcher = [[CMMNoticeDispatcher alloc] initWithTarget:self];
+	
+	isTouchEnable = YES;
 
 	return self;
 }
@@ -178,28 +180,18 @@ static CMMScene *_sharedScene_ = nil;
 }
 #endif
 
--(void)glViewTouch:(CMMGLView *)glView_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
-	CMMPopupDispatcherItem *popupItem_ = [popupDispatcher popupItemAtIndex:0];
-	
-	//handling popup
-	if(popupItem_){
-		if(![CMMTouchDispatcher isAllTouchDispatcherEnable]) return;
-		CMMLayerPopup *popupNode_ = [popupItem_ popup];
-		[touchDispatcher addTouchItemWithTouch:touch_ node:popupNode_];
-		[popupNode_ touchDispatcher:touchDispatcher whenTouchBegan:touch_ event:event_];
-	}else{
-		if(isOnTransition || !runningLayer) return;
-		[touchDispatcher whenTouchBegan:touch_ event:event_];
-	}
+-(void)glView:(CMMGLView *)glView_ whenTouchesBegan:(NSSet *)touches_ event:(UIEvent *)event_{
+	if(isOnTransition || !runningLayer || !isTouchEnable) return;
+	[touchDispatcher whenTouchesBeganFromScene:touches_ event:event_];
 }
--(void)glViewTouch:(CMMGLView *)glView_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
-	[touchDispatcher whenTouchMoved:touch_ event:event_];
+-(void)glView:(CMMGLView *)glView_ whenTouchesMoved:(NSSet *)touches_ event:(UIEvent *)event_{
+	[touchDispatcher whenTouchesMovedFromScene:touches_ event:event_];
 }
--(void)glViewTouch:(CMMGLView *)glView_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
-	[touchDispatcher whenTouchEnded:touch_ event:event_];
+-(void)glView:(CMMGLView *)glView_ whenTouchesEnded:(NSSet *)touches_ event:(UIEvent *)event_{
+	[touchDispatcher whenTouchesEndedFromScene:touches_ event:event_];
 }
--(void)glViewTouch:(CMMGLView *)glView_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
-	[touchDispatcher whenTouchCancelled:touch_ event:event_];
+-(void)glView:(CMMGLView *)glView_ whenTouchesCancelled:(NSSet *)touches_ event:(UIEvent *)event_{
+	[touchDispatcher whenTouchesCancelledFromScene:touches_ event:event_];
 }
 
 -(void)pushLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_{

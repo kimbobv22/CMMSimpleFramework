@@ -1223,6 +1223,29 @@
 			<key>TargetIndices</key>
 			<array/>
 		</dict>
+		<key>libs/CMMSimpleFramework/CMMSocketHandler.h</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>libs</string>
+				<string>CMMSimpleFramework</string>
+			</array>
+			<key>Path</key>
+			<string>libs/CMMSimpleFramework/CMMSocketHandler.h</string>
+			<key>TargetIndices</key>
+			<array/>
+		</dict>
+		<key>libs/CMMSimpleFramework/CMMSocketHandler.mm</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>libs</string>
+				<string>CMMSimpleFramework</string>
+			</array>
+			<key>Path</key>
+			<string>libs/CMMSimpleFramework/CMMSocketHandler.mm</string>
+		</dict>
+
 		<key>libs/CMMSimpleFramework/CMMType.h</key>
 		<dict>
 			<key>Group</key>
@@ -1516,6 +1539,8 @@
 		<string>libs/CMMSimpleFramework/CMMStringUtil.h</string>
 		<string>libs/CMMSimpleFramework/CMMStringUtil.mm</string>
 		<string>libs/CMMSimpleFramework/CMMSType.h</string>
+		<string>libs/CMMSimpleFramework/CMMSocketHandler.h</string>
+		<string>libs/CMMSimpleFramework/CMMSocketHandler.mm</string>
 		<string>libs/CMMSimpleFramework/CMMType.h</string>
 		<string>libs/CMMSimpleFramework/CMMTouchDispatcher.h</string>
 		<string>libs/CMMSimpleFramework/CMMTouchDispatcher.mm</string>
@@ -1542,6 +1567,7 @@
 				<string>SystemConfiguration</string>
 				<string>CoreMotion</string>
 				<string>StoreKit</string>
+				<string>CFNetwork</string>
 			</array>
 		</dict>
 	</array>

@@ -47,4 +47,28 @@
 	return [self isNodeInTouch:node_ touch:touch_ margin:0.0f];
 }
 
++(uint)nodeCountInPoint:(CCArray *)nodes_ point:(CGPoint)point_ margin:(float)margin_{
+	uint result_ = 0;
+	ccArray *data_ = nodes_->data;
+	uint count_ = data_->num;
+	for(uint index_=0;index_<count_;++index_){
+		CCNode *node_ = data_->arr[index_];
+		if([self isNodeInPoint:node_ point:point_ margin:margin_]){
+			++result_;
+		}
+	}
+		
+	return result_;
+}
++(uint)nodeCountInPoint:(CCArray *)nodes_ point:(CGPoint)point_{
+	return [self nodeCountInPoint:nodes_ point:point_ margin:0.0f];
+}
+
++(uint)nodeCountInTouch:(CCArray *)nodes_ touch:(UITouch *)touch_ margin:(float)margin_{
+	return [self nodeCountInPoint:nodes_ point:[self pointFromTouch:touch_] margin:margin_];
+}
++(uint)nodeCountInTouch:(CCArray *)nodes_ touch:(UITouch *)touch_{
+	return [self nodeCountInTouch:nodes_ touch:touch_ margin:0.0f];
+}
+
 @end

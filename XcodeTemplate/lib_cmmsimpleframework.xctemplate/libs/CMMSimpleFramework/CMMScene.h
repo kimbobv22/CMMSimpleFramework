@@ -60,6 +60,8 @@
 	CMMTouchDispatcher *touchDispatcher;
 	CMMPopupDispatcher *popupDispatcher;
 	CMMNoticeDispatcher *noticeDispatcher;
+	
+	BOOL isTouchEnable;
 }
 
 +(CMMScene *)sharedScene;
@@ -74,6 +76,7 @@
 @property (nonatomic, readonly) CMMTouchDispatcher *touchDispatcher;
 @property (nonatomic, readonly) CMMPopupDispatcher *popupDispatcher;
 @property (nonatomic, readonly) CMMNoticeDispatcher *noticeDispatcher;
+@property (nonatomic, readwrite) BOOL isTouchEnable;
 
 @end
 

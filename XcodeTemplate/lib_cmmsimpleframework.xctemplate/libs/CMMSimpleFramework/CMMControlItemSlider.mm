@@ -42,6 +42,8 @@
 	frameSize_.height = [buttonItem contentSize].height+10.0f;
 	if(!(self = [super initWithFrameSize:frameSize_])) return self;
 	
+	[touchDispatcher setMaxMultiTouchCount:0];
+	
 	callback_whenChangedItemVale = nil;
 	[self addChild:buttonItem z:2];
 	[self addChild:_barSprite z:1];

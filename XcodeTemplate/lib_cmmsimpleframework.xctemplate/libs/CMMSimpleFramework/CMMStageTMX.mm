@@ -42,6 +42,11 @@
 	[tilemap setPosition:[world position]];
 }
 
+-(void)setWorldScale:(float)worldScale_{
+	[super setWorldScale:worldScale_];
+	[tilemap setScale:worldScale_];
+}
+
 -(void)step:(ccTime)dt_{
 	if(!isTilemapBuiltup) return;
 	[super step:dt_];

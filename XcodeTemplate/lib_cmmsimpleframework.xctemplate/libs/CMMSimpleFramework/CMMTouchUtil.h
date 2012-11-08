@@ -24,4 +24,10 @@
 +(BOOL)isNodeInTouch:(CCNode *)node_ touch:(UITouch *)touch_ margin:(float)margin_;
 +(BOOL)isNodeInTouch:(CCNode *)node_ touch:(UITouch *)touch_;
 
++(uint)nodeCountInPoint:(CCArray *)nodes_ point:(CGPoint)point_ margin:(float)margin_;
++(uint)nodeCountInPoint:(CCArray *)nodes_ point:(CGPoint)point_;
+
++(uint)nodeCountInTouch:(CCArray *)nodes_ touch:(UITouch *)touch_ margin:(float)margin_;
++(uint)nodeCountInTouch:(CCArray *)nodes_ touch:(UITouch *)touch_;
+
 @end

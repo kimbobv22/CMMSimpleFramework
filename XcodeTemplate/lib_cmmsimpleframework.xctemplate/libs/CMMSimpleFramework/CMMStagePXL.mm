@@ -377,6 +377,10 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 	[super setWorldPoint:worldPoint_];
 	[pixel setPosition:[world position]];
 }
+-(void)setWorldScale:(float)worldScale_{
+	[super setWorldScale:worldScale_];
+	[pixel setScale:worldScale_];
+}
 
 -(void)step:(ccTime)dt_{
 	[pixel update:dt_];
