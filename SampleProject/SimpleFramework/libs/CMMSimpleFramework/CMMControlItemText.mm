@@ -27,6 +27,8 @@
 	
 	if(!(self = [super initWithFrameSize:frameSize_])) return self;
 	
+	[touchDispatcher setMaxMultiTouchCount:0];
+	
 	_textLabel = [CMMFontUtil labelWithstring:@"" fontSize:[CMMFontUtil defaultFontSize] dimensions:CGSizeMake(frameSize_.width-10.0f, [CMMFontUtil defaultFontSize]) hAlignment:kCCTextAlignmentLeft vAlignment:kCCVerticalTextAlignmentCenter lineBreakMode:kCCLineBreakModeHeadTruncation];
 	_textLabel.position = ccp(contentSize_.width/2,contentSize_.height/2);
 	[self setTextColor:ccBLACK];
@@ -155,7 +157,7 @@
 	_textField.text = itemValue;
 	[[[CCDirectorIOS sharedDirector] view] addSubview:_backView];
 	[_textField becomeFirstResponder];
-	[CMMTouchDispatcher setAllTouchDispatcherEnable:NO];
+	[[CMMScene sharedScene] setIsTouchEnable:NO];
 }
 -(void)hideTextField{
 	if(![_backView superview]) return;
@@ -165,7 +167,7 @@
 			return;
 	}
 	
-	[CMMTouchDispatcher setAllTouchDispatcherEnable:YES];
+	[[CMMScene sharedScene] setIsTouchEnable:YES];
 	[_textField resignFirstResponder];
 	[_backView removeFromSuperview];
 	[self setItemValue:[_textField text]];

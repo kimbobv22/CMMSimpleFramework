@@ -11,7 +11,7 @@
 	CGSize stageSize_ = contentSize_;
 	stageSize_.height -= 60.0f;
 	stage = [CMMStage stageWithStageSpecDef:CMMStageSpecDefMake(stageSize_, stageSize_, ccp(0,-9.8))];
-	[stage setIsAllowTouch:NO];
+	[stage setIsTouchEnabled:NO];
 	[stage setPosition:ccp(contentSize_.width*0.5f-stageSize_.width*0.5f,contentSize_.height-stageSize_.height)];
 	[self addChild:stage z:1];
 	

@@ -27,6 +27,8 @@
 	
 	if(!(self = [super initWithFrameSize:_maskSprite.contentSize])) return self;
 	
+	[touchDispatcher setMaxMultiTouchCount:0];
+	
 	[self addChild:buttonItem z:1];
 	[self setButtonSprite:buttonSprite_];
 	[self addChild:_resultBackSprite z:0];

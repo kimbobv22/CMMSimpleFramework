@@ -75,6 +75,8 @@
 	_backSprite = [CCSprite spriteWithTexture:backSprite_.texture rect:backSprite_.textureRect];
 	
 	if(!(self = [super initWithColor:ccc4(0, 0, 0, 0) width:radius_*2.0f height:radius_*2.0f])) return self;
+	
+	[touchDispatcher setMaxMultiTouchCount:0];
 		
 	[self addChild:_backSprite z:0];
 	[self addChild:_stick z:1];

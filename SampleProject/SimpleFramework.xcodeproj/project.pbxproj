@@ -14,6 +14,7 @@
 		E00857591625482B009C9BC4 /* CMMPacketData.mm in Sources */ = {isa = PBXBuildFile; fileRef = E00857581625482B009C9BC4 /* CMMPacketData.mm */; };
 		E009D7E815D94F19004E9012 /* PAR_EFT_0001.plist in Resources */ = {isa = PBXBuildFile; fileRef = E009D7E715D94F19004E9012 /* PAR_EFT_0001.plist */; };
 		E00E2E6A15FF506A003551B4 /* CMMSimpleCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = E00E2E6915FF506A003551B4 /* CMMSimpleCache.mm */; };
+		E01F231F164B9296001DA02F /* CMMSocketHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = E01F231E164B9295001DA02F /* CMMSocketHandler.mm */; };
 		E0257A2215FF3C55008C54C2 /* CMMSPMapObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0257A2115FF3C55008C54C2 /* CMMSPMapObject.mm */; };
 		E026250D1615F33600B158CF /* CMMGameKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = E026250C1615F33600B158CF /* CMMGameKit.mm */; };
 		E0262512161696BE00B158CF /* CMMPacket.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0262511161696BE00B158CF /* CMMPacket.mm */; };
@@ -65,7 +66,6 @@
 		E032FC4615E1EAB300B28B61 /* CMMStringUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC3F15E1EAB300B28B61 /* CMMStringUtil.mm */; };
 		E032FC4715E1EAB300B28B61 /* CMMTouchUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC4115E1EAB300B28B61 /* CMMTouchUtil.mm */; };
 		E032FC5415E1EDE600B28B61 /* CMMLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC4915E1EDE200B28B61 /* CMMLayer.mm */; };
-		E032FC5615E1EDE600B28B61 /* CMMLayerPinchZoom.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC4D15E1EDE300B28B61 /* CMMLayerPinchZoom.mm */; };
 		E032FC5715E1EDE600B28B61 /* CMMLayerPopup.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC4F15E1EDE400B28B61 /* CMMLayerPopup.mm */; };
 		E032FC5815E1EDE600B28B61 /* CMMScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC5115E1EDE400B28B61 /* CMMScene.mm */; };
 		E032FC5915E1EDE600B28B61 /* CMMSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC5315E1EDE500B28B61 /* CMMSprite.mm */; };
@@ -266,6 +266,7 @@
 		E0C6B483161EB592005F5749 /* AchievementsTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C6B482161EB592005F5749 /* AchievementsTestLayer.mm */; };
 		E0CA18C715F9DBAB0064EF9F /* CMMStagePXL.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0CA18C615F9DBAB0064EF9F /* CMMStagePXL.mm */; };
 		E0CA18CB15F9E8D60064EF9F /* CCSpriteBatchNode+SplitSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CA18CA15F9E8D50064EF9F /* CCSpriteBatchNode+SplitSprite.m */; };
+		E0CDBA8B1649FF4600E076FF /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0CDBA8A1649FF4600E076FF /* CFNetwork.framework */; };
 		E0D08A8615D8131600D14618 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D08A8515D8131600D14618 /* CoreMotion.framework */; };
 		E0D4097015D4F67F00953AFC /* SND_CMN_BTN_0001.caf in Resources */ = {isa = PBXBuildFile; fileRef = E0D4096F15D4F67F00953AFC /* SND_CMN_BTN_0001.caf */; };
 		E0D4097315D4F6FD00953AFC /* CommonIntroLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0D4097215D4F6FD00953AFC /* CommonIntroLayer.mm */; };
@@ -307,6 +308,8 @@
 		E009D7E715D94F19004E9012 /* PAR_EFT_0001.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PAR_EFT_0001.plist; path = Resources/PAR_EFT_0001.plist; sourceTree = "<group>"; };
 		E00E2E6815FF506A003551B4 /* CMMSimpleCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSimpleCache.h; path = libs/CMMSimpleFramework/CMMSimpleCache.h; sourceTree = "<group>"; };
 		E00E2E6915FF506A003551B4 /* CMMSimpleCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSimpleCache.mm; path = libs/CMMSimpleFramework/CMMSimpleCache.mm; sourceTree = "<group>"; };
+		E01F231D164B9295001DA02F /* CMMSocketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSocketHandler.h; path = libs/CMMSimpleFramework/CMMSocketHandler.h; sourceTree = "<group>"; };
+		E01F231E164B9295001DA02F /* CMMSocketHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSocketHandler.mm; path = libs/CMMSimpleFramework/CMMSocketHandler.mm; sourceTree = "<group>"; };
 		E0257A2015FF3C55008C54C2 /* CMMSPMapObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSPMapObject.h; path = libs/CMMSimpleFramework/CMMSPMapObject.h; sourceTree = "<group>"; };
 		E0257A2115FF3C55008C54C2 /* CMMSPMapObject.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSPMapObject.mm; path = libs/CMMSimpleFramework/CMMSPMapObject.mm; sourceTree = "<group>"; };
 		E026250B1615F33600B158CF /* CMMGameKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMGameKit.h; path = libs/CMMSimpleFramework/CMMGameKit.h; sourceTree = "<group>"; };
@@ -397,8 +400,6 @@
 		E032FC4115E1EAB300B28B61 /* CMMTouchUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMTouchUtil.mm; path = libs/CMMSimpleFramework/CMMTouchUtil.mm; sourceTree = "<group>"; };
 		E032FC4815E1EDE200B28B61 /* CMMLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMLayer.h; path = libs/CMMSimpleFramework/CMMLayer.h; sourceTree = "<group>"; };
 		E032FC4915E1EDE200B28B61 /* CMMLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMLayer.mm; path = libs/CMMSimpleFramework/CMMLayer.mm; sourceTree = "<group>"; };
-		E032FC4C15E1EDE300B28B61 /* CMMLayerPinchZoom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMLayerPinchZoom.h; path = libs/CMMSimpleFramework/CMMLayerPinchZoom.h; sourceTree = "<group>"; };
-		E032FC4D15E1EDE300B28B61 /* CMMLayerPinchZoom.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMLayerPinchZoom.mm; path = libs/CMMSimpleFramework/CMMLayerPinchZoom.mm; sourceTree = "<group>"; };
 		E032FC4E15E1EDE400B28B61 /* CMMLayerPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMLayerPopup.h; path = libs/CMMSimpleFramework/CMMLayerPopup.h; sourceTree = "<group>"; };
 		E032FC4F15E1EDE400B28B61 /* CMMLayerPopup.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMLayerPopup.mm; path = libs/CMMSimpleFramework/CMMLayerPopup.mm; sourceTree = "<group>"; };
 		E032FC5115E1EDE400B28B61 /* CMMScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMScene.mm; path = libs/CMMSimpleFramework/CMMScene.mm; sourceTree = "<group>"; };
@@ -808,6 +809,7 @@
 		E0CA18C615F9DBAB0064EF9F /* CMMStagePXL.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMStagePXL.mm; path = libs/CMMSimpleFramework/CMMStagePXL.mm; sourceTree = "<group>"; };
 		E0CA18C915F9E8D50064EF9F /* CCSpriteBatchNode+SplitSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CCSpriteBatchNode+SplitSprite.h"; path = "libs/CCSpriteBatchNode+SplitSprite.h"; sourceTree = "<group>"; };
 		E0CA18CA15F9E8D50064EF9F /* CCSpriteBatchNode+SplitSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CCSpriteBatchNode+SplitSprite.m"; path = "libs/CCSpriteBatchNode+SplitSprite.m"; sourceTree = "<group>"; };
+		E0CDBA8A1649FF4600E076FF /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		E0D08A8515D8131600D14618 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		E0D4096F15D4F67F00953AFC /* SND_CMN_BTN_0001.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SND_CMN_BTN_0001.caf; path = Resources/SND_CMN_BTN_0001.caf; sourceTree = "<group>"; };
 		E0D4097115D4F6FD00953AFC /* CommonIntroLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonIntroLayer.h; sourceTree = "<group>"; };
@@ -859,6 +861,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0CDBA8B1649FF4600E076FF /* CFNetwork.framework in Frameworks */,
 				E0BB297D16303C5B0005A90F /* StoreKit.framework in Frameworks */,
 				E0C4A8771622C15600C4B57E /* SystemConfiguration.framework in Frameworks */,
 				E0D08A8615D8131600D14618 /* CoreMotion.framework in Frameworks */,
@@ -927,6 +930,7 @@
 		E02A44A115D4115C005BB6C1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E0CDBA8A1649FF4600E076FF /* CFNetwork.framework */,
 				E0BB297C16303C5B0005A90F /* StoreKit.framework */,
 				E0C4A8761622C15600C4B57E /* SystemConfiguration.framework */,
 				E0D08A8515D8131600D14618 /* CoreMotion.framework */,
@@ -1185,6 +1189,7 @@
 				E04770FE15D4D6500079EAE9 /* menu */,
 				E0AA4BD115E3CBB9006D0C7F /* control */,
 				E0431BA315E780A700E724E2 /* customUI */,
+				E0993CC4164507BD009A39C8 /* socket */,
 			);
 			name = component;
 			sourceTree = "<group>";
@@ -1297,8 +1302,6 @@
 				E0A1CE5F162E543D0008EF60 /* CMMLayerM.mm */,
 				E0A1CE65162E59250008EF60 /* CMMLayerMD.h */,
 				E0A1CE66162E59250008EF60 /* CMMLayerMD.mm */,
-				E032FC4C15E1EDE300B28B61 /* CMMLayerPinchZoom.h */,
-				E032FC4D15E1EDE300B28B61 /* CMMLayerPinchZoom.mm */,
 				E032FC4E15E1EDE400B28B61 /* CMMLayerPopup.h */,
 				E032FC4F15E1EDE400B28B61 /* CMMLayerPopup.mm */,
 				E032FC5215E1EDE500B28B61 /* CMMSprite.h */,
@@ -1513,6 +1516,15 @@
 				E0ED520B15E2037A0070712E /* CMMSObject_Test.mm */,
 			);
 			name = object;
+			sourceTree = "<group>";
+		};
+		E0993CC4164507BD009A39C8 /* socket */ = {
+			isa = PBXGroup;
+			children = (
+				E01F231D164B9295001DA02F /* CMMSocketHandler.h */,
+				E01F231E164B9295001DA02F /* CMMSocketHandler.mm */,
+			);
+			name = socket;
 			sourceTree = "<group>";
 		};
 		E09EA18915DB9E3E00D9C5C9 /* CMMSimpleFramework */ = {
@@ -1968,7 +1980,6 @@
 				E032FC4615E1EAB300B28B61 /* CMMStringUtil.mm in Sources */,
 				E032FC4715E1EAB300B28B61 /* CMMTouchUtil.mm in Sources */,
 				E032FC5415E1EDE600B28B61 /* CMMLayer.mm in Sources */,
-				E032FC5615E1EDE600B28B61 /* CMMLayerPinchZoom.mm in Sources */,
 				E032FC5715E1EDE600B28B61 /* CMMLayerPopup.mm in Sources */,
 				E032FC5815E1EDE600B28B61 /* CMMScene.mm in Sources */,
 				E032FC5915E1EDE600B28B61 /* CMMSprite.mm in Sources */,
@@ -2119,6 +2130,7 @@
 				E0BB297A16303AD00005A90F /* InAppPurchaseTestLayer.mm in Sources */,
 				E0C009F01631253500BE918E /* CMMSequenceMaker.mm in Sources */,
 				E0C00DC11631386000BE918E /* SequenceMakerTestLayer.mm in Sources */,
+				E01F231F164B9296001DA02F /* CMMSocketHandler.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
