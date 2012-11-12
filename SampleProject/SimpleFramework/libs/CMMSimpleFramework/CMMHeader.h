@@ -75,3 +75,5 @@ static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.1.0";
 
 #import "CMMCustomUI.h"
 #import "CMMCustomUIJoypad.h"
+
+#import "CMMSocketHandler.h"

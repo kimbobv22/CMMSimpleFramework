@@ -264,6 +264,7 @@
 		E0C4A8751622BF5A00C4B57E /* CMMConnectionMonitor.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C4A8741622BF5A00C4B57E /* CMMConnectionMonitor.mm */; };
 		E0C4A8771622C15600C4B57E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0C4A8761622C15600C4B57E /* SystemConfiguration.framework */; };
 		E0C6B483161EB592005F5749 /* AchievementsTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C6B482161EB592005F5749 /* AchievementsTestLayer.mm */; };
+		E0C84285164F83BD00B98A44 /* CFSocketTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0C84284164F83BD00B98A44 /* CFSocketTestLayer.mm */; };
 		E0CA18C715F9DBAB0064EF9F /* CMMStagePXL.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0CA18C615F9DBAB0064EF9F /* CMMStagePXL.mm */; };
 		E0CA18CB15F9E8D60064EF9F /* CCSpriteBatchNode+SplitSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CA18CA15F9E8D50064EF9F /* CCSpriteBatchNode+SplitSprite.m */; };
 		E0CDBA8B1649FF4600E076FF /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0CDBA8A1649FF4600E076FF /* CFNetwork.framework */; };
@@ -805,6 +806,8 @@
 		E0C604EC1635109400F096F2 /* CMMType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMType.h; path = libs/CMMSimpleFramework/CMMType.h; sourceTree = "<group>"; };
 		E0C6B481161EB592005F5749 /* AchievementsTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AchievementsTestLayer.h; sourceTree = "<group>"; };
 		E0C6B482161EB592005F5749 /* AchievementsTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = AchievementsTestLayer.mm; sourceTree = "<group>"; };
+		E0C84283164F83BD00B98A44 /* CFSocketTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CFSocketTestLayer.h; sourceTree = "<group>"; };
+		E0C84284164F83BD00B98A44 /* CFSocketTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CFSocketTestLayer.mm; sourceTree = "<group>"; };
 		E0CA18C515F9DBAB0064EF9F /* CMMStagePXL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMStagePXL.h; path = libs/CMMSimpleFramework/CMMStagePXL.h; sourceTree = "<group>"; };
 		E0CA18C615F9DBAB0064EF9F /* CMMStagePXL.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMStagePXL.mm; path = libs/CMMSimpleFramework/CMMStagePXL.mm; sourceTree = "<group>"; };
 		E0CA18C915F9E8D50064EF9F /* CCSpriteBatchNode+SplitSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CCSpriteBatchNode+SplitSprite.h"; path = "libs/CCSpriteBatchNode+SplitSprite.h"; sourceTree = "<group>"; };
@@ -1287,6 +1290,8 @@
 				E0025052162128E4001DF0C0 /* CameraTestLayer.mm */,
 				E0BB297816303AD00005A90F /* InAppPurchaseTestLayer.h */,
 				E0BB297916303AD00005A90F /* InAppPurchaseTestLayer.mm */,
+				E0C84283164F83BD00B98A44 /* CFSocketTestLayer.h */,
+				E0C84284164F83BD00B98A44 /* CFSocketTestLayer.mm */,
 			);
 			name = TestMenu;
 			sourceTree = "<group>";
@@ -2131,6 +2136,7 @@
 				E0C009F01631253500BE918E /* CMMSequenceMaker.mm in Sources */,
 				E0C00DC11631386000BE918E /* SequenceMakerTestLayer.mm in Sources */,
 				E01F231F164B9296001DA02F /* CMMSocketHandler.mm in Sources */,
+				E0C84285164F83BD00B98A44 /* CFSocketTestLayer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

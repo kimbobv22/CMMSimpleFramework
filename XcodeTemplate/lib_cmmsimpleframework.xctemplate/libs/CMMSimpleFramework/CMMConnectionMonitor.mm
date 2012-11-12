@@ -24,7 +24,7 @@ static void cmmFuncCMMConnectionMonitor_ReachabilityCallback(SCNetworkReachabili
 static CMMConnectionMonitor *_sharedCMMConnectionMonitor_ = nil;
 
 @implementation CMMConnectionMonitor
-@synthesize connectionStatus;
+@synthesize connectionStatus,IPAddress;
 
 +(CMMConnectionMonitor *)sharedMonitor{
 	if(!_sharedCMMConnectionMonitor_){
@@ -91,6 +91,57 @@ static CMMConnectionMonitor *_sharedCMMConnectionMonitor_ = nil;
 	}
 	
 	return CMMConnectionStatus_noConnection;
+}
+
+-(NSString *)IPAddressOfTargetStatus:(CMMConnectionStatus)targetStatus_{
+	if(targetStatus_ == CMMConnectionStatus_noConnection) return nil;
+	
+	NSString *address_ = nil;
+    struct ifaddrs *interfaces_ = NULL;
+    struct ifaddrs *tempAddress_ = NULL;
+    int success_ = getifaddrs(&interfaces_);
+	
+	if(success_ == 0){
+		tempAddress_ = interfaces_;
+		while(tempAddress_ != NULL){
+			if(tempAddress_->ifa_addr->sa_family == AF_INET){
+				
+				BOOL isCorrectInterface_ = NO;
+				switch(targetStatus_){
+					case CMMConnectionStatus_WiFi:{
+						NSString *sourceID_ = [NSString stringWithUTF8String:tempAddress_->ifa_name];
+						NSString *interfaceIDFormatter_ = @"en%d";
+						for(uint index_=0;index_<10;++index_){
+							if([sourceID_ isEqualToString:[NSString stringWithFormat:interfaceIDFormatter_,index_]]){
+								isCorrectInterface_ = YES;
+							}
+						}
+						
+						break;
+					}
+					case CMMConnectionStatus_WWAN:
+					default:
+						if([[NSString stringWithUTF8String:tempAddress_->ifa_name] isEqualToString:@"pdp_ip0"]){
+							isCorrectInterface_ = YES;
+						}
+						break;
+				}
+				
+				if(isCorrectInterface_){
+					address_ = [NSString stringWithUTF8String:inet_ntoa(((struct sockaddr_in *)tempAddress_->ifa_addr)->sin_addr)];
+					break;
+				}
+			}
+			
+			tempAddress_ = tempAddress_->ifa_next;
+		}
+	}
+	
+    freeifaddrs(interfaces_);
+    return address_;
+}
+-(NSString *)IPAddress{
+	return [self IPAddressOfTargetStatus:[self connectionStatus]];
 }
 
 -(void)addObserverForConnectionStatus:(id)target_ selector:(SEL)selector_{

@@ -20,9 +20,12 @@ typedef enum {
 
 +(CMMConnectionMonitor *)sharedMonitor;
 
+-(NSString *)IPAddressOfTargetStatus:(CMMConnectionStatus)targetStatus_;
+
 -(void)addObserverForConnectionStatus:(id)target_ selector:(SEL)selector_;
 -(void)removeObserverForConnectionStatus:(id)target_;
 
 @property (nonatomic, readonly) CMMConnectionStatus connectionStatus;
+@property (nonatomic, readonly) NSString *IPAddress;
 
 @end
