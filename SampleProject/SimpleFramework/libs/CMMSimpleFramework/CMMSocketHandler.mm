@@ -1,11 +1,39 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMSocketHandler.h"
+#import "CMMConnectionMonitor.h"
 
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <fcntl.h>
-#include <unistd.h>
+@implementation CMMSocketHandlerStatePacket
+@synthesize connectionState;
+
++(id)packetWithConnectionState:(CMMSocketHandlerConnectionState)connectionState_{
+	return [[[self alloc] initWithConnectionState:connectionState_] autorelease];
+}
+-(id)initWithConnectionState:(CMMSocketHandlerConnectionState)connectionState_{
+	if(!(self = [super init])) return self;
+	
+	connectionState = connectionState_;
+	
+	return self;
+}
+-(id)initWithCoder:(NSCoder *)decoder_{
+	if(!(self = [super initWithCoder:decoder_])) return self;
+	
+	connectionState = (CMMSocketHandlerConnectionState)[decoder_ decodeIntForKey:cmmVarCMMConnectionMonitor_reachabilityChangedNotification];
+	
+	return self;
+}
+-(void)encodeWithCoder:(NSCoder *)encoder_{
+	[super encodeWithCoder:encoder_];
+	[encoder_ encodeInt:connectionState forKey:cmmVarCMMConnectionMonitor_reachabilityChangedNotification];
+}
+-(id)copyWithZone:(NSZone *)zone_{
+	CMMSocketHandlerStatePacket *copy_ = [super copyWithZone:zone_];
+	[copy_ setConnectionState:connectionState];
+	return copy_;
+}
+
+@end
 
 @interface CMMSocketHandler(Private)
 
@@ -21,17 +49,24 @@
 static void _callbackCFSocket(CFSocketRef s, CFSocketCallBackType type, CFDataRef address, const void *data, void *info){
 	CMMSocketHandler *socketHandler_ = (CMMSocketHandler *)info;
 	switch(type){
-		case kCFSocketReadCallBack:{
-			[socketHandler_ receiveData];
+		case kCFSocketAcceptCallBack:{
+			CCLOG(@"kCFSocketAcceptCallBack");
 			break;
 		}
-		case kCFSocketConnectCallBack:{
-			[socketHandler_ addConnectedClientWithAddressData:(NSData *)address];
+		case kCFSocketDataCallBack:{
+			if(data != nil){
+				CMMPacketData *packetData_ = [CMMPacketData packetDataWithPackedData:(NSData *)data];
+				[socketHandler_ receivePacketData:packetData_ fromAddressData:(NSData *)address];
+				[CMMPacketData cacheData:packetData_];
+			}else{
+				[socketHandler_ receivePacketData:nil fromAddressData:(NSData *)address];
+			}
 			break;
 		}
 		default: break;
 	}
 }
+
 static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeInfo, const CFStreamError *error, void *info){
 	CMMSocketHandler *socketHandler_ = (CMMSocketHandler *)info;
 	if((error != NULL) && (error->domain != 0)){
@@ -48,7 +83,7 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
 	int err_;
 	int junk_;
 	int sock_;
-	const CFSocketContext context_ = { 0, (void *) (self), NULL, NULL, NULL };
+	const CFSocketContext context_ = {0, (void *)self, NULL, NULL, NULL };
 	CFRunLoopSourceRef rls_;
 	
 	assert((address_ == nil) || ([address_ length] <= sizeof(struct sockaddr_storage)));
@@ -164,7 +199,7 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
 	// Wrap the socket in a CFSocket that's scheduled on the runloop.
 	
 	if(err_ == 0){
-		_cfSocket = CFSocketCreateWithNative(NULL, sock_, kCFSocketReadCallBack | kCFSocketConnectCallBack, &_callbackCFSocket, &context_);
+		_cfSocket = CFSocketCreateWithNative(NULL, sock_, kCFSocketDataCallBack , _callbackCFSocket, &context_);
 		
 		// The socket will now take care of cleaning up our file descriptor.
 		
@@ -217,7 +252,7 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
     NSArray *resolvedAddresses_ = (NSArray *)CFHostGetAddressing(_cfHost, &isResolve_);
     if(isResolve_ && resolvedAddresses_ != nil){
 		for(NSData *address_ in resolvedAddresses_){
-			const sockaddr * addrPtr_ = (const struct sockaddr *)[address_ bytes];;
+			const sockaddr * addrPtr_ = (const struct sockaddr *)[address_ bytes];
 			uint addressLength_ = [address_ length];
 			assert(addressLength_ >= sizeof(sockaddr));
 			
@@ -259,7 +294,7 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
 @end
 
 @implementation CMMSocketHandler
-@synthesize delegate,port,hostName,hostAddress,clientAddressList,isHost;
+@synthesize delegate,port,hostName,hostAddress,isHost;
 
 +(id)handler{
 	return [[[self alloc] init] autorelease];
@@ -268,13 +303,11 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
 -(id)init{
 	if(!(self = [super init])) return self;
 	
-	clientAddressList = [[CCArray alloc] init];
-	
 	return self;
 }
 
 -(BOOL)isHost{
-	return (hostName != nil);
+	return (hostName == nil);
 }
 -(void)closeSocket{
 	[self stopHostResolution];
@@ -333,46 +366,11 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
 	return NO;
 }
 
--(NSData *)addressDataAtIndex:(uint)index_{
-	if(index_ == NSNotFound) return nil;
-	return [clientAddressList objectAtIndex:index_];
-}
-
--(void)addConnectedClientWithAddressData:(NSData *)addressData_{
-	if([clientAddressList indexOfObject:addressData_] != NSNotFound) return;
-	[clientAddressList addObject:addressData_];
-}
-
--(void)receiveData{
-	int error_;
-	int sock_ = CFSocketGetNative(_cfSocket);
-	uint8_t buffer_[65536];
-	sockaddr_storage address_;
-	socklen_t addressLength_ = sizeof(address_);
-	ssize_t bytesRead_ = recvfrom(sock_, buffer_, sizeof(buffer_), 0, (struct sockaddr *) &address_, &addressLength_);
-	
-	if(bytesRead_ < 0){
-		error_ = errno;
-	}else if(bytesRead_ == 0){
-		error_ = EPIPE;
-	}else{
-		error_ = 0;
-		NSData *dataObject_ = [NSData dataWithBytes:buffer_ length:(NSUInteger)bytesRead_];
-		assert(dataObject_ != nil);
-		NSData *addressObject_ = [NSData dataWithBytes:&address_ length:addressLength_];
-		assert(addressObject_ != nil);
-		
-		CMMPacketData *packetData_ = [CMMPacketData packetDataWithPackedData:dataObject_];
-		if(cmmFuncCommon_respondsToSelector(delegate, @selector(socketHandler:didReceivePacketData:fromAddressData:))){
-			[delegate socketHandler:self didReceivePacketData:packetData_ fromAddressData:addressObject_];
-		}
-		[CMMPacketData cacheData:packetData_];
-	}
-	
-	if(error_ != 0){
-		if(cmmFuncCommon_respondsToSelector(delegate, @selector(socketHandler:didReceiveError:))){
-			[delegate socketHandler:self didReceiveError:[NSError errorWithDomain:NSPOSIXErrorDomain code:error_ userInfo:nil]];
-		}
+-(void)receivePacketData:(CMMPacketData *)packetData_ fromAddressData:(NSData *)addressData_{
+	if(packetData_ && cmmFuncCommon_respondsToSelector(delegate, @selector(socketHandler:didReceivePacketData:fromAddressData:))){
+		[delegate socketHandler:self didReceivePacketData:packetData_ fromAddressData:addressData_];
+	}else if(!packetData_ && cmmFuncCommon_respondsToSelector(delegate, @selector(socketHandler:didReceiveError:))){
+		[delegate socketHandler:self didReceiveError:[NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil]];
 	}
 }
 
@@ -380,14 +378,19 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
 	NSData *packedData_ = [packetData_ toPackedData];
 	
     assert(packedData_ != nil);
-    assert(addressData_ != nil);
+	assert((addressData_ != nil) == [self isHost]);
 	
 	int error_;
     int sock_ = CFSocketGetNative(_cfSocket);
     assert(sock_ >= 0);
 	
-	const struct sockaddr *addrPtr_ = (const struct sockaddr *)[addressData_ bytes];
-	socklen_t addrLength_ = [addressData_ length];
+	const struct sockaddr *addrPtr_ = NULL;
+	socklen_t addrLength_ = 0;
+	if(addressData_){
+		addrPtr_ = (const struct sockaddr *)[addressData_ bytes];
+		addrLength_ = [addressData_ length];
+	}
+	
 	ssize_t bytesWritten_ = sendto(sock_, [packedData_ bytes], [packedData_ length], 0, addrPtr_, addrLength_);
 	
 	if(bytesWritten_ < 0){
@@ -418,16 +421,7 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
 	}
 	
 	[packetData_ setDataWithPacket:packet_];
-	
-	if(isHost && !addressData_){
-		ccArray *data_ = clientAddressList->data;
-		uint count_ = data_->num;
-		for(uint index_=0;index_<count_;++index_){
-			[self sendPacketData:packetData_ toAddressData:data_->arr[index_]];
-		}
-	}else{
-		[self sendPacketData:packetData_ toAddressData:addressData_];
-	}
+	[self sendPacketData:packetData_ toAddressData:addressData_];
 }
 -(void)sendBytes:(void *)bytes_ length:(uint)length_ toAddressData:(NSData *)addressData_{
 	CMMPacketData *packetData_ = [CMMPacketData cachedData];
@@ -440,13 +434,13 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
 }
 
 -(void)sendPacketData:(CMMPacketData *)packetData_{
-	[self sendPacketData:packetData_ toAddressData:(!isHost?hostAddress:nil)];
+	[self sendPacketData:packetData_ toAddressData:nil];
 }
 -(void)sendPacket:(CMMPacket *)packet_{
-	[self sendPacket:packet_ toAddressData:(!isHost?hostAddress:nil)];
+	[self sendPacket:packet_ toAddressData:nil];
 }
 -(void)sendBytes:(void *)bytes_ length:(uint)length_{
-	[self sendBytes:bytes_ length:length_ toAddressData:(!isHost?hostAddress:nil)];
+	[self sendBytes:bytes_ length:length_ toAddressData:nil];
 }
 
 -(void)dealloc{
@@ -454,7 +448,6 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
 	[self closeSocket];
 	[hostName release];
 	[hostAddress release];
-	[clientAddressList release];
 	[super dealloc];
 }
 

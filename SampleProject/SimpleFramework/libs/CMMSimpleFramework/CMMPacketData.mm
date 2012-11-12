@@ -71,7 +71,7 @@ static CMMSimpleCache *_cachedCMMPacketData_ = nil;
 -(id)initWithCoder:(NSCoder *)decoder_{
 	if(!(self = [self initWithType:(CMMPacketDataType)[decoder_ decodeIntForKey:cmmVarCMMPacketData_keyName_type]])) return self;
 
-	[self setData:[decoder_ decodeObjectForKey:cmmVarCMMPacketData_keyName_type]];
+	[self setData:[decoder_ decodeObjectForKey:cmmVarCMMPacketData_keyName_data]];
 	
 	return self;
 }
