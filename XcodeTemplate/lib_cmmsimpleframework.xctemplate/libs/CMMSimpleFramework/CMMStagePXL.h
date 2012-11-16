@@ -3,6 +3,7 @@
 #import "CMMStage.h"
 #import "CCMutableTexture2D.h"
 #import "CMMFileUtil.h"
+#import "CMMStringUtil.h"
 #import "CMMSPMapObject.h"
 
 @interface CMMStagePixel : CCSpriteBatchNode{

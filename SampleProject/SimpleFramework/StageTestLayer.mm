@@ -174,8 +174,8 @@
 	[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
-	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
-	if(!_isTouchObject && !_isOnDrag){
+	CMMTouchDispatcherItem *touchItem_ = [touchDispatcher touchItemAtIndex:0];
+	if(!_isTouchObject && !_isOnDrag && touchItem_ && [touchItem_ node] == stage){
 		switch(stageControlType){
 			case StageControlType_addBox:
 				[self addBox:[stage convertToStageWorldSpace:_curTouchPoint]];
@@ -186,10 +186,11 @@
 			default: break;
 		}
 	}
+	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
 	_isOnTouch = _isTouchObject = NO;
 	_curTouchObject = nil;
 	
-	if([[stage touchDispatcher] touchCount] == 0){
+	if([touchDispatcher touchCount] == 0){
 		_isOnDrag = NO;
 	}
 }
@@ -395,7 +396,7 @@
 -(void)update:(ccTime)dt_{
 	[super update:dt_];
 	
-	if(_isOnTouch){
+	if(_isOnTouch && !_isTouchObject && !_isOnDrag){
 		CMMStagePXL *stage_ = (CMMStagePXL *)stage;
 		float pointDistance_ = ccpDistance(_curTouchPoint, _beforeTouchPoint);
 		int targetCount_ = MAX((int)(pointDistance_/2.0f),2);
@@ -421,8 +422,8 @@
 	}
 }
 
--(void)stage:(CMMStage *)stage_ whenTouchBegan:(UITouch *)touch_ withObject:(CMMSObject *)object_{
-	[super stage:stage_ whenTouchBegan:touch_ withObject:object_];
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
+	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
 	_beforeTouchPoint = _curTouchPoint;
 }
 

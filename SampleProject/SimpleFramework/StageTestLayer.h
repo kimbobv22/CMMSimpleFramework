@@ -7,6 +7,7 @@ enum StageControlType{
 	StageControlType_addBall,
 	StageControlType_paintMap,
 	StageControlType_eraseMap,
+	StageControlType_drawImage,
 	StageControlType_addLight,
 	
 	StageControlType_maxCount,

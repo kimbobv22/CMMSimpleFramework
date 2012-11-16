@@ -1,12 +1,44 @@
 #import "CCMutableTexture2D.h"
 
+@interface CCMutableTexture2D(Private)
+
+-(void)_fixRect:(CGRect *)targetRect_;
+
+@end
+
+@implementation CCMutableTexture2D(Private)
+
+-(void)_fixRect:(CGRect *)targetRect_{
+	CGPoint targetPoint_ = targetRect_->origin;
+	CGSize targetSize_ = targetRect_->size;
+	
+	if(targetPoint_.x < 0.0f){
+		targetSize_.width += targetPoint_.x;
+		targetPoint_.x = 0.0f;
+	}else if(targetPoint_.x+targetSize_.width > width_){
+		targetSize_.width -= (targetPoint_.x+targetSize_.width) - (CGFloat)width_;
+	}
+	
+	if(targetPoint_.y < 0.0f){
+		targetSize_.height += targetPoint_.y;
+		targetPoint_.y = 0.0f;
+	}else if(targetPoint_.y+targetSize_.height > height_){
+		targetSize_.height -= (targetPoint_.y+targetSize_.height) - (CGFloat)height_;
+	}
+	
+	targetRect_->origin = targetPoint_;
+	targetRect_->size = targetSize_;
+}
+
+@end
+
 @implementation CCMutableTexture2D
 
 -(id)initWithData:(const void *)data pixelFormat:(CCTexture2DPixelFormat)pixelFormat pixelsWide:(NSUInteger)width pixelsHigh:(NSUInteger)height contentSize:(CGSize)size{
 	if(!(self = [super initWithData:data pixelFormat:pixelFormat pixelsWide:width pixelsHigh:height contentSize:size])) return self;
 	
 	_data = (void *)data;
-	NSUInteger pixelDataLength_ = width_ * height_ * [self bitsPerPixelForFormat];
+	NSUInteger pixelDataLength_ = width_ * height_ * ([self bitsPerPixelForFormat]/8);
 	_orgData = malloc(pixelDataLength_);
 	memcpy(_orgData,data,pixelDataLength_);
 	
@@ -144,32 +176,16 @@
 	ccGLBindTexture2D(0);
 }
 -(void)applyPixelAtRect:(CGRect)rect_{
-	CGPoint targetPoint_ = rect_.origin;
+	[self _fixRect:&rect_];
+	
 	CGSize targetSize_ = rect_.size;
-	
-	if(targetPoint_.x < 0.0f){
-		targetSize_.width += targetPoint_.x;
-		targetPoint_.x = 0.0f;
-	}else if(targetPoint_.x+targetSize_.width > width_){
-		targetSize_.width -= (targetPoint_.x+targetSize_.width) - (CGFloat)width_;
-	}
-	
-	if(targetPoint_.y < 0.0f){
-		targetSize_.height += targetPoint_.y;
-		targetPoint_.y = 0.0f;
-	}else if(targetPoint_.y+targetSize_.height > height_){
-		targetSize_.height -= (targetPoint_.y+targetSize_.height) - (CGFloat)height_;
-	}
+	CGPoint targetPoint_ = rect_.origin;
 	
 	if(targetSize_.width <= 0.0f || targetSize_.height <= 0.0f){
-		CCLOG(@"CCMutableTexture2D->applyPixelAtRect : out of range(%1.1f,%1.1f,%1.1f,%1.1f)",targetPoint_.x,targetPoint_.y,targetSize_.width,targetSize_.height);
 		return;
 	}
 	
-	rect_.origin = targetPoint_;
-	rect_.size = targetSize_;
-	
-	NSUInteger targetPixelLength_ = ((NSUInteger)targetSize_.width) * ((NSUInteger)targetSize_.height) * [self bitsPerPixelForFormat];
+	NSUInteger targetPixelLength_ = ((NSUInteger)targetSize_.width) * ((NSUInteger)targetSize_.height) * ([self bitsPerPixelForFormat]/8);
 	void * targetPixelData_ = malloc(targetPixelLength_);
 	
 	for(NSUInteger targetXindex_=0; targetXindex_<(NSUInteger)targetSize_.width;++targetXindex_){
@@ -244,7 +260,7 @@
 }
 
 -(void)restore{
-	memcpy(_data, _orgData, width_*height_*[self bitsPerPixelForFormat]);
+	memcpy(_data, _orgData, width_*height_*([self bitsPerPixelForFormat]/8));
 	[self apply];
 }
 

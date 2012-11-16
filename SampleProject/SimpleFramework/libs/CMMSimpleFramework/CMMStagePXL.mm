@@ -349,8 +349,7 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 	fileName = [fileName_ copy];
 	isInDocument = isInDocument_;
 	
-	//not supports HD image
-	NSData *data_ = [CMMFileUtil dataWithFileName:fileName isInDocument:isInDocument];
+	NSData *data_ = [CMMFileUtil dataWithFilePath:[[CCFileUtils sharedFileUtils] fullPathFromRelativePath:[CMMStringUtil stringPathWithFileName:fileName isInDocument:isInDocument]]];
 	if(!data_){
 		[self release];
 		CCLOG(@"CMMStagePXL : PixelData doesn't to be nil");
@@ -383,8 +382,8 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 }
 
 -(void)step:(ccTime)dt_{
-	[pixel update:dt_];
 	[super step:dt_];
+	[pixel update:dt_];
 }
 
 -(void)whenContactBeganWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{

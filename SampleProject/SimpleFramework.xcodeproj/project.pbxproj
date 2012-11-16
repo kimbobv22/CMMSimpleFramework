@@ -137,6 +137,7 @@
 		E047711115D4D7800079EAE9 /* StageTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E047711015D4D7800079EAE9 /* StageTestLayer.mm */; };
 		E049BE2215E3CDD100DF09A1 /* CMMControlItemSwitch.mm in Sources */ = {isa = PBXBuildFile; fileRef = E049BE2115E3CDD100DF09A1 /* CMMControlItemSwitch.mm */; };
 		E049BE2615E3E28700DF09A1 /* ControlItemTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E049BE2515E3E28600DF09A1 /* ControlItemTestLayer.mm */; };
+		E049D20216561E4E00150CDE /* IMG_STG_TEST_001-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E049D20116561E4E00150CDE /* IMG_STG_TEST_001-hd.png */; };
 		E049E24B15DE9FCC00CD80E1 /* IMG_TMX_SAMPLE_000.png in Resources */ = {isa = PBXBuildFile; fileRef = E049E24915DE9FCC00CD80E1 /* IMG_TMX_SAMPLE_000.png */; };
 		E049E24C15DE9FCC00CD80E1 /* TMX_SAMPLE_000.tmx in Resources */ = {isa = PBXBuildFile; fileRef = E049E24A15DE9FCC00CD80E1 /* TMX_SAMPLE_000.tmx */; };
 		E066C5541621375000CE0172 /* CMMCaremaManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E066C5531621375000CE0172 /* CMMCaremaManager.mm */; };
@@ -536,6 +537,7 @@
 		E049BE2115E3CDD100DF09A1 /* CMMControlItemSwitch.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMControlItemSwitch.mm; path = libs/CMMSimpleFramework/CMMControlItemSwitch.mm; sourceTree = "<group>"; };
 		E049BE2415E3E28600DF09A1 /* ControlItemTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlItemTestLayer.h; sourceTree = "<group>"; };
 		E049BE2515E3E28600DF09A1 /* ControlItemTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ControlItemTestLayer.mm; sourceTree = "<group>"; };
+		E049D20116561E4E00150CDE /* IMG_STG_TEST_001-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IMG_STG_TEST_001-hd.png"; path = "Resources/IMG_STG_TEST_001-hd.png"; sourceTree = "<group>"; };
 		E049E24915DE9FCC00CD80E1 /* IMG_TMX_SAMPLE_000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_TMX_SAMPLE_000.png; path = Resources/IMG_TMX_SAMPLE_000.png; sourceTree = "<group>"; };
 		E049E24A15DE9FCC00CD80E1 /* TMX_SAMPLE_000.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = TMX_SAMPLE_000.tmx; path = Resources/TMX_SAMPLE_000.tmx; sourceTree = "<group>"; };
 		E066C5521621375000CE0172 /* CMMCaremaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMCaremaManager.h; path = libs/CMMSimpleFramework/CMMCaremaManager.h; sourceTree = "<group>"; };
@@ -973,6 +975,7 @@
 			isa = PBXGroup;
 			children = (
 				E0C1FE811614348800562E27 /* develop.png */,
+				E049D20116561E4E00150CDE /* IMG_STG_TEST_001-hd.png */,
 				E0B4ED1E15FB0E3A00F640D0 /* IMG_STG_TEST_001.png */,
 				E049E24915DE9FCC00CD80E1 /* IMG_TMX_SAMPLE_000.png */,
 				E049E24A15DE9FCC00CD80E1 /* TMX_SAMPLE_000.tmx */,
@@ -1892,6 +1895,7 @@
 				E0A4D636160ACABA00D17935 /* Default-Landscape~ipad.png in Resources */,
 				E0A4D637160ACABA00D17935 /* Default@2x.png in Resources */,
 				E0C1FE821614348800562E27 /* develop.png in Resources */,
+				E049D20216561E4E00150CDE /* IMG_STG_TEST_001-hd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,10 +1,11 @@
 #import "cocos2d.h"
 
-/*
- #import "CCTexture2D.h"
- #import "ccGLStateCache.h"
- #import "CGPointExtension.h"
- */
+//
+//  CCMutableTexture.h
+//	Created by Lam Hoang Pham.
+//
+//  Edited by Kimbobv22.
+//
 
 @interface CCMutableTexture2D : CCTexture2D{
 	void *_orgData,*_data;

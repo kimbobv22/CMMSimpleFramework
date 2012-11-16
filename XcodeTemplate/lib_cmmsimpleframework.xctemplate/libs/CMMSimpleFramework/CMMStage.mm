@@ -457,7 +457,8 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	if(!(self = [super init])) return self;
 	
 	stage = stage_;
-	self.contentSize = stage.worldSize;
+	[self setContentSize:[stage worldSize]];
+	[self setIsTouchEnabled:NO];
 	
 	particleList = [[CMMTimeIntervalArray alloc] init];
 	
