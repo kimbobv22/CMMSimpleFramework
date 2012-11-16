@@ -68,6 +68,8 @@
 	[self addChild:labelDisplay];
 	[self _setDisplayStr:@"Loading..."];
 	
+	loadingRate = 0.0f;
+	
 	return self;
 }
 
@@ -76,8 +78,24 @@
 	[labelDisplay setPosition:cmmFuncCommon_positionInParent(self, labelDisplay)];
 }
 
+-(void)draw{
+	[super draw];
+	
+	ccDrawColor4B(255, 255, 255, 120.0f);
+	glLineWidth(5.0f*CC_CONTENT_SCALE_FACTOR());
+	CGPoint lineStartPoint_ = ccp(0,contentSize_.height*0.08f);
+	ccDrawLine(lineStartPoint_, ccpAdd(lineStartPoint_, ccp(contentSize_.width,0)));
+	
+	ccDrawColor4B(0, 0, 120, 120.0f);
+	glLineWidth(3.0f*CC_CONTENT_SCALE_FACTOR());
+	ccDrawLine(lineStartPoint_, ccpAdd(lineStartPoint_, ccp(contentSize_.width*loadingRate,0)));
+}
+
+-(void)scene:(CMMScene *)scene_ didChangeLoadingSequence:(uint)curSequence_ sequenceCount:(uint)sequenceCount_{
+	loadingRate = ((float)curSequence_)/(float)(sequenceCount_);
+}
+
 -(void)sceneLoadingProcess000{
-//	[[CCDirector sharedDirector] setAnimationInterval:1.0f/30.0f];
 	[self _setDisplayStr:@"Loading sprite frame..."];
 }
 -(void)sceneLoadingProcess001{

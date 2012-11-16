@@ -11,6 +11,7 @@
 
 @interface CommonIntroLayer2 : CMMLayer<CMMSceneLoadingProtocol,CMMGameKitPADelegate,CMMGameKitAchievementsDelegate>{
 	CCLabelTTF *labelDisplay;
+	float loadingRate;
 }
 
 -(void)forwardScene;

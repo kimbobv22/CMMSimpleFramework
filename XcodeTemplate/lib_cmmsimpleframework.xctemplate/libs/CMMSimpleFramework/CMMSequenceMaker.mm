@@ -22,6 +22,14 @@
 	return self;
 }
 
+-(void)setCurSequence:(uint)curSequence_{
+	if(curSequence == curSequence_) return;
+	curSequence = curSequence_;
+	if(cmmFuncCommon_respondsToSelector(delegate, @selector(sequenceMaker:didChangeSequence:sequenceCount:))){
+		[delegate sequenceMaker:self didChangeSequence:curSequence sequenceCount:sequenceCount];
+	}
+} 
+
 -(void)setSequenceState:(CMMSequenceMakerState)sequenceState_{
 	BOOL didChangeState_ = sequenceState != sequenceState_;
 	sequenceState = sequenceState_;
@@ -81,7 +89,7 @@
 }
 
 -(void)stepSequenceTo:(uint)sequence_{
-	curSequence = sequence_;
+	[self setCurSequence:sequence_];
 	[self setSequenceState:CMMSequenceMakerState_onSequence];
 }
 -(void)stepSequence{

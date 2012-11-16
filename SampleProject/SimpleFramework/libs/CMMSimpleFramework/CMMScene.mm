@@ -119,6 +119,12 @@ static CMMScene *_sharedScene_ = nil;
 		[self startTransition];
 }
 
+-(void)sequenceMaker:(CMMSequenceMaker *)sequenceMaker_ didChangeSequence:(uint)curSequence_ sequenceCount:(uint)sequenceCount_{
+	if(cmmFuncCommon_respondsToSelector(runningLayer, @selector(scene:didChangeLoadingSequence:sequenceCount:))){
+		[runningLayer scene:self didChangeLoadingSequence:curSequence_ sequenceCount:sequenceCount_];
+	}
+}
+
 @end
 
 @implementation CMMScene

@@ -13,6 +13,8 @@
 -(void)sceneDidStartLoading:(CMMScene *)scene_;
 -(void)sceneDidEndLoading:(CMMScene *)scene_;
 
+-(void)scene:(CMMScene *)scene_ didChangeLoadingSequence:(uint)curSequence_ sequenceCount:(uint)sequenceCount_;
+
 -(void)sceneLoadingProcess000; //first loading seq
 
 @end

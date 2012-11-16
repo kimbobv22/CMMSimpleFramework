@@ -236,7 +236,7 @@
 }
 
 -(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
-	return ([CMMTouchUtil isNodeInTouch:stick touch:touch_] || [CMMTouchUtil isNodeInTouch:buttonA touch:touch_] || [CMMTouchUtil isNodeInTouch:buttonB touch:touch_]) && [super touchDispatcher:touchDispatcher_ shouldAllowTouch:touch_ event:event_];
+	return [CMMTouchUtil nodeCountInTouch:children_ touch:touch_] && [super touchDispatcher:touchDispatcher_ shouldAllowTouch:touch_ event:event_];
 }
 
 @end

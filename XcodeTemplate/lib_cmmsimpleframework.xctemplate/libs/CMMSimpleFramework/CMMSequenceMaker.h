@@ -21,6 +21,7 @@ typedef enum{
 -(void)sequenceMakerDidEnd:(CMMSequenceMaker *)sequenceMaker_;
 
 -(void)sequenceMaker:(CMMSequenceMaker *)sequenceMaker_ didChangeState:(CMMSequenceMakerState)state_;
+-(void)sequenceMaker:(CMMSequenceMaker *)sequenceMaker_ didChangeSequence:(uint)curSequence_ sequenceCount:(uint)sequenceCount_;
 
 @end
 
