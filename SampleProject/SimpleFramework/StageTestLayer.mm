@@ -53,11 +53,13 @@
 
 @end
 
-@interface CCLayerGradientTest : CCLayerGradient
+@interface CCLayerGradientTest : CCLayerGradient<CMMStageChildProtocol>
 
 @end
 
 @implementation CCLayerGradientTest
+
+-(void)update:(ccTime)dt_{}
 
 -(void)draw{
 	[super draw];
@@ -287,6 +289,11 @@
 	
 	[self addChild:stage z:0];
 	
+	//add background
+	CCLayerGradientTest *backgroundLayer_ = [CCLayerGradientTest layerWithColor:ccc4(180, 0, 0, 255) fadingTo:ccc4(0, 180, 0, 255) alongVector:ccp(0.1,0.4)];
+	[backgroundLayer_ setContentSize:stageSpec_.worldSize];
+	[stage addBackgroundNode:backgroundLayer_];
+	
 	////add object batchNode
 	CMMSObjectBatchNode *batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"Icon.png" isInDocument:NO];
 	[stage.world addObatchNode:batchNode_];
@@ -294,11 +301,6 @@
 	batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"IMG_STG_ball.png" isInDocument:NO];
 	batchNode_.objectClass = [CMMSBall class];
 	[stage.world addObatchNode:batchNode_];
-	
-	////add stage back ground
-	CCLayerGradient *backLayer_ = [CCLayerGradientTest layerWithColor:ccc4(120, 0, 0, 230) fadingTo:ccc4(0, 0, 120, 230) alongVector:ccp(0.3,0.7)];
-	backLayer_.contentSize = stage.worldSize;
-	stage.backGround.backGroundNode = backLayer_;
 	
 	stageControlType = StageControlType_addBox;
 	
@@ -357,11 +359,10 @@
 	
 	[self addChild:stage z:0];
 	
-	//backGround image for test
-	CCLayerGradient *backLayer_ = [CCLayerGradientTest layerWithColor:ccc4(200, 200, 200, 255) fadingTo:ccc4(180, 180, 180, 255) alongVector:ccp(0.3,0.7)];
-	backLayer_.contentSize = stage.worldSize;
-	stage.backGround.backGroundNode = backLayer_;
-	stage.backGround.distanceRate = 1.0f; //for Parallax
+	//add background
+	CCLayerGradientTest *backgroundLayer_ = [CCLayerGradientTest layerWithColor:ccc4(130, 130, 130, 255) fadingTo:ccc4(130, 130, 130, 255) alongVector:ccp(0.1,0.4)];
+	[backgroundLayer_ setContentSize:[stage worldSize]];
+	[stage addBackgroundNode:backgroundLayer_];
 	
 	////add object batchNode
 	CMMSObjectBatchNode *batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"Icon.png" isInDocument:NO];

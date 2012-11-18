@@ -164,6 +164,50 @@
 
 @end
 
+@implementation CMMStageBackGround
+@synthesize stage,backGroundNode,distanceRate;
+
++(id)backGroundWithStage:(CMMStage *)stage_ distanceRate:(float)distanceRate_{
+	return [[[self alloc] initWithStage:stage_ distanceRate:distanceRate_] autorelease];
+}
+-(id)initWithStage:(CMMStage *)stage_ distanceRate:(float)distanceRate_{
+	if(!(self = [super init])) return self;
+	
+	stage = stage_;
+	distanceRate = distanceRate_;
+	backGroundNode = nil;
+	
+	return self;
+}
+
+-(void)setBackGroundNode:(CCNode *)backGroundNode_{
+	if(backGroundNode == backGroundNode_) return;
+	[backGroundNode removeFromParentAndCleanup:YES];
+	backGroundNode = backGroundNode_;
+	
+	if(backGroundNode){
+		[self updatePosition];
+		[stage addChild:backGroundNode z:-1];
+	}
+}
+-(void)setDistanceRate:(float)distanceRate_{
+	distanceRate = distanceRate_;
+	[self updatePosition];
+}
+
+-(void)updatePosition{
+	if(!backGroundNode) return;
+	
+	CGPoint worldPoint_ = [stage worldPoint];
+	CGPoint targetPoint_ = ccpMult(worldPoint_, distanceRate);
+	[backGroundNode setPosition:ccpMult(targetPoint_, -1.0f)];
+	
+	float worldScale_ = [stage worldScale];
+	[backGroundNode setScale:1.0f - ((1.0f - worldScale_) * distanceRate)];
+}
+
+@end
+
 @implementation CMMStage(Deprecated)
 
 -(void)setIsAllowTouch:(BOOL)isAllowTouch_{
@@ -171,6 +215,9 @@
 }
 -(BOOL)isAllowTouch{
 	return [self isTouchEnabled];
+}
+-(id)backGround{
+	return nil;
 }
 
 @end

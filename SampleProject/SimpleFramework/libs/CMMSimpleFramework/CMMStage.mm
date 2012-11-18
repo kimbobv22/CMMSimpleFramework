@@ -457,8 +457,10 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	if(!(self = [super init])) return self;
 	
 	stage = stage_;
+	
 	[self setContentSize:[stage worldSize]];
-	[self setIsTouchEnabled:NO];
+	[self setIgnoreAnchorPointForPosition:NO];
+	[self setAnchorPoint:CGPointZero];
 	
 	particleList = [[CMMTimeIntervalArray alloc] init];
 	
@@ -1005,52 +1007,8 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 
 @end
 
-@implementation CMMStageBackGround
-@synthesize stage,backGroundNode,distanceRate;
-
-+(id)backGroundWithStage:(CMMStage *)stage_ distanceRate:(float)distanceRate_{
-	return [[[self alloc] initWithStage:stage_ distanceRate:distanceRate_] autorelease];
-}
--(id)initWithStage:(CMMStage *)stage_ distanceRate:(float)distanceRate_{
-	if(!(self = [super init])) return self;
-	
-	stage = stage_;
-	distanceRate = distanceRate_;
-	backGroundNode = nil;
-	
-	return self;
-}
-
--(void)setBackGroundNode:(CCNode *)backGroundNode_{
-	if(backGroundNode == backGroundNode_) return;
-	[backGroundNode removeFromParentAndCleanup:YES];
-	backGroundNode = backGroundNode_;
-	
-	if(backGroundNode){
-		[self updatePosition];
-		[stage addChild:backGroundNode z:-1];
-	}
-}
--(void)setDistanceRate:(float)distanceRate_{
-	distanceRate = distanceRate_;
-	[self updatePosition];
-}
-
--(void)updatePosition{
-	if(!backGroundNode) return;
-
-	CGPoint worldPoint_ = [stage worldPoint];
-	CGPoint targetPoint_ = ccpMult(worldPoint_, distanceRate);
-	[backGroundNode setPosition:ccpMult(targetPoint_, -1.0f)];
-	
-	float worldScale_ = [stage worldScale];
-	[backGroundNode setScale:1.0f - ((1.0f - worldScale_) * distanceRate)];
-}
-
-@end
-
 @implementation CMMStage
-@synthesize spec,delegate,world,particle,stateView,light,backGround,sound,worldSize,worldPoint,worldScale,timeInterval,maxTimeIntervalProcessCount;
+@synthesize spec,delegate,world,particle,stateView,light,sound,backgroundNode,worldSize,worldPoint,worldScale,timeInterval,maxTimeIntervalProcessCount;
 
 +(id)stageWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
 	return [[[self alloc] initWithStageSpecDef:stageSpecDef_] autorelease];
@@ -1070,8 +1028,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	[self addChild:world z:2];
 	[self addChild:particle z:3];
 	[self addChild:stateView z:5];
-	
-	backGround = [[CMMStageBackGround alloc] initWithStage:self distanceRate:0.0f];
+
 	sound = [[CMMSoundHandler alloc] initSoundHandler:CGPointZero soundDistance:700.0f];
 	
 	[spec applyWithStageSpecDef:stageSpecDef_];
@@ -1083,6 +1040,16 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	[self setWorldPoint:CGPointZero];
 	
 	return self;
+}
+
+-(void)addBackgroundNode:(CCNode<CMMStageChildProtocol> *)backgroundNode_{
+	if(backgroundNode){
+		[self removeChild:backgroundNode_ cleanup:YES];
+		backgroundNode = nil;
+	}
+	
+	backgroundNode = backgroundNode_;
+	[self addChild:backgroundNode];
 }
 
 -(CGSize)worldSize{
@@ -1098,7 +1065,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	[particle setPosition:resultPoint_];
 	[stateView setPosition:resultPoint_];
 	if(light) [light setPosition:resultPoint_];
-	[backGround updatePosition];
+	if(backgroundNode) [backgroundNode setPosition:resultPoint_];
 	
 	//update sound center position
 	CGPoint soundPoint_ = [self convertToStageWorldSpace:ccp(stageSize_.width/2.0f,stageSize_.height/2.0f)];
@@ -1113,6 +1080,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	[particle setScale:worldScale_];
 	[stateView setScale:worldScale_];
 	if(light) [light setScale:worldScale_];
+	if(backgroundNode) [backgroundNode setScale:worldScale_];
 }
 -(float)worldScale{
 	return [world scale];
@@ -1137,6 +1105,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	[particle update:dt_];
 	[sound update:dt_];
 	[stateView update:dt_];
+	if(backgroundNode) [backgroundNode update:dt_];
 }
 -(void)afterStep:(ccTime)dt_{
 	if(light) [light update:dt_];
@@ -1172,7 +1141,6 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 -(void)dealloc{
 	[sound release];
 	[spec release];
-	[backGround release];
 	[super dealloc];
 }
 

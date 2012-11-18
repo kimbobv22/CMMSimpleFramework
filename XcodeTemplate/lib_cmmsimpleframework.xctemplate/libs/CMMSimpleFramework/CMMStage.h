@@ -26,6 +26,13 @@ public:
 	bool ShouldCollide(b2Fixture* fixtureA, b2Fixture* fixtureB);
 };
 
+
+@protocol CMMStageChildProtocol <NSObject>
+
+-(void)update:(ccTime)dt_;
+
+@end
+
 @class CMMStageWorld;
 
 @protocol CMMStageWorldDelegate <NSObject>
@@ -37,7 +44,7 @@ public:
 
 @end
 
-@interface CMMStageWorld : CMMLayer<NSFastEnumeration>{
+@interface CMMStageWorld : CMMLayer<NSFastEnumeration,CMMStageChildProtocol>{
 	CMMStage *stage;
 	
 	b2World *world;
@@ -60,8 +67,6 @@ public:
 
 +(id)worldWithStage:(CMMStage *)stage_ worldSize:(CGSize)worldSize_;
 -(id)initWithStage:(CMMStage *)stage_ worldSize:(CGSize)worldSize_;
-
--(void)update:(ccTime)dt_;
 
 @property (nonatomic, assign) CMMStage *stage;
 @property (nonatomic, readonly) b2World *world;
@@ -117,7 +122,7 @@ public:
 
 #import "CMMSParticle.h"
 
-@interface CMMStageParticle : CMMLayer{
+@interface CMMStageParticle : CCLayer<CMMStageChildProtocol>{
 	CMMStage *stage;
 	CMMTimeIntervalArray *particleList;
 	CMMSimpleCache *_cachedParticles;
@@ -125,8 +130,6 @@ public:
 
 +(id)particleWithStage:(CMMStage *)stage_;
 -(id)initWithStage:(CMMStage *)stage_;
-
--(void)update:(ccTime)dt_;
 
 @property (nonatomic, assign) CMMStage *stage;
 @property (nonatomic, readonly) CMMTimeIntervalArray *particleList;
@@ -199,7 +202,7 @@ typedef enum{
 
 @end
 
-@interface CMMStageLight : CCLayer{
+@interface CMMStageLight : CCLayer<CMMStageChildProtocol>{
 	CMMStage *stage;
 	CMMTimeIntervalArray *lightList;
 	
@@ -214,8 +217,6 @@ typedef enum{
 
 +(id)lightWithStage:(CMMStage *)stage_;
 -(id)initWithStage:(CMMStage *)stage_;
-
--(void)update:(ccTime)dt_;
 
 @property (nonatomic, assign) CMMStage *stage;
 @property (nonatomic, readonly) CMMTimeIntervalArray *lightList;
@@ -245,15 +246,13 @@ typedef enum{
 
 @end
 
-@interface CMMStageObjectSView : CMMLayer{
+@interface CMMStageObjectSView : CMMLayer<CMMStageChildProtocol>{
 	CMMStage *stage;
 	CCArray *stateViewList;
 }
 
 +(id)stateViewWithStage:(CMMStage *)stage_;
 -(id)initWithStage:(CMMStage *)stage_;
-
--(void)update:(ccTime)dt_;
 
 @property (nonatomic, assign) CMMStage *stage;
 @property (nonatomic, readonly) CCArray *stateViewList;
@@ -274,23 +273,6 @@ typedef enum{
 -(CCArray *)stateViewListAtTarget:(CMMSObject *)target_;
 
 -(int)indexOfStateView:(CMMSObjectSView *)stateView_;
-
-@end
-
-@interface CMMStageBackGround : NSObject{
-	CMMStage *stage;
-	CCNode *backGroundNode;
-	float distanceRate;
-}
-
-+(id)backGroundWithStage:(CMMStage *)stage_ distanceRate:(float)distanceRate_;
--(id)initWithStage:(CMMStage *)stage_ distanceRate:(float)distanceRate_;
-
--(void)updatePosition;
-
-@property (nonatomic, assign) CMMStage *stage;
-@property (nonatomic, retain) CCNode *backGroundNode;
-@property (nonatomic, readwrite) float distanceRate;
 
 @end
 
@@ -322,8 +304,8 @@ typedef enum{
 	CMMStageParticle *particle;
 	CMMStageObjectSView *stateView;
 	CMMStageLight *light;
-	CMMStageBackGround *backGround;
 	CMMSoundHandler *sound;
+	CCNode<CMMStageChildProtocol> *backgroundNode;
 	
 	ccTime timeInterval,_stackTime;
 	uint maxTimeIntervalProcessCount;
@@ -344,8 +326,8 @@ typedef enum{
 @property (nonatomic, readonly) CMMStageParticle *particle;
 @property (nonatomic, readonly) CMMStageObjectSView *stateView;
 @property (nonatomic, readonly) CMMStageLight *light;
-@property (nonatomic, readonly) CMMStageBackGround *backGround;
 @property (nonatomic, readonly) CMMSoundHandler *sound;
+@property (nonatomic, retain,setter = addBackgroundNode:) CCNode<CMMStageChildProtocol> *backgroundNode;
 @property (nonatomic, readonly) CGSize worldSize;
 @property (nonatomic, readwrite) CGPoint worldPoint;
 @property (nonatomic, readwrite) float worldScale;

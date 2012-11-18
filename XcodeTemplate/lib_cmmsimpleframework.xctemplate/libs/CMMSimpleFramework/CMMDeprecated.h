@@ -166,9 +166,27 @@ DEPRECATED_ATTRIBUTE @interface CMMControlItemBatchBar : CMMSpriteBatchBar
 
 @end
 
+DEPRECATED_ATTRIBUTE @interface CMMStageBackGround : NSObject{
+	CMMStage *stage;
+	CCNode *backGroundNode;
+	float distanceRate;
+}
+
++(id)backGroundWithStage:(CMMStage *)stage_ distanceRate:(float)distanceRate_;
+-(id)initWithStage:(CMMStage *)stage_ distanceRate:(float)distanceRate_;
+
+-(void)updatePosition;
+
+@property (nonatomic, assign) CMMStage *stage;
+@property (nonatomic, retain) CCNode *backGroundNode;
+@property (nonatomic, readwrite) float distanceRate;
+
+@end
+
 @interface CMMStage(Deprecated)
 
 @property (nonatomic, readwrite) BOOL isAllowTouch DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readonly) id backGround DEPRECATED_ATTRIBUTE;
 
 @end
 
