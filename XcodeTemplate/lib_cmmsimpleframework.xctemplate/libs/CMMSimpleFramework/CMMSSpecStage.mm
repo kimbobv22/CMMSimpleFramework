@@ -8,8 +8,8 @@
 @implementation CMMSSpecStage
 @synthesize gravity,friction,restitution,density,brightness;
 
-+(id)specWithTarget:(id)target_ withStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
-	return [[[self alloc] initWithTarget:target_ withStageSpecDef:stageSpecDef_] autorelease];
++(id)specWithTarget:(id)target_ withStageDef:(CMMStageDef)stageDef_{
+	return [[[self alloc] initWithTarget:target_ withStageDef:stageDef_] autorelease];
 }
 
 -(id)initWithTarget:(id)target_{
@@ -24,10 +24,10 @@
 	return self;
 }
 
--(id)initWithTarget:(id)target_ withStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
+-(id)initWithTarget:(id)target_ withStageDef:(CMMStageDef)stageDef_{
 	if(!(self = [self initWithTarget:target_])) return self;
 	
-	[self applyWithStageSpecDef:stageSpecDef_];
+	[self applyWithStageDef:stageDef_];
 	
 	return self;
 }
@@ -70,12 +70,12 @@
 	}
 }
 
--(void)applyWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
-	[self setGravity:stageSpecDef_.gravity];
-	[self setFriction:stageSpecDef_.friction];
-	[self setRestitution:stageSpecDef_.restitution];
-	[self setDensity:stageSpecDef_.density];
-	[self setBrightness:stageSpecDef_.brightness];
+-(void)applyWithStageDef:(CMMStageDef)stageDef_{
+	[self setGravity:stageDef_.gravity];
+	[self setFriction:stageDef_.friction];
+	[self setRestitution:stageDef_.restitution];
+	[self setDensity:stageDef_.density];
+	[self setBrightness:stageDef_.brightness];
 }
 
 -(id)initWithCoder:(NSCoder *)decoder_{

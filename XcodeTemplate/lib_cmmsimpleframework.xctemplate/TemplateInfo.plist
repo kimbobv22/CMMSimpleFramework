@@ -263,7 +263,7 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMDrawingUtil.mm</string>
 		</dict>
-<key>libs/CMMSimpleFramework/CMMEncryptionUtil.h</key>
+		<key>libs/CMMSimpleFramework/CMMEncryptionUtil.h</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -661,7 +661,7 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMPacket.mm</string>
 		</dict>
-<key>libs/CMMSimpleFramework/CMMPacketData.h</key>
+		<key>libs/CMMSimpleFramework/CMMPacketData.h</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -1189,6 +1189,28 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMStageTMX.mm</string>
 		</dict>
+		<key>libs/CMMSimpleFramework/CMMStageDNB.h</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>libs</string>
+				<string>CMMSimpleFramework</string>
+			</array>
+			<key>Path</key>
+			<string>libs/CMMSimpleFramework/CMMStageDNB.h</string>
+			<key>TargetIndices</key>
+			<array/>
+		</dict>
+		<key>libs/CMMSimpleFramework/CMMStageDNB.mm</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>libs</string>
+				<string>CMMSimpleFramework</string>
+			</array>
+			<key>Path</key>
+			<string>libs/CMMSimpleFramework/CMMStageDNB.mm</string>
+		</dict>
 		<key>libs/CMMSimpleFramework/CMMStringUtil.h</key>
 		<dict>
 			<key>Group</key>
@@ -1245,7 +1267,6 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMSocketHandler.mm</string>
 		</dict>
-
 		<key>libs/CMMSimpleFramework/CMMType.h</key>
 		<dict>
 			<key>Group</key>
@@ -1302,7 +1323,7 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMTouchUtil.mm</string>
 		</dict>
-<key>libs/CMMSimpleFramework/CMMTimeIntervalArray.h</key>
+		<key>libs/CMMSimpleFramework/CMMTimeIntervalArray.h</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -1386,7 +1407,7 @@
 			<key>Path</key>
 			<string>libs/CCSpriteBatchNode+SplitSprite.m</string>
 		</dict>
-<key>libs/NSData+Base64.h</key>
+		<key>libs/NSData+Base64.h</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -1406,7 +1427,7 @@
 			<key>Path</key>
 			<string>libs/NSData+Base64.m</string>
 		</dict>
-<key>libs/NSData+Compression.h</key>
+		<key>libs/NSData+Compression.h</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -1536,6 +1557,8 @@
 		<string>libs/CMMSimpleFramework/CMMStagePXL.mm</string>
 		<string>libs/CMMSimpleFramework/CMMStageTMX.h</string>
 		<string>libs/CMMSimpleFramework/CMMStageTMX.mm</string>
+		<string>libs/CMMSimpleFramework/CMMStageDNB.h</string>
+		<string>libs/CMMSimpleFramework/CMMStageDNB.mm</string>
 		<string>libs/CMMSimpleFramework/CMMStringUtil.h</string>
 		<string>libs/CMMSimpleFramework/CMMStringUtil.mm</string>
 		<string>libs/CMMSimpleFramework/CMMSType.h</string>
@@ -1554,9 +1577,9 @@
 		<string>libs/CCMutableTexture2D.m</string>
 		<string>libs/CCSpriteBatchNode+SplitSprite.h</string>
 		<string>libs/CCSpriteBatchNode+SplitSprite.m</string>
-<string>libs/NSData+Base64.h</string>
+		<string>libs/NSData+Base64.h</string>
 		<string>libs/NSData+Base64.m</string>
-<string>libs/NSData+Compression.h</string>
+		<string>libs/NSData+Compression.h</string>
 		<string>libs/NSData+Compression.m</string>
 	</array>
 	<key>Targets</key>

@@ -46,23 +46,4 @@
  	[scrollMenu1 addItem:menuItem_];
 }
 
--(void)applicationDidBecomeActive{
-	CCLOG(@"HelloWorldLayer : applicationDidBecomeActive");
-}
--(void)applicationWillResignActive{
-	CCLOG(@"HelloWorldLayer : applicationWillResignActive");
-}
--(void)applicationWillTerminate{
-	CCLOG(@"HelloWorldLayer : applicationWillTerminate");
-}
--(void)applicationDidEnterBackground{
-	CCLOG(@"HelloWorldLayer : applicationDidEnterBackground");
-}
--(void)applicationWillEnterForeground{
-	CCLOG(@"HelloWorldLayer : applicationWillEnterForeground");
-}
--(void)applicationDidReceiveMemoryWarning{
-	CCLOG(@"HelloWorldLayer : applicationDidReceiveMemoryWarning");
-}
-
 @end

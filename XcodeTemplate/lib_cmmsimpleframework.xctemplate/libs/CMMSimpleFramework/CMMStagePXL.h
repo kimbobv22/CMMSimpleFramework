@@ -78,8 +78,8 @@
 	CMMStagePixel *pixel;
 }
 
-+(id)stageWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
--(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
++(id)stageWithStageDef:(CMMStageDef)stageDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
+-(id)initWithStageDef:(CMMStageDef)stageDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
 
 @property (nonatomic, copy) NSString *fileName;
 @property (nonatomic, readwrite) BOOL isInDocument;

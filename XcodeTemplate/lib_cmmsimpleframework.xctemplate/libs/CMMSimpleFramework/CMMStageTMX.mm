@@ -6,16 +6,16 @@
 @implementation CMMStageTMX
 @synthesize tilemap,groundTMXLayers,isTilemapBuiltup;
 
-+(id)stageWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_{
-	return [[[self alloc] initWithStageSpecDef:stageSpecDef_ tmxFileName:tmxFileName_ isInDocument:isInDocument_] autorelease];
++(id)stageWithStageDef:(CMMStageDef)stageDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_{
+	return [[[self alloc] initWithStageDef:stageDef_ tmxFileName:tmxFileName_ isInDocument:isInDocument_] autorelease];
 }
 
--(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
+-(id)initWithStageDef:(CMMStageDef)stageDef_{
 	//do not use for init
 	[self release];
 	return nil;
 }
--(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_{
+-(id)initWithStageDef:(CMMStageDef)stageDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_{
 	tilemap = [CCTMXTiledMap tiledMapWithTMXFile:[CMMStringUtil stringPathWithFileName:tmxFileName_ isInDocument:isInDocument_]];
 	
 	//only support Orthogonal orientation
@@ -24,15 +24,15 @@
 		return nil;
 	}
 
-	stageSpecDef_.worldSize = [tilemap contentSize];
+	stageDef_.worldSize = [tilemap contentSize];
 	
-	if(!(self = [super initWithStageSpecDef:stageSpecDef_])) return self;
+	if(!(self = [super initWithStageDef:stageDef_])) return self;
 	[self addChild:tilemap z:1];
 	
 	groundTMXLayers = [[CCArray alloc] init];
 	isTilemapBuiltup = NO;
 	
-	b2MaskTile = b2CMaskMake(0x3009,-1,-1,1);
+	b2MaskTile = CMMb2ContactMaskMake(0x3009,-1,-1,1);
 	
 	return self;
 }

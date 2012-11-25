@@ -181,7 +181,7 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 	mapObject_->mapBody = [[stage world] createBody:b2_staticBody point:CGPointZero angle:0];
 	mapObject_->mapBody->SetUserData(stage);
 	
-	CMMb2ContactMask targetCMask_ = b2CMaskMake(0x3009, [[mapObject_ target] objectTag], -1, 1);
+	CMMb2ContactMask targetCMask_ = CMMb2ContactMaskMake(0x3009, [[mapObject_ target] objectTag], -1, 1);
 	targetCMask_.isNegative = true;
 	mapObject_->b2CMask = targetCMask_;
 	
@@ -337,15 +337,15 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 @implementation CMMStagePXL
 @synthesize fileName,isInDocument,pixel;
 
-+(id)stageWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
-	return [[[self alloc] initWithStageSpecDef:stageSpecDef_ fileName:fileName_ isInDocument:isInDocument_] autorelease];
++(id)stageWithStageDef:(CMMStageDef)stageDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
+	return [[[self alloc] initWithStageDef:stageDef_ fileName:fileName_ isInDocument:isInDocument_] autorelease];
 }
 
--(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
+-(id)initWithStageDef:(CMMStageDef)stageDef_{
 	[self release];
 	return self;
 }
--(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
+-(id)initWithStageDef:(CMMStageDef)stageDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
 	fileName = [fileName_ copy];
 	isInDocument = isInDocument_;
 	
@@ -364,8 +364,8 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 	void *pixelData_ = [CMMFileUtil imageDataWithCGImage:[pixelImage_ CGImage]];
 	pixel = [CMMStagePixel pixelWithStage:self pixelData:pixelData_ pixelSize:pixelSize_];
 	
-	stageSpecDef_.worldSize = CGSizeDiv(pixelSize_, CC_CONTENT_SCALE_FACTOR());
-	if(!(self = [super initWithStageSpecDef:stageSpecDef_])) return self;
+	stageDef_.worldSize = CGSizeDiv(pixelSize_, CC_CONTENT_SCALE_FACTOR());
+	if(!(self = [super initWithStageDef:stageDef_])) return self;
 	
 	[self addChild:pixel z:2];
 	

@@ -16,7 +16,7 @@
 	gravity = -9.8f;
 	gravityRadius = 80.0f;
 	_curDrawRadius = 0;
-	b2CMask = b2CMaskMake(0x1003,-1,-1,1);
+	b2CMask = CMMb2ContactMaskMake(0x1003,-1,-1,1);
 	
 	return self;
 }

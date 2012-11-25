@@ -210,6 +210,13 @@
 
 @implementation CMMStage(Deprecated)
 
++(id)stageWithStageSpecDef:(CMMStageDef)stageSpecDef_{
+	return [self stageWithStageDef:stageSpecDef_];
+}
+-(id)initWithStageSpecDef:(CMMStageDef)stageSpecDef_{
+	return [self initWithStageDef:stageSpecDef_];
+}
+
 -(void)setIsAllowTouch:(BOOL)isAllowTouch_{
 	[self setIsTouchEnabled:isAllowTouch_];
 }
@@ -239,6 +246,43 @@
 }
 -(void)removeParticleFollowOfTarget:(CMMSObject *)target_{
 	[self removeParticleOfTarget:target_];
+}
+
+@end
+
+@implementation CMMStageTMX(Deprecated)
+
++(id)stageWithStageSpecDef:(CMMStageDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_{
+	return [self stageWithStageDef:stageSpecDef_ tmxFileName:tmxFileName_ isInDocument:isInDocument_];
+}
+-(id)initWithStageSpecDef:(CMMStageDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_{
+	return [self initWithStageDef:stageSpecDef_ tmxFileName:tmxFileName_ isInDocument:isInDocument_];
+}
+
+@end
+
+@implementation CMMStagePXL(Deprecated)
+
++(id)stageWithStageSpecDef:(CMMStageDef)stageSpecDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
+	return [self stageWithStageDef:stageSpecDef_ fileName:fileName_ isInDocument:isInDocument_];
+}
+-(id)initWithStageSpecDef:(CMMStageDef)stageSpecDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
+	return [self initWithStageDef:stageSpecDef_ fileName:fileName_ isInDocument:isInDocument_];
+}
+
+@end
+
+@implementation CMMSSpecStage(Deprecated)
+
++(id)specWithTarget:(id)target_ withStageSpecDef:(CMMStageDef)stageSpecDef_{
+	return [self specWithTarget:target_ withStageDef:stageSpecDef_];
+}
+-(id)initWithTarget:(id)target_ withStageSpecDef:(CMMStageDef)stageSpecDef_{
+	return [self initWithTarget:target_ withStageDef:stageSpecDef_];
+}
+
+-(void)applyWithStageSpecDef:(CMMStageDef)stageSpecDef_{
+	[self applyWithStageDef:stageSpecDef_];
 }
 
 @end
