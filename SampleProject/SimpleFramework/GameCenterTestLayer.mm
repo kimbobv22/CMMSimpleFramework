@@ -119,7 +119,7 @@
 	
 	//adding stage
 	CGSize stageSize_ = CGSizeMake(contentSize_.width, contentSize_.height-60.0f);
-	stage = [CMMStage stageWithStageSpecDef:CMMStageSpecDefMake(stageSize_, stageSize_, ccp(0,0))];
+	stage = [CMMStage stageWithStageDef:CMMStageDefMake(stageSize_, stageSize_, CGPointZero)];
 	[stage setPosition:ccp(0,contentSize_.height-stage.contentSize.height)];
 	[self addChild:stage z:1];
 	

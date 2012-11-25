@@ -37,6 +37,14 @@
 	}];
 	
 	[stageSelector addMenuItem:menuItem_];
+	
+	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	[menuItem_ setTitle:@"dynamic block stage"];
+	[menuItem_ setCallback_pushup:^(id) {
+		[[CMMScene sharedScene] pushLayer:[StageTestLayerDynamicBlock node]];
+	}];
+	
+	[stageSelector addMenuItem:menuItem_];
 		
 	[stageSelector updateDisplay];
 	
@@ -272,15 +280,14 @@
 	
 	//// add stage
 	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
-	CMMStageSpecDef stageSpec_;
-	stageSpec_.stageSize = CGSizeMake(targetSize_.width-80.0f, targetSize_.height-50.0f);
-	stageSpec_.worldSize = stageSpec_.stageSize;
-	stageSpec_.gravity = CGPointZero;
-	stageSpec_.friction = 0.3f;
-	stageSpec_.restitution = 0.3f;
-	stageSpec_.brightness = 0.1f;
+	CMMStageDef stageDef_;
+	stageDef_.stageSize = stageDef_.worldSize = CGSizeMake(targetSize_.width-80.0f, targetSize_.height-50.0f);
+	stageDef_.gravity = CGPointZero;
+	stageDef_.friction = 0.3f;
+	stageDef_.restitution = 0.3f;
+	stageDef_.brightness = 0.4f;
 	
-	stage = [CMMStage stageWithStageSpecDef:stageSpec_];
+	stage = [CMMStage stageWithStageSpecDef:stageDef_];
 	stage.sound.soundDistance = 300.0f;
 	stage.position = ccp(0,contentSize_.height-stage.contentSize.height);
 	stage.delegate = self;
@@ -291,7 +298,7 @@
 	
 	//add background
 	CCLayerGradientTest *backgroundLayer_ = [CCLayerGradientTest layerWithColor:ccc4(180, 0, 0, 255) fadingTo:ccc4(0, 180, 0, 255) alongVector:ccp(0.1,0.4)];
-	[backgroundLayer_ setContentSize:stageSpec_.worldSize];
+	[backgroundLayer_ setContentSize:stageDef_.worldSize];
 	[stage addBackgroundNode:backgroundLayer_];
 	
 	////add object batchNode
@@ -342,15 +349,14 @@
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
-	CMMStageSpecDef stageSpec_;
-	stageSpec_.stageSize = CGSizeMake(targetSize_.width-80.0f, targetSize_.height-50.0f);
-	stageSpec_.worldSize = CGSizeMake(targetSize_.width+200.0f, targetSize_.height+200.0f);
-	stageSpec_.gravity = CGPointZero;
-	stageSpec_.friction = 0.3f;
-	stageSpec_.restitution = 0.3f;
-	stageSpec_.brightness = 0.2f;
+	CMMStageDef stageDef_;
+	stageDef_.stageSize = CGSizeMake(targetSize_.width-80.0f, targetSize_.height-50.0f);
+	stageDef_.gravity = CGPointZero;
+	stageDef_.friction = 0.3f;
+	stageDef_.restitution = 0.3f;
+	stageDef_.brightness = 0.2f;
 
-	stage = [CMMStagePXL stageWithStageSpecDef:stageSpec_ fileName:@"IMG_STG_TEST_001.png" isInDocument:NO];
+	stage = [CMMStagePXL stageWithStageSpecDef:stageDef_ fileName:@"IMG_STG_TEST_001.png" isInDocument:NO];
 	stage.sound.soundDistance = 300.0f;
 	stage.position = ccp(0,self.contentSize.height-stage.contentSize.height);
 	stage.delegate = self;
@@ -437,10 +443,9 @@
 	[backBtn setIsEnable:NO];
 	
 	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
-	CMMStageSpecDef stageSpecDef_ = CMMStageSpecDefMake(CGSizeMake(targetSize_.width-80.0f, targetSize_.height-50.0f),CGSizeZero,ccp(0,0));
-	stageSpecDef_.brightness = 1.0f;
+	CMMStageDef stageDef_ = CMMStageDefMake(CGSizeMake(targetSize_.width-80.0f, targetSize_.height-50.0f),CGSizeZero,ccp(0,0));
 	
-	stage = [CMMStageTMX stageWithStageSpecDef:stageSpecDef_ tmxFileName:@"TMX_SAMPLE_000.tmx" isInDocument:NO];
+	stage = [CMMStageTMX stageWithStageSpecDef:stageDef_ tmxFileName:@"TMX_SAMPLE_000.tmx" isInDocument:NO];
 	[stage light];
 	stage.position = ccp(0,contentSize_.height-stage.contentSize.height);
 	stage.delegate = self;
@@ -490,6 +495,213 @@
 	[lightItem_ setTarget:object_];
 	
 	return object_;
+}
+
+@end
+
+@implementation TestHero
+@synthesize velocity;
+
+-(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
+	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
+	
+	b2CMask_leg = CMMb2ContactMaskMake(0x1002,-1,-1,1);
+	_canJump = NO;
+	
+	return self;
+}
+
+-(void)jump{
+	if(!_canJump || !body) return;
+	body->ApplyForceToCenter(b2Vec2(0,120.0f));
+}
+
+-(void)update:(ccTime)dt_{
+	[super update:dt_];
+	
+	//handling move
+	b2Vec2 convertedVelocity_ = b2Vec2Fromccp(velocity);
+	convertedVelocity_.y = 0.0f;
+	if(body && convertedVelocity_.Length() > 0){
+		if(ABS(body->GetLinearVelocity().x) < 8.0f){
+			if(!_canJump) convertedVelocity_.x *= 0.6f;
+			body->ApplyLinearImpulse(b2Vec2Mult(convertedVelocity_, 10.0f*dt_), body->GetPosition());
+		}
+	}
+}
+
+@end
+
+@implementation TestHero(Box2d)
+
+-(void)buildupBody{
+	[super buildupBody];
+	
+	b2Vec2 targetSize_ = b2Vec2FromSize_PTM_RATIO(CGSizeMake(contentSize_.width*0.3f, contentSize_.height*0.3f));
+	b2PolygonShape bodyBox_;
+	bodyBox_.SetAsBox(targetSize_.x, targetSize_.y, b2Vec2(0.0f,-(contentSize_.height/2.0f)/PTM_RATIO), 0.0f);
+	b2FixtureDef fixtureDef_;
+	fixtureDef_.shape = &bodyBox_;
+	fixtureDef_.isSensor = YES;
+	
+	body->CreateFixture(&fixtureDef_)->SetUserData(&b2CMask_leg);
+	body->SetFixedRotation(YES);
+}
+
+-(void)whenContactBeganWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{
+	if(fixtureType_ == b2CMask_leg.fixtureType){
+		_canJump = YES;
+	}
+}
+-(void)whenContactEndedWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{
+	if(fixtureType_ == b2CMask_leg.fixtureType){
+		_canJump = NO;
+	}
+}
+
+@end
+
+@implementation StageTestLayerDynamicBlock
+
+-(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
+	if(!(self = [super initWithColor:color width:w height:h])) return self;
+	
+	CMMMenuItemLabelTTF *backBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	[backBtn_ setTitle:@"BACK"];
+	backBtn_.position = ccp(backBtn_.contentSize.width/2,contentSize_.height-backBtn_.contentSize.height/2);
+	[backBtn_ setCallback_pushup:^(id) {
+		[[CMMScene sharedScene] pushLayer:[StageTestLayer node]];
+	}];
+	[self addChild:backBtn_];
+	
+	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
+	CMMStageDef stageDef_ = CMMStageDefMake(CGSizeMake(targetSize_.width, targetSize_.height-50.0f), CGSizeZero, ccp(0.0f, -9.8f));
+	stageDef_.brightness = 0.4f;
+	stage = [CMMStageDNB stageWithStageDef:stageDef_];
+	[stage setDelegate:self];
+	[stage setMarginPerBlock:CMMFloatRange(50.0f, 80.0f)];
+	[stage setBlockHeightRange:CMMFloatRange(0.0f, 120.0f)];
+	[stage setMaxHeightDifferencePerBlock:30.0f];
+	[[stage block] setBlockRandomizeRatio:1.0f];
+	[self addChild:stage];
+	
+	//[stage initializeLightSystem];
+	
+	//add block item
+	CMMStageBlockItem *blockItem_ = [CMMStageBlockItem blockItem];
+	[blockItem_ setBlockType:CMMBlockType_filledDown];
+	[blockItem_ setDrawEdge:YES];
+	[blockItem_ addGroundBlockWithFile:@"IMG_STG_BLOCK000.plist" spriteFrameFormatter:@"IMG_STG_BLOCK000_GROUND%02d.png"];
+	[blockItem_ addBackBlockWithFile:@"IMG_STG_BLOCK000.plist" spriteFrameFormatter:@"IMG_STG_BLOCK000_BACK%02d.png"];
+	[[stage block] addBlockItem:blockItem_]; //first record being default block.
+	
+	blockItem_ = [CMMStageBlockItem blockItem];
+	[blockItem_ setBlockType:CMMBlockType_filledDown];
+	[blockItem_ setDrawEdge:YES];
+	[blockItem_ setPickupRatio:0.7f]; // you can change pickup ratio of block item
+	[blockItem_ addGroundBlockWithFile:@"IMG_STG_BLOCK001.plist" spriteFrameFormatter:@"IMG_STG_BLOCK001_GROUND%02d.png"];
+	[blockItem_ addBackBlockWithFile:@"IMG_STG_BLOCK001.plist" spriteFrameFormatter:@"IMG_STG_BLOCK001_BACK%02d.png"];
+	[[stage block] addBlockItem:blockItem_];
+	
+	blockItem_ = [CMMStageBlockItem blockItem];
+	[blockItem_ setBlockType:CMMBlockType_filledUp];
+	[blockItem_ setDrawEdge:YES];
+	[blockItem_ setBlockB2BodyType:CMMSBlockObjectB2BodyType_bar];
+	[blockItem_ setPickupRatio:0.6f];
+	[blockItem_ addGroundBlockWithFile:@"IMG_STG_BLOCK002.plist" spriteFrameFormatter:@"IMG_STG_BLOCK002_GROUND%02d.png"];
+	[blockItem_ addBackBlockWithFile:@"IMG_STG_BLOCK002.plist" spriteFrameFormatter:@"IMG_STG_BLOCK002_BACK%02d.png"];
+	[[stage block] addBlockItem:blockItem_];
+	
+	blockItem_ = [CMMStageBlockItem blockItem];
+	[blockItem_ setBlockType:CMMBlockType_normal];
+	[blockItem_ setDrawEdge:YES];
+	[blockItem_ setBlockB2BodyType:CMMSBlockObjectB2BodyType_bar];
+	[blockItem_ setPickupRatio:0.5f];
+	[blockItem_ setBlockPhysicalSpec:CMMSBlockObjectPhysicalSpec(0.3f, 0.8f, 1.0f)]; // you can setting physical spec per block item.
+	[blockItem_ addGroundBlockWithFile:@"IMG_STG_BLOCK002.plist" spriteFrameFormatter:@"IMG_STG_BLOCK002_GROUND%02d.png"];
+	[[stage block] addBlockItem:blockItem_];
+	
+	blockItem_ = [CMMStageBlockItem blockItem];
+	[blockItem_ setBlockType:CMMBlockType_filledUpAndCeiling];
+	[blockItem_ setDrawEdge:YES];
+	[blockItem_ setBlockB2BodyType:CMMSBlockObjectB2BodyType_bar];
+	[blockItem_ setPickupRatio:0.3f];
+	[blockItem_ setBlockCountRange:NSRangeMake(2, 4)];
+	[blockItem_ setBlockPhysicalSpec:CMMSBlockObjectPhysicalSpec(0.3f, 0.8f, 1.0f)];
+	[blockItem_ addGroundBlockWithFile:@"IMG_STG_BLOCK002.plist" spriteFrameFormatter:@"IMG_STG_BLOCK002_GROUND%02d.png"];
+	[[stage block] addBlockItem:blockItem_];
+	
+	//add ui
+	NSString *joypadSpriteFrameFileName_ = @"IMG_JOYPAD_000.plist";
+	[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:joypadSpriteFrameFileName_];
+	ui = [CMMCustomUIJoypad joypadWithSpriteFrameFileName:joypadSpriteFrameFileName_];
+	[ui setOpacity:120.0f];
+	[ui setDelegate:self];
+	
+	[[ui buttonB] setCallback_pushdown:^(id sender_){
+		if(!targetObject) return;
+		[targetObject jump];
+	}];
+	
+	[[ui buttonB] setPushDelayTime:0.4f];
+	[self addChild:ui z:1];
+	
+	worldVelocityLabel = [CMMFontUtil labelWithstring:@" "];
+	[worldVelocityLabel setPosition:ccp(contentSize_.width/2.0f, contentSize_.height/2.0f+50.0f)];
+	[self addChild:worldVelocityLabel z:9];
+	
+	[self _setWorldVelocity:100.0f];
+	
+	[self _regenTargetObject];
+	[self scheduleUpdate];
+	
+	return self;
+}
+
+-(void)_regenTargetObject{
+	if(targetObject && [targetObject stage] == stage){
+		[[stage world] removeObject:targetObject];
+	}
+	
+	targetObject = [TestHero spriteWithFile:@"Icon-Small.png"];
+	[targetObject setPosition:[stage convertToStageWorldSpace:ccp(contentSize_.width/2.0f,contentSize_.height/2.0f)]];
+	[[stage world] addObject:targetObject];
+	CMMStageLightItem *lightItem_ = [[stage light] addLightItemAtPoint:[targetObject position]];
+	[lightItem_ setTarget:targetObject];
+}
+
+-(void)_setWorldVelocity:(float)velocity_{
+	if(velocity_ == [stage worldVelocityX]) return;
+	
+	[stage setWorldVelocityX:velocity_];
+	[worldVelocityLabel setString:[NSString stringWithFormat:@"world velocity : %d",(uint)velocity_]];
+	
+	[worldVelocityLabel stopAllActions];
+	[worldVelocityLabel setScale:1.0f];
+	[worldVelocityLabel runAction:[CCSequence actionOne:[CCScaleTo actionWithDuration:0.1f scale:1.2] two:[CCScaleTo actionWithDuration:0.1f scale:1.0]]];
+}
+
+-(void)update:(ccTime)dt_{
+	[ui update:dt_];
+	[stage update:dt_];
+	
+	_curStackTime += dt_;
+	if(_curStackTime >= 10.0f){
+		_curStackTime = 0.0f;
+		[self _setWorldVelocity:MIN([stage worldVelocityX]+20.0f,240.f)];
+	}
+}
+
+-(void)stage:(CMMStageDNB *)stage_ whenContactStartedWithObject:(CMMSObject *)object_ AtDirection:(CMMStageDNBDirection)direction_{
+	if(direction_ == CMMStageDNBDirection_top) return;
+	
+	if(object_ == targetObject){
+		[self _regenTargetObject];
+	}
+}
+
+-(void)customUIJoypad:(CMMCustomUIJoypad *)joypad_ whenChangedStickVector:(CGPoint)vector_{
+	if(targetObject) [targetObject setVelocity:vector_];
 }
 
 @end

@@ -3,7 +3,10 @@
 #import "CMMDrawingManager.h"
 #import "CMMMenuItem.h"
 #import "CMMScrollMenu.h"
+#import "CMMSType.h"
 #import "CMMStage.h"
+#import "CMMStageTMX.h"
+#import "CMMStagePXL.h"
 #import "CMMSObject.h"
 #import "CMMSParticle.h"
 #import "CMMSimpleCache.h"
@@ -14,10 +17,10 @@
 #import "CMMSoundEngine.h"
 #import "CMMControlItemText.h"
 
-DEPRECATED_ATTRIBUTE static CGPoint cmmFuncCommon_position_center(CGRect parentRect_,CGRect targetRect_,CGPoint targetAPoint_){
+DEPRECATED_ATTRIBUTE static inline CGPoint cmmFuncCommon_position_center(CGRect parentRect_,CGRect targetRect_,CGPoint targetAPoint_){
 	return cmmFuncCommon_positionInParent(parentRect_, targetRect_, targetAPoint_, ccp(0.5f,0.5f));
 }
-DEPRECATED_ATTRIBUTE static CGPoint cmmFuncCommon_position_center(CCNode *parent_,CCNode *target_){
+DEPRECATED_ATTRIBUTE static inline CGPoint cmmFuncCommon_position_center(CCNode *parent_,CCNode *target_){
 	return cmmFuncCommon_positionInParent(parent_, target_, ccp(0.5f,0.5f));
 }
 
@@ -166,6 +169,16 @@ DEPRECATED_ATTRIBUTE @interface CMMControlItemBatchBar : CMMSpriteBatchBar
 
 @end
 
+DEPRECATED_ATTRIBUTE typedef CMMStageDef CMMStageSpecDef;
+
+DEPRECATED_ATTRIBUTE static inline CMMStageDef CMMStageSpecDefMake(CGSize stageSize_, CGSize worldSize_, CGPoint gravity_){
+	return CMMStageDefMake(stageSize_,worldSize_,gravity_);
+}
+
+DEPRECATED_ATTRIBUTE static inline CMMb2ContactMask b2CMaskMake(CMMb2FixtureType fixtureType_, cmmMaskBit maskBit1_, cmmMaskBit maskBit2_, cmmMaskBit checkBit_){
+	return CMMb2ContactMaskMake(fixtureType_, maskBit1_, maskBit2_, checkBit_);
+}
+
 DEPRECATED_ATTRIBUTE @interface CMMStageBackGround : NSObject{
 	CMMStage *stage;
 	CCNode *backGroundNode;
@@ -184,6 +197,9 @@ DEPRECATED_ATTRIBUTE @interface CMMStageBackGround : NSObject{
 @end
 
 @interface CMMStage(Deprecated)
+
++(id)stageWithStageSpecDef:(CMMStageDef)stageSpecDef_;
+-(id)initWithStageSpecDef:(CMMStageDef)stageSpecDef_;
 
 @property (nonatomic, readwrite) BOOL isAllowTouch DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readonly) id backGround DEPRECATED_ATTRIBUTE;
@@ -204,6 +220,29 @@ DEPRECATED_ATTRIBUTE @interface CMMSParticleFollow : CMMSParticle
 
 -(CMMSParticle *)addParticleFollowWithName:(NSString *)particleName_ target:(CMMSObject *)target_ DEPRECATED_ATTRIBUTE;
 -(void)removeParticleFollowOfTarget:(CMMSObject *)target_ DEPRECATED_ATTRIBUTE;
+
+@end
+
+@interface CMMStageTMX(Deprecated)
+
++(id)stageWithStageSpecDef:(CMMStageDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_;
+-(id)initWithStageSpecDef:(CMMStageDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_;
+
+@end
+
+@interface CMMStagePXL(Deprecated)
+
++(id)stageWithStageSpecDef:(CMMStageDef)stageSpecDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
+-(id)initWithStageSpecDef:(CMMStageDef)stageSpecDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
+
+@end
+
+@interface CMMSSpecStage(Deprecated)
+
++(id)specWithTarget:(id)target_ withStageSpecDef:(CMMStageDef)stageSpecDef_;
+-(id)initWithTarget:(id)target_ withStageSpecDef:(CMMStageDef)stageSpecDef_;
+
+-(void)applyWithStageSpecDef:(CMMStageDef)stageSpecDef_;
 
 @end
 

@@ -53,3 +53,27 @@ enum StageControlType{
 @interface StageTestLayerTile : StageTestLayerMaster<CMMStageTMXDelegate>
 
 @end
+
+@interface TestHero : CMMSObject{
+	CGPoint velocity;
+	CMMb2ContactMask b2CMask_leg;
+	BOOL _canJump;
+}
+
+-(void)jump;
+
+@property (nonatomic, readwrite) CGPoint velocity;
+
+@end
+
+@interface StageTestLayerDynamicBlock : CMMLayer<CMMSceneLoadingProtocol,CMMPopupDispatcherDelegate,CMMStageDNBDelegate,CMMCustomUIJoypadDelegate>{
+	CMMStageDNB *stage;
+	TestHero *targetObject;
+	CMMCustomUIJoypad *ui;
+	b2Vec2 _targetObjectAccel;
+	
+	CCLabelTTF *worldVelocityLabel;
+	ccTime _curStackTime;
+}
+
+@end

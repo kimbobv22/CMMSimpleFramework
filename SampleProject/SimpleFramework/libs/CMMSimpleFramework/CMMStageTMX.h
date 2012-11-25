@@ -23,8 +23,8 @@
 	BOOL isTilemapBuiltup;
 }
 
-+(id)stageWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_;
--(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_;
++(id)stageWithStageDef:(CMMStageDef)stageDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_;
+-(id)initWithStageDef:(CMMStageDef)stageDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_;
 
 @property (nonatomic, readonly) CCTMXTiledMap *tilemap;
 @property (nonatomic, readonly) CCArray *groundTMXLayers;

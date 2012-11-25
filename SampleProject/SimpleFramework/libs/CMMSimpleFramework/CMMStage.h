@@ -55,7 +55,7 @@ public:
 	
 	CCArray *obatchNode_list,*obatchNode_destroyList;
 	CMMTimeIntervalArray *object_list;
-	CMMb2ContactMask b2Mask1,b2Mask2,b2Mask3,b2Mask4;
+	CMMb2ContactMask b2CMask_bottom,b2CMask_top,b2CMask_left,b2CMask_right;
 	
 	int32 velocityIterations, positionIterations;
 	
@@ -72,6 +72,7 @@ public:
 @property (nonatomic, readonly) b2World *world;
 @property (nonatomic, readonly) b2Body *worldBody;
 @property (nonatomic, readonly) CCArray *obatchNode_list,*object_list;
+@property (nonatomic, readwrite) CMMb2ContactMask b2CMask_bottom,b2CMask_top,b2CMask_left,b2CMask_right;
 @property (nonatomic, readwrite) int32 velocityIterations, positionIterations;
 @property (nonatomic, readonly) int countOfObatchNode,countOfObject;
 
@@ -122,7 +123,7 @@ public:
 
 #import "CMMSParticle.h"
 
-@interface CMMStageParticle : CCLayer<CMMStageChildProtocol>{
+@interface CMMStageParticle : CCNode<CMMStageChildProtocol>{
 	CMMStage *stage;
 	CMMTimeIntervalArray *particleList;
 	CMMSimpleCache *_cachedParticles;
@@ -202,7 +203,7 @@ typedef enum{
 
 @end
 
-@interface CMMStageLight : CCLayer<CMMStageChildProtocol>{
+@interface CMMStageLight : CCNode<CMMStageChildProtocol>{
 	CMMStage *stage;
 	CMMTimeIntervalArray *lightList;
 	
@@ -311,8 +312,8 @@ typedef enum{
 	uint maxTimeIntervalProcessCount;
 }
 
-+(id)stageWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
--(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
++(id)stageWithStageDef:(CMMStageDef)stageDef_;
+-(id)initWithStageDef:(CMMStageDef)stageDef_;
 
 -(void)step:(ccTime)dt_; //single update
 -(void)afterStep:(ccTime)dt_;

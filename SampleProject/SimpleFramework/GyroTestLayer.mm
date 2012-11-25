@@ -12,14 +12,14 @@
 	[[CMMMotionDispatcher sharedDispatcher] addTarget:self];
 	
 	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
-	CMMStageSpecDef stageSpec_;
-	stageSpec_.stageSize = CGSizeMake(targetSize_.width, targetSize_.height-50.0f);
-	stageSpec_.worldSize = stageSpec_.stageSize;
-	stageSpec_.gravity = CGPointZero;
-	stageSpec_.friction = 0.3f;
-	stageSpec_.restitution = 0.3f;
+	CMMStageDef stageDef_;
+	stageDef_.stageSize = CGSizeMake(targetSize_.width, targetSize_.height-50.0f);
+	stageDef_.worldSize = stageDef_.stageSize;
+	stageDef_.gravity = CGPointZero;
+	stageDef_.friction = 0.3f;
+	stageDef_.restitution = 0.3f;
 	
-	stage = [CMMStage stageWithStageSpecDef:stageSpec_];
+	stage = [CMMStage stageWithStageDef:stageDef_];
 	stage.sound.soundDistance = 300.0f;
 	stage.position = ccp(0,self.contentSize.height-stage.contentSize.height);
 	[self addChild:stage z:0];

@@ -40,7 +40,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 }
 
 @implementation CMMStageWorld
-@synthesize stage,world,worldBody,obatchNode_list,object_list,velocityIterations, positionIterations,countOfObatchNode,countOfObject;
+@synthesize stage,world,worldBody,obatchNode_list,object_list,b2CMask_bottom,b2CMask_top,b2CMask_left,b2CMask_right,velocityIterations,positionIterations,countOfObatchNode,countOfObject;
 
 +(id)worldWithStage:(CMMStage *)stage_ worldSize:(CGSize)worldSize_{
 	return [[[self alloc] initWithStage:stage_ worldSize:worldSize_] autorelease];
@@ -111,26 +111,26 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	_debugDraw->SetFlags(flags);
 #endif
 	
-	b2Mask1 = b2CMaskMake(0x3001,-1,-1,1);
-	b2Mask2 = b2CMaskMake(0x3003,-1,-1,1);
-	b2Mask3 = b2CMaskMake(0x3005,-1,-1,1);
-	b2Mask4 = b2CMaskMake(0x3007,-1,-1,1);
+	b2CMask_bottom = CMMb2ContactMaskMake(0x3001,-1,-1,1); // bottom
+	b2CMask_top = CMMb2ContactMaskMake(0x3003,-1,-1,1); // top
+	b2CMask_left = CMMb2ContactMaskMake(0x3005,-1,-1,1); // left
+	b2CMask_right = CMMb2ContactMaskMake(0x3007,-1,-1,1); // right
 	
 	worldBody = [self createBody:b2_staticBody point:CGPointZero angle:0];
 	worldBody->SetUserData(stage);
 	
 	b2EdgeShape groundBox;
 	groundBox.Set(b2Vec2(0,0), b2Vec2_PTM_RATIO(contentSize_.width,0));
-	worldBody->CreateFixture(&groundBox,0)->SetUserData(&b2Mask1);
+	worldBody->CreateFixture(&groundBox,0)->SetUserData(&b2CMask_bottom);
 	
 	groundBox.Set(b2Vec2_PTM_RATIO(0,contentSize_.height), b2Vec2_PTM_RATIO(contentSize_.width,contentSize_.height));
-	worldBody->CreateFixture(&groundBox,0)->SetUserData(&b2Mask2);
+	worldBody->CreateFixture(&groundBox,0)->SetUserData(&b2CMask_top);
 	
 	groundBox.Set(b2Vec2_PTM_RATIO(0,contentSize_.height), b2Vec2_PTM_RATIO(0,0));
-	worldBody->CreateFixture(&groundBox,0)->SetUserData(&b2Mask3);
+	worldBody->CreateFixture(&groundBox,0)->SetUserData(&b2CMask_left);
 	
 	groundBox.Set(b2Vec2_PTM_RATIO(contentSize_.width,contentSize_.height), b2Vec2_PTM_RATIO(contentSize_.width,0));
-	worldBody->CreateFixture(&groundBox,0)->SetUserData(&b2Mask4);
+	worldBody->CreateFixture(&groundBox,0)->SetUserData(&b2CMask_right);
 		
 	velocityIterations = 8;
 	positionIterations = 3;
@@ -337,14 +337,16 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 -(int)_nextObjectTag{
 	return ++_OBJECTTAG_;
 }
-
+	
 -(void)addObject:(CMMSObject *)object_{
+	if([[object_list createList] indexOfObject:object_] != NSNotFound) return;
 	[object_ setStage:stage];
 	[object_ setObjectTag:[self _nextObjectTag]];
 	[object_list addObject:object_];
 }
 
 -(void)removeObject:(CMMSObject *)object_{
+	if([[object_list destroyList] indexOfObject:object_] != NSNotFound) return;
 	[object_list removeObject:object_];
 }
 -(void)removeObjectAtIndex:(int)index_{
@@ -702,7 +704,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 }
 -(id)initWithStage:(CMMStage *)stage_{
 	if(!(self = [super init])) return self;
-	[self setContentSize:[stage_ worldSize]];
+	[self setContentSize:[stage_ contentSize]];
 	[self setIgnoreAnchorPointForPosition:NO];
 	[self setAnchorPoint:CGPointZero];
 	
@@ -744,8 +746,10 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	[lightList step];
 	
 	CMMSSpecStage *stageSpec_ = [stage spec];
-	CGRect worldRect_ = CGRectZero;
-	worldRect_.size = [[CCDirector sharedDirector] winSize];
+	CMMStageWorld *world_ = [stage world];
+	float worldScale_ = [world_ scale];
+	CGRect lightRect_ = CGRectZero;
+	lightRect_.size = contentSize_;
 	
 	[_lightRender begin];
 	
@@ -776,14 +780,15 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 			[lightItem_ update:dt_];
 			CGPoint targetPoint_ = [lightItem_ point];
 			float targetBrightness_ = [lightItem_ brightness];
-			float radius_ = [lightItem_ radius];
+			float radius_ = [lightItem_ radius]*worldScale_;
 			ccColor3B targetColor_ = [lightItem_ color];
 			
+			CGPoint convertedPoint_ = [self convertToNodeSpace:[world_ convertToWorldSpace:targetPoint_]];
 			if(useCulling){
-				CGPoint worldPoint_ = [self convertToWorldSpace:targetPoint_];
-				CGRect lightRect_ = CGRectMake(worldPoint_.x-radius_, worldPoint_.y-radius_,radius_*2.0f, radius_*2.0f);
-				
-				if(!CGRectIntersectsRect(worldRect_, lightRect_)) continue;
+				CGRect targetRect_ = CGRectMake(convertedPoint_.x-radius_, convertedPoint_.y-radius_,radius_*2.0f, radius_*2.0f);
+				if(!CGRectIntersectsRect(lightRect_, targetRect_)){
+					continue;
+				}
 			}
 			
 			ccColor4B tcolor_ = ccc4(targetColor_.r, targetColor_.g, targetColor_.b, 255.0f * targetBrightness_);
@@ -791,12 +796,12 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 			lightColors_[0] = tcolor_;
 			memset(lightVertices_,0,sizeof(GLfloat)*2*(segmentOfLights));
 			
-			lightVertices_[0] = targetPoint_.x;
-			lightVertices_[1] = targetPoint_.y;
+			lightVertices_[0] = convertedPoint_.x;
+			lightVertices_[1] = convertedPoint_.y;
 			
 			for(uint lightSegIndex_=1;lightSegIndex_<=segmentOfLights;++lightSegIndex_){
 				float targetRadians_ = lightSegIndex_*coef_;
-				CGPoint vertPoint_ = ccpOffset(targetPoint_, targetRadians_, radius_);
+				CGPoint vertPoint_ = ccpOffset(convertedPoint_, targetRadians_, radius_);
 				
 				lightVertices_[lightSegIndex_*2] = vertPoint_.x;
 				lightVertices_[lightSegIndex_*2+1] = vertPoint_.y;
@@ -1010,17 +1015,17 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 @implementation CMMStage
 @synthesize spec,delegate,world,particle,stateView,light,sound,backgroundNode,worldSize,worldPoint,worldScale,timeInterval,maxTimeIntervalProcessCount;
 
-+(id)stageWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
-	return [[[self alloc] initWithStageSpecDef:stageSpecDef_] autorelease];
++(id)stageWithStageDef:(CMMStageDef)stageDef_{
+	return [[[self alloc] initWithStageDef:stageDef_] autorelease];
 }
--(id)initWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_{
+-(id)initWithStageDef:(CMMStageDef)stageDef_{
 	if(!(self = [super init])) return self;
-	[self setContentSize:stageSpecDef_.stageSize];
+	[self setContentSize:stageDef_.stageSize];
 	[self setIsTouchEnabled:NO];
 	
 	spec = [[CMMSSpecStage alloc] initWithTarget:self];
 	
-	world = [CMMStageWorld worldWithStage:self worldSize:stageSpecDef_.worldSize];
+	world = [CMMStageWorld worldWithStage:self worldSize:stageDef_.worldSize];
 	particle = [CMMStageParticle particleWithStage:self];
 	stateView = [CMMStageObjectSView stateViewWithStage:self];
 	light = nil; //lazy alloc
@@ -1031,7 +1036,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 
 	sound = [[CMMSoundHandler alloc] initSoundHandler:CGPointZero soundDistance:700.0f];
 	
-	[spec applyWithStageSpecDef:stageSpecDef_];
+	[spec applyWithStageDef:stageDef_];
 	
 	timeInterval = 1.0f/30.0f;
 	maxTimeIntervalProcessCount = 10;
@@ -1064,7 +1069,6 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	[world setPosition:resultPoint_];
 	[particle setPosition:resultPoint_];
 	[stateView setPosition:resultPoint_];
-	if(light) [light setPosition:resultPoint_];
 	if(backgroundNode) [backgroundNode setPosition:resultPoint_];
 	
 	//update sound center position
@@ -1079,7 +1083,6 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	[world setScale:worldScale_];
 	[particle setScale:worldScale_];
 	[stateView setScale:worldScale_];
-	if(light) [light setScale:worldScale_];
 	if(backgroundNode) [backgroundNode setScale:worldScale_];
 }
 -(float)worldScale{

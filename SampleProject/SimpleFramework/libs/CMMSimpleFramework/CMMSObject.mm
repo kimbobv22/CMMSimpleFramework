@@ -101,7 +101,7 @@
 	state = nil;
 	body = NULL;
 	objectTag = -1;
-	b2CMask = b2CMaskMake(0x1001,-1,-1,1);
+	b2CMask = CMMb2ContactMaskMake(0x1001,-1,-1,1);
 
 	[self buildupObject];
 	[self resetObject];

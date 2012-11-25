@@ -34,7 +34,7 @@
 	[[CMMCaremaManager sharedManager] setImageLimitSize:CGSizeMake(100.0f, 100.0f)];
 	
 	CGSize stageSize_ = CGSizeSub(contentSize_, CGSizeMake(0, 50.0f));
-	stage = [CMMStage stageWithStageSpecDef:CMMStageSpecDefMake(stageSize_, stageSize_, CGPointZero)];
+	stage = [CMMStage stageWithStageDef:CMMStageDefMake(stageSize_, stageSize_, CGPointZero)];
 	[stage setPosition:ccp(0,50.0f)];
 	[self addChild:stage];
 	

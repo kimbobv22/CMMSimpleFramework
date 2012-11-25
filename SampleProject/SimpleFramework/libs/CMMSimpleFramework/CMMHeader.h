@@ -7,6 +7,11 @@ static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.1.0";
 
 #import "cocos2d.h"
 
+#import "CCMutableTexture2D.h"
+#import "CCSpriteBatchNode+SplitSprite.h"
+#import "NSData+Base64.h"
+#import "NSData+Compression.h"
+
 #import "CMMConfig.h"
 #import "CMMType.h"
 #import "CMMMacro.h"
@@ -56,6 +61,7 @@ static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.1.0";
 #import "CMMStage.h"
 #import "CMMStageTMX.h"
 #import "CMMStagePXL.h"
+#import "CMMStageDNB.h"
 
 #import "CMMSSpecStage.h"
 #import "CMMSObject.h"

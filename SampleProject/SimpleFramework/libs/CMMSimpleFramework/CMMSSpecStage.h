@@ -13,10 +13,10 @@
 	float friction,restitution,density,brightness;
 }
 
-+(id)specWithTarget:(id)target_ withStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
--(id)initWithTarget:(id)target_ withStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
++(id)specWithTarget:(id)target_ withStageDef:(CMMStageDef)stageDef_;
+-(id)initWithTarget:(id)target_ withStageDef:(CMMStageDef)stageDef_;
 
--(void)applyWithStageSpecDef:(CMMStageSpecDef)stageSpecDef_;
+-(void)applyWithStageDef:(CMMStageDef)stageDef_;
 
 @property (nonatomic, readwrite) CGPoint gravity;
 @property (nonatomic, readwrite) float friction,restitution,density,brightness;

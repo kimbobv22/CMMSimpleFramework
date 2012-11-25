@@ -14,6 +14,12 @@
 		E00857591625482B009C9BC4 /* CMMPacketData.mm in Sources */ = {isa = PBXBuildFile; fileRef = E00857581625482B009C9BC4 /* CMMPacketData.mm */; };
 		E009D7E815D94F19004E9012 /* PAR_EFT_0001.plist in Resources */ = {isa = PBXBuildFile; fileRef = E009D7E715D94F19004E9012 /* PAR_EFT_0001.plist */; };
 		E00E2E6A15FF506A003551B4 /* CMMSimpleCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = E00E2E6915FF506A003551B4 /* CMMSimpleCache.mm */; };
+		E01D0A4D165F3FD7001B450F /* IMG_STG_BLOCK000.plist in Resources */ = {isa = PBXBuildFile; fileRef = E01D0A4B165F3FD7001B450F /* IMG_STG_BLOCK000.plist */; };
+		E01D0A4E165F3FD7001B450F /* IMG_STG_BLOCK000.png in Resources */ = {isa = PBXBuildFile; fileRef = E01D0A4C165F3FD7001B450F /* IMG_STG_BLOCK000.png */; };
+		E01D0A52165F5760001B450F /* IMG_STG_BLOCK001.plist in Resources */ = {isa = PBXBuildFile; fileRef = E01D0A50165F5760001B450F /* IMG_STG_BLOCK001.plist */; };
+		E01D0A53165F5760001B450F /* IMG_STG_BLOCK001.png in Resources */ = {isa = PBXBuildFile; fileRef = E01D0A51165F5760001B450F /* IMG_STG_BLOCK001.png */; };
+		E01D0A56165F5954001B450F /* IMG_STG_BLOCK002.plist in Resources */ = {isa = PBXBuildFile; fileRef = E01D0A54165F5954001B450F /* IMG_STG_BLOCK002.plist */; };
+		E01D0A57165F5954001B450F /* IMG_STG_BLOCK002.png in Resources */ = {isa = PBXBuildFile; fileRef = E01D0A55165F5954001B450F /* IMG_STG_BLOCK002.png */; };
 		E01F231F164B9296001DA02F /* CMMSocketHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = E01F231E164B9295001DA02F /* CMMSocketHandler.mm */; };
 		E0257A2215FF3C55008C54C2 /* CMMSPMapObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0257A2115FF3C55008C54C2 /* CMMSPMapObject.mm */; };
 		E026250D1615F33600B158CF /* CMMGameKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = E026250C1615F33600B158CF /* CMMGameKit.mm */; };
@@ -269,6 +275,7 @@
 		E0CA18C715F9DBAB0064EF9F /* CMMStagePXL.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0CA18C615F9DBAB0064EF9F /* CMMStagePXL.mm */; };
 		E0CA18CB15F9E8D60064EF9F /* CCSpriteBatchNode+SplitSprite.m in Sources */ = {isa = PBXBuildFile; fileRef = E0CA18CA15F9E8D50064EF9F /* CCSpriteBatchNode+SplitSprite.m */; };
 		E0CDBA8B1649FF4600E076FF /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0CDBA8A1649FF4600E076FF /* CFNetwork.framework */; };
+		E0CE09201661FE7C00582B12 /* CMMStageDNB.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0CE091F1661FE7C00582B12 /* CMMStageDNB.mm */; };
 		E0D08A8615D8131600D14618 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D08A8515D8131600D14618 /* CoreMotion.framework */; };
 		E0D4097015D4F67F00953AFC /* SND_CMN_BTN_0001.caf in Resources */ = {isa = PBXBuildFile; fileRef = E0D4096F15D4F67F00953AFC /* SND_CMN_BTN_0001.caf */; };
 		E0D4097315D4F6FD00953AFC /* CommonIntroLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0D4097215D4F6FD00953AFC /* CommonIntroLayer.mm */; };
@@ -310,6 +317,12 @@
 		E009D7E715D94F19004E9012 /* PAR_EFT_0001.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PAR_EFT_0001.plist; path = Resources/PAR_EFT_0001.plist; sourceTree = "<group>"; };
 		E00E2E6815FF506A003551B4 /* CMMSimpleCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSimpleCache.h; path = libs/CMMSimpleFramework/CMMSimpleCache.h; sourceTree = "<group>"; };
 		E00E2E6915FF506A003551B4 /* CMMSimpleCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSimpleCache.mm; path = libs/CMMSimpleFramework/CMMSimpleCache.mm; sourceTree = "<group>"; };
+		E01D0A4B165F3FD7001B450F /* IMG_STG_BLOCK000.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = IMG_STG_BLOCK000.plist; path = Resources/IMG_STG_BLOCK000.plist; sourceTree = "<group>"; };
+		E01D0A4C165F3FD7001B450F /* IMG_STG_BLOCK000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_STG_BLOCK000.png; path = Resources/IMG_STG_BLOCK000.png; sourceTree = "<group>"; };
+		E01D0A50165F5760001B450F /* IMG_STG_BLOCK001.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = IMG_STG_BLOCK001.plist; path = Resources/IMG_STG_BLOCK001.plist; sourceTree = "<group>"; };
+		E01D0A51165F5760001B450F /* IMG_STG_BLOCK001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_STG_BLOCK001.png; path = Resources/IMG_STG_BLOCK001.png; sourceTree = "<group>"; };
+		E01D0A54165F5954001B450F /* IMG_STG_BLOCK002.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = IMG_STG_BLOCK002.plist; path = Resources/IMG_STG_BLOCK002.plist; sourceTree = "<group>"; };
+		E01D0A55165F5954001B450F /* IMG_STG_BLOCK002.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_STG_BLOCK002.png; path = Resources/IMG_STG_BLOCK002.png; sourceTree = "<group>"; };
 		E01F231D164B9295001DA02F /* CMMSocketHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSocketHandler.h; path = libs/CMMSimpleFramework/CMMSocketHandler.h; sourceTree = "<group>"; };
 		E01F231E164B9295001DA02F /* CMMSocketHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSocketHandler.mm; path = libs/CMMSimpleFramework/CMMSocketHandler.mm; sourceTree = "<group>"; };
 		E0257A2015FF3C55008C54C2 /* CMMSPMapObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSPMapObject.h; path = libs/CMMSimpleFramework/CMMSPMapObject.h; sourceTree = "<group>"; };
@@ -815,6 +828,8 @@
 		E0CA18C915F9E8D50064EF9F /* CCSpriteBatchNode+SplitSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CCSpriteBatchNode+SplitSprite.h"; path = "libs/CCSpriteBatchNode+SplitSprite.h"; sourceTree = "<group>"; };
 		E0CA18CA15F9E8D50064EF9F /* CCSpriteBatchNode+SplitSprite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CCSpriteBatchNode+SplitSprite.m"; path = "libs/CCSpriteBatchNode+SplitSprite.m"; sourceTree = "<group>"; };
 		E0CDBA8A1649FF4600E076FF /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		E0CE091E1661FE7C00582B12 /* CMMStageDNB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMStageDNB.h; path = libs/CMMSimpleFramework/CMMStageDNB.h; sourceTree = "<group>"; };
+		E0CE091F1661FE7C00582B12 /* CMMStageDNB.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMStageDNB.mm; path = libs/CMMSimpleFramework/CMMStageDNB.mm; sourceTree = "<group>"; };
 		E0D08A8515D8131600D14618 /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		E0D4096F15D4F67F00953AFC /* SND_CMN_BTN_0001.caf */ = {isa = PBXFileReference; lastKnownFileType = file; name = SND_CMN_BTN_0001.caf; path = Resources/SND_CMN_BTN_0001.caf; sourceTree = "<group>"; };
 		E0D4097115D4F6FD00953AFC /* CommonIntroLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonIntroLayer.h; sourceTree = "<group>"; };
@@ -975,6 +990,12 @@
 			isa = PBXGroup;
 			children = (
 				E0C1FE811614348800562E27 /* develop.png */,
+				E01D0A4B165F3FD7001B450F /* IMG_STG_BLOCK000.plist */,
+				E01D0A4C165F3FD7001B450F /* IMG_STG_BLOCK000.png */,
+				E01D0A50165F5760001B450F /* IMG_STG_BLOCK001.plist */,
+				E01D0A51165F5760001B450F /* IMG_STG_BLOCK001.png */,
+				E01D0A54165F5954001B450F /* IMG_STG_BLOCK002.plist */,
+				E01D0A55165F5954001B450F /* IMG_STG_BLOCK002.png */,
 				E049D20116561E4E00150CDE /* IMG_STG_TEST_001-hd.png */,
 				E0B4ED1E15FB0E3A00F640D0 /* IMG_STG_TEST_001.png */,
 				E049E24915DE9FCC00CD80E1 /* IMG_TMX_SAMPLE_000.png */,
@@ -1508,6 +1529,8 @@
 				E0ED51FC15E1FF4B0070712E /* CMMStageTMX.mm */,
 				E0CA18C515F9DBAB0064EF9F /* CMMStagePXL.h */,
 				E0CA18C615F9DBAB0064EF9F /* CMMStagePXL.mm */,
+				E0CE091E1661FE7C00582B12 /* CMMStageDNB.h */,
+				E0CE091F1661FE7C00582B12 /* CMMStageDNB.mm */,
 			);
 			name = stage;
 			sourceTree = "<group>";
@@ -1896,6 +1919,12 @@
 				E0A4D637160ACABA00D17935 /* Default@2x.png in Resources */,
 				E0C1FE821614348800562E27 /* develop.png in Resources */,
 				E049D20216561E4E00150CDE /* IMG_STG_TEST_001-hd.png in Resources */,
+				E01D0A4D165F3FD7001B450F /* IMG_STG_BLOCK000.plist in Resources */,
+				E01D0A4E165F3FD7001B450F /* IMG_STG_BLOCK000.png in Resources */,
+				E01D0A52165F5760001B450F /* IMG_STG_BLOCK001.plist in Resources */,
+				E01D0A53165F5760001B450F /* IMG_STG_BLOCK001.png in Resources */,
+				E01D0A56165F5954001B450F /* IMG_STG_BLOCK002.plist in Resources */,
+				E01D0A57165F5954001B450F /* IMG_STG_BLOCK002.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2141,6 +2170,7 @@
 				E0C00DC11631386000BE918E /* SequenceMakerTestLayer.mm in Sources */,
 				E01F231F164B9296001DA02F /* CMMSocketHandler.mm in Sources */,
 				E0C84285164F83BD00B98A44 /* CFSocketTestLayer.mm in Sources */,
+				E0CE09201661FE7C00582B12 /* CMMStageDNB.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
