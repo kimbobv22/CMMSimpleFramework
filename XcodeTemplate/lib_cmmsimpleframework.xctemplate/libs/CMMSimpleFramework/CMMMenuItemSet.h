@@ -37,7 +37,7 @@ enum CMMMenuItemSetLineVAlignType{
 	CMMMenuItemSetLineHAlignType lineHAlignType;
 	CMMMenuItemSetLineVAlignType lineVAlignType;
 	uint unitPerLine;
-	BOOL isEnable;
+	BOOL enable;
 	
 	id<CMMMenuItemSetDelegate> delegate;
 	void (^callback_pushdown)(id sender_,CMMMenuItem *menuItem_),(^callback_pushup)(id sender_,CMMMenuItem *menuItem_);
@@ -57,7 +57,7 @@ enum CMMMenuItemSetLineVAlignType{
 @property (nonatomic, readwrite) CMMMenuItemSetLineHAlignType lineHAlignType;
 @property (nonatomic, readwrite) CMMMenuItemSetLineVAlignType lineVAlignType;
 @property (nonatomic, readwrite) uint unitPerLine;
-@property (nonatomic, readwrite) BOOL isEnable;
+@property (nonatomic, readwrite, getter = isEnable) BOOL enable;
 @property (nonatomic, readonly) uint count;
 @property (nonatomic, assign) id<CMMMenuItemSetDelegate> delegate;
 @property (nonatomic, copy) void (^callback_pushdown)(id sender_,CMMMenuItem *menuItem_),(^callback_pushup)(id sender_,CMMMenuItem *menuItem_);

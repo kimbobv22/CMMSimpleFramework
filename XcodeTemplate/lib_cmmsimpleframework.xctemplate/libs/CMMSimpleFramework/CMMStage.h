@@ -164,7 +164,7 @@ public:
 	ccTime duration,_curDuration;
 	
 	ccColor3B color;
-	BOOL isBlendColor;
+	BOOL blendColor;
 	
 	CMMSObject *target;
 }
@@ -180,7 +180,7 @@ public:
 @property (nonatomic, readwrite) float brightness,radius;
 @property (nonatomic, readwrite) ccTime duration;
 @property (nonatomic, readwrite) ccColor3B color;
-@property (nonatomic, readwrite) BOOL isBlendColor;
+@property (nonatomic, readwrite, getter = isBlendColor) BOOL blendColor;
 @property (nonatomic, retain) CMMSObject *target;
 
 @end
@@ -222,7 +222,8 @@ typedef enum{
 @property (nonatomic, assign) CMMStage *stage;
 @property (nonatomic, readonly) CMMTimeIntervalArray *lightList;
 @property (nonatomic, readonly) uint count;
-@property (nonatomic, readwrite) BOOL useLights,useCulling;
+@property (nonatomic, readwrite, getter = isUseLights) BOOL useLights;
+@property (nonatomic, readwrite, getter = isUseCulling) BOOL useCulling;
 @property (nonatomic, readwrite) uint segmentOfLights;
 @property (nonatomic, readwrite) ccBlendFunc lightBlendFunc;
 
@@ -277,6 +278,12 @@ typedef enum{
 
 @end
 
+@protocol CMMStageBackgroundProtocol <CMMStageChildProtocol>
+
+@property (nonatomic, readwrite) CGPoint worldPoint;
+
+@end
+
 @protocol CMMStageDelegate<NSObject>
 
 @optional
@@ -306,7 +313,7 @@ typedef enum{
 	CMMStageObjectSView *stateView;
 	CMMStageLight *light;
 	CMMSoundHandler *sound;
-	CCNode<CMMStageChildProtocol> *backgroundNode;
+	CCNode<CMMStageBackgroundProtocol> *backgroundNode;
 	
 	ccTime timeInterval,_stackTime;
 	uint maxTimeIntervalProcessCount;
@@ -328,7 +335,7 @@ typedef enum{
 @property (nonatomic, readonly) CMMStageObjectSView *stateView;
 @property (nonatomic, readonly) CMMStageLight *light;
 @property (nonatomic, readonly) CMMSoundHandler *sound;
-@property (nonatomic, retain,setter = addBackgroundNode:) CCNode<CMMStageChildProtocol> *backgroundNode;
+@property (nonatomic, retain,setter = addBackgroundNode:) CCNode<CMMStageBackgroundProtocol> *backgroundNode;
 @property (nonatomic, readonly) CGSize worldSize;
 @property (nonatomic, readwrite) CGPoint worldPoint;
 @property (nonatomic, readwrite) float worldScale;

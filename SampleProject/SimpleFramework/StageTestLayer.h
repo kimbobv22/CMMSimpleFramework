@@ -24,7 +24,7 @@ enum StageControlType{
 	CMMScrollMenuV *controlMenu;
 	CMMControlItemSlider *gravitySlider;
 	CCLabelTTF *labelGravity;
-	CMMMenuItemLabelTTF *backBtn;
+	CMMMenuItemL *backBtn;
 	
 	BOOL _isOnTouch,_isTouchObject,_isOnDrag;
 	CGPoint _curTouchPoint;

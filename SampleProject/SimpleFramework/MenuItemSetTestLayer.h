@@ -4,7 +4,7 @@
 
 @interface MenuItemSetTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMMenuItemSetDelegate>{
 	CMMMenuItemSet *menuItemSet;
-	CMMMenuItemLabelTTF *alignTypeChangeBtn,*lineHAlignTypeChangeBtn,*lineVAlignTypeChangeBtn;
+	CMMMenuItemL *alignTypeChangeBtn,*lineHAlignTypeChangeBtn,*lineVAlignTypeChangeBtn;
 }
 
 @end

@@ -9,7 +9,7 @@
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
 	
-	labelProductName = [CMMFontUtil labelWithstring:@" " fontSize:10];
+	labelProductName = [CMMFontUtil labelWithString:@" " fontSize:10];
 	[self addChild:labelProductName];
 	isPurchased = NO;
 	
@@ -49,7 +49,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	labelState = [CMMFontUtil labelWithstring:@" "];
+	labelState = [CMMFontUtil labelWithString:@" "];
 	[self addChild:labelState];
 	
 	[self setOpacity:120];
@@ -99,7 +99,7 @@
 	[inAppList setPosition:ccpAdd(cmmFuncCommon_positionInParent(self, inAppList), ccp(0,20.0f))];
 	[self addChild:inAppList];
 	
-	restorBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	restorBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[restorBtn setTitle:@"RESTORE"];
 	restorBtn.position = ccp(contentSize_.width-restorBtn.contentSize.width/2,restorBtn.contentSize.height/2);
 	restorBtn.callback_pushup = ^(id sender_){
@@ -110,7 +110,7 @@
 	
 	indicatorLayer = [[InAppPurchaseTestLayerIndicator alloc] init];
 	
-	CMMMenuItemLabelTTF *menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"BACK"];
 	menuItemBtn_.position = ccp(menuItemBtn_.contentSize.width/2,menuItemBtn_.contentSize.height/2);
 	menuItemBtn_.callback_pushup = ^(id sender_){
@@ -118,7 +118,7 @@
 	};
 	[self addChild:menuItemBtn_];
 	
-	CCLabelTTF *labelNotice_ = [CMMFontUtil labelWithstring:@"test account : cmmsimpleframework@test.com / Testuser1" fontSize:12];
+	CCLabelTTF *labelNotice_ = [CMMFontUtil labelWithString:@"test account : cmmsimpleframework@test.com / Testuser1" fontSize:12];
 	[labelNotice_ setPosition:ccp(inAppList.position.x+labelNotice_.contentSize.width/2.0f,inAppList.position.y-labelNotice_.contentSize.height/2.0f-5.0f)];
 	[self addChild:labelNotice_];
 	

@@ -22,7 +22,7 @@ static CMMGameKitPA *_sharedCMMGameKitPA_ = nil;
 @end
 
 @implementation CMMGameKitPA
-@synthesize delegate,isAvailableGameCenter,isAuthenticated;
+@synthesize delegate,availableGameCenter,authenticated;
 
 +(CMMGameKitPA *)sharedPA{
 	if(!_sharedCMMGameKitPA_){
@@ -41,9 +41,9 @@ static CMMGameKitPA *_sharedCMMGameKitPA_ = nil;
 	NSString* currSysVer = [[UIDevice currentDevice] systemVersion];
 	bool isOSVer41 = ([currSysVer compare:reqSysVer options:NSNumericSearch] != NSOrderedAscending);
 	
-	isAvailableGameCenter = (isLocalPlayerAvailable && isOSVer41);
+	availableGameCenter = (isLocalPlayerAvailable && isOSVer41);
 	
-	if(!isAvailableGameCenter){
+	if(!availableGameCenter){
 		return self;
 	}
 	
@@ -67,7 +67,7 @@ static CMMGameKitPA *_sharedCMMGameKitPA_ = nil;
 }
 
 -(BOOL)isAuthenticated{
-	return (isAvailableGameCenter && [[GKLocalPlayer localPlayer] isAuthenticated]);
+	return (availableGameCenter && [[GKLocalPlayer localPlayer] isAuthenticated]);
 }
 
 -(void)dealloc{

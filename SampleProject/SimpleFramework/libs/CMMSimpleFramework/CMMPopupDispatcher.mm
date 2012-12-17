@@ -1,23 +1,57 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMPopupDispatcher.h"
-#import "CMMScene.h"
 
 static CMMSimpleCache *_cachedPopupItems_ = nil;
 
-@implementation CMMPopupDispatcherItem
-@synthesize delegate,popup;
+@implementation CMMPopupLayer
+@synthesize popupDispatcherItem,lazyCleanup;
 
-+(id)popupItemWithPopup:(CMMLayerPopup *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_{
+-(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
+	if(!(self = [super initWithColor:color width:w height:h])) return self;
+	[self setIsTouchEnabled:YES];
+	
+	popupDispatcherItem = nil;
+	lazyCleanup = NO;
+	
+	return self;
+}
+
+-(void)closeWithSendData:(id)data_{
+	[popupDispatcherItem popup:self didCloseWithReceivedData:data_];
+}
+-(void)close{
+	[self closeWithSendData:nil];
+}
+
+@end
+
+@implementation CMMPopupDispatcherItem
+@synthesize popupDispatcher,delegate,popup;
+
++(id)popupItemWithPopup:(CMMPopupLayer *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_{
 	return [[[self alloc] initWithPopup:popup_ delegate:delegate_] autorelease];
 }
--(id)initWithPopup:(CMMLayerPopup *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_{
+-(id)initWithPopup:(CMMPopupLayer *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_{
 	if(!(self = [super init])) return self;
 	
 	[self setPopup:popup_];
 	[self setDelegate:delegate_];;
 	
 	return self;
+}
+
+-(void)setPopup:(CMMPopupLayer *)popup_{
+	if(popup == popup_) return;
+	[popup release];
+	popup = [popup_ retain];
+	if(popup){
+		[popup setPopupDispatcherItem:self];
+	}
+}
+
+-(void)popup:(CMMPopupLayer *)popup_ didCloseWithReceivedData:(id)data_{
+	[popupDispatcher removePopupItem:self withData:data_];
 }
 
 -(void)dealloc{
@@ -27,25 +61,68 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 
 @end
 
-@implementation CMMPopupDispatcherTemplate
+@implementation CMMPopupMasterView
+@synthesize backgroundNode,showOnlyOne;
 
-//override this!
--(void)startPopupWithPopupLayer:(CMMLayerPopup *)popupLayer_{}
--(void)endPopupWithPopupLayer:(CMMLayerPopup *)popupLayer_ callbackAction:(CCCallBlock *)callbackAction_{
-	[popupLayer_ runAction:callbackAction_];
++(id)viewWithPopupDispatcher:(CMMPopupDispatcher *)popupDispatcher_{
+	return [[[self alloc] initWithPopupDispatcher:popupDispatcher_] autorelease];
+}
+-(id)initWithPopupDispatcher:(CMMPopupDispatcher *)popupDispatcher_{
+	if(!(self = [super init])) return self;
+	
+	[self addBackgroundNode:[CCLayerColor layerWithColor:ccc4(0, 0, 0, 180)]];
+	showOnlyOne = NO;
+	
+	return self;
 }
 
-@end
+-(void)visit{
+	kmGLPushMatrix();
+	
+	[self transform];
+	[self draw];
 
-@implementation CMMPopupDispatcherTemplate_FadeInOut
-
--(void)startPopupWithPopupLayer:(CMMLayerPopup *)popupLayer_{
-	_orginalOpacity = [popupLayer_ opacity];
-	[popupLayer_ setOpacity:0];
-	[popupLayer_ runAction:[CCFadeTo actionWithDuration:0.1f opacity:_orginalOpacity]];
+	if(children_){
+		
+		[self sortAllChildren];
+		
+		ccArray *data_ = children_->data;
+		uint count_ = data_->num;
+		for(uint index_=(showOnlyOne?data_->num-1:0);index_<count_;++index_){
+			CMMPopupLayer *popup_ = data_->arr[index_];
+			
+			[backgroundNode visit];
+			[popup_ visit];
+		}
+	}
+	
+	orderOfArrival_ = 0;
+	
+	kmGLPopMatrix();
 }
--(void)endPopupWithPopupLayer:(CMMLayerPopup *)popupLayer_ callbackAction:(CCCallBlock *)callbackAction_{
-	[popupLayer_ runAction:[CCSequence actionOne:[CCFadeTo actionWithDuration:0.1f opacity:0] two:callbackAction_]];
+
+-(void)addBackgroundNode:(CCNode<CCRGBAProtocol> *)backgroundNode_{
+	if(backgroundNode){
+		[backgroundNode removeFromParentAndCleanup:YES];
+		[backgroundNode release];
+	}
+	
+	backgroundNode = [backgroundNode_ retain];
+	[backgroundNode setParent:self]; //lazy ref
+}
+
+-(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
+	return (children_ && children_->data->num > 0);
+}
+
+-(void)cleanup{
+	[backgroundNode setParent:nil];
+	[super cleanup];
+}
+
+-(void)dealloc{
+	[backgroundNode release];
+	[super dealloc];
 }
 
 @end
@@ -62,17 +139,12 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 
 -(void)_resortPopup{
 	ccArray *data_ = popupList->data;
-	int count_ = data_->num;
-	if(count_<=0) return;
+	uint count_ = data_->num;
 	
-	CMMPopupDispatcherItem *popupItem_ = data_->arr[0];
-	CMMLayerPopup *firstPopup_ = (CMMLayerPopup *)[popupItem_ popup];
-	[scene reorderChild:firstPopup_ z:cmmVarCMMPopupDispatcher_defaultPopupZOrder];
-	[popupTemplate startPopupWithPopupLayer:firstPopup_];
-	
-	for(uint index_=1;index_<count_;++index_){
-		popupItem_ = data_->arr[index_];
-		[scene reorderChild:popupItem_.popup z:cmmVarCMMPopupDispatcher_defaultPopupZOrder-index_];
+	for(uint index_=0;index_<count_;++index_){
+		CMMPopupDispatcherItem *popupItem_ = data_->arr[index_];
+		CMMPopupLayer *popup_ = [popupItem_ popup];
+		[popup_ setZOrder:count_-index_];
 	}
 }
 -(CMMPopupDispatcherItem *)cachedPopupItem{
@@ -88,70 +160,87 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 	return touchItem_;
 }
 -(void)cachePopupItem:(CMMPopupDispatcherItem *)popupItem_{
-	popupItem_.popup = nil;
-	popupItem_.delegate = nil;
+	[popupItem_ setPopup:nil];
+	[popupItem_ setPopupDispatcher:nil];
+	[popupItem_ setDelegate:nil];
 	[_cachedPopupItems_ addObject:popupItem_];
 }
 
 @end
 
 @implementation CMMPopupDispatcher
-@synthesize scene,popupList,popupCount,curPopup,popupTemplate;
+@synthesize target,popupList,popupCount,headPopup,masterView;
 
-+(id)popupDispatcherWithScene:(CMMScene *)scene_{
-	return [[[self alloc] initWithScene:scene_] autorelease];
++(id)popupDispatcherWithTarget:(CCNode *)target_{
+	return [[[self alloc] initWithTarget:target_] autorelease];
 }
--(id)initWithScene:(CMMScene *)scene_{
+-(id)initWithTarget:(CCNode *)target_{
 	if(!(self = [super init])) return self;
 	
-	scene = scene_;
 	popupList = [[CCArray alloc] init];
-	popupTemplate = [[CMMPopupDispatcherTemplate_FadeInOut alloc] init];
+	masterView = [[CMMPopupMasterView alloc] initWithPopupDispatcher:self];
+	[self setTarget:target_];
 	
 	return self;
+}
+
+-(void)setTarget:(CCNode *)target_{
+	target = target_;
+	[masterView removeFromParentAndCleanup:NO];
+	if(target){
+		[target addChild:masterView z:cmmVarCMMPopupDispatcher_defaultPopupZOrder];
+	}
 }
 
 -(int)popupCount{
 	return [popupList count];
 }
 
--(void)addPopupItem:(CMMPopupDispatcherItem *)popupItem_ atIndex:(int)index_{
-	if([self indexOfPopup:[popupItem_ popup]] != NSNotFound) return;
-	[popupList insertObject:popupItem_ atIndex:index_];
-	[scene addChild:[popupItem_ popup] z:-1];
-	[self _resortPopup];
+-(CMMPopupLayer *)headPopup{
+	if([popupList count] == 0) return nil;
+	return [popupList->data->arr[0] popup];
 }
--(CMMPopupDispatcherItem *)addPopupItemWithPopup:(CMMLayerPopup *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_ atIndex:(int)index_{
+
+-(void)addPopupItem:(CMMPopupDispatcherItem *)popupItem_ atIndex:(int)index_{
+	CMMPopupLayer *popup_ = [popupItem_ popup];
+	if([self indexOfPopup:popup_] != NSNotFound) return;
+	
+	[popupList insertObject:popupItem_ atIndex:index_];
+	[masterView addChild:popup_];
+	[self _resortPopup];
+	
+	id<CMMPopupDispatcherDelegate> delegate_ = [popupItem_ delegate];
+	if(cmmFuncCommon_respondsToSelector(delegate_, @selector(popupDispatcher:didOpenPopup:))){
+		[delegate_ popupDispatcher:self didOpenPopup:popup_];
+	}
+}
+-(CMMPopupDispatcherItem *)addPopupItemWithPopup:(CMMPopupLayer *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_ atIndex:(int)index_{
 	CMMPopupDispatcherItem *popupItem_ = [self cachedPopupItem];
 	if(!popupItem_)
 		popupItem_ = [CMMPopupDispatcherItem popupItemWithPopup:nil delegate:nil];
-	
-	popupItem_.popup = popup_;
-	popupItem_.delegate = delegate_;
+
+	[popupItem_ setPopupDispatcher:self];
+	[popupItem_ setPopup:popup_];
+	[popupItem_ setDelegate:delegate_];
 	[self addPopupItem:popupItem_ atIndex:index_];
 	return popupItem_;
 }
--(CMMPopupDispatcherItem *)addPopupItemWithPopup:(CMMLayerPopup *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_{
+-(CMMPopupDispatcherItem *)addPopupItemWithPopup:(CMMPopupLayer *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_{
 	return [self addPopupItemWithPopup:popup_ delegate:delegate_ atIndex:[self popupCount]];
 }
 
--(void)_callbackRemovePopup:(CMMPopupDispatcherItem *)popupItem_ withData:(id)data_{
-	[[popupItem_ popup] removeFromParentAndCleanup:YES];
+-(void)removePopupItem:(CMMPopupDispatcherItem *)popupItem_ withData:(id)data_{
+	CMMPopupLayer *popupLayer_ = [popupItem_ popup];
 	
-	id<CMMPopupDispatcherDelegate> delegate_ = popupItem_.delegate;
-	if(cmmFuncCommon_respondsToSelector(delegate_, @selector(popupDispatcher:whenClosedWithReceivedData:)))
-		[delegate_ popupDispatcher:popupItem_ whenClosedWithReceivedData:data_];
+	id<CMMPopupDispatcherDelegate> delegate_ = [popupItem_ delegate];
+	if(cmmFuncCommon_respondsToSelector(delegate_, @selector(popupDispatcher:didClosePopup:withReceivedData:))){
+		[delegate_ popupDispatcher:self didClosePopup:popupLayer_ withReceivedData:data_];
+	}
 	
+	[popupLayer_ removeFromParentAndCleanup:![popupLayer_ isLazyCleanup]];
 	[self cachePopupItem:popupItem_];
 	[popupList removeObject:popupItem_];
 	[self _resortPopup];
-}
--(void)removePopupItem:(CMMPopupDispatcherItem *)popupItem_ withData:(id)data_{
-	CMMLayerPopup *popupLayer_ = [popupItem_ popup];
-	[popupLayer_ setIsTouchEnabled:NO];
-	[popupTemplate endPopupWithPopupLayer:popupLayer_ callbackAction:[CCCallBlock actionWithBlock:^{
-		[self _callbackRemovePopup:popupItem_ withData:data_];
-	}]];
 }
 -(void)removePopupItem:(CMMPopupDispatcherItem *)popupItem_{
 	[self removePopupItem:popupItem_ withData:nil];
@@ -162,10 +251,10 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 -(void)removePopupItemAtIndex:(int)index_{
 	[self removePopupItemAtIndex:index_ withData:nil];
 }
--(void)removePopupItemAtPopup:(CMMLayerPopup *)popup_ withData:(id)data_{
+-(void)removePopupItemAtPopup:(CMMPopupLayer *)popup_ withData:(id)data_{
 	[self removePopupItemAtIndex:[self indexOfPopup:popup_] withData:data_];
 }
--(void)removePopupItemAtPopup:(CMMLayerPopup *)popup_{
+-(void)removePopupItemAtPopup:(CMMPopupLayer *)popup_{
 	[self removePopupItemAtPopup:popup_ withData:nil];
 }
 
@@ -177,7 +266,7 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 -(int)indexOfPopupItem:(CMMPopupDispatcherItem *)popupItem_{
 	return [popupList indexOfObject:popupItem_];
 }
--(int)indexOfPopup:(CMMLayerPopup *)popup_{
+-(int)indexOfPopup:(CMMPopupLayer *)popup_{
 	ccArray *data_ = popupList->data;
 	int count_ = data_->num;
 	for(uint index_=0;index_<count_;++index_){
@@ -189,7 +278,8 @@ static CMMSimpleCache *_cachedPopupItems_ = nil;
 }
 
 -(void)dealloc{
-	[popupTemplate release];
+	[masterView removeFromParentAndCleanup:YES];
+	[masterView release];
 	[popupList release];
 	[super dealloc];
 }

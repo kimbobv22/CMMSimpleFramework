@@ -65,18 +65,27 @@ static CGRect cmmFuncCommon_nodeToworldRect(CCNode *node_){
 	return CGRectApplyAffineTransform(rect_, [node_ nodeToWorldTransform]);
 }
 
-static CGPoint cmmFuncCommon_positionInParent(CGRect sourceRect_,CGRect targetRect_,CGPoint targetAPoint_,CGPoint ratio_){
-	return CGPointMake((sourceRect_.origin.x+sourceRect_.size.width*ratio_.x)-(targetRect_.origin.x+targetRect_.size.width*(0.5f-targetAPoint_.x)),(sourceRect_.origin.y+sourceRect_.size.height*ratio_.y)-(targetRect_.origin.y+targetRect_.size.height*(0.5f-targetAPoint_.y)));
+static CGPoint cmmFuncCommon_positionInParent(CGRect sourceRect_,CGRect targetRect_,CGPoint targetAPoint_,CGPoint ratio_, CGPoint offset_){
+	CGPoint resultPoint_ = CGPointMake((sourceRect_.origin.x+sourceRect_.size.width*ratio_.x)-(targetRect_.origin.x+targetRect_.size.width*(0.5f-targetAPoint_.x)),(sourceRect_.origin.y+sourceRect_.size.height*ratio_.y)-(targetRect_.origin.y+targetRect_.size.height*(0.5f-targetAPoint_.y)));
+	resultPoint_.x += offset_.x;
+	resultPoint_.y += offset_.y;
+	return resultPoint_;
 }
-static CGPoint cmmFuncCommon_positionInParent(CCNode *parentNode_,CCNode *targetNode_,CGPoint ratio_){
+static CGPoint cmmFuncCommon_positionInParent(CGRect sourceRect_,CGRect targetRect_,CGPoint targetAPoint_,CGPoint ratio_){
+	return cmmFuncCommon_positionInParent(sourceRect_,targetRect_,targetAPoint_,ratio_,CGPointZero);
+}
+static CGPoint cmmFuncCommon_positionInParent(CCNode *parentNode_,CCNode *targetNode_,CGPoint ratio_,CGPoint offset_){
 	CGRect parentRect_ = CGRectZero;
 	parentRect_.size = [parentNode_ contentSize];
 	CGRect targetRect_ = CGRectZero;
 	targetRect_.size = [targetNode_ contentSize];
-	return cmmFuncCommon_positionInParent(parentRect_, targetRect_, [targetNode_ anchorPoint],ratio_);
+	return cmmFuncCommon_positionInParent(parentRect_, targetRect_, [targetNode_ anchorPoint],ratio_,offset_);
+}
+static CGPoint cmmFuncCommon_positionInParent(CCNode *parentNode_,CCNode *targetNode_,CGPoint ratio_){
+	return cmmFuncCommon_positionInParent(parentNode_, targetNode_, ratio_, CGPointZero);
 }
 static CGPoint cmmFuncCommon_positionInParent(CCNode *parentNode_,CCNode *targetNode_){
-	return cmmFuncCommon_positionInParent(parentNode_,targetNode_,CGPointMake(0.5f, 0.5f));
+	return cmmFuncCommon_positionInParent(parentNode_,targetNode_,CGPointMake(0.5f, 0.5f),CGPointZero);
 }
 
 static CGPoint cmmFuncCommon_positionFromOtherNode(CCNode *otherNode_,CCNode *targetNode_,CGPoint ratio_,CGPoint offset_){

@@ -8,12 +8,12 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	menuItemBack = [[CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0] retain];
+	menuItemBack = [[CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0] retain];
 	[menuItemBack setTitle:@"BACK"];
 	menuItemBack.position = ccp(menuItemBack.contentSize.width/2+20,menuItemBack.contentSize.height/2+20);
 	menuItemBack.delegate = self;
 	
-	displayLabel = [CMMFontUtil labelWithstring:@" "];
+	displayLabel = [CMMFontUtil labelWithString:@" "];
 	displayLabel.position = ccp(self.contentSize.width/2,self.contentSize.height/2);
 	[self addChild:displayLabel];
 	

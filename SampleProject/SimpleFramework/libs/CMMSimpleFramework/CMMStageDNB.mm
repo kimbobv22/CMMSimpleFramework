@@ -66,7 +66,7 @@
 @end
 
 @implementation CMMStageBlockItem
-@synthesize groundBlocks,backBlocks,b2CMask,blockType,blockPhysicalSpec,blockB2BodyType,blockObjectZOrder,blockSize,blockCountRange,pickupRatio,blockRandomizeRatio,drawEdge;
+@synthesize groundBlocks,backBlocks,b2CMask,blockType,blockPhysicalSpec,blockB2BodyType,blockObjectZOrder,blockSize,blockCountRange,pickupRatio,blockRandomizeRatio,drawEdge,layoutPatternTexture,layoutPatternBlendFunc,linkBlockItems;
 
 +(id)blockItem{
 	return [[[self alloc] init] autorelease];
@@ -87,8 +87,27 @@
 	blockRandomizeRatio = 0.5f;
 	blockCountRange = NSRangeMake(5, 15); // block count limit
 	drawEdge = NO;
+	_layoutPatternSprite = [[CCSprite alloc] init];
+	
+	[_layoutPatternSprite setIgnoreAnchorPointForPosition:NO];
+	[_layoutPatternSprite setAnchorPoint:CGPointZero];
+	layoutPatternBlendFunc = (ccBlendFunc){GL_DST_COLOR, GL_SRC_COLOR};
+	
+	linkBlockItems = [[CCArray alloc] init];
 	
 	return self;
+}
+
+-(void)setLayoutPatternTexture:(CCTexture2D *)layoutPatternTexture_{
+	if(layoutPatternTexture == layoutPatternTexture_) return;
+	[layoutPatternTexture release];
+	layoutPatternTexture = [layoutPatternTexture_ retain];
+	if(layoutPatternTexture){
+		ccTexParams textureParameter_ = {GL_LINEAR,GL_LINEAR,GL_REPEAT,GL_CLAMP_TO_EDGE};
+		[layoutPatternTexture setTexParameters:&textureParameter_];
+		
+		[_layoutPatternSprite setTexture:layoutPatternTexture];
+	}
 }
 
 -(CMMSBlockObject *)createBlockWithTargetHeight:(float)targetHeight_{
@@ -204,11 +223,18 @@
 	ccDrawColor4B(150, 0, 0, 180);
 	ccDrawRect(CGPointZero, ccp(targetWidth_,targetHeight_));
 #endif
+	
+	if(layoutPatternTexture){
+		[_layoutPatternSprite setBlendFunc:layoutPatternBlendFunc];
+		[_layoutPatternSprite setTextureRect:CGRectMake(0.0f, 0.0f, targetWidth_, targetHeight_)];
+		[_layoutPatternSprite visit];
+		[_layoutPatternSprite setPosition:ccp(0.0f,0.0f)];
+	}
 
 	[blockRender_ end];
 	
 	CMMSBlockObject *blockObject_ = [CMMSBlockObject spriteWithTexture:[[blockRender_ sprite] texture]];
-	[blockObject_ setBlockItem:self];
+	[blockObject_ setBlockItem:self]; 
 	[blockObject_ setZOrder:blockObjectZOrder];
 	return blockObject_;
 }
@@ -216,6 +242,9 @@
 -(void)dealloc{
 	[backBlocks release];
 	[groundBlocks release];
+	[_layoutPatternSprite release];
+	[layoutPatternTexture release];
+	[linkBlockItems release];
 	[super dealloc];
 }
 
@@ -301,6 +330,32 @@
 
 -(uint)indexOfBackBlock:(CCSpriteFrame *)spriteFrame_{
 	return [backBlocks indexOfObject:spriteFrame_];
+}
+
+@end
+
+@implementation CMMStageBlockItem(Link)
+
+-(void)addLinkBlockItem:(CMMStageBlockItem *)blockItem_{
+	if([self indexOfLinkBlockItem:blockItem_] != NSNotFound) return;
+	[linkBlockItems addObject:blockItem_];
+}
+
+-(void)removeLinkBlockItem:(CMMStageBlockItem *)blockItem_{
+	uint index_ = [self indexOfLinkBlockItem:blockItem_];
+	if(index_ == NSNotFound) return;
+	[linkBlockItems removeObjectAtIndex:index_];
+}
+-(void)removeLinkBlockItemAtIndex:(uint)index_{
+	[self removeLinkBlockItem:[self linkBlockItemAtIndex:index_]];
+}
+
+-(CMMStageBlockItem *)linkBlockItemAtIndex:(uint)index_{
+	if(index_ == NSNotFound) return nil;
+	return [linkBlockItems objectAtIndex:index_];
+}
+-(uint)indexOfLinkBlockItem:(CMMStageBlockItem *)blockItem_{
+	return [linkBlockItems indexOfObject:blockItem_];
 }
 
 @end
@@ -416,6 +471,8 @@
 	_lastCreatePoint = CGPointZero;
 	_curMarginPerBlock = -1.0f;
 	
+	_lazyTargetBlockItems = [[CCArray alloc] init];
+	
 	return self;
 }
 
@@ -431,6 +488,12 @@
 	if(worldVelocityX > 0.0f){
 		float worldAddPoint_ = worldVelocityX * dt_;
 		_addedWorldPointX += worldAddPoint_;
+		
+		if(backgroundNode){
+			CGPoint backgroundWorldPoint_ = [backgroundNode worldPoint];
+			backgroundWorldPoint_.x += worldAddPoint_;
+			[backgroundNode setWorldPoint:backgroundWorldPoint_];
+		}
 		
 		CGPoint convertedZeroPoint_ = [self convertToWorldSpace:CGPointZero];
 		CGPoint fixedWorldPoint_ = [world convertToNodeSpace:convertedZeroPoint_];
@@ -454,8 +517,22 @@
 			objectBody_->SetTransform(b2Vec2(objectBodyPoint_.x-(worldAddPoint_/PTM_RATIO), objectBodyPoint_.y), 0.0f);
 		}
 		
-		if(_lastCreatePoint.x - _addedWorldPointX < contentSize_.width - _curMarginPerBlock){
-			CMMStageBlockItem *blockItem_ = [block pickupBlockItem];
+		float curWorldPointX_ = _lastCreatePoint.x - _addedWorldPointX;
+		BOOL isLazyDraw_ = _lazyTargetBlockItems->data->num > 0;
+		if(curWorldPointX_ < contentSize_.width || isLazyDraw_){
+			CMMStageBlockItem *mainBlockItem_ = nil;
+			
+			if(isLazyDraw_){
+				mainBlockItem_ = [[[_lazyTargetBlockItems objectAtIndex:0] retain] autorelease];
+				[_lazyTargetBlockItems removeObjectAtIndex:0];
+			}else{
+				mainBlockItem_ = [block pickupBlockItem];
+				[_lazyTargetBlockItems addObjectsFromArray:[mainBlockItem_ linkBlockItems]];
+			}
+			
+			isLazyDraw_ = _lazyTargetBlockItems->data->num > 0;
+
+			CGPoint objectCreateZeroPoint_ = ccp(curWorldPointX_,0.0f);
 			float orgBlockHeight_ = blockHeightRange.RandomValue();
 			float targetBlockHeight_ = orgBlockHeight_;
 			
@@ -467,7 +544,7 @@
 			}
 			
 			float objectPointYOffset_ = orgBlockHeight_/2.0f;
-			switch([blockItem_ blockType]){
+			switch([mainBlockItem_ blockType]){
 				case CMMBlockType_filledDown:
 				case CMMBlockType_normal:
 					targetBlockHeight_ = orgBlockHeight_;
@@ -482,16 +559,15 @@
 				default: break;
 			}
 			
-			CMMSBlockObject *blockObject_ = [blockItem_ createBlockWithTargetHeight:targetBlockHeight_];
+			CMMSBlockObject *blockObject_ = [mainBlockItem_ createBlockWithTargetHeight:targetBlockHeight_];
 			
-			CGPoint objectCreateZeroPoint_ = ccp(_lastCreatePoint.x - _addedWorldPointX + _curMarginPerBlock,0.0f);
 			CGSize objectSize_ = [blockObject_ contentSize];
 			
 			[blockObject_ setPosition:ccpAdd([world convertToNodeSpace:objectCreateZeroPoint_], ccp(objectSize_.width/2.0f,objectPointYOffset_))];
 			[world addObject:blockObject_];
 			
 			_addedWorldPointX = 0.0f;
-			_lastCreatePoint = ccp(objectCreateZeroPoint_.x + objectSize_.width,orgBlockHeight_);
+			_lastCreatePoint = ccp(objectCreateZeroPoint_.x+objectSize_.width+(isLazyDraw_?0.0f:_curMarginPerBlock),orgBlockHeight_);
 			_curMarginPerBlock = marginPerBlock.loc-1.0f;
 		}
 	}
@@ -548,6 +624,7 @@
 
 -(void)dealloc{
 	[block release];
+	[_lazyTargetBlockItems release];
 	[super dealloc];
 }
 

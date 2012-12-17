@@ -47,8 +47,8 @@
 	
 	noticeDispatcher = [noticeDispatcher_ retain];
 	
-	labelTitle = [CMMFontUtil labelWithstring:@" " fontSize:16.0f];
-	labelSubject = [CMMFontUtil labelWithstring:@" " fontSize:14.0f];
+	labelTitle = [CMMFontUtil labelWithString:@" " fontSize:16.0f];
+	labelSubject = [CMMFontUtil labelWithString:@" " fontSize:14.0f];
 	[self addChild:labelTitle];
 	[self addChild:labelSubject];
 	noticeAction = nil;
@@ -198,11 +198,11 @@ static CCArray *_cachedNoticeDispatcherItems_ = nil;
 }
 
 -(void)_startNotice{
-	if(_isOnNotice || itemList.count <= 0) return;
+	if(_onNotice || [itemList count] <= 0) return;
 	NSAssert(noticeTemplate, @"NoticeTemplate must be exists");
 	NSAssert(noticeTemplate.noticeAction, @"NoticeTemplate Action must be exists");
 	
-	_isOnNotice = YES;
+	_onNotice = YES;
 	CMMNoticeDispatcherItem *noticeItem_ = [itemList objectAtIndex:0];
 	
 	[noticeTemplate setTitle:noticeItem_.title subject:noticeItem_.subject];
@@ -240,7 +240,7 @@ static CCArray *_cachedNoticeDispatcherItems_ = nil;
 	[itemList removeObject:noticeItem_];
 	[target removeChild:noticeTemplate cleanup:YES];
 	
-	_isOnNotice = NO;
+	_onNotice = NO;
 	
 	if(itemList.count>0)
 		[self _startNotice];
@@ -263,7 +263,7 @@ static CCArray *_cachedNoticeDispatcherItems_ = nil;
 	noticeTemplate = nil;
 	noticePositionType = CMMNoticePositionType_top;
 	noticePosition = CGPointZero;
-	_isOnNotice = NO;
+	_onNotice = NO;
 	
 	return self;
 }
@@ -274,16 +274,16 @@ static CCArray *_cachedNoticeDispatcherItems_ = nil;
 }
 
 -(void)setNoticeTemplate:(CMMNoticeDispatcherTemplate *)noticeTemplate_{
-	BOOL isOnNotice_ = _isOnNotice;
-	if(isOnNotice_ && noticeTemplate){
+	BOOL onNotice_ = _onNotice;
+	if(onNotice_ && noticeTemplate){
 		[noticeTemplate removeFromParentAndCleanup:YES];
 		[noticeTemplate release];
-		_isOnNotice = NO;
+		_onNotice = NO;
 	}
 	
 	noticeTemplate = [noticeTemplate_ retain];
 	
-	if(isOnNotice_)
+	if(onNotice_)
 		[self _startNotice];
 }
 

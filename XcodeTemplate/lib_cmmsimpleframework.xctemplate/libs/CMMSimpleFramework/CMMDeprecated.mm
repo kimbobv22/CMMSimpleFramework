@@ -14,6 +14,17 @@
 }
 -(void)setTransitionColor:(ccColor3B)transitionColor{}
 
+-(void)setIsTouchEnable:(BOOL)isTouchEnable_{
+	[self setTouchEnable:isTouchEnable_];
+}
+
+-(void)closePopup:(CMMPopupLayer *)popup_ withData:(id)data_{
+	[popup_ closeWithSendData:data_];
+}
+-(void)closePopup:(CMMPopupLayer *)popup_{
+	[self closePopup:popup_ withData:nil];
+}
+
 @end
 
 @implementation CMMTouchDispatcher(Deprecated)
@@ -28,6 +39,42 @@
 @end
 
 @implementation CMMTouchDispatcherScene
+
+@end
+
+@implementation CMMPopupDispatcherTemplate
+
+-(void)startPopupWithPopupLayer:(CMMPopupLayer *)popupLayer_{}
+-(void)endPopupWithPopupLayer:(CMMPopupLayer *)popupLayer_ callbackAction:(CCCallBlock *)callbackAction_{}
+
+@end
+
+@implementation CMMPopupDispatcherTemplate_FadeInOut
+
+@end
+
+@implementation CMMPopupDispatcher(Deprecated)
+
++(id)popupDispatcherWithScene:(CMMScene *)scene_{
+	return [self popupDispatcherWithTarget:scene_];
+}
+-(id)initWithScene:(CMMScene *)scene_{
+	return [self initWithTarget:scene_];
+}
+
+-(void)setScene:(CMMScene *)scene_{
+	[self setTarget:scene_];
+}
+-(CMMScene *)scene{
+	return (id)[self target];
+}
+
+-(CMMPopupLayer *)curPopup{
+	return [self headPopup];
+}
+
+-(void)setPopupTemplate:(id)popupTemplate_{}
+-(id)popupTemplate{return nil;};
 
 @end
 
@@ -50,8 +97,34 @@
 
 @end
 
+@implementation CMMLayerMD(Deprecated)
+
+-(void)setIsAlwaysShowScrollbar:(BOOL)isAlwaysShowScrollbar_{
+	[self setAlwaysShowScrollbar:isAlwaysShowScrollbar_];
+}
+-(BOOL)_isAlwaysShowScrollbar{
+	return [self isAlwaysShowScrollbar];
+}
+-(void)setIsCanDragX:(BOOL)isCanDragX_{
+	[self setCanDragX:isCanDragX_];
+}
+-(BOOL)_isCanDragX{
+	return [self isCanDragX];
+}
+-(void)setIsCanDragY:(BOOL)isCanDragY_{
+	[self setCanDragY:isCanDragY_];
+}
+-(BOOL)_isCanDragY{
+	return [self isCanDragY];
+}
+
+@end
+
 @implementation CMMLayerPinchZoom
 
+@end
+
+@implementation CMMLayerPopup
 
 @end
 
@@ -143,6 +216,28 @@
 	return [self initWithFrameSeq:frameSeq_ batchBarSeq:0];
 }
 
+-(BOOL)_isEnable{
+	return [self isEnable];
+}
+-(void)setIsEnable:(BOOL)isEnable_{
+	[self setEnable:isEnable_];
+}
+
+@end
+
+@implementation CMMMenuItemLabelTTF
+
+@end
+
+@implementation CMMMenuItemSet(Deprecated)
+
+-(void)setIsEnable:(BOOL)isEnable_{
+	[self setEnable:isEnable_];
+}
+-(BOOL)_isEnable{
+	return [self isEnable];
+}
+
 @end
 
 @implementation CMMScrollMenu(Deprecated)
@@ -229,6 +324,17 @@
 
 @end
 
+@implementation CMMStageLightItem(Deprecated)
+
+-(void)setIsBlendColor:(BOOL)isBlendColor_{
+	[self setBlendColor:isBlendColor_];
+}
+-(BOOL)_isBlendColor{
+	return [self isBlendColor];
+}
+
+@end
+
 @implementation CMMStageWorld(Deprecated)
 
 -(CCArray *)objectsInTouched{
@@ -268,6 +374,11 @@
 }
 -(id)initWithStageSpecDef:(CMMStageDef)stageSpecDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
 	return [self initWithStageDef:stageSpecDef_ fileName:fileName_ isInDocument:isInDocument_];
+}
+
+-(void)setIsInDocument:(BOOL)isInDocument_{}
+-(BOOL)_isInDocument{
+	return [self isInDocument];
 }
 
 @end
@@ -340,6 +451,43 @@
 
 -(CMMSoundHandlerItem *)cachedSoundItem:(CMMSoundHandlerItemType)soundItemType_{
 	return [_cachedElements cachedObject];
+}
+
+@end
+
+@implementation CMMFontUtil(Deprecated)
+
++(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ lineBreakMode:(CCLineBreakMode)lineBreakMode_ fontName:(NSString*)fontName_{
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:lineBreakMode_ fontName:fontName_];
+}
++(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ lineBreakMode:(CCLineBreakMode)lineBreakMode_{
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:lineBreakMode_];
+}
++(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_{
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_];
+}
++(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_{
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_];
+}
++(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_{
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_];
+}
++(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_{
+	return [self labelWithString:string_ fontSize:fontSize_];
+}
++(CCLabelTTF *)labelWithstring:(NSString *)string_{
+	return [self labelWithString:string_];
+}
+
+@end
+
+@implementation CCSpriteBatchNode(Deprecated)
+
+-(CCSprite *)addSplitSpriteToRect:(CGRect)rect_ blendFunc:(ccBlendFunc)tBlendFunc_{
+	return [self addSplitSpriteToRect:rect_];
+}
+-(void)addSplitSprite:(CGSize)splitUnit_ blendFunc:(ccBlendFunc)tBlendFunc_{
+	return [self addSplitSprite:splitUnit_];
 }
 
 @end

@@ -2,9 +2,7 @@
 
 @interface CCSpriteBatchNode(SplitSprite)
 
--(CCSprite *)addSplitSpriteToRect:(CGRect)rect_ blendFunc:(ccBlendFunc)tBlendFunc_;
-
--(void)addSplitSprite:(CGSize)splitUnit_ blendFunc:(ccBlendFunc)tBlendFunc_;
+-(CCSprite *)addSplitSpriteToRect:(CGRect)rect_;
 -(void)addSplitSprite:(CGSize)splitUnit_;
 
 @end

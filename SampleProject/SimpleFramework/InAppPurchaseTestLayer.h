@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface InAppMenuItem : CMMMenuItemLabelTTF{
+@interface InAppMenuItem : CMMMenuItemL{
 	CCLabelTTF *labelProductName;
 	NSString *productID;
 	BOOL isPurchased;
@@ -25,7 +25,7 @@
 
 @interface InAppPurchaseTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMInAppPurchasesManagerDelegate,CMMScrollMenuVDelegate>{
 	CMMScrollMenuV *inAppList;
-	CMMMenuItemLabelTTF *restorBtn;
+	CMMMenuItemL *restorBtn;
 	InAppPurchaseTestLayerIndicator *indicatorLayer;
 }
 

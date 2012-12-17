@@ -66,7 +66,7 @@
 	[menuSelector setPosition:cmmFuncCommon_positionInParent(self, menuSelector)];
 	[self addChild:menuSelector];
 	
-	CMMMenuItemLabelTTF *menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItem_ setTitle:@"Match"];
 	[menuItem_ setCallback_pushup:^(id sender_){
 		[[CMMScene sharedScene] pushLayer:[GameCenterTestLayerMatch node]];
@@ -74,7 +74,7 @@
 	
 	[menuSelector addMenuItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItem_ setTitle:@"Session"];
 	[menuItem_ setCallback_pushup:^(id sender_){
 		[[CMMScene sharedScene] pushLayer:[GameCenterTestLayerSession node]];
@@ -84,13 +84,13 @@
 	[menuSelector updateDisplay];
 	
 	if([[CMMConnectionMonitor sharedMonitor] connectionStatus] != CMMConnectionStatus_WiFi){
-		CCLabelTTF *tempDisplayLabel_ = [CMMFontUtil labelWithstring:@"Game Center must required connection as WiFi"];
+		CCLabelTTF *tempDisplayLabel_ = [CMMFontUtil labelWithString:@"Game Center must required connection as WiFi"];
 		[tempDisplayLabel_ setPosition:ccp(contentSize_.width*0.5f,menuSelector.position.y+menuSelector.contentSize.height+tempDisplayLabel_.contentSize.height*0.5f + 10.0f)];
 		[self addChild:tempDisplayLabel_];
 		//[menuSelector setIsEnable:NO];
 	}
 	
-	CMMMenuItemLabelTTF *menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"BACK"];
 	menuItemBtn_.position = ccp(menuItemBtn_.contentSize.width/2,menuItemBtn_.contentSize.height/2);
 	menuItemBtn_.callback_pushup = ^(id sender_){
@@ -109,7 +109,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	CMMMenuItemLabelTTF *menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"BACK"];
 	menuItemBtn_.position = ccp(menuItemBtn_.contentSize.width/2,contentSize_.height-menuItemBtn_.contentSize.height/2);
 	menuItemBtn_.callback_pushup = ^(id sender_){
@@ -146,7 +146,7 @@
 	//packet handler
 	packetDataHandler = [[CMMPacketDataHandler alloc] initWithOwner:self];
 	
-	displayLabel = [CMMFontUtil labelWithstring:@" "];
+	displayLabel = [CMMFontUtil labelWithString:@" "];
 	[self addChild:displayLabel z:3];
 	
 	reportingTime = _curReportingTime = 0.0f;

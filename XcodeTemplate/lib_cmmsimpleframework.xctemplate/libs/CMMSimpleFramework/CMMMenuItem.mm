@@ -6,7 +6,7 @@
 
 -(void)_stopFadeAction;
 -(void)_setMenuItemImage:(CCSprite *)sprite_;
--(void)_setIsOnSelected:(BOOL)isOnSelected_;
+-(void)_setOnSelect:(BOOL)onSelect_;
 
 @end
 
@@ -20,14 +20,14 @@
 	[self setTexture:[sprite_ texture]];
 	[self setTextureRect:[sprite_ textureRect]];
 }
--(void)_setIsOnSelected:(BOOL)isOnSelected_{
-	_isOnSelected = isOnSelected_;
+-(void)_setOnSelect:(BOOL)onSelect_{
+	onSelect = onSelect_;
 	[self _stopFadeAction];
-	if(_isOnSelected){
+	if(onSelect){
 		[self runAction:pushDownAction];
 		[self _setMenuItemImage:selectedImage];
 	}else{
-		[self runAction:isEnable?pushUpAction:pushDownAction];
+		[self runAction:enable?pushUpAction:pushDownAction];
 		[self _setMenuItemImage:normalImage];
 	}
 }
@@ -35,7 +35,7 @@
 @end
 
 @implementation CMMMenuItem
-@synthesize key,userData,normalImage,selectedImage,delegate,isEnable,callback_pushdown,callback_pushup,callback_pushcancel,pushDownAction,pushUpAction;
+@synthesize key,userData,normalImage,selectedImage,delegate,enable,onSelect,callback_pushdown,callback_pushup,callback_pushcancel,pushDownAction,pushUpAction;
 
 +(id)menuItemWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ frameSize:(CGSize)frameSize_{
 	return [[[self alloc] initWithFrameSeq:frameSeq_ batchBarSeq:batchBarSeq_ frameSize:frameSize_] autorelease];
@@ -56,8 +56,8 @@
 	selectedImage = [[CCSprite alloc] initWithTexture:texture rect:rect];
 	delegate = nil;
 	touchCancelDistance = 30.0f;
-	isEnable = YES;
-	_isOnSelected = NO;
+	enable = YES;
+	onSelect = NO;
 	
 	callback_pushdown = callback_pushup = callback_pushcancel = nil;
 	
@@ -76,43 +76,43 @@
 	return [self initWithFrameSeq:frameSeq_ batchBarSeq:batchBarSeq_ frameSize:cmmVarCMMMenuItem_defaultMenuItemSize];
 }
 
--(void)setIsEnable:(BOOL)isEnable_{
-	isEnable = isEnable_;
-	[self _setIsOnSelected:NO];
+-(void)setEnable:(BOOL)enable_{
+	enable = enable_;
+	[self _setOnSelect:NO];
 }
--(BOOL)isOnSelected{
-	return _isOnSelected;
+-(BOOL)isOnSelect{
+	return onSelect;
 }
 
 -(void)setNormalImage:(CCSprite *)normalImage_{
 	if(normalImage == normalImage_) return;
 	[normalImage release];
 	normalImage = [normalImage_ retain];
-	[self _setIsOnSelected:_isOnSelected];
+	[self _setOnSelect:onSelect];
 }
 -(void)setSelectedImage:(CCSprite *)selectedImage_{
 	if(selectedImage == selectedImage_) return;
 	[selectedImage release];
 	selectedImage = [selectedImage_ retain];
-	[self _setIsOnSelected:_isOnSelected];
+	[self _setOnSelect:onSelect];
 }
 
 -(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
-	return isEnable;
+	return enable;
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
-	[self _setIsOnSelected:YES];
+	[self _setOnSelect:YES];
 	[self callCallback_pushdown];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
-	[self _setIsOnSelected:NO];
+	[self _setOnSelect:NO];
 	[self callCallback_pushup];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
-	[self _setIsOnSelected:NO];
+	[self _setOnSelect:NO];
 	[self callCallback_pushcancel];
 }
 
@@ -171,13 +171,13 @@
 
 @end
 
-@implementation CMMMenuItemLabelTTF
+@implementation CMMMenuItemL
 @synthesize title,labelTitle,titleAlign,titleSize,titleColor;
 
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
 	
-	labelTitle = [CMMFontUtil labelWithstring:@" "];
+	labelTitle = [CMMFontUtil labelWithString:@" "];
 	titleAlign = kCCTextAlignmentCenter;
 	[self addChild:labelTitle z:1];
 	[self updateDisplay];

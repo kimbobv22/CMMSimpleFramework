@@ -74,15 +74,15 @@
 
 @interface CMMStagePXL : CMMStage{
 	NSString *fileName;
-	BOOL isInDocument;
+	BOOL inDocument;
 	CMMStagePixel *pixel;
 }
 
 +(id)stageWithStageDef:(CMMStageDef)stageDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
 -(id)initWithStageDef:(CMMStageDef)stageDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
 
-@property (nonatomic, copy) NSString *fileName;
-@property (nonatomic, readwrite) BOOL isInDocument;
+@property (nonatomic, readonly) NSString *fileName;
+@property (nonatomic, readonly, getter = isInDocument) BOOL inDocument;
 @property (nonatomic, readonly) CMMStagePixel *pixel;
 
 @end

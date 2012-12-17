@@ -51,14 +51,14 @@
 		targetBody_->ApplyForceToCenter(b2Vec2(0,100.0f));
 	}];
 	
-	labelA = [CMMFontUtil labelWithstring:@" "];
+	labelA = [CMMFontUtil labelWithString:@" "];
 	[self addChild:labelA z:2];
 	
-	labelYou = [CMMFontUtil labelWithstring:@"You"];
+	labelYou = [CMMFontUtil labelWithString:@"You"];
 	[labelYou runAction:[CCRepeatForever actionWithAction:[CCBlink actionWithDuration:0.5 blinks:1]]];
 	[self addChild:labelYou z:2];
 	
-	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBack_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
 	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,contentSize_.height-menuItemBack_.contentSize.height/2);
 	menuItemBack_.callback_pushup = ^(id sender_){

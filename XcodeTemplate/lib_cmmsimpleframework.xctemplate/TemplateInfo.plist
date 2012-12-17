@@ -495,28 +495,6 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMLayerPinchZoom.mm</string>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMLayerPopup.h</key>
-		<dict>
-			<key>Group</key>
-			<array>
-				<string>libs</string>
-				<string>CMMSimpleFramework</string>
-			</array>
-			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMLayerPopup.h</string>
-			<key>TargetIndices</key>
-			<array/>
-		</dict>
-		<key>libs/CMMSimpleFramework/CMMLayerPopup.mm</key>
-		<dict>
-			<key>Group</key>
-			<array>
-				<string>libs</string>
-				<string>CMMSimpleFramework</string>
-			</array>
-			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMLayerPopup.mm</string>
-		</dict>
 		<key>libs/CMMSimpleFramework/CMMSequenceMaker.h</key>
 		<dict>
 			<key>Group</key>
@@ -1496,8 +1474,6 @@
 		<string>libs/CMMSimpleFramework/CMMLayerMD.mm</string>
 		<string>libs/CMMSimpleFramework/CMMLayerPinchZoom.h</string>
 		<string>libs/CMMSimpleFramework/CMMLayerPinchZoom.mm</string>
-		<string>libs/CMMSimpleFramework/CMMLayerPopup.h</string>
-		<string>libs/CMMSimpleFramework/CMMLayerPopup.mm</string>
 		<string>libs/CMMSimpleFramework/CMMMacro.h</string>
 		<string>libs/CMMSimpleFramework/CMMMenuItem.h</string>
 		<string>libs/CMMSimpleFramework/CMMMenuItem.mm</string>

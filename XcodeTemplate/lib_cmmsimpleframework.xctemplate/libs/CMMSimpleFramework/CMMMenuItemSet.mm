@@ -3,7 +3,7 @@
 #import "CMMMenuItemSet.h"
 
 @implementation CMMMenuItemSet
-@synthesize itemList,alignType,lineHAlignType,lineVAlignType,unitPerLine,isEnable,count,delegate,callback_pushdown,callback_pushup;
+@synthesize itemList,alignType,lineHAlignType,lineVAlignType,unitPerLine,enable,count,delegate,callback_pushdown,callback_pushup;
 
 +(id)menuItemSetWithMenuSize:(CGSize)menuSize_{
 	return [[[self alloc] initWithMenuSize:menuSize_] autorelease];
@@ -14,6 +14,7 @@
 	
 	CCArray *array_ = [CCArray array];
 	if(menuItem_){
+		[array_ addObject:menuItem_];
 		for(CMMMenuItem *tempItem_ = va_arg(args_, CMMMenuItem*);tempItem_;tempItem_ = va_arg(args_, CMMMenuItem*)){
 			[array_ addObject:tempItem_];
 		}
@@ -37,7 +38,7 @@
 	lineHAlignType = CMMMenuItemSetLineHAlignType_top;
 	lineVAlignType = CMMMenuItemSetLineVAlignType_left;
 	unitPerLine = 1;
-	isEnable  = YES;
+	enable = YES;
 	
 	return self;
 }
@@ -182,7 +183,7 @@
 #endif
 
 -(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
-	return isEnable;
+	return enable;
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];

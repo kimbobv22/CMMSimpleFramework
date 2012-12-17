@@ -27,7 +27,7 @@
 
 @interface CFSocketTestLayer_MasterClient : CFSocketTestLayer_Master{
 	CMMControlItemText *hostTextField;
-	CMMMenuItemLabelTTF *connectBtn;
+	CMMMenuItemL *connectBtn;
 }
 
 -(void)connectToHost;

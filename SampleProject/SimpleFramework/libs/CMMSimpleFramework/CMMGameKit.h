@@ -24,13 +24,14 @@
 //Player Authentication
 @interface CMMGameKitPA : NSObject{
 	id<CMMGameKitPADelegate> delegate;
-	BOOL isAvailableGameCenter;
+	BOOL availableGameCenter;
 }
 
 +(CMMGameKitPA *)sharedPA;
 
 @property (nonatomic, assign) id<CMMGameKitPADelegate> delegate;
-@property (nonatomic, readonly) BOOL isAvailableGameCenter,isAuthenticated;
+@property (nonatomic, readonly, getter = isAvailableGameCenter) BOOL availableGameCenter;
+@property (nonatomic, readonly, getter = isAuthenticated) BOOL authenticated;
 
 @end
 

@@ -7,4 +7,6 @@
 -(id)cachedObjectAtIndex:(uint)index_;
 -(id)cachedObject;
 
+@property (nonatomic, readonly) id next;
+
 @end

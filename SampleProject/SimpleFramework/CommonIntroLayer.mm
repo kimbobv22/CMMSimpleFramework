@@ -64,7 +64,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	labelDisplay = [CMMFontUtil labelWithstring:@" "];
+	labelDisplay = [CMMFontUtil labelWithString:@" "];
 	[self addChild:labelDisplay];
 	[self _setDisplayStr:@"Loading..."];
 	

@@ -44,7 +44,7 @@
 	dragStartDistance = 30.0f;
 	_dragItemView = [CMMScrollMenuDragItem node];
 	[self addChild:_dragItemView z:9];
-	[self setIsCanDragY:YES];
+	[self setCanDragY:YES];
 	
 	return self;
 }

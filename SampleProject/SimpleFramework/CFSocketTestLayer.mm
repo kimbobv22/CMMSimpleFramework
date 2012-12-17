@@ -14,7 +14,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	CMMMenuItemLabelTTF *menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"BACK"];
 	menuItemBtn_.position = ccp(menuItemBtn_.contentSize.width/2,menuItemBtn_.contentSize.height/2);
 	menuItemBtn_.callback_pushup = ^(id sender_){
@@ -26,13 +26,13 @@
 	[btnSet_ setPosition:cmmFuncCommon_positionInParent(self, btnSet_)];
 	[self addChild:btnSet_];
 	
-	CMMMenuItemLabelTTF *serverBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *serverBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[serverBtn_ setTitle:@"SERVER"];
 	[serverBtn_ setCallback_pushup:^(id) {
 		[[CMMScene sharedScene] pushLayer:[CFSocketTestLayer_MasterServer node]];
 	}];
 	
-	CMMMenuItemLabelTTF *clientBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *clientBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[clientBtn_ setTitle:@"CLIENT"];
 	[clientBtn_ setCallback_pushup:^(id) {
 		[[CMMScene sharedScene] pushLayer:[CFSocketTestLayer_MasterClient node]];
@@ -53,7 +53,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	CMMMenuItemLabelTTF *menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"BACK"];
 	menuItemBtn_.position = ccp(menuItemBtn_.contentSize.width/2,menuItemBtn_.contentSize.height/2);
 	menuItemBtn_.callback_pushup = ^(id sender_){
@@ -61,7 +61,7 @@
 	};
 	[self addChild:menuItemBtn_];
 	
-	labelDisplay = [CMMFontUtil labelWithstring:@" "];
+	labelDisplay = [CMMFontUtil labelWithString:@" "];
 	[self addChild:labelDisplay];
 
 	socketHandler = [[CMMSocketHandler alloc] init];
@@ -118,7 +118,7 @@
 	[hostTextField setItemTitle:@"Host IP"];
 	[self addChild:hostTextField];
 	
-	connectBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	connectBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[connectBtn setTitle:@"CONNECT"];
 	[connectBtn setPosition:cmmFuncCommon_positionFromOtherNode(hostTextField, connectBtn, ccp(1.0f,0))];
 	[connectBtn setCallback_pushup:^(id) {
@@ -142,7 +142,7 @@
 
 -(void)socketHandler:(CMMSocketHandler *)handler_ didStartWithAddressData:(NSData *)addressData_{
 	[self setDisplayString:[NSString stringWithFormat:@"Success connecting to :%@ ",cmmFuncCMMSocketHandler_NSStringfromAddressData(addressData_)]];
-	[connectBtn setIsEnable:NO];
+	[connectBtn setEnable:NO];
 	
 	CMMPacket *testPacket_ = [CMMPacket packet];
 	[testPacket_ setMainData:[NSString stringWithFormat:@"Hellow CFSocket %d :)",arc4random()%100]];

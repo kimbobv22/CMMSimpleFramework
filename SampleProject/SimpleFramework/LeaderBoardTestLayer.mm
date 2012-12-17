@@ -9,7 +9,7 @@
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
 	
-	_playerNameLb = [CMMFontUtil labelWithstring:@" " fontSize:9.0f];
+	_playerNameLb = [CMMFontUtil labelWithString:@" " fontSize:9.0f];
 	[self addChild:_playerNameLb];
 	[self setTitleAlign:kCCTextAlignmentRight];
 	
@@ -61,7 +61,7 @@
 	[leaderBoardScrollMenu setPosition:targetPoint_];
 	[self addChild:leaderBoardScrollMenu];
 	
-	reportBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(80, 45)];
+	reportBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(80, 45)];
 	[reportBtn setTitle:@"Submit"];
 	[reportBtn setCallback_pushup:^(id sender_){
 		[self setDisplayStr:@"reporting score..."];
@@ -73,7 +73,7 @@
 	[reportBtn setPosition:targetPoint_];
 	[self addChild:reportBtn];
 	
-	bitBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(150, 45)];
+	bitBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(150, 45)];
 	[bitBtn setTitle:@"BIT !!"];
 	[bitBtn setCallback_pushup:^(id sender_){
 		[self updateScore];
@@ -83,10 +83,10 @@
 	[bitBtn setPosition:targetPoint_];
 	[self addChild:bitBtn];
 	
-	scroeLabel = [CMMFontUtil labelWithstring:@"0"];
+	scroeLabel = [CMMFontUtil labelWithString:@"0"];
 	[self addChild:scroeLabel];
 	
-	CMMMenuItemLabelTTF *menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"BACK"];
 	menuItemBtn_.position = ccp(menuItemBtn_.contentSize.width/2,menuItemBtn_.contentSize.height/2);
 	menuItemBtn_.callback_pushup = ^(id sender_){
@@ -94,7 +94,7 @@
 	};
 	[self addChild:menuItemBtn_];
 	
-	refreshBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	refreshBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[refreshBtn setTitle:@"Refresh"];
 	refreshBtn.position = ccp(contentSize_.width - menuItemBtn_.contentSize.width/2.0f,menuItemBtn_.contentSize.height/2);
 	refreshBtn.callback_pushup = ^(id sender_){
@@ -102,7 +102,7 @@
 	};
 	[self addChild:refreshBtn];
 	
-	_displayLabel = [CMMFontUtil labelWithstring:@" "];
+	_displayLabel = [CMMFontUtil labelWithString:@" "];
 	[self addChild:_displayLabel];
 	
 	_score = 0;
@@ -127,7 +127,7 @@
 	[_displayLabel setPosition:ccp(contentSize_.width*0.5f,leaderBoardScrollMenu.position.y+leaderBoardScrollMenu.contentSize.height+_displayLabel.contentSize.height*0.5f)];
 }
 -(void)switchBtn:(BOOL)bool_{
-	bitBtn.isEnable = reportBtn.isEnable = refreshBtn.isEnable = bool_;
+	bitBtn.enable = reportBtn.enable = refreshBtn.enable = bool_;
 }
 
 -(void)loadLeaderBoard{

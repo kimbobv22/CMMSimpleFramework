@@ -24,14 +24,14 @@
 	
 	CGSize buttonSize_ = CGSizeMake(90, 35);
 	
-	startBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:buttonSize_];
+	startBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:buttonSize_];
 	[startBtn setTitle:@"START"];
 	[startBtn setCallback_pushup:^(id){
 		[sequencer start];
 	}];
 	[self addChild:startBtn];
 	
-	nextBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:buttonSize_];
+	nextBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:buttonSize_];
 	[nextBtn setAnchorPoint:CGPointZero];
 	[nextBtn setTitle:@"NEXT"];
 	[nextBtn setCallback_pushup:^(id){
@@ -39,7 +39,7 @@
 	}];
 	[self addChild:nextBtn];
 	
-	prevBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:buttonSize_];
+	prevBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:buttonSize_];
 	[prevBtn setTitle:@"PREV"];
 	[prevBtn setCallback_pushup:^(id){
 		[sequencer stepSequenceTo:[sequencer curSequence]-1];
@@ -50,7 +50,7 @@
 	[nextBtn setPosition:cmmFuncCommon_positionFromOtherNode(startBtn, nextBtn,ccp(1.0f, 0),ccp(10,0))];
 	[prevBtn setPosition:cmmFuncCommon_positionFromOtherNode(startBtn, prevBtn,ccp(-1.0f, 0),ccp(-10,0))];
 	
-	CMMMenuItemLabelTTF *backBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *backBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[backBtn_ setTitle:@"BACK"];
 	backBtn_.position = ccp(backBtn_.contentSize.width/2,backBtn_.contentSize.height/2);
 	backBtn_.callback_pushup = ^(id sender_){
@@ -67,21 +67,21 @@
 	NSString *stateStr_ = @"onSequence";
 	switch(state_){
 		case CMMSequenceMakerState_stop:
-			nextBtn.isEnable = prevBtn.isEnable = NO;
-			startBtn.isEnable = YES;
+			nextBtn.enable = prevBtn.enable = NO;
+			startBtn.enable = YES;
 			stateStr_ = @"stop";
 			break;
 		case CMMSequenceMakerState_waitingNextSequence:
-			nextBtn.isEnable = prevBtn.isEnable = YES;
-			startBtn.isEnable = NO;
+			nextBtn.enable = prevBtn.enable = YES;
+			startBtn.enable = NO;
 			stateStr_ = @"waitingNextSequence";
 			break;
 		case CMMSequenceMakerState_pause:
 			stateStr_ = @"pause";
 			break;
 		case CMMSequenceMakerState_onSequence:
-			nextBtn.isEnable = prevBtn.isEnable = YES;
-			startBtn.isEnable = NO;
+			nextBtn.enable = prevBtn.enable = YES;
+			startBtn.enable = NO;
 			break;
 	}
 	

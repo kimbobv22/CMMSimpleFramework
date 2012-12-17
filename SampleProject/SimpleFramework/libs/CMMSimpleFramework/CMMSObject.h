@@ -56,6 +56,9 @@
 	CMMStage *stage;
 	
 	CMMSObjectBatchNode *obatchNode;
+	BOOL addToBatchNode;
+	
+	void (^callback_whenAddedToStage)(CMMSObject *object_, CMMStage *stage_),(^callback_whenRemovedToStage)(CMMSObject *object_, CMMStage *stage_);
 }
 
 +(id)spriteWithObatchNode:(CMMSObjectBatchNode *)obatchNode_ rect:(CGRect)rect_;
@@ -73,6 +76,8 @@
 @property (nonatomic, readwrite) CMMb2ContactMask b2CMask;
 @property (nonatomic, assign) CMMStage *stage;
 @property (nonatomic, assign) CMMSObjectBatchNode *obatchNode;
+@property (nonatomic, readwrite, getter = isAddToBatchNode) BOOL addToBatchNode;
+@property (nonatomic, copy) void (^callback_whenAddedToStage)(CMMSObject *object_, CMMStage *stage_),(^callback_whenRemovedToStage)(CMMSObject *object_, CMMStage *stage_);
 
 @end
 

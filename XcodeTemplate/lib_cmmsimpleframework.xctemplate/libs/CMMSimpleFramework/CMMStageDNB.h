@@ -63,6 +63,12 @@ typedef enum{
 	float pickupRatio,blockRandomizeRatio;
 	BOOL drawEdge;
 	
+	CCTexture2D *layoutPatternTexture;
+	CCSprite *_layoutPatternSprite;
+	ccBlendFunc layoutPatternBlendFunc;
+	
+	CCArray *linkBlockItems;
+	
 @public
 	CMMb2ContactMask b2CMask;
 }
@@ -81,6 +87,9 @@ typedef enum{
 @property (nonatomic, readwrite) NSRange blockCountRange;
 @property (nonatomic, readwrite) float pickupRatio,blockRandomizeRatio;
 @property (nonatomic, readwrite, getter = isDrawEdge) BOOL drawEdge;
+@property (nonatomic, retain) CCTexture2D *layoutPatternTexture;
+@property (nonatomic, readwrite) ccBlendFunc layoutPatternBlendFunc;
+@property (nonatomic, readonly) CCArray *linkBlockItems;
 
 @end
 
@@ -111,6 +120,18 @@ typedef enum{
 -(CCSpriteFrame *)backBlockAtIndex:(uint)index_;
 
 -(uint)indexOfBackBlock:(CCSpriteFrame *)spriteFrame_;
+
+@end
+
+@interface CMMStageBlockItem(Link)
+
+-(void)addLinkBlockItem:(CMMStageBlockItem *)blockItem_;
+
+-(void)removeLinkBlockItem:(CMMStageBlockItem *)blockItem_;
+-(void)removeLinkBlockItemAtIndex:(uint)index_;
+
+-(CMMStageBlockItem *)linkBlockItemAtIndex:(uint)index_;
+-(uint)indexOfLinkBlockItem:(CMMStageBlockItem *)blockItem_;
 
 @end
 
@@ -180,6 +201,7 @@ typedef enum{
 	float _addedWorldPointX;
 	CGPoint _lastCreatePoint;
 	float _curMarginPerBlock;
+	CCArray *_lazyTargetBlockItems;
 }
 
 @property (nonatomic, readonly) CMMStageBlock *block;

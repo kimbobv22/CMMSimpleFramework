@@ -11,26 +11,26 @@ static NSString *_sharedCMMFontUtil_defaultFontName_ = @"Helvetica";
 
 @implementation CMMFontUtil
 
-+(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ lineBreakMode:(CCLineBreakMode)lineBreakMode_ fontName:(NSString*)fontName_{
++(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ lineBreakMode:(CCLineBreakMode)lineBreakMode_ fontName:(NSString*)fontName_{
 	return [CCLabelTTF labelWithString:string_ fontName:fontName_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:lineBreakMode_];
 }
-+(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ lineBreakMode:(CCLineBreakMode)lineBreakMode_{
-	return [self labelWithstring:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:lineBreakMode_ fontName:_sharedCMMFontUtil_defaultFontName_];
++(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ lineBreakMode:(CCLineBreakMode)lineBreakMode_{
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:lineBreakMode_ fontName:_sharedCMMFontUtil_defaultFontName_];
 }
-+(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_{
-	return [self labelWithstring:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:_sharedCMMFontUtil_defaultLineBreakMode_];
++(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_{
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:_sharedCMMFontUtil_defaultLineBreakMode_];
 }
-+(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_{
-	return [self labelWithstring:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:_sharedCMMFontUtil_defaultVAlignment_];
++(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_{
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:_sharedCMMFontUtil_defaultVAlignment_];
 }
-+(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_{
-	return [self labelWithstring:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:_sharedCMMFontUtil_defaultHAlignment_];
++(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_{
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:_sharedCMMFontUtil_defaultHAlignment_];
 }
-+(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_{
-	return [self labelWithstring:string_ fontSize:fontSize_ dimensions:_sharedCMMFontUtil_defaultDimensions_];
++(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_{
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:_sharedCMMFontUtil_defaultDimensions_];
 }
-+(CCLabelTTF *)labelWithstring:(NSString *)string_{
-	return [self labelWithstring:string_ fontSize:_sharedCMMFontUtil_defaultFontSize_];
++(CCLabelTTF *)labelWithString:(NSString *)string_{
+	return [self labelWithString:string_ fontSize:_sharedCMMFontUtil_defaultFontSize_];
 }
 
 @end

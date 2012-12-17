@@ -25,7 +25,8 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 	
 	if(!(self = [super initWithTexture:pixelTexture capacity:50])) return self;
 	
-	[self addSplitSprite:CGSizeMake(50.0f, 50.0f) blendFunc:(ccBlendFunc){GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA}];
+	[self addSplitSprite:CGSizeMake(50.0f, 50.0f)];
+	[self setBlendFunc:(ccBlendFunc){GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA}];
 	[self restorePixel];
 	
 	mapObjectList = [[CCArray alloc] init];
@@ -335,7 +336,7 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 @end
 
 @implementation CMMStagePXL
-@synthesize fileName,isInDocument,pixel;
+@synthesize fileName,inDocument,pixel;
 
 +(id)stageWithStageDef:(CMMStageDef)stageDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
 	return [[[self alloc] initWithStageDef:stageDef_ fileName:fileName_ isInDocument:isInDocument_] autorelease];
@@ -347,9 +348,9 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 }
 -(id)initWithStageDef:(CMMStageDef)stageDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
 	fileName = [fileName_ copy];
-	isInDocument = isInDocument_;
+	inDocument = isInDocument_;
 	
-	NSData *data_ = [CMMFileUtil dataWithFilePath:[[CCFileUtils sharedFileUtils] fullPathFromRelativePath:[CMMStringUtil stringPathWithFileName:fileName isInDocument:isInDocument]]];
+	NSData *data_ = [CMMFileUtil dataWithFilePath:[[CCFileUtils sharedFileUtils] fullPathFromRelativePath:[CMMStringUtil stringPathWithFileName:fileName isInDocument:inDocument]]];
 	if(!data_){
 		[self release];
 		CCLOG(@"CMMStagePXL : PixelData doesn't to be nil");

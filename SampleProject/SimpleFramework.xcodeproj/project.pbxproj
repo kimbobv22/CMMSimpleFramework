@@ -72,7 +72,6 @@
 		E032FC4615E1EAB300B28B61 /* CMMStringUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC3F15E1EAB300B28B61 /* CMMStringUtil.mm */; };
 		E032FC4715E1EAB300B28B61 /* CMMTouchUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC4115E1EAB300B28B61 /* CMMTouchUtil.mm */; };
 		E032FC5415E1EDE600B28B61 /* CMMLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC4915E1EDE200B28B61 /* CMMLayer.mm */; };
-		E032FC5715E1EDE600B28B61 /* CMMLayerPopup.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC4F15E1EDE400B28B61 /* CMMLayerPopup.mm */; };
 		E032FC5815E1EDE600B28B61 /* CMMScene.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC5115E1EDE400B28B61 /* CMMScene.mm */; };
 		E032FC5915E1EDE600B28B61 /* CMMSprite.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC5315E1EDE500B28B61 /* CMMSprite.mm */; };
 		E032FC6315E1F22700B28B61 /* CMMMotionDispatcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC5E15E1F22400B28B61 /* CMMMotionDispatcher.mm */; };
@@ -286,6 +285,10 @@
 		E0D4098715D50C6600953AFC /* IMG_STG_planet.png in Resources */ = {isa = PBXBuildFile; fileRef = E0D4097F15D50C6600953AFC /* IMG_STG_planet.png */; };
 		E0D4098C15D50CE300953AFC /* SoundTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0D4098B15D50CE200953AFC /* SoundTestLayer.mm */; };
 		E0D8100715FDE80100F8C94C /* CCMutableTexture2D.m in Sources */ = {isa = PBXBuildFile; fileRef = E0D8100615FDE80100F8C94C /* CCMutableTexture2D.m */; };
+		E0DAF36C1667299000F75FB0 /* IMG_CMN_DEFAULT_BACK-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DAF36A1667299000F75FB0 /* IMG_CMN_DEFAULT_BACK-hd.png */; };
+		E0DAF36D1667299000F75FB0 /* IMG_CMN_DEFAULT_BACK.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DAF36B1667299000F75FB0 /* IMG_CMN_DEFAULT_BACK.png */; };
+		E0DB77BA166481CB00D00C7E /* IMG_STG_BLOCK_PATTERN-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DB77B8166481CB00D00C7E /* IMG_STG_BLOCK_PATTERN-hd.png */; };
+		E0DB77BB166481CB00D00C7E /* IMG_STG_BLOCK_PATTERN.png in Resources */ = {isa = PBXBuildFile; fileRef = E0DB77B9166481CB00D00C7E /* IMG_STG_BLOCK_PATTERN.png */; };
 		E0ED51E415E1F8550070712E /* CMMDrawingManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0ED51E315E1F8550070712E /* CMMDrawingManager.mm */; };
 		E0ED51E715E1F92F0070712E /* CMMSoundEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0ED51E615E1F92F0070712E /* CMMSoundEngine.mm */; };
 		E0ED51ED15E1FD660070712E /* CMMSObject.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0ED51EA15E1FD660070712E /* CMMSObject.mm */; };
@@ -415,8 +418,6 @@
 		E032FC4115E1EAB300B28B61 /* CMMTouchUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMTouchUtil.mm; path = libs/CMMSimpleFramework/CMMTouchUtil.mm; sourceTree = "<group>"; };
 		E032FC4815E1EDE200B28B61 /* CMMLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMLayer.h; path = libs/CMMSimpleFramework/CMMLayer.h; sourceTree = "<group>"; };
 		E032FC4915E1EDE200B28B61 /* CMMLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMLayer.mm; path = libs/CMMSimpleFramework/CMMLayer.mm; sourceTree = "<group>"; };
-		E032FC4E15E1EDE400B28B61 /* CMMLayerPopup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMLayerPopup.h; path = libs/CMMSimpleFramework/CMMLayerPopup.h; sourceTree = "<group>"; };
-		E032FC4F15E1EDE400B28B61 /* CMMLayerPopup.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMLayerPopup.mm; path = libs/CMMSimpleFramework/CMMLayerPopup.mm; sourceTree = "<group>"; };
 		E032FC5115E1EDE400B28B61 /* CMMScene.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMScene.mm; path = libs/CMMSimpleFramework/CMMScene.mm; sourceTree = "<group>"; };
 		E032FC5215E1EDE500B28B61 /* CMMSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSprite.h; path = libs/CMMSimpleFramework/CMMSprite.h; sourceTree = "<group>"; };
 		E032FC5315E1EDE500B28B61 /* CMMSprite.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSprite.mm; path = libs/CMMSimpleFramework/CMMSprite.mm; sourceTree = "<group>"; };
@@ -844,6 +845,10 @@
 		E0D4098B15D50CE200953AFC /* SoundTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = SoundTestLayer.mm; sourceTree = "<group>"; };
 		E0D8100515FDE80100F8C94C /* CCMutableTexture2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CCMutableTexture2D.h; path = libs/CCMutableTexture2D.h; sourceTree = "<group>"; };
 		E0D8100615FDE80100F8C94C /* CCMutableTexture2D.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CCMutableTexture2D.m; path = libs/CCMutableTexture2D.m; sourceTree = "<group>"; };
+		E0DAF36A1667299000F75FB0 /* IMG_CMN_DEFAULT_BACK-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IMG_CMN_DEFAULT_BACK-hd.png"; path = "Resources/IMG_CMN_DEFAULT_BACK-hd.png"; sourceTree = "<group>"; };
+		E0DAF36B1667299000F75FB0 /* IMG_CMN_DEFAULT_BACK.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_CMN_DEFAULT_BACK.png; path = Resources/IMG_CMN_DEFAULT_BACK.png; sourceTree = "<group>"; };
+		E0DB77B8166481CB00D00C7E /* IMG_STG_BLOCK_PATTERN-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IMG_STG_BLOCK_PATTERN-hd.png"; path = "Resources/IMG_STG_BLOCK_PATTERN-hd.png"; sourceTree = "<group>"; };
+		E0DB77B9166481CB00D00C7E /* IMG_STG_BLOCK_PATTERN.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_STG_BLOCK_PATTERN.png; path = Resources/IMG_STG_BLOCK_PATTERN.png; sourceTree = "<group>"; };
 		E0ED51DE15E1F2570070712E /* CMMPopupDispatcher.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMMPopupDispatcher.h; path = libs/CMMSimpleFramework/CMMPopupDispatcher.h; sourceTree = "<group>"; };
 		E0ED51E215E1F8550070712E /* CMMDrawingManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMDrawingManager.h; path = libs/CMMSimpleFramework/CMMDrawingManager.h; sourceTree = "<group>"; };
 		E0ED51E315E1F8550070712E /* CMMDrawingManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMDrawingManager.mm; path = libs/CMMSimpleFramework/CMMDrawingManager.mm; sourceTree = "<group>"; };
@@ -990,6 +995,10 @@
 			isa = PBXGroup;
 			children = (
 				E0C1FE811614348800562E27 /* develop.png */,
+				E0DAF36A1667299000F75FB0 /* IMG_CMN_DEFAULT_BACK-hd.png */,
+				E0DAF36B1667299000F75FB0 /* IMG_CMN_DEFAULT_BACK.png */,
+				E0DB77B8166481CB00D00C7E /* IMG_STG_BLOCK_PATTERN-hd.png */,
+				E0DB77B9166481CB00D00C7E /* IMG_STG_BLOCK_PATTERN.png */,
 				E01D0A4B165F3FD7001B450F /* IMG_STG_BLOCK000.plist */,
 				E01D0A4C165F3FD7001B450F /* IMG_STG_BLOCK000.png */,
 				E01D0A50165F5760001B450F /* IMG_STG_BLOCK001.plist */,
@@ -1331,8 +1340,6 @@
 				E0A1CE5F162E543D0008EF60 /* CMMLayerM.mm */,
 				E0A1CE65162E59250008EF60 /* CMMLayerMD.h */,
 				E0A1CE66162E59250008EF60 /* CMMLayerMD.mm */,
-				E032FC4E15E1EDE400B28B61 /* CMMLayerPopup.h */,
-				E032FC4F15E1EDE400B28B61 /* CMMLayerPopup.mm */,
 				E032FC5215E1EDE500B28B61 /* CMMSprite.h */,
 				E032FC5315E1EDE500B28B61 /* CMMSprite.mm */,
 				E076BB5B16131DAE00C94718 /* CMMSpriteBatchBar.h */,
@@ -1925,6 +1932,10 @@
 				E01D0A53165F5760001B450F /* IMG_STG_BLOCK001.png in Resources */,
 				E01D0A56165F5954001B450F /* IMG_STG_BLOCK002.plist in Resources */,
 				E01D0A57165F5954001B450F /* IMG_STG_BLOCK002.png in Resources */,
+				E0DB77BA166481CB00D00C7E /* IMG_STG_BLOCK_PATTERN-hd.png in Resources */,
+				E0DB77BB166481CB00D00C7E /* IMG_STG_BLOCK_PATTERN.png in Resources */,
+				E0DAF36C1667299000F75FB0 /* IMG_CMN_DEFAULT_BACK-hd.png in Resources */,
+				E0DAF36D1667299000F75FB0 /* IMG_CMN_DEFAULT_BACK.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2018,7 +2029,6 @@
 				E032FC4615E1EAB300B28B61 /* CMMStringUtil.mm in Sources */,
 				E032FC4715E1EAB300B28B61 /* CMMTouchUtil.mm in Sources */,
 				E032FC5415E1EDE600B28B61 /* CMMLayer.mm in Sources */,
-				E032FC5715E1EDE600B28B61 /* CMMLayerPopup.mm in Sources */,
 				E032FC5815E1EDE600B28B61 /* CMMScene.mm in Sources */,
 				E032FC5915E1EDE600B28B61 /* CMMSprite.mm in Sources */,
 				E032FC6315E1F22700B28B61 /* CMMMotionDispatcher.mm in Sources */,

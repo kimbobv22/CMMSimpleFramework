@@ -8,10 +8,12 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	dragLayer = [CMMLayerMD layerWithColor:ccc4(100, 0, 0, 120) width:250 height:250];
-	dragLayer.isCanDragX = YES;
-	dragLayer.isCanDragY = YES;
-	[[dragLayer innerLayer] setContentSize:CGSizeMake(700, 700)];
+	CGSize winSize_ = [[CCDirector sharedDirector] winSize];
+	
+	dragLayer = [CMMLayerMD layerWithColor:ccc4(100, 0, 0, 120) width:winSize_.width*0.6f height:winSize_.height*0.8f];
+	dragLayer.canDragX = YES;
+	dragLayer.canDragY = YES;
+	[[dragLayer innerLayer] setContentSize:CGSizeMake(winSize_.width*2.0f, winSize_.width*2.0f)];
 	[[dragLayer innerLayer] setColor:ccc3(0, 100, 0)];
 	dragLayer.position = ccp(180,50);
 	//[dragLayer_ gotoTop]; //use this method when you want to go top
@@ -24,12 +26,12 @@
 	[dragLayer addChildToInner:testSprite_];
 	
 	//add menuitem to dragLayer
-	CMMMenuItemLabelTTF *menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItem_ setTitle:@"TESTBUTTON"];
 	menuItem_.position = ccp(menuItem_.contentSize.width/2+20,menuItem_.contentSize.height/2+20);
 	[dragLayer addChildToInner:menuItem_];
 	
-	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBack_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
 	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,menuItemBack_.contentSize.height/2+20);
 	menuItemBack_.delegate = self;

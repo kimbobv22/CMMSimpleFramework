@@ -22,7 +22,6 @@ static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.1.0";
 
 #import "CMMScene.h"
 #import "CMMLayer.h"
-#import "CMMLayerPopup.h"
 #import "CMMLayerM.h"
 #import "CMMLayerMD.h"
 #import "CMMSprite.h"

@@ -2,14 +2,13 @@
 
 @implementation CCSpriteBatchNode(SplitSprite)
 
--(CCSprite *)addSplitSpriteToRect:(CGRect)rect_ blendFunc:(ccBlendFunc)tBlendFunc_{
+-(CCSprite *)addSplitSpriteToRect:(CGRect)rect_{
 	CCTexture2D *tTexture_ = textureAtlas_.texture;
 	CGSize textureSize_ = tTexture_.contentSize;
 	
 	CCSprite *backSprite_ = [CCSprite spriteWithTexture:tTexture_ rect:rect_];
 
 	[backSprite_ setBatchNode:self];
-	[backSprite_ setBlendFunc:tBlendFunc_];
 	[backSprite_.texture setAliasTexParameters];
 	backSprite_.anchorPoint = ccp(0,0);
 	backSprite_.position = ccp(rect_.origin.x,textureSize_.height-rect_.origin.y-rect_.size.height);
@@ -17,7 +16,7 @@
 	return backSprite_;
 }
 
--(void)addSplitSprite:(CGSize)splitUnit_ blendFunc:(ccBlendFunc)tBlendFunc_{
+-(void)addSplitSprite:(CGSize)splitUnit_{
 	CCTexture2D *tTexture_ = textureAtlas_.texture;
 	if(!tTexture_) return;
 	[tTexture_ setAliasTexParameters];
@@ -47,7 +46,7 @@
 			targetRect_.origin = targetPoint_;
 			targetRect_.size = targetSize_;
 			
-			[self addSplitSpriteToRect:targetRect_ blendFunc:tBlendFunc_];
+			[self addSplitSpriteToRect:targetRect_];
 		}
 	}
 	
@@ -64,7 +63,7 @@
 		targetRect_.origin = targetPoint_;
 		targetRect_.size = targetSize_;
 		
-		[self addSplitSpriteToRect:targetRect_ blendFunc:tBlendFunc_];
+		[self addSplitSpriteToRect:targetRect_];
 	}
 	
 	//remainder - col
@@ -80,16 +79,13 @@
 		targetRect_.origin = targetPoint_;
 		targetRect_.size = targetSize_;
 		
-		[self addSplitSpriteToRect:targetRect_ blendFunc:tBlendFunc_];
+		[self addSplitSpriteToRect:targetRect_];
 	}
 	
 	CGRect remainderRect_ = CGRectZero;
 	remainderRect_.origin = ccp(backGroundSize_.width-backSliceUnitCol_,backGroundSize_.height-backSliceUnitRow_);
 	remainderRect_.size = CGSizeMake(backSliceUnitCol_, backSliceUnitRow_);
-	[self addSplitSpriteToRect:remainderRect_ blendFunc:tBlendFunc_];
-}
--(void)addSplitSprite:(CGSize)splitUnit_{
-	[self addSplitSprite:splitUnit_ blendFunc:(ccBlendFunc){CC_BLEND_SRC,CC_BLEND_DST}];
+	[self addSplitSpriteToRect:remainderRect_];
 }
 
 @end

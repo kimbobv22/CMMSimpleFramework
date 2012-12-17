@@ -3,13 +3,13 @@
 #import "CMMLayerMD.h"
 
 @implementation CMMLayerMD
-@synthesize touchState,scrollbar,isCanDragX,isCanDragY,isAlwaysShowScrollbar,dragSpeed;
+@synthesize touchState,scrollbar,canDragX,canDragY,alwaysShowScrollbar,dragSpeed;
 
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	[touchDispatcher setMaxMultiTouchCount:0];
-	isCanDragX = isCanDragY = isAlwaysShowScrollbar = NO;
+	canDragX = canDragY = alwaysShowScrollbar = NO;
 	scrollbar = CMMLayerMDScrollbar();
 	
 	dragSpeed = 5.0f;
@@ -40,9 +40,9 @@
 	_innerLayerBeforePoint = innerLayerPoint_;
 	float diffDistance_ = ccpDistance(beforePoint_, innerLayerPoint_);
 	
-	if(!_doShowScrollbar && diffDistance_ == 0.0f && !isAlwaysShowScrollbar) return;
+	if(!_doShowScrollbar && diffDistance_ == 0.0f && !alwaysShowScrollbar) return;
 	
-	_doShowScrollbar = (touchState != CMMTouchState_none || diffDistance_ > 0.0f || isAlwaysShowScrollbar);
+	_doShowScrollbar = (touchState != CMMTouchState_none || diffDistance_ > 0.0f || alwaysShowScrollbar);
 
 	CGSize innerLayerSize_ = [innerLayer contentSize];
 	
@@ -57,13 +57,13 @@
 	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-	if(isCanDragX){
+	if(canDragX){
 		glLineWidth(scrollbar.widthX*CC_CONTENT_SCALE_FACTOR());
 		ccColor4F tColor_ = ccc4FFromccc4B(scrollbar.colorX);
 		ccDrawColor4F(tColor_.r, tColor_.g, tColor_.b, tColor_.a);
 		ccDrawLine(hScrollPoint_, ccpAdd(hScrollPoint_, ccp(hScrollBarSize_,0)));
 	}
-	if(isCanDragY){
+	if(canDragY){
 		glLineWidth(scrollbar.widthY*CC_CONTENT_SCALE_FACTOR());
 		ccColor4F tColor_ = ccc4FFromccc4B(scrollbar.colorY);
 		ccDrawColor4F(tColor_.r, tColor_.g, tColor_.b, tColor_.a);
@@ -134,8 +134,8 @@
 		case CMMTouchState_onDrag:{
 			CGPoint curPoint_ = [CMMTouchUtil pointFromTouch:touch_];
 			CGPoint diffPoint_ = ccpSub(curPoint_, [CMMTouchUtil prepointFromTouch:touch_]);
-			if(!isCanDragX) diffPoint_.x = 0;
-			if(!isCanDragY) diffPoint_.y = 0;
+			if(!canDragX) diffPoint_.x = 0;
+			if(!canDragY) diffPoint_.y = 0;
 			CGPoint addPoint_ = diffPoint_;
 			
 			CGPoint innerLayerOrgPoint_ = [innerLayer position];

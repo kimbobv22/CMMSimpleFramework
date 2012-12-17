@@ -49,7 +49,7 @@
 	};
 	[self addChild:slider2];
 	
-	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBack_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
 	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,menuItemBack_.contentSize.height/2);
 	menuItemBack_.callback_pushup = ^(id sender_){
@@ -57,7 +57,7 @@
 	};
 	[self addChild:menuItemBack_];
 	
-	CMMMenuItemLabelTTF *testMenuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *testMenuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[testMenuItem_ setTitle:@"Batch bar test"];
 	testMenuItem_.position = ccp(self.contentSize.width-testMenuItem_.contentSize.width/2,testMenuItem_.contentSize.height/2);
 	testMenuItem_.callback_pushup = ^(id sender_){
@@ -90,11 +90,11 @@
 	[batchBar setPosition:ccp(10,80)];
 	[self addChild:batchBar];
 	
-	label = [CMMFontUtil labelWithstring:@"Drag me!"];
+	label = [CMMFontUtil labelWithString:@"Drag me!"];
 	[label runAction:[CCRepeatForever actionWithAction:[CCBlink actionWithDuration:1 blinks:2]]];
 	[self addChild:label];
 	
-	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBack_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
 	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,menuItemBack_.contentSize.height/2);
 	menuItemBack_.callback_pushup = ^(id sender_){

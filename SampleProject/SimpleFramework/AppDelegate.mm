@@ -80,6 +80,11 @@
 	// and add the scene to the stack. The director will run it when it automatically when the view is displayed.
 	[director_ pushScene:[CMMScene sharedScene]];
 	[[CMMScene sharedScene] pushLayer:[CommonIntroLayer1 node]];
+	
+	//add default background
+	CCSprite *defaultBackGround_ = [CCSprite spriteWithFile:@"IMG_CMN_DEFAULT_BACK.png"];
+	[defaultBackGround_ setPosition:cmmFuncCommon_positionInParent([CMMScene sharedScene],defaultBackGround_)];
+	[[CMMScene sharedScene] setDefaultBackGroundNode:defaultBackGround_];
 
 	return YES;
 }

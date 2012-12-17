@@ -45,7 +45,7 @@
 	
 	menuItemSet = [CMMMenuItemSet menuItemSetWithMenuSize:CGSizeMake(contentSize_.width*0.7f, contentSize_.height*0.7f)];
 
-	//menuItemSet = [CMMMenuItemSet menuItemSetWithMenuSize:CGSizeMake(contentSize_.width*0.7f, contentSize_.height*0.7f) menuItem:[CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)],[CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)],[CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)],[CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)],[CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)], nil];
+	//menuItemSet = [CMMMenuItemSet menuItemSetWithMenuSize:CGSizeMake(contentSize_.width*0.7f, contentSize_.height*0.7f) menuItem:[CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)],[CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)],[CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)],[CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)],[CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)], nil];
 	/*[menuItemSet setCallback_pushdown:^(id sender_, CMMMenuItem *menuItem_){
 		[self menuItemSet:menuItemSet whenMenuItemPushdownWithMenuItem:menuItem_];
 	}];
@@ -58,7 +58,7 @@
 	[self addChild:menuItemSet];
 	
 	for(uint index_=0;index_<15;++index_){
-		CMMMenuItemLabelTTF *tempItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)];
+		CMMMenuItemL *tempItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)];
 		[tempItem_ setTitle:[NSString stringWithFormat:@"%d",index_+1]];
 		[menuItemSet addMenuItem:tempItem_];
 	}
@@ -75,7 +75,7 @@
 	[self addChild:controlItem_];
 	[controlItem_ setItemValue:5.0f];
 	
-	alignTypeChangeBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(100, 30)];
+	alignTypeChangeBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(100, 30)];
 	[alignTypeChangeBtn setTitle:@" "];
 	[alignTypeChangeBtn setPosition:ccp(controlItem_.position.x-alignTypeChangeBtn.contentSize.width/2.0f-10,controlItem_.position.y+controlItem_.contentSize.height/2.0f)];
 	[alignTypeChangeBtn setCallback_pushup:^(id sender_){
@@ -88,7 +88,7 @@
 	[self addChild:alignTypeChangeBtn];
 	[self setAlignType:CMMMenuItemSetAlignType_vertical];
 	
-	lineHAlignTypeChangeBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(30, 30)];
+	lineHAlignTypeChangeBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(30, 30)];
 	[lineHAlignTypeChangeBtn setTitle:@"H"];
 	[lineHAlignTypeChangeBtn setPosition:ccp(contentSize_.width-lineHAlignTypeChangeBtn.contentSize.width/2.0f,contentSize_.height/2.0f)];
 	[lineHAlignTypeChangeBtn setCallback_pushup:^(id sender_){
@@ -100,7 +100,7 @@
 	}];
 	[self addChild:lineHAlignTypeChangeBtn];
 	
-	lineVAlignTypeChangeBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(30, 30)];
+	lineVAlignTypeChangeBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(30, 30)];
 	[lineVAlignTypeChangeBtn setTitle:@"V"];
 	[lineVAlignTypeChangeBtn setPosition:ccp(lineHAlignTypeChangeBtn.position.x,lineHAlignTypeChangeBtn.position.y-50.0f)];
 	[lineVAlignTypeChangeBtn setCallback_pushup:^(id sender_){
@@ -112,7 +112,7 @@
 	}];
 	[self addChild:lineVAlignTypeChangeBtn];
 	
-	CMMMenuItemLabelTTF *menuItemButton_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemButton_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemButton_ setTitle:@"BACK"];
 	menuItemButton_.position = ccp(menuItemButton_.contentSize.width/2,menuItemButton_.contentSize.height/2);
 	menuItemButton_.callback_pushup = ^(id sender_){

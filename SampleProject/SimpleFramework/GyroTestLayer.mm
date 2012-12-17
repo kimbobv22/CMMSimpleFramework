@@ -24,7 +24,7 @@
 	stage.position = ccp(0,self.contentSize.height-stage.contentSize.height);
 	[self addChild:stage z:0];
 	
-	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBack_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
 	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,menuItemBack_.contentSize.height/2);
 	menuItemBack_.delegate = self;
@@ -40,11 +40,11 @@
 		[stage.world addObject:object_];
 	}
 	
-	displayLabel = [CMMFontUtil labelWithstring:@" "];
+	displayLabel = [CMMFontUtil labelWithString:@" "];
 	[self addChild:displayLabel];
 	
 	if(TARGET_IPHONE_SIMULATOR){
-		CCLabelTTF *noticeLabel_ = [CMMFontUtil labelWithstring:@"Simulator not supported gyro sensor."];
+		CCLabelTTF *noticeLabel_ = [CMMFontUtil labelWithString:@"Simulator not supported gyro sensor."];
 		[noticeLabel_ setPosition:cmmFuncCommon_positionInParent(self, noticeLabel_)];
 		[self addChild:noticeLabel_ z:9];
 	}

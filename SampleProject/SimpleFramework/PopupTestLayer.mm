@@ -5,8 +5,8 @@
 
 static int _testPopupCount_ = 1;
 
-@interface TestPopup : CMMLayerPopup<CMMMenuItemDelegate>{
-	CMMMenuItemLabelTTF *btnPopup,*btnClose;
+@interface TestPopup : CMMPopupLayer{
+	CMMMenuItemL *btnPopup,*btnClose;
 	CCLabelTTF *testLabel;
 }
 
@@ -17,18 +17,23 @@ static int _testPopupCount_ = 1;
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 
-	testLabel = [CMMFontUtil labelWithstring:[NSString stringWithFormat:@"popup No.%d",_testPopupCount_]];
+	testLabel = [CMMFontUtil labelWithString:[NSString stringWithFormat:@"popup No.%d",_testPopupCount_]];
 	testLabel.position = ccp(self.contentSize.width/2,self.contentSize.height/2);
 	[self addChild:testLabel];
 	
-	btnPopup = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
-	btnPopup.delegate = self;
+	btnPopup = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
+	[btnPopup setCallback_pushup:^(id) {
+		_testPopupCount_++;
+		[[CMMScene sharedScene] openPopupAtFirst:[TestPopup node] delegate:nil];
+	}];
 	[btnPopup setTitle:@"POPUP AGAIN!"];
 	btnPopup.position = ccp(MIN(MAX(arc4random()%(int)self.contentSize.width,btnPopup.contentSize.width/2),self.contentSize.width-btnPopup.contentSize.width/2),self.contentSize.height/2+80);
 	[self addChild:btnPopup];
 	
-	btnClose = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
-	btnClose.delegate = self;
+	btnClose = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
+	[btnClose setCallback_pushup:^(id) {
+		[self closeWithSendData:[NSString stringWithFormat:@"total popup count : %d",_testPopupCount_]];
+	}];
 	[btnClose setTitle:@"CLOSE"];
 	btnClose.position = ccp(self.contentSize.width/2,self.contentSize.height/2-80);
 	[self addChild:btnClose];
@@ -36,12 +41,11 @@ static int _testPopupCount_ = 1;
 	return self;
 }
 
--(void)menuItem_whenPushup:(CMMMenuItem *)menuItem_{
-	if(menuItem_ == btnPopup){
-		_testPopupCount_++;
-		[[CMMScene sharedScene] openPopupAtFirst:[TestPopup node] delegate:nil];
-	}else if(menuItem_ == btnClose)
-		[self closeWithSendData:[NSString stringWithFormat:@"test value total popup Count.%d",_testPopupCount_]];
+-(void)onEnter{
+	[super onEnter];
+	[self stopAllActions];
+	[self setScale:0.95f];
+	[self runAction:[CCEaseBounceOut actionWithAction:[CCScaleTo actionWithDuration:0.5f scale:1.0f]]];
 }
 
 @end
@@ -51,40 +55,43 @@ static int _testPopupCount_ = 1;
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	testLabel = [CMMFontUtil labelWithstring:@" "];
+	testLabel = [CMMFontUtil labelWithString:@" "];
 	testLabel.position = ccp(self.contentSize.width/2,self.contentSize.height/2+80);
 	[self addChild:testLabel];
 	
-	menuItemOpen = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	menuItemOpen = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemOpen setTitle:@"OPEN POPUP"];
-	menuItemOpen.position = ccp(self.contentSize.width/2,self.contentSize.height/2);
-	menuItemOpen.delegate = self;
-	[self addChild:menuItemOpen];
-	
-	menuItemClose = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
-	[menuItemClose setTitle:@"BACK"];
-	menuItemClose.position = ccp(menuItemClose.contentSize.width/2+20,menuItemClose.contentSize.height/2);
-	menuItemClose.delegate = self;
-	[self addChild:menuItemClose];
-	
-	return self;
-}
-
--(void)popupDispatcher:(CMMPopupDispatcherItem *)popupItem_ whenClosedWithReceivedData:(id)data_{
-	[testLabel setString:data_];
-}
-
--(void)menuItem_whenPushup:(CMMMenuItem *)menuItem_{
-	if(menuItem_ == menuItemOpen){
-	
+	[menuItemOpen setCallback_pushup:^(id) {
 		//popup test
 		[testLabel setString:@" "];
 		_testPopupCount_ = 1;
 		TestPopup *popup_ = [TestPopup node];
 		[[CMMScene sharedScene] openPopup:popup_ delegate:self];
-		
-	}else if(menuItem_ == menuItemClose)
+	}];
+	menuItemOpen.position = ccp(self.contentSize.width/2,self.contentSize.height/2);
+	[self addChild:menuItemOpen];
+	
+	menuItemClose = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
+	[menuItemClose setTitle:@"BACK"];
+	[menuItemClose setCallback_pushup:^(id) {
 		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
+	}];
+	menuItemClose.position = ccp(menuItemClose.contentSize.width/2+20,menuItemClose.contentSize.height/2);
+	[self addChild:menuItemClose];
+	
+	//[[[[CMMScene sharedScene] popupDispatcher] masterView] setShowOnlyOne:YES];
+	/*
+	 if you want to show up popup only one, set showOnlyOne to 'YES'
+	 */
+	
+	return self;
+}
+
+-(void)popupDispatcher:(CMMPopupDispatcher *)popupDispatcher_ didOpenPopup:(CMMPopupLayer *)popup_{
+	CCLOG(@"open popup!");
+}
+-(void)popupDispatcher:(CMMPopupDispatcher *)popupDispatcher_ didClosePopup:(CMMPopupLayer *)popup_ withReceivedData:(id)data_{
+	[testLabel setString:data_];
 }
 
 @end

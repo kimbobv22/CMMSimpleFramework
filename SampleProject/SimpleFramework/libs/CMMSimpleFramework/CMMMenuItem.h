@@ -24,7 +24,7 @@
 	id key,userData;
 	CCSprite *normalImage,*selectedImage;
 	id<CMMMenuItemDelegate> delegate;
-	BOOL isEnable,_isOnSelected;
+	BOOL enable,onSelect;
 	
 	CCAction *pushDownAction,*pushUpAction;
 	void (^callback_pushdown)(id sender_),(^callback_pushup)(id sender_),(^callback_pushcancel)(id sender_);
@@ -41,8 +41,8 @@
 @property (nonatomic, retain) id key,userData;
 @property (nonatomic, retain) CCSprite *normalImage,*selectedImage;
 @property (nonatomic, assign) id<CMMMenuItemDelegate> delegate;
-@property (nonatomic, readwrite) BOOL isEnable;
-@property (nonatomic, readonly) BOOL isOnSelected;
+@property (nonatomic, readwrite, getter = isEnable) BOOL enable;
+@property (nonatomic, readonly, getter = isOnSelect) BOOL onSelect;
 @property (nonatomic, copy) void (^callback_pushdown)(id sender_),(^callback_pushup)(id sender_),(^callback_pushcancel)(id sender_);
 @property (nonatomic, retain) CCAction *pushDownAction,*pushUpAction;
 
@@ -56,7 +56,7 @@
 
 @end
 
-@interface CMMMenuItemLabelTTF : CMMMenuItem{
+@interface CMMMenuItemL : CMMMenuItem{
 	CCLabelTTF *labelTitle;
 	CCTextAlignment titleAlign;
 }

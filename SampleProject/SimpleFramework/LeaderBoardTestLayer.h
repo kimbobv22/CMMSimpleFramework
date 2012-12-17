@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface PlayerItem : CMMMenuItemLabelTTF{
+@interface PlayerItem : CMMMenuItemL{
 	CCLabelTTF *_playerNameLb;
 	NSString *playerID;
 }
@@ -14,7 +14,7 @@
 @interface LeaderBoardTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMGameKitLeaderBoardDelegate>{
 	CMMScrollMenuV *leaderBoardScrollMenu;
 	CCLabelTTF *scroeLabel,*_displayLabel;
-	CMMMenuItemLabelTTF *bitBtn,*reportBtn,*refreshBtn;
+	CMMMenuItemL *bitBtn,*reportBtn,*refreshBtn;
 	float _score;
 }
 

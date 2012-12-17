@@ -24,7 +24,7 @@
 	
 	useGameCenterBanner = NO;
 	
-	CMMMenuItemLabelTTF *menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"test report1"];
 	[menuItemBtn_ setCallback_pushup:^(id sender_){
 		useGameCenterBanner = NO;
@@ -37,7 +37,7 @@
 	
 	[menu addMenuItem:menuItemBtn_];
 	
-	menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"test report2"];
 	[menuItemBtn_ setCallback_pushup:^(id sender_){
 		useGameCenterBanner = YES;
@@ -50,7 +50,7 @@
 	
 	[menu addMenuItem:menuItemBtn_];
 	
-	menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"reset Achievements"];
 	[menuItemBtn_ setCallback_pushup:^(id sender_){
 		[self setDisplayStr:@"resetting achievements..."];
@@ -62,7 +62,7 @@
 	
 	[menu updateDisplay];
 	
-	menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"BACK"];
 	menuItemBtn_.position = ccp(menuItemBtn_.contentSize.width/2,menuItemBtn_.contentSize.height/2);
 	menuItemBtn_.callback_pushup = ^(id sender_){
@@ -70,7 +70,7 @@
 	};
 	[self addChild:menuItemBtn_];
 	
-	displayLb = [CMMFontUtil labelWithstring:@" "];
+	displayLb = [CMMFontUtil labelWithString:@" "];
 	[self addChild:displayLb];
 	
 	[[CMMGameKitAchievements sharedAchievements] setDelegate:self];
@@ -84,7 +84,7 @@
 }
 
 -(void)switchBtnTo:(BOOL)bool_{
-	[menu setIsEnable:bool_];
+	[menu setEnable:bool_];
 }
 -(void)setDisplayStr:(NSString *)str_{
 	[displayLb setString:str_];

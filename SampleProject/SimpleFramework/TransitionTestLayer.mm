@@ -49,7 +49,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	CMMMenuItemLabelTTF *menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"BACK"];
 	[menuItemBtn_ setCallback_pushup:^(id sender_){
 		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
@@ -57,7 +57,7 @@
 	menuItemBtn_.position = ccp(menuItemBtn_.contentSize.width/2,menuItemBtn_.contentSize.height/2);
 	[self addChild:menuItemBtn_];
 	
-	menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"Default Transition"];
 	[menuItemBtn_ setCallback_pushup:^(id sender_){
 		[[CMMScene sharedScene] setTransitionLayer:[CMMSceneTransitionLayer_FadeInOut node]];
@@ -65,7 +65,7 @@
 	menuItemBtn_.position = ccp(contentSize_.width/2.0f-menuItemBtn_.contentSize.width/2-10,contentSize_.height/2);
 	[self addChild:menuItemBtn_];
 	
-	menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"Door Transition"];
 	[menuItemBtn_ setCallback_pushup:^(id sender_){
 		[[CMMScene sharedScene] setTransitionLayer:[TestTransitionLayer_door node]];

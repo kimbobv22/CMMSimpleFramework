@@ -554,7 +554,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 @end
 
 @implementation CMMStageLightItem
-@synthesize stageLight,point,brightness,radius,duration,color,isBlendColor,target;
+@synthesize stageLight,point,brightness,radius,duration,color,blendColor,target;
 
 +(id)lightItemWithStageLight:(CMMStageLight *)stageLight_ point:(CGPoint)point_ brightness:(float)brightness_ radius:(float)radius_ duration:(ccTime)duration_{
 	return [[[self alloc] initWithStageLight:stageLight_ point:point_ brightness:brightness_ radius:radius_ duration:duration_] autorelease];
@@ -567,6 +567,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	brightness = brightness_;
 	radius = radius_;
 	duration = duration_;
+	blendColor = NO;
 	[self reset];
 	
 	return self;
@@ -860,7 +861,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	
 	//reset option
 	[lightItem_ setColor:ccc3(0, 0, 0)];
-	[lightItem_ setIsBlendColor:NO];
+	[lightItem_ setBlendColor:NO];
 	
 	[lightItem_ setPoint:point_];
 	[lightItem_ setBrightness:brightness_];
@@ -1047,7 +1048,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	return self;
 }
 
--(void)addBackgroundNode:(CCNode<CMMStageChildProtocol> *)backgroundNode_{
+-(void)addBackgroundNode:(CCNode<CMMStageBackgroundProtocol> *)backgroundNode_{
 	if(backgroundNode){
 		[self removeChild:backgroundNode_ cleanup:YES];
 		backgroundNode = nil;
@@ -1069,7 +1070,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	[world setPosition:resultPoint_];
 	[particle setPosition:resultPoint_];
 	[stateView setPosition:resultPoint_];
-	if(backgroundNode) [backgroundNode setPosition:resultPoint_];
+	if(backgroundNode) [backgroundNode setWorldPoint:resultPoint_];
 	
 	//update sound center position
 	CGPoint soundPoint_ = [self convertToStageWorldSpace:ccp(stageSize_.width/2.0f,stageSize_.height/2.0f)];
@@ -1093,7 +1094,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	glEnable(GL_SCISSOR_TEST);
 	CGRect screenRect_;
 	screenRect_.origin = ccp(0,0);
-	screenRect_.size = self.contentSize;
+	screenRect_.size = contentSize_;
 	screenRect_ = CGRectApplyAffineTransform(screenRect_,[self nodeToWorldTransform]);
 	
 	glScissor(screenRect_.origin.x*CC_CONTENT_SCALE_FACTOR(), screenRect_.origin.y*CC_CONTENT_SCALE_FACTOR(), screenRect_.size.width*CC_CONTENT_SCALE_FACTOR(), screenRect_.size.height*CC_CONTENT_SCALE_FACTOR());

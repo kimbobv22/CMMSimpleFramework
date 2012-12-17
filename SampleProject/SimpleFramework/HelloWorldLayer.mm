@@ -33,7 +33,7 @@
 	[mainMenu setPosition:ccpAdd(cmmFuncCommon_positionInParent(self, mainMenu), ccp(0,-10.0f))];
 	[self addChild:mainMenu];
 	
-	connectionStatusLabel = [CMMFontUtil labelWithstring:@" "];
+	connectionStatusLabel = [CMMFontUtil labelWithString:@" "];
 	[self addChild:connectionStatusLabel];
 	
 	[[CMMConnectionMonitor sharedMonitor] addObserverForConnectionStatus:self selector:@selector(updateConnectionStatus)];
@@ -41,107 +41,107 @@
 	
 	CGSize menuItemSize_ = CGSizeMake(mainMenu.contentSize.width, 55);
 	
-	CMMMenuItemLabelTTF *menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	CMMMenuItemL *menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[TransitionTestLayer node]];};
 	[menuItem_ setTitle:@"Transition Test"];
  	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[MenuItemTestLayer node]];};
 	[menuItem_ setTitle:@"MenuItem Test"];
  	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[MenuItemSetTestLayer node]];};
 	[menuItem_ setTitle:@"MenuItemSet Test"];
  	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[DragLayerTestLayer node]];};
 	[menuItem_ setTitle:@"DragLayer Test"];
  	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[PinchZoomTestLayer node]];};
 	[menuItem_ setTitle:@"PinchZoom Test"];
  	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[StageTestLayer node]];};
 	[menuItem_ setTitle:@"Stage Test"];
  	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[LoadingTestLayer node]];};
 	[menuItem_ setTitle:@"Loading Test"];
  	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[SequenceMakerTestLayer node]];};
 	[menuItem_ setTitle:@"Sequence Maker Test"];
  	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[SoundTestLayer node]];};
 	[menuItem_ setTitle:@"SoundHandler Test"];
  	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[PopupTestLayer node]];};
 	[menuItem_ setTitle:@"Popup Test"];
  	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[GyroTestLayer node]];};
 	[menuItem_ setTitle:@"Gyro Test"];
 	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[ScrollMenuTestLayer node]];};
 	[menuItem_ setTitle:@"ScrollMenu Test"];
 	[mainMenu addItem:menuItem_];
 
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[ControlItemTestLayer node]];};
 	[menuItem_ setTitle:@"Control Item Test"];
 	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[CustomUITestLayer node]];};
 	[menuItem_ setTitle:@"CustomUI(Joypad) Test"];
 	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[NoticeTestLayer node]];};
 	[menuItem_ setTitle:@"Notice Test"];
 	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[LeaderBoardTestLayer node]];};
 	[menuItem_ setTitle:@"LeaderBoard Test"];
 	[mainMenu addItem:menuItem_];
 
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[AchievementsTestLayer node]];};
 	[menuItem_ setTitle:@"Achievements Test"];
 	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[GameCenterTestLayer node]];};
 	[menuItem_ setTitle:@"Game Center(Match,Session) Test"];
 	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[CameraTestLayer node]];};
 	[menuItem_ setTitle:@"Camera Test"];
 	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[InAppPurchaseTestLayer node]];};
 	[menuItem_ setTitle:@"In-App Purchase Test"];
 	[mainMenu addItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[CFSocketTestLayer node]];};
 	[menuItem_ setTitle:@"CFSocket Test"];
 	[mainMenu addItem:menuItem_];

@@ -3,7 +3,7 @@
 #import "CMMHeader.h"
 
 @interface LoadingTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMMenuItemDelegate>{
-	CMMMenuItemLabelTTF *menuItemBack;
+	CMMMenuItemL *menuItemBack;
 	CCLabelTTF *displayLabel;
 }
 

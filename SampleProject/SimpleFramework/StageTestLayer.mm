@@ -14,7 +14,7 @@
 	[stageSelector setPosition:cmmFuncCommon_positionInParent(self, stageSelector)];
 	[self addChild:stageSelector];
 	
-	CMMMenuItemLabelTTF *menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItem_ setTitle:@"basic stage"];
 	[menuItem_ setCallback_pushup:^(id) {
 		[[CMMScene sharedScene] pushLayer:[StageTestLayerBasic node]];
@@ -22,7 +22,7 @@
 	
 	[stageSelector addMenuItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItem_ setTitle:@"pixel stage"];
 	[menuItem_ setCallback_pushup:^(id) {
 		[[CMMScene sharedScene] pushLayer:[StageTestLayerPixel node]];
@@ -30,7 +30,7 @@
 	
 	[stageSelector addMenuItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItem_ setTitle:@"tile stage"];
 	[menuItem_ setCallback_pushup:^(id) {
 		[[CMMScene sharedScene] pushLayer:[StageTestLayerTile node]];
@@ -38,7 +38,7 @@
 	
 	[stageSelector addMenuItem:menuItem_];
 	
-	menuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItem_ setTitle:@"dynamic block stage"];
 	[menuItem_ setCallback_pushup:^(id) {
 		[[CMMScene sharedScene] pushLayer:[StageTestLayerDynamicBlock node]];
@@ -48,7 +48,7 @@
 		
 	[stageSelector updateDisplay];
 	
-	CMMMenuItemLabelTTF *menuItemBack_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBack_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
 	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,menuItemBack_.contentSize.height/2);
 	[menuItemBack_ setCallback_pushup:^(id) {
@@ -61,11 +61,18 @@
 
 @end
 
-@interface CCLayerGradientTest : CCLayerGradient<CMMStageChildProtocol>
+@interface CCLayerGradientTest : CCLayerGradient<CMMStageBackgroundProtocol>
 
 @end
 
 @implementation CCLayerGradientTest
+
+-(void)setWorldPoint:(CGPoint)worldPoint_{
+	[self setPosition:worldPoint_];
+}
+-(CGPoint)worldPoint{
+	return [self position];
+}
 
 -(void)update:(ccTime)dt_{}
 
@@ -94,14 +101,14 @@
 	//add control menu item
 	CGSize tempMenuItemSize_ = CGSizeMake(controlMenu.contentSize.width, 30);
 	
-	CMMMenuItemLabelTTF *tempMenuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:tempMenuItemSize_];
+	CMMMenuItemL *tempMenuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:tempMenuItemSize_];
 	[tempMenuItem_ setTitle:@"add box"];
 	[tempMenuItem_ setCallback_pushup:^(id) {
 		stageControlType = StageControlType_addBox;
 	}];
 	[controlMenu addItem:tempMenuItem_];
 	
-	tempMenuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:tempMenuItemSize_];
+	tempMenuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:tempMenuItemSize_];
 	[tempMenuItem_ setTitle:@"add ball"];
 	[tempMenuItem_ setCallback_pushup:^(id) {
 		stageControlType = StageControlType_addBall;
@@ -109,7 +116,7 @@
 	[controlMenu addItem:tempMenuItem_];
 	
 	////gravity control
-	labelGravity = [CMMFontUtil labelWithstring:@" "];
+	labelGravity = [CMMFontUtil labelWithString:@" "];
 	[self addChild:labelGravity];
 	
 	gravitySlider = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:150];
@@ -130,7 +137,7 @@
 	gravitySlider.position = targetPoint_;
 	[self addChild:gravitySlider];
 	
-	backBtn = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	backBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[backBtn setTitle:@"BACK"];
 	backBtn.position = ccp(backBtn.contentSize.width/2,backBtn.contentSize.height/2);
 	[backBtn setCallback_pushup:^(id) {
@@ -247,8 +254,9 @@
 }
 
 -(CMMSObject *)addBox:(CGPoint)point_{
-	CMMSObjectBatchNode *batchNode_ = [stage.world obatchNodeAtFileName:@"Icon.png" isInDocument:NO];
+	CMMSObjectBatchNode *batchNode_ = [[stage world] obatchNodeAtFileName:@"Icon.png" isInDocument:NO];
 	CMMSObject *object_ = [batchNode_ createObject];
+	[object_ setAddToBatchNode:YES];
 	object_.position = point_;
 	[stage.world addObject:object_];
 	
@@ -258,13 +266,17 @@
 	return object_;
 }
 -(CMMSBall *)addBall:(CGPoint)point_{
-	CMMSObjectBatchNode *batchNode_ = [stage.world obatchNodeAtFileName:@"IMG_STG_ball.png" isInDocument:NO];
+	CMMSObjectBatchNode *batchNode_ = [[stage world] obatchNodeAtFileName:@"IMG_STG_ball.png" isInDocument:NO];
 	CMMSBall *ball_ = (CMMSBall *)[batchNode_ createObject];
+	[ball_ setAddToBatchNode:YES];
+	[ball_ setCallback_whenAddedToStage:^(CMMSObject *target_, CMMStage *stage_) {
+		[[stage_ stateView] addStateView:[CMMSBallStateView stateViewWithTarget:target_]];
+	}];
 	ball_.position = point_;
-	[stage.world addObject:ball_];
+	[[stage world] addObject:ball_];
 	
 	CMMStageLightItem *lightItem_ = [[stage light] addLightItemAtPoint:CGPointZero brightness:1.0f radius:100.0f];
-	[lightItem_ setIsBlendColor:YES];
+	[lightItem_ setBlendColor:YES];
 	[lightItem_ setColor:ccc3(255, 0, 0)];
 	[lightItem_ setTarget:ball_];
 	
@@ -287,7 +299,7 @@
 	stageDef_.restitution = 0.3f;
 	stageDef_.brightness = 0.4f;
 	
-	stage = [CMMStage stageWithStageSpecDef:stageDef_];
+	stage = [CMMStage stageWithStageDef:stageDef_];
 	stage.sound.soundDistance = 300.0f;
 	stage.position = ccp(0,contentSize_.height-stage.contentSize.height);
 	stage.delegate = self;
@@ -315,7 +327,7 @@
 	
 	//add light control item
 	CGSize tempMenuItemSize_ = CGSizeMake(controlMenu.contentSize.width, 30);
-	CMMMenuItemLabelTTF *tempMenuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:tempMenuItemSize_];
+	CMMMenuItemL *tempMenuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:tempMenuItemSize_];
 	[tempMenuItem_ setTitle:@"add Light"];
 	[tempMenuItem_ setCallback_pushup:^(id) {
 		stageControlType = StageControlType_addLight;
@@ -333,7 +345,7 @@
 			CGPoint targetPoint_ = [stage convertToStageWorldSpace:[CMMTouchUtil pointFromTouch:touch_]];
 			CMMStageLightItemFadeInOut *lightItem_ = (CMMStageLightItemFadeInOut *)[[stage light] addLightItemAtPoint:targetPoint_ brightness:1.0f radius:100.0f duration:1.0f lightItemClass:[CMMStageLightItemFadeInOut class]];
 			[lightItem_ setFadeTime:0.2f];
-			[lightItem_ setIsBlendColor:YES];
+			[lightItem_ setBlendColor:YES];
 			[lightItem_ setColor:ccc3(arc4random()%255, arc4random()%255, arc4random()%255)];
 			break;
 		}
@@ -356,7 +368,7 @@
 	stageDef_.restitution = 0.3f;
 	stageDef_.brightness = 0.2f;
 
-	stage = [CMMStagePXL stageWithStageSpecDef:stageDef_ fileName:@"IMG_STG_TEST_001.png" isInDocument:NO];
+	stage = [CMMStagePXL stageWithStageDef:stageDef_ fileName:@"IMG_STG_TEST_001.png" isInDocument:NO];
 	stage.sound.soundDistance = 300.0f;
 	stage.position = ccp(0,self.contentSize.height-stage.contentSize.height);
 	stage.delegate = self;
@@ -381,14 +393,14 @@
 	//add control menu item
 	CGSize tempMenuItemSize_ = CGSizeMake(controlMenu.contentSize.width, 30);
 	
-	CMMMenuItemLabelTTF *tempMenuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:tempMenuItemSize_];
+	CMMMenuItemL *tempMenuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:tempMenuItemSize_];
 	[tempMenuItem_ setTitle:@"paint pixel"];
 	[tempMenuItem_ setCallback_pushup:^(id) {
 		stageControlType = StageControlType_paintMap;
 	}];
 	[controlMenu addItem:tempMenuItem_];
 	
-	tempMenuItem_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:tempMenuItemSize_];
+	tempMenuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:tempMenuItemSize_];
 	[tempMenuItem_ setTitle:@"erase pixel"];
 	[tempMenuItem_ setCallback_pushup:^(id) {
 		stageControlType = StageControlType_eraseMap;
@@ -440,12 +452,12 @@
 
 -(void)sceneLoadingProcess000{
 	[self unscheduleUpdate];
-	[backBtn setIsEnable:NO];
+	[backBtn setEnable:NO];
 	
 	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
 	CMMStageDef stageDef_ = CMMStageDefMake(CGSizeMake(targetSize_.width-80.0f, targetSize_.height-50.0f),CGSizeZero,ccp(0,0));
 	
-	stage = [CMMStageTMX stageWithStageSpecDef:stageDef_ tmxFileName:@"TMX_SAMPLE_000.tmx" isInDocument:NO];
+	stage = [CMMStageTMX stageWithStageDef:stageDef_ tmxFileName:@"TMX_SAMPLE_000.tmx" isInDocument:NO];
 	[stage light];
 	stage.position = ccp(0,contentSize_.height-stage.contentSize.height);
 	stage.delegate = self;
@@ -471,7 +483,7 @@
 }
 -(void)sceneDidEndLoading:(CMMScene *)scene_{
 	[self scheduleUpdate];
-	[backBtn setIsEnable:YES];
+	[backBtn setEnable:YES];
 }
 
 -(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
@@ -486,8 +498,9 @@
 }
 
 -(CMMSObject *)addBox:(CGPoint)point_{
-	CMMSObjectBatchNode *batchNode_ = [stage.world obatchNodeAtFileName:@"Icon-Small.png" isInDocument:NO];
+	CMMSObjectBatchNode *batchNode_ = [[stage world] obatchNodeAtFileName:@"Icon-Small.png" isInDocument:NO];
 	CMMSObject *object_ = [batchNode_ createObject];
+	[object_ setAddToBatchNode:YES];
 	object_.position = point_;
 	[[stage world] addObject:object_];
 	
@@ -566,7 +579,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	CMMMenuItemLabelTTF *backBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *backBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[backBtn_ setTitle:@"BACK"];
 	backBtn_.position = ccp(backBtn_.contentSize.width/2,contentSize_.height-backBtn_.contentSize.height/2);
 	[backBtn_ setCallback_pushup:^(id) {
@@ -587,13 +600,24 @@
 	
 	//[stage initializeLightSystem];
 	
+	CCTexture2D *backPattern_ =[[CCTextureCache sharedTextureCache] addImage:@"IMG_STG_BLOCK_PATTERN.png"];
+	
 	//add block item
 	CMMStageBlockItem *blockItem_ = [CMMStageBlockItem blockItem];
 	[blockItem_ setBlockType:CMMBlockType_filledDown];
 	[blockItem_ setDrawEdge:YES];
 	[blockItem_ addGroundBlockWithFile:@"IMG_STG_BLOCK000.plist" spriteFrameFormatter:@"IMG_STG_BLOCK000_GROUND%02d.png"];
 	[blockItem_ addBackBlockWithFile:@"IMG_STG_BLOCK000.plist" spriteFrameFormatter:@"IMG_STG_BLOCK000_BACK%02d.png"];
+	[blockItem_ setLayoutPatternTexture:backPattern_];
 	[[stage block] addBlockItem:blockItem_]; //first record being default block.
+	
+	CMMStageBlockItem *linkBlockItem_ = [CMMStageBlockItem blockItem];
+	[linkBlockItem_ setBlockType:CMMBlockType_filledDown];
+	[linkBlockItem_ setDrawEdge:YES];
+	[linkBlockItem_ addGroundBlockWithFile:@"IMG_STG_BLOCK000.plist" spriteFrameFormatter:@"IMG_STG_BLOCK000_GROUND%02d.png"];
+	[linkBlockItem_ addBackBlockWithFile:@"IMG_STG_BLOCK000.plist" spriteFrameFormatter:@"IMG_STG_BLOCK000_BACK%02d.png"];
+	[linkBlockItem_ setLayoutPatternTexture:backPattern_];
+	[blockItem_ addLinkBlockItem:linkBlockItem_];
 	
 	blockItem_ = [CMMStageBlockItem blockItem];
 	[blockItem_ setBlockType:CMMBlockType_filledDown];
@@ -601,6 +625,7 @@
 	[blockItem_ setPickupRatio:0.7f]; // you can change pickup ratio of block item
 	[blockItem_ addGroundBlockWithFile:@"IMG_STG_BLOCK001.plist" spriteFrameFormatter:@"IMG_STG_BLOCK001_GROUND%02d.png"];
 	[blockItem_ addBackBlockWithFile:@"IMG_STG_BLOCK001.plist" spriteFrameFormatter:@"IMG_STG_BLOCK001_BACK%02d.png"];
+	[blockItem_ setLayoutPatternTexture:backPattern_];
 	[[stage block] addBlockItem:blockItem_];
 	
 	blockItem_ = [CMMStageBlockItem blockItem];
@@ -610,6 +635,7 @@
 	[blockItem_ setPickupRatio:0.6f];
 	[blockItem_ addGroundBlockWithFile:@"IMG_STG_BLOCK002.plist" spriteFrameFormatter:@"IMG_STG_BLOCK002_GROUND%02d.png"];
 	[blockItem_ addBackBlockWithFile:@"IMG_STG_BLOCK002.plist" spriteFrameFormatter:@"IMG_STG_BLOCK002_BACK%02d.png"];
+	[blockItem_ setLayoutPatternTexture:backPattern_];
 	[[stage block] addBlockItem:blockItem_];
 	
 	blockItem_ = [CMMStageBlockItem blockItem];
@@ -619,6 +645,7 @@
 	[blockItem_ setPickupRatio:0.5f];
 	[blockItem_ setBlockPhysicalSpec:CMMSBlockObjectPhysicalSpec(0.3f, 0.8f, 1.0f)]; // you can setting physical spec per block item.
 	[blockItem_ addGroundBlockWithFile:@"IMG_STG_BLOCK002.plist" spriteFrameFormatter:@"IMG_STG_BLOCK002_GROUND%02d.png"];
+	[blockItem_ setLayoutPatternTexture:backPattern_];
 	[[stage block] addBlockItem:blockItem_];
 	
 	blockItem_ = [CMMStageBlockItem blockItem];
@@ -629,6 +656,7 @@
 	[blockItem_ setBlockCountRange:NSRangeMake(2, 4)];
 	[blockItem_ setBlockPhysicalSpec:CMMSBlockObjectPhysicalSpec(0.3f, 0.8f, 1.0f)];
 	[blockItem_ addGroundBlockWithFile:@"IMG_STG_BLOCK002.plist" spriteFrameFormatter:@"IMG_STG_BLOCK002_GROUND%02d.png"];
+	[blockItem_ setLayoutPatternTexture:backPattern_];
 	[[stage block] addBlockItem:blockItem_];
 	
 	//add ui
@@ -646,7 +674,7 @@
 	[[ui buttonB] setPushDelayTime:0.4f];
 	[self addChild:ui z:1];
 	
-	worldVelocityLabel = [CMMFontUtil labelWithstring:@" "];
+	worldVelocityLabel = [CMMFontUtil labelWithString:@" "];
 	[worldVelocityLabel setPosition:ccp(contentSize_.width/2.0f, contentSize_.height/2.0f+50.0f)];
 	[self addChild:worldVelocityLabel z:9];
 	

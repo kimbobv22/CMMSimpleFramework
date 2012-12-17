@@ -88,7 +88,7 @@
 
 
 @implementation CMMSObject
-@synthesize objectTag,spec,state,body,b2CMask,stage,obatchNode;
+@synthesize objectTag,spec,state,body,b2CMask,stage,obatchNode,addToBatchNode,callback_whenAddedToStage,callback_whenRemovedToStage;
 
 +(id)spriteWithObatchNode:(CMMSObjectBatchNode *)obatchNode_ rect:(CGRect)rect_{
 	return [[[self alloc] initWithObatchNode:obatchNode_ rect:rect_] autorelease];
@@ -105,6 +105,10 @@
 
 	[self buildupObject];
 	[self resetObject];
+	
+	addToBatchNode = NO;
+	callback_whenAddedToStage = nil;
+	callback_whenRemovedToStage = nil;
 	
 	return self;
 }
@@ -153,7 +157,15 @@
 -(void)whenContactEndedWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{}
 -(void)doContactWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_ interval:(ccTime)interval_{}
 
+-(void)cleanup{
+	[self setCallback_whenAddedToStage:nil];
+	[self setCallback_whenRemovedToStage:nil];
+	[super cleanup];
+}
+
 -(void)dealloc{
+	[callback_whenAddedToStage release];
+	[callback_whenRemovedToStage release];
 	[state release];
 	[spec release];
 	[super dealloc];
@@ -201,14 +213,21 @@
 
 -(void)whenAddedToStage{
 	[self buildupBody];
-	if(obatchNode){
+	if(obatchNode && addToBatchNode){
 		[self setBatchNode:obatchNode];
 		[obatchNode addChild:self];
 	}else{
 		[[stage world] addChild:self];
 	}
+	
+	if(callback_whenAddedToStage){
+		callback_whenAddedToStage(self, stage);
+	}
 }
 -(void)whenRemovedToStage{
+	if(callback_whenRemovedToStage){
+		callback_whenRemovedToStage(self, stage);
+	}
 	[[stage world] world]->DestroyBody(body);
 	body = NULL;
 	[parent_ removeChild:self cleanup:YES];

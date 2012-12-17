@@ -120,15 +120,6 @@
 
 @end
 
-@implementation CMMSBall(Stage)
-
--(void)whenAddedToStage{
-	[super whenAddedToStage];
-	[stage.stateView addStateView:[CMMSBallStateView stateViewWithTarget:self]];
-}
-
-@end
-
 @implementation CMMSBall(Box2d)
 
 -(void)buildupBody{

@@ -2,6 +2,7 @@
 
 #import "CMMDrawingManager.h"
 #import "CMMMenuItem.h"
+#import "CMMMenuItemSet.h"
 #import "CMMScrollMenu.h"
 #import "CMMSType.h"
 #import "CMMStage.h"
@@ -16,6 +17,8 @@
 #import "CMMSequenceMaker.h"
 #import "CMMSoundEngine.h"
 #import "CMMControlItemText.h"
+#import "CMMFontUtil.h"
+#import "CCSpriteBatchNode+SplitSprite.h"
 
 DEPRECATED_ATTRIBUTE static inline CGPoint cmmFuncCommon_position_center(CGRect parentRect_,CGRect targetRect_,CGPoint targetAPoint_){
 	return cmmFuncCommon_positionInParent(parentRect_, targetRect_, targetAPoint_, ccp(0.5f,0.5f));
@@ -43,6 +46,11 @@ UNAVAILABLE_ATTRIBUTE @protocol CMMApplicationProtocol <NSObject>
 @property (nonatomic, readwrite) ccColor3B transitionColor DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readwrite) ccTime fadeTime DEPRECATED_ATTRIBUTE;
 
+-(void)setIsTouchEnable:(BOOL)isTouchEnable_ DEPRECATED_ATTRIBUTE;
+
+-(void)closePopup:(CMMPopupLayer *)popup_ withData:(id)data_ DEPRECATED_ATTRIBUTE;
+-(void)closePopup:(CMMPopupLayer *)popup_ DEPRECATED_ATTRIBUTE;
+
 @end
 
 @interface CMMTouchDispatcher(Deprecated)
@@ -53,6 +61,31 @@ UNAVAILABLE_ATTRIBUTE @protocol CMMApplicationProtocol <NSObject>
 @end
 
 DEPRECATED_ATTRIBUTE @interface CMMTouchDispatcherScene : CMMTouchDispatcher
+
+@end
+
+DEPRECATED_ATTRIBUTE @interface CMMPopupDispatcherTemplate : NSObject
+
+-(void)startPopupWithPopupLayer:(CMMPopupLayer *)popupLayer_ DEPRECATED_ATTRIBUTE;
+-(void)endPopupWithPopupLayer:(CMMPopupLayer *)popupLayer_ callbackAction:(CCCallBlock *)callbackAction_ DEPRECATED_ATTRIBUTE;
+
+@end
+
+DEPRECATED_ATTRIBUTE @interface CMMPopupDispatcherTemplate_FadeInOut : NSObject{
+	GLubyte _orginalOpacity;
+	BOOL _orginalTouchEnable;
+}
+
+@end
+
+@interface CMMPopupDispatcher(Deprecated)
+
++(id)popupDispatcherWithScene:(CMMScene *)scene_ DEPRECATED_ATTRIBUTE;
+-(id)initWithScene:(CMMScene *)scene_ DEPRECATED_ATTRIBUTE;
+
+@property (nonatomic, assign) CMMScene *scene DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readonly) CMMPopupLayer *curPopup DEPRECATED_ATTRIBUTE;
+@property (nonatomic, retain) id popupTemplate DEPRECATED_ATTRIBUTE;
 
 @end
 
@@ -77,7 +110,19 @@ DEPRECATED_ATTRIBUTE @interface CMMLayerMaskDrag : CMMLayerMD
 
 @end
 
+@interface CMMLayerMD(Deprecated)
+
+@property (nonatomic, readwrite, getter = _isCanDragX) BOOL isCanDragX DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readwrite, getter = _isCanDragY) BOOL isCanDragY DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readwrite, getter = _isAlwaysShowScrollbar) BOOL isAlwaysShowScrollbar DEPRECATED_ATTRIBUTE;
+
+@end
+
 DEPRECATED_ATTRIBUTE @interface CMMLayerPinchZoom : CMMLayer
+
+@end
+
+DEPRECATED_ATTRIBUTE @interface CMMLayerPopup : CMMPopupLayer
 
 @end
 
@@ -152,6 +197,18 @@ DEPRECATED_ATTRIBUTE @interface CMMControlItemBatchBar : CMMSpriteBatchBar
 -(id)initWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_ DEPRECATED_ATTRIBUTE;
 -(id)initWithFrameSeq:(int)frameSeq_ DEPRECATED_ATTRIBUTE;
 
+@property (nonatomic, getter = _isEnable) BOOL isEnable DEPRECATED_ATTRIBUTE;
+
+@end
+
+DEPRECATED_ATTRIBUTE @interface CMMMenuItemLabelTTF : CMMMenuItemL
+
+@end
+
+@interface CMMMenuItemSet(Deprecated)
+
+@property (nonatomic, readwrite, getter = _isEnable) BOOL isEnable DEPRECATED_ATTRIBUTE;
+
 @end
 
 /*
@@ -198,11 +255,17 @@ DEPRECATED_ATTRIBUTE @interface CMMStageBackGround : NSObject{
 
 @interface CMMStage(Deprecated)
 
-+(id)stageWithStageSpecDef:(CMMStageDef)stageSpecDef_;
--(id)initWithStageSpecDef:(CMMStageDef)stageSpecDef_;
++(id)stageWithStageSpecDef:(CMMStageDef)stageSpecDef_ DEPRECATED_ATTRIBUTE;
+-(id)initWithStageSpecDef:(CMMStageDef)stageSpecDef_ DEPRECATED_ATTRIBUTE;
 
 @property (nonatomic, readwrite) BOOL isAllowTouch DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readonly) id backGround DEPRECATED_ATTRIBUTE;
+
+@end
+
+@interface CMMStageLightItem(Deprecated)
+
+@property (nonatomic, readwrite, getter = _isBlendColor) BOOL isBlendColor DEPRECATED_ATTRIBUTE;
 
 @end
 
@@ -225,24 +288,26 @@ DEPRECATED_ATTRIBUTE @interface CMMSParticleFollow : CMMSParticle
 
 @interface CMMStageTMX(Deprecated)
 
-+(id)stageWithStageSpecDef:(CMMStageDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_;
--(id)initWithStageSpecDef:(CMMStageDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_;
++(id)stageWithStageSpecDef:(CMMStageDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_ DEPRECATED_ATTRIBUTE;
+-(id)initWithStageSpecDef:(CMMStageDef)stageSpecDef_ tmxFileName:(NSString *)tmxFileName_ isInDocument:(BOOL)isInDocument_ DEPRECATED_ATTRIBUTE;
 
 @end
 
 @interface CMMStagePXL(Deprecated)
 
-+(id)stageWithStageSpecDef:(CMMStageDef)stageSpecDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
--(id)initWithStageSpecDef:(CMMStageDef)stageSpecDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
++(id)stageWithStageSpecDef:(CMMStageDef)stageSpecDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ DEPRECATED_ATTRIBUTE;
+-(id)initWithStageSpecDef:(CMMStageDef)stageSpecDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ DEPRECATED_ATTRIBUTE;
+
+@property (nonatomic, readwrite, getter = _isInDocument) BOOL isInDocument DEPRECATED_ATTRIBUTE;
 
 @end
 
 @interface CMMSSpecStage(Deprecated)
 
-+(id)specWithTarget:(id)target_ withStageSpecDef:(CMMStageDef)stageSpecDef_;
--(id)initWithTarget:(id)target_ withStageSpecDef:(CMMStageDef)stageSpecDef_;
++(id)specWithTarget:(id)target_ withStageSpecDef:(CMMStageDef)stageSpecDef_ DEPRECATED_ATTRIBUTE;
+-(id)initWithTarget:(id)target_ withStageSpecDef:(CMMStageDef)stageSpecDef_ DEPRECATED_ATTRIBUTE;
 
--(void)applyWithStageSpecDef:(CMMStageDef)stageSpecDef_;
+-(void)applyWithStageSpecDef:(CMMStageDef)stageSpecDef_ DEPRECATED_ATTRIBUTE;
 
 @end
 
@@ -275,10 +340,29 @@ DEPRECATED_ATTRIBUTE @interface CMMSoundHandlerItemFollow : CMMSoundHandlerItem
 
 @interface CMMSoundHandler(Deprecated)
 
--(CMMSoundHandlerItem *)addSoundItem:(NSString*)soundPath_ soundPoint:(CGPoint)soundPoint_;
--(CMMSoundHandlerItem *)addSoundItem:(NSString*)soundPath_;
+-(CMMSoundHandlerItem *)addSoundItem:(NSString*)soundPath_ soundPoint:(CGPoint)soundPoint_ DEPRECATED_ATTRIBUTE;
+-(CMMSoundHandlerItem *)addSoundItem:(NSString*)soundPath_ DEPRECATED_ATTRIBUTE;
 
 -(CMMSoundHandlerItemFollow *)addSoundItemFollow:(NSString*)soundPath_ trackNode:(CCNode *)trackNode_ DEPRECATED_ATTRIBUTE;
 -(CMMSoundHandlerItem *)cachedSoundItem:(CMMSoundHandlerItemType)soundItemType_ DEPRECATED_ATTRIBUTE;
+
+@end
+
+@interface CMMFontUtil(Deprecated)
+
++(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ lineBreakMode:(CCLineBreakMode)lineBreakMode_ fontName:(NSString*)fontName_ DEPRECATED_ATTRIBUTE;
++(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ lineBreakMode:(CCLineBreakMode)lineBreakMode_ DEPRECATED_ATTRIBUTE;
++(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ DEPRECATED_ATTRIBUTE;
++(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ DEPRECATED_ATTRIBUTE;
++(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ DEPRECATED_ATTRIBUTE;
++(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ DEPRECATED_ATTRIBUTE;
++(CCLabelTTF *)labelWithstring:(NSString *)string_ DEPRECATED_ATTRIBUTE;
+
+@end
+
+@interface CCSpriteBatchNode(Deprecated)
+
+-(CCSprite *)addSplitSpriteToRect:(CGRect)rect_ blendFunc:(ccBlendFunc)tBlendFunc_ DEPRECATED_ATTRIBUTE;
+-(void)addSplitSprite:(CGSize)splitUnit_ blendFunc:(ccBlendFunc)tBlendFunc_ DEPRECATED_ATTRIBUTE;
 
 @end

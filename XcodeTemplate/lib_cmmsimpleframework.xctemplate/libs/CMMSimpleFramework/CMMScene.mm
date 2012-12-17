@@ -93,7 +93,6 @@ static CMMScene *_sharedScene_ = nil;
 }
 -(void)transition002{
 	CMMSceneStaticLayerItem *staticLayerItem_ = [self staticLayerItemAtIndex:[self indexOfStaticLayerItemWithLayer:runningLayer]];
-	
 	BOOL doLoadSequence_ = !staticLayerItem_ || (staticLayerItem_ && [staticLayerItem_ isFirstLoad]);
 	if(doLoadSequence_){
 		[_preSequencer setDelegate:self];
@@ -101,8 +100,7 @@ static CMMScene *_sharedScene_ = nil;
 		if(cmmFuncCommon_respondsToSelector(runningLayer, @selector(sceneDidStartLoading:))){
 			[runningLayer sceneDidStartLoading:self];
 		}
-	}else if(staticLayerItem_){
-		[staticLayerItem_ setIsFirstLoad:NO];
+	}else{
 		[self sequenceMakerDidEnd:_preSequencer];
 	}
 }
@@ -112,11 +110,18 @@ static CMMScene *_sharedScene_ = nil;
 	[transitionLayer removeFromParentAndCleanup:YES];
 	[runningLayer setIsTouchEnabled:YES];
 	isOnTransition = NO;
-	if(cmmFuncCommon_respondsToSelector(runningLayer, @selector(sceneDidEndLoading:))){
+	
+	CMMSceneStaticLayerItem *staticLayerItem_ = [self staticLayerItemAtIndex:[self indexOfStaticLayerItemWithLayer:runningLayer]];
+	BOOL doLoadSequence_ = !staticLayerItem_ || (staticLayerItem_ && [staticLayerItem_ isFirstLoad]);
+	if(doLoadSequence_ && cmmFuncCommon_respondsToSelector(runningLayer, @selector(sceneDidEndLoading:))){
 		[runningLayer sceneDidEndLoading:self];
 	}
 	if([_pushLayerList count]>0)
 		[self startTransition];
+	
+	if(staticLayerItem_){
+		[staticLayerItem_ setIsFirstLoad:NO];
+	}
 }
 
 -(void)sequenceMaker:(CMMSequenceMaker *)sequenceMaker_ didChangeSequence:(uint)curSequence_ sequenceCount:(uint)sequenceCount_{
@@ -128,7 +133,7 @@ static CMMScene *_sharedScene_ = nil;
 @end
 
 @implementation CMMScene
-@synthesize runningLayer,transitionLayer,isOnTransition,staticLayerItemList,countOfStaticLayerItem,touchDispatcher,popupDispatcher,noticeDispatcher,isTouchEnable;
+@synthesize runningLayer,transitionLayer,isOnTransition,staticLayerItemList,countOfStaticLayerItem,touchDispatcher,popupDispatcher,noticeDispatcher,touchEnable,defaultBackGroundNode;
 
 +(CMMScene *)sharedScene{
 	if(!_sharedScene_){
@@ -153,16 +158,28 @@ static CMMScene *_sharedScene_ = nil;
 	_preSequencer = [[CMMSequenceMakerAuto alloc] init];
 	[_preSequencer setSequenceMethodFormatter:@"sceneLoadingProcess%03d"];
 	touchDispatcher = [[CMMTouchDispatcher alloc] initWithTarget:self];
-	popupDispatcher = [[CMMPopupDispatcher alloc] initWithScene:self];
+	popupDispatcher = [[CMMPopupDispatcher alloc] initWithTarget:self];
 	noticeDispatcher = [[CMMNoticeDispatcher alloc] initWithTarget:self];
 	
-	isTouchEnable = YES;
+	touchEnable = YES;
 
 	return self;
 }
 
 -(uint)countOfStaticLayerItem{
 	return [staticLayerItemList count];
+}
+
+-(void)setDefaultBackGroundNode:(CCNode *)defaultBackGroundNode_{
+	if(defaultBackGroundNode == defaultBackGroundNode_) return;
+	if(defaultBackGroundNode){
+		[self removeChild:defaultBackGroundNode cleanup:YES];
+	}
+	
+	defaultBackGroundNode = defaultBackGroundNode_;
+	if(defaultBackGroundNode){
+		[self addChild:defaultBackGroundNode z:-1];
+	}
 }
 
 #if COCOS2D_DEBUG >= 1
@@ -187,7 +204,7 @@ static CMMScene *_sharedScene_ = nil;
 #endif
 
 -(void)glView:(CMMGLView *)glView_ whenTouchesBegan:(NSSet *)touches_ event:(UIEvent *)event_{
-	if(isOnTransition || !runningLayer || !isTouchEnable) return;
+	if(isOnTransition || !runningLayer || !touchEnable) return;
 	[touchDispatcher whenTouchesBeganFromScene:touches_ event:event_];
 }
 -(void)glView:(CMMGLView *)glView_ whenTouchesMoved:(NSSet *)touches_ event:(UIEvent *)event_{
@@ -300,18 +317,11 @@ static CMMScene *_sharedScene_ = nil;
 
 @implementation CMMScene(Popup)
 
--(void)openPopup:(CMMLayerPopup *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_{
+-(void)openPopup:(CMMPopupLayer *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_{
 	[popupDispatcher addPopupItemWithPopup:popup_ delegate:delegate_];
 }
--(void)openPopupAtFirst:(CMMLayerPopup *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_{
+-(void)openPopupAtFirst:(CMMPopupLayer *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_{
 	[popupDispatcher addPopupItemWithPopup:popup_ delegate:delegate_ atIndex:0];
-}
-
--(void)closePopup:(CMMLayerPopup *)popup_ withData:(id)data_{
-	[popupDispatcher removePopupItemAtPopup:popup_ withData:data_];
-}
--(void)closePopup:(CMMLayerPopup *)popup_{
-	[self closePopup:popup_ withData:nil];
 }
 
 @end

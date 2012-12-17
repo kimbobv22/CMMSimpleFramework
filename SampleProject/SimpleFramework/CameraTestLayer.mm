@@ -8,7 +8,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	CMMMenuItemLabelTTF *menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	CMMMenuItemL *menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"BACK"];
 	menuItemBtn_.position = ccp(menuItemBtn_.contentSize.width/2,menuItemBtn_.contentSize.height/2);
 	menuItemBtn_.callback_pushup = ^(id sender_){
@@ -16,7 +16,7 @@
 	};
 	[self addChild:menuItemBtn_];
 	
-	menuItemBtn_ = [CMMMenuItemLabelTTF menuItemWithFrameSeq:0 batchBarSeq:0];
+	menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"CAMERA"];
 	menuItemBtn_.position = ccp(contentSize_.width-menuItemBtn_.contentSize.width/2,menuItemBtn_.contentSize.height/2);
 	menuItemBtn_.callback_pushup = ^(id sender_){
@@ -25,7 +25,7 @@
 	[self addChild:menuItemBtn_];
 	
 	if(TARGET_IPHONE_SIMULATOR){
-		CCLabelTTF *noticeLabel_ = [CMMFontUtil labelWithstring:@"Simulator not supported camera. support photo library only"];
+		CCLabelTTF *noticeLabel_ = [CMMFontUtil labelWithString:@"Simulator not supported camera. support photo library only"];
 		[noticeLabel_ setPosition:cmmFuncCommon_positionInParent(self, noticeLabel_)];
 		[self addChild:noticeLabel_];
 	}

@@ -2,8 +2,8 @@
 
 #import "CMMType.h"
 #import "CMMGLView.h"
-#import "CMMLayerPopup.h"
 #import "CMMTouchDispatcher.h"
+#import "CMMPopupDispatcher.h"
 #import "CMMNoticeDispatcher.h"
 #import "CMMSequenceMaker.h"
 
@@ -63,7 +63,9 @@
 	CMMPopupDispatcher *popupDispatcher;
 	CMMNoticeDispatcher *noticeDispatcher;
 	
-	BOOL isTouchEnable;
+	BOOL touchEnable;
+	
+	CCNode *defaultBackGroundNode;
 }
 
 +(CMMScene *)sharedScene;
@@ -78,7 +80,8 @@
 @property (nonatomic, readonly) CMMTouchDispatcher *touchDispatcher;
 @property (nonatomic, readonly) CMMPopupDispatcher *popupDispatcher;
 @property (nonatomic, readonly) CMMNoticeDispatcher *noticeDispatcher;
-@property (nonatomic, readwrite) BOOL isTouchEnable;
+@property (nonatomic, readwrite, getter = isTouchEnable) BOOL touchEnable;
+@property (nonatomic, assign) CCNode *defaultBackGroundNode;
 
 @end
 
@@ -107,11 +110,8 @@
 
 @interface CMMScene(Popup)
 
--(void)openPopup:(CMMLayerPopup *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_;
--(void)openPopupAtFirst:(CMMLayerPopup *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_;
-
--(void)closePopup:(CMMLayerPopup *)popup_ withData:(id)data_;
--(void)closePopup:(CMMLayerPopup *)popup_;
+-(void)openPopup:(CMMPopupLayer *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_;
+-(void)openPopupAtFirst:(CMMPopupLayer *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_;
 
 @end
 

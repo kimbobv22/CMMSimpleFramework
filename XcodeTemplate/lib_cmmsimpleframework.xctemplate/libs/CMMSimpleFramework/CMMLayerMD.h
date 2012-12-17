@@ -17,7 +17,7 @@ struct CMMLayerMDScrollbar{
 	CMMTouchState touchState;
 	CMMLayerMDScrollbar scrollbar;
 	
-	BOOL isCanDragX,isCanDragY,isAlwaysShowScrollbar,_doShowScrollbar;
+	BOOL canDragX,canDragY,alwaysShowScrollbar,_doShowScrollbar;
 	float dragSpeed,_curScrollSpeedX,_curScrollSpeedY;
 	
 	CGPoint _innerLayerBeforePoint;
@@ -25,7 +25,9 @@ struct CMMLayerMDScrollbar{
 
 @property (nonatomic, readwrite) CMMTouchState touchState;
 @property (nonatomic, readwrite) CMMLayerMDScrollbar scrollbar;
-@property (nonatomic, readwrite) BOOL isCanDragX,isCanDragY,isAlwaysShowScrollbar;
+@property (nonatomic, readwrite, getter = isCanDragX) BOOL canDragX;
+@property (nonatomic, readwrite, getter = isCanDragY) BOOL canDragY;
+@property (nonatomic, readwrite, getter = isAlwaysShowScrollbar) BOOL alwaysShowScrollbar;
 @property (nonatomic, readwrite) float dragSpeed;
 
 @end

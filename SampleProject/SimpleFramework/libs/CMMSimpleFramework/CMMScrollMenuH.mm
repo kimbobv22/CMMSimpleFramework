@@ -39,7 +39,7 @@
 	isSnapAtItem = YES;
 	fouceItemScale = nonefouceItemScale = 1.0f;
 	minScrollAccelToSnap = 10.0f;
-	[super setIsCanDragX:YES];
+	[super setCanDragX:YES];
 	
 	return self;
 }

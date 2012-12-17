@@ -77,7 +77,7 @@ typedef enum{
 	CMMNoticePositionType noticePositionType;
 	CGPoint noticePosition;
 
-	BOOL _isOnNotice;
+	BOOL _onNotice;
 }
 
 +(id)noticeWithTarget:(CCNode *)target_;
