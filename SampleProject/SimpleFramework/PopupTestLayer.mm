@@ -24,7 +24,7 @@ static int _testPopupCount_ = 1;
 	btnPopup = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[btnPopup setCallback_pushup:^(id) {
 		_testPopupCount_++;
-		[[CMMScene sharedScene] openPopupAtFirst:[TestPopup node] delegate:nil];
+		[[CMMScene sharedScene] openPopupAtFirst:[TestPopup node]];
 	}];
 	[btnPopup setTitle:@"POPUP AGAIN!"];
 	btnPopup.position = ccp(MIN(MAX(arc4random()%(int)self.contentSize.width,btnPopup.contentSize.width/2),self.contentSize.width-btnPopup.contentSize.width/2),self.contentSize.height/2+80);
@@ -32,7 +32,7 @@ static int _testPopupCount_ = 1;
 	
 	btnClose = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[btnClose setCallback_pushup:^(id) {
-		[self closeWithSendData:[NSString stringWithFormat:@"total popup count : %d",_testPopupCount_]];
+		[self close];
 	}];
 	[btnClose setTitle:@"CLOSE"];
 	btnClose.position = ccp(self.contentSize.width/2,self.contentSize.height/2-80);
@@ -62,11 +62,7 @@ static int _testPopupCount_ = 1;
 	menuItemOpen = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemOpen setTitle:@"OPEN POPUP"];
 	[menuItemOpen setCallback_pushup:^(id) {
-		//popup test
-		[testLabel setString:@" "];
-		_testPopupCount_ = 1;
-		TestPopup *popup_ = [TestPopup node];
-		[[CMMScene sharedScene] openPopup:popup_ delegate:self];
+		[self openTestingPopup];
 	}];
 	menuItemOpen.position = ccp(self.contentSize.width/2,self.contentSize.height/2);
 	[self addChild:menuItemOpen];
@@ -87,11 +83,33 @@ static int _testPopupCount_ = 1;
 	return self;
 }
 
--(void)popupDispatcher:(CMMPopupDispatcher *)popupDispatcher_ didOpenPopup:(CMMPopupLayer *)popup_{
-	CCLOG(@"open popup!");
-}
--(void)popupDispatcher:(CMMPopupDispatcher *)popupDispatcher_ didClosePopup:(CMMPopupLayer *)popup_ withReceivedData:(id)data_{
-	[testLabel setString:data_];
+-(void)openTestingPopup{
+	[testLabel setString:@" "];
+	_testPopupCount_ = 1;
+	TestPopup *popup_ = [TestPopup node];
+	
+	//when closed
+	[popup_ setCallback_didClose:^(CMMPopupLayer *popup_) {
+		CCLOG(@"Popup closed!");
+		[testLabel setString:[NSString stringWithFormat:@"opened popup total count : %d",_testPopupCount_]];
+	}];
+	
+	//when opened
+	[popup_ setCallback_didOpen:^(CMMPopupLayer *popup_) {
+		CCLOG(@"Popup opened!");
+	}];
+	
+	//become Head popup
+	[popup_ setCallback_becomeHeadPopup:^(CMMPopupLayer *popup_) {
+		CCLOG(@"become Head!");
+	}];
+	
+	//resign Head popup
+	[popup_ setCallback_resignHeadPopup:^(CMMPopupLayer *popup_) {
+		CCLOG(@"resign Head!");
+	}];
+	
+	[[CMMScene sharedScene] openPopup:popup_];
 }
 
 @end

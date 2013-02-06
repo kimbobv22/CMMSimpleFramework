@@ -53,7 +53,9 @@
 	tempButton_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[tempButton_ setTitle:@"do Notice!"];
 	tempButton_.callback_pushup = ^(CMMMenuItem *menuItem_){
-		[[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:@"Hello world :)" subject:@"Welcome to CMMSimpleFramework!"];
+		[[[CMMScene sharedScene] noticeDispatcher] addNoticeItemWithTitle:@"Hello world :)" subject:@"Welcome to CMMSimpleFramework!" block:^(CMMNoticeDispatcherItem *sender_) {
+			CCLOG(@"notice completed!");
+		}];
 	};
 	tempPoint_ = cmmFuncCommon_positionInParent(self, tempLabel_);
 	tempPoint_.y -= 70;

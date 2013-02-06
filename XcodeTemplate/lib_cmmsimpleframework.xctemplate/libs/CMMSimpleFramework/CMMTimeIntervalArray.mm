@@ -3,7 +3,7 @@
 #import "CMMTimeIntervalArray.h"
 
 @implementation CMMTimeIntervalArray
-@synthesize createList,destroyList,filter_whenAddedObject,filter_whenRemovedObject,callback_whenAddedObject,callback_whenRemovedObject;
+@synthesize createList,destroyList,callback_whenObjectsAdded,callback_whenObjectsRemoved;
 
 -(id)initWithCapacity:(NSUInteger)capacity{
 	if(!(self = [super initWithCapacity:capacity])) return self;
@@ -19,13 +19,9 @@
 	uint count_ = data_->num;
 	for(uint index_=0;index_<count_;++index_){
 		[super removeObject:data_->arr[index_]];
-	
-		if(filter_whenRemovedObject){
-			filter_whenRemovedObject(data_->arr[index_]);
-		}
 	}
-	if(callback_whenRemovedObject){
-		callback_whenRemovedObject(destroyList);
+	if(callback_whenObjectsRemoved){
+		callback_whenObjectsRemoved(destroyList);
 	}
 	[destroyList removeAllObjects];
 	
@@ -33,13 +29,9 @@
 	count_ = data_->num;
 	for(uint index_=0;index_<count_;++index_){
 		[super addObject:data_->arr[index_]];
-		
-		if(filter_whenAddedObject){
-			filter_whenAddedObject(data_->arr[index_]);
-		}
 	}
-	if(callback_whenAddedObject){
-		callback_whenAddedObject(createList);
+	if(callback_whenObjectsAdded){
+		callback_whenObjectsAdded(createList);
 	}
 	[createList removeAllObjects];
 }
@@ -100,10 +92,8 @@
 }
 
 -(void)dealloc{
-	[callback_whenRemovedObject release];
-	[callback_whenAddedObject release];
-	[filter_whenAddedObject release];
-	[filter_whenRemovedObject release];
+	[callback_whenObjectsAdded release];
+	[callback_whenObjectsRemoved release];
 	[createList release];
 	[destroyList release];
 	[super dealloc];

@@ -9,7 +9,7 @@
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	innerLayer = [CMMLayer layerWithColor:ccc4(0, 0, 0, 0)];
-	[innerLayer setContentSize:contentSize_];
+	[innerLayer setContentSize:_contentSize];
 	innerTouchDispatcher = [innerLayer touchDispatcher]; //weak ref
 	[self addChild:innerLayer];
 	
@@ -62,8 +62,8 @@
 	
 	glDisable(GL_SCISSOR_TEST);
 	
-	if(children_){
-		data_ = children_->data;
+	if(_children){
+		data_ = _children->data;
 		count_ = data_->num;
 		for(uint index_=0;index_<count_;++index_){
 			CCNode *child_ = data_->arr[index_];
@@ -76,9 +76,9 @@
 }
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
-	[innerLayer setIsTouchEnabled:NO];
+	[innerLayer setTouchEnabled:NO];
 	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
-	[innerLayer setIsTouchEnabled:YES];
+	[innerLayer setTouchEnabled:YES];
 	if([touchDispatcher touchCount] == 0){
 		[touchDispatcher addTouchItemWithTouch:touch_ node:innerLayer];
 		[innerLayer touchDispatcher:touchDispatcher whenTouchBegan:touch_ event:event_];

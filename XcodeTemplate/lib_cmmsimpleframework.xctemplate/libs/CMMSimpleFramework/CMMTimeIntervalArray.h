@@ -4,13 +4,15 @@
 
 @interface CMMTimeIntervalArray : CCArray{
 	CCArray *createList,*destroyList;
-	void (^filter_whenAddedObject)(id object_),(^filter_whenRemovedObject)(id object_),
-	(^callback_whenAddedObject)(CCArray *objects_),(^callback_whenRemovedObject)(CCArray *objects_);
+	void (^callback_whenObjectsAdded)(CCArray *),(^callback_whenObjectsRemoved)(CCArray *);
 }
 
 -(void)step;
 
 @property (nonatomic, readonly) CCArray *createList,*destroyList;
-@property (nonatomic, copy) void (^filter_whenAddedObject)(id object_),(^filter_whenRemovedObject)(id object_),(^callback_whenAddedObject)(CCArray *objects_),(^callback_whenRemovedObject)(CCArray *objects_);
+@property (nonatomic, copy) void (^callback_whenObjectsAdded)(CCArray *),(^callback_whenObjectsRemoved)(CCArray *);
+
+-(void)setCallback_whenObjectsAdded:(void (^)(CCArray *objects_))block_;
+-(void)setCallback_whenObjectsRemoved:(void (^)(CCArray *objects_))block_;
 
 @end

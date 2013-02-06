@@ -48,14 +48,14 @@ void GLESDebugDraw::initShader( void )
 {
 	mShaderProgram = [[CCShaderCache sharedShaderCache] programForKey:kCCShader_Position_uColor];
 	
-	mColorLocation = glGetUniformLocation( mShaderProgram->program_, "u_color");
+	mColorLocation = glGetUniformLocation( mShaderProgram->_program, "u_color");
 }
 
 void GLESDebugDraw::DrawPolygon(const b2Vec2* old_vertices, int32 vertexCount, const b2Color& color)
 {
 	[mShaderProgram use];
 	[mShaderProgram setUniformsForBuiltins];
-	
+
 	ccVertex2F vertices[vertexCount];
 
 	for( int i=0;i<vertexCount;i++) {

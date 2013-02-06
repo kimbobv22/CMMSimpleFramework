@@ -94,8 +94,8 @@
 }
 
 -(void)arrangePosition{
-	labelTitle.position = ccp(labelTitle.contentSize.width/2+20.0f,contentSize_.height-labelTitle.contentSize.height/2.0f);
-	labelSubject.position = ccp(contentSize_.width/2.0f,contentSize_.height/2.0f-10.0f);
+	labelTitle.position = ccp(labelTitle.contentSize.width/2+20.0f,_contentSize.height-labelTitle.contentSize.height/2.0f);
+	labelSubject.position = ccp(_contentSize.width/2.0f,_contentSize.height/2.0f-10.0f);
 }
 -(void)resetTemplate{
 	[self setColor:ccc3(80, 80, 80)];
@@ -149,7 +149,7 @@
 -(id)initWithNoticeDispatcher:(CMMNoticeDispatcher *)noticeDispatcher_{
 	if(!(self = [super initWithNoticeDispatcher:noticeDispatcher_])) return self;
 	
-	noticeAction = [[CCSequence actions:[CCSpawn actionOne:[CCFadeTo actionWithDuration:0.1f opacity:120.0f] two:[CCMoveBy actionWithDuration:0.2f position:ccp(0,-contentSize_.height)]],[CCDelayTime actionWithDuration:3.0f],[CCSpawn actionOne:[CCFadeTo actionWithDuration:0.1f opacity:0.0f] two:[CCMoveBy actionWithDuration:0.2f position:ccp(0,contentSize_.height)]], nil] retain];
+	noticeAction = [[CCSequence actions:[CCSpawn actionOne:[CCFadeTo actionWithDuration:0.1f opacity:120.0f] two:[CCMoveBy actionWithDuration:0.2f position:ccp(0,-_contentSize.height)]],[CCDelayTime actionWithDuration:3.0f],[CCSpawn actionOne:[CCFadeTo actionWithDuration:0.1f opacity:0.0f] two:[CCMoveBy actionWithDuration:0.2f position:ccp(0,_contentSize.height)]], nil] retain];
 	
 	return self;
 }
@@ -158,7 +158,7 @@
 	[super resetTemplate];
 	[self setOpacity:0.0f];
 	CGPoint targetPoint_ = self.position;
-	targetPoint_.y += contentSize_.height;
+	targetPoint_.y += _contentSize.height;
 	[self setPosition:targetPoint_];
 }
 
@@ -232,8 +232,8 @@ static CCArray *_cachedNoticeDispatcherItems_ = nil;
 	[noticeTemplate runAction:[CCSequence actionOne:noticeTemplate.noticeAction two:[CCCallFuncO actionWithTarget:self selector:@selector(_endNoticeWithNoticeItem:) object:noticeItem_]]];
 }
 -(void)_endNoticeWithNoticeItem:(CMMNoticeDispatcherItem *)noticeItem_{
-	if(noticeItem_.callback_notice)
-		noticeItem_.callback_notice(noticeItem_);
+	if([noticeItem_ callback_notice])
+		[noticeItem_ callback_notice](noticeItem_);
 	
 	[noticeItem_ setCallback_notice:nil];
 	[CMMNoticeDispatcher cacheNoticeItem:noticeItem_];
@@ -291,17 +291,21 @@ static CCArray *_cachedNoticeDispatcherItems_ = nil;
 	[itemList addObject:noticeItem_];
 	[self _startNotice];
 }
--(CMMNoticeDispatcherItem *)addNoticeItemWithTitle:(NSString *)title_ subject:(NSString *)subject_{
+-(CMMNoticeDispatcherItem *)addNoticeItemWithTitle:(NSString *)title_ subject:(NSString *)subject_ block:(void(^)(CMMNoticeDispatcherItem *sender_))block_{
 	CMMNoticeDispatcherItem *noticeItem_ = [CMMNoticeDispatcher cachedNoticeItem];
 	
 	if(!noticeItem_)
 		noticeItem_ = [CMMNoticeDispatcherItem noticeItemWithTitle:nil subject:nil];
 	
-	noticeItem_.title = title_;
-	noticeItem_.subject = subject_;
+	[noticeItem_ setTitle:title_];
+	[noticeItem_ setSubject:subject_];
+	[noticeItem_ setCallback_notice:block_];
 	
 	[self addNoticeItem:noticeItem_];
 	return noticeItem_;
+}
+-(CMMNoticeDispatcherItem *)addNoticeItemWithTitle:(NSString *)title_ subject:(NSString *)subject_{
+	return [self addNoticeItemWithTitle:title_ subject:subject_ block:nil];
 }
 
 -(void)dealloc{

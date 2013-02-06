@@ -18,7 +18,7 @@
 	
 	menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"CAMERA"];
-	menuItemBtn_.position = ccp(contentSize_.width-menuItemBtn_.contentSize.width/2,menuItemBtn_.contentSize.height/2);
+	menuItemBtn_.position = ccp(_contentSize.width-menuItemBtn_.contentSize.width/2,menuItemBtn_.contentSize.height/2);
 	menuItemBtn_.callback_pushup = ^(id sender_){
 		[[CMMCaremaManager sharedManager] openCameraWithSourceType:(TARGET_IPHONE_SIMULATOR ? UIImagePickerControllerSourceTypePhotoLibrary : UIImagePickerControllerSourceTypeCamera)];
 	};
@@ -33,12 +33,14 @@
 	[[CMMCaremaManager sharedManager] setDelegate:self];
 	[[CMMCaremaManager sharedManager] setImageLimitSize:CGSizeMake(100.0f, 100.0f)];
 	
-	CGSize stageSize_ = CGSizeSub(contentSize_, CGSizeMake(0, 50.0f));
+	CGSize stageSize_ = CGSizeSub(_contentSize, CGSizeMake(0, 50.0f));
 	stage = [CMMStage stageWithStageDef:CMMStageDefMake(stageSize_, stageSize_, CGPointZero)];
 	[stage setPosition:ccp(0,50.0f)];
 	[self addChild:stage];
 	
-	[[CMMMotionDispatcher sharedDispatcher] addTarget:self];
+	[[CMMMotionDispatcher sharedDispatcher] addMotionBlockForTarget:self block:^(CMMMotionState motionState_) {
+		[[stage spec] setGravity:ccp(motionState_.pitch*5.0f,motionState_.roll*5.0f)];
+	}];
 	
 	[self scheduleUpdate];
 	
@@ -51,19 +53,14 @@
 
 -(void)cameraManager:(CMMCaremaManager *)cameraManger_ whenReturnedImageTexture:(CCTexture2D *)imageTexture_{
 	CMMSObject *object_ = [CMMSObject spriteWithTexture:imageTexture_];
-	[object_ setPosition:[stage convertToStageWorldSpace:ccp(contentSize_.width/2.0f,contentSize_.height/2.0f)]];
+	[object_ setPosition:[stage convertToStageWorldSpace:ccp(_contentSize.width/2.0f,_contentSize.height/2.0f)]];
 	[[stage world] addObject:object_];
 }
 -(void)cameraManager_whenCancelled:(CMMCaremaManager *)cameraManger_{
 	CCLOG(@"cameraManager_whenCancelled");
 }
-
--(void)motionDispatcher:(CMMMotionDispatcher *)motionDispatcher_ updateMotion:(CMMMotionState)state_{
-	[stage.spec setGravity:ccp(state_.pitch*5.0f,state_.roll*5.0f)];
-}
-
 -(void)cleanup{
-	[[CMMMotionDispatcher sharedDispatcher] removeTarget:self];
+	[[CMMMotionDispatcher sharedDispatcher] removeMotionBlockForTarget:self];
 	[[CMMCaremaManager sharedManager] setDelegate:nil];
 	[super cleanup];
 }

@@ -4,7 +4,7 @@
 
 #define _HelloWorldLayer_key_ @"_HelloWorldLayer_static_key_"
 
-@interface HelloWorldLayer : CMMLayer<CMMSceneLoadingProtocol,CMMMenuItemDelegate>{
+@interface HelloWorldLayer : CMMLayer{
 	CMMScrollMenuV *mainMenu;
 	CCLabelTTF *connectionStatusLabel;
 }

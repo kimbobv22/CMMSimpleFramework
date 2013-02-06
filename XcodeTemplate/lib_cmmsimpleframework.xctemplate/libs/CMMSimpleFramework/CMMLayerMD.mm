@@ -46,14 +46,14 @@
 
 	CGSize innerLayerSize_ = [innerLayer contentSize];
 	
-	float hDiffRate_ = contentSize_.width/innerLayerSize_.width;
-	float vDiffRate_ = contentSize_.height/innerLayerSize_.height;
+	float hDiffRate_ = _contentSize.width/innerLayerSize_.width;
+	float vDiffRate_ = _contentSize.height/innerLayerSize_.height;
 	
-	float hScrollBarSize_ = contentSize_.width*hDiffRate_;
-	float vScrollBarSize_ = contentSize_.height*vDiffRate_;
+	float hScrollBarSize_ = _contentSize.width*hDiffRate_;
+	float vScrollBarSize_ = _contentSize.height*vDiffRate_;
 	
 	CGPoint hScrollPoint_ = ccp(-innerLayerPoint_.x*hDiffRate_,scrollbar.distanceY);
-	CGPoint vScrollPoint_ = ccp(contentSize_.width-scrollbar.distanceX,-innerLayerPoint_.y*vDiffRate_);
+	CGPoint vScrollPoint_ = ccp(_contentSize.width-scrollbar.distanceX,-innerLayerPoint_.y*vDiffRate_);
 	
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
@@ -78,7 +78,7 @@
 			CGPoint innerLayerPoint_ = innerLayerOrgPoint_;
 			CGPoint innerLayerAnchorPoint_ = [innerLayer anchorPoint];
 			CGSize innerLayerSize_ = [innerLayer contentSize];
-			CGSize innerLayerOffsetSize_ = CGSizeMake(innerLayerSize_.width*0.5f-contentSize_.width*0.5f, innerLayerSize_.height*0.5f-contentSize_.height*0.5f);
+			CGSize innerLayerOffsetSize_ = CGSizeMake(innerLayerSize_.width*0.5f-_contentSize.width*0.5f, innerLayerSize_.height*0.5f-_contentSize.height*0.5f);
 			CGPoint addPoint_ = CGPointZero;
 			innerLayerPoint_ = ccpSub(innerLayerPoint_, ccp((innerLayerSize_.width * innerLayerAnchorPoint_.x),(innerLayerSize_.height * innerLayerAnchorPoint_.y))); //set zero point.
 			innerLayerPoint_ = ccpAdd(innerLayerPoint_, ccpFromSize(innerLayerOffsetSize_)); //set center point
@@ -142,18 +142,18 @@
 			CGPoint innerLayerPoint_ = innerLayerOrgPoint_;
 			CGPoint innerLayerAnchorPoint_ = [innerLayer anchorPoint];
 			CGSize innerLayerSize_ = [innerLayer contentSize];
-			CGSize innerLayerOffsetSize_ = CGSizeMake(innerLayerSize_.width*0.5f-contentSize_.width*0.5f, innerLayerSize_.height*0.5f-contentSize_.height*0.5f);
+			CGSize innerLayerOffsetSize_ = CGSizeMake(innerLayerSize_.width*0.5f-_contentSize.width*0.5f, innerLayerSize_.height*0.5f-_contentSize.height*0.5f);
 			innerLayerPoint_ = ccpSub(innerLayerPoint_, ccp((innerLayerSize_.width * innerLayerAnchorPoint_.x),(innerLayerSize_.height * innerLayerAnchorPoint_.y))); //set zero point.
 			innerLayerPoint_ = ccpAdd(innerLayerPoint_, ccpFromSize(innerLayerOffsetSize_)); //set center point
 			
 			float tempABSValue_ = ABS(innerLayerPoint_.x+addPoint_.x);
 			if(tempABSValue_>innerLayerOffsetSize_.width){
-				addPoint_.x *= MAX(0.8f - (tempABSValue_ - innerLayerOffsetSize_.width) / contentSize_.width,0.0f);
+				addPoint_.x *= MAX(0.8f - (tempABSValue_ - innerLayerOffsetSize_.width) / _contentSize.width,0.0f);
 			}
 			
 			tempABSValue_ = ABS(innerLayerPoint_.y+addPoint_.y);
 			if(tempABSValue_>innerLayerOffsetSize_.height){
-				addPoint_.y *= MAX(0.8f - (tempABSValue_ - innerLayerOffsetSize_.height) / contentSize_.height,0.0f);
+				addPoint_.y *= MAX(0.8f - (tempABSValue_ - innerLayerOffsetSize_.height) / _contentSize.height,0.0f);
 			}
 			
 			[innerLayer setPosition:ccpAdd(innerLayerOrgPoint_, addPoint_)];
@@ -179,7 +179,7 @@
 @implementation CMMLayerMD(ViewControl)
 
 -(void)gotoTop{
-	[innerLayer setPosition:ccp(innerLayer.position.x,-innerLayer.contentSize.height+contentSize_.height)];
+	[innerLayer setPosition:ccp(innerLayer.position.x,-innerLayer.contentSize.height+_contentSize.height)];
 }
 -(void)gotoBottom{
 	[innerLayer setPosition:ccp(innerLayer.position.x,0)];
@@ -189,7 +189,7 @@
 	[innerLayer setPosition:ccp(0,innerLayer.position.y)];
 }
 -(void)gotoRight{
-	[innerLayer setPosition:ccp(-innerLayer.contentSize.width+contentSize_.width,innerLayer.position.y)];
+	[innerLayer setPosition:ccp(-innerLayer.contentSize.width+_contentSize.width,innerLayer.position.y)];
 }
 
 @end

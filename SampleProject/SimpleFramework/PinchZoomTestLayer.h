@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface PinchZoomTestLayer : CMMLayer<CMMSceneLoadingProtocol>{
+@interface PinchZoomTestLayer : CMMLayer{
 	CMMSprite *tempSprite;
 	float _targetScale;
 }

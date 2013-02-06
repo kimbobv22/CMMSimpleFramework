@@ -35,7 +35,7 @@
 @end
 
 @implementation CMMMenuItem
-@synthesize key,userData,normalImage,selectedImage,delegate,enable,onSelect,callback_pushdown,callback_pushup,callback_pushcancel,pushDownAction,pushUpAction;
+@synthesize key,userData,normalImage,selectedImage,enable,onSelect,filter_canSelectItem,callback_pushdown,callback_pushup,callback_pushcancel,pushDownAction,pushUpAction;
 
 +(id)menuItemWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ frameSize:(CGSize)frameSize_{
 	return [[[self alloc] initWithFrameSeq:frameSeq_ batchBarSeq:batchBarSeq_ frameSize:frameSize_] autorelease];
@@ -51,10 +51,9 @@
 	
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
 	
-	key = userData = nil;
+	key = nil;
 	normalImage = [[CCSprite alloc] initWithTexture:texture rect:rect];
 	selectedImage = [[CCSprite alloc] initWithTexture:texture rect:rect];
-	delegate = nil;
 	touchCancelDistance = 30.0f;
 	enable = YES;
 	onSelect = NO;
@@ -98,7 +97,7 @@
 }
 
 -(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
-	return enable;
+	return enable && (!filter_canSelectItem || filter_canSelectItem(self));
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
@@ -126,8 +125,6 @@
 	[callback_pushcancel release];
 	callback_pushcancel = nil;
 	
-	delegate = nil;
-	
 	[super cleanup];
 }
 
@@ -140,7 +137,6 @@
 	[pushUpAction release];
 	[pushDownAction release];
 	[key release];
-	[userData release];
 	[super dealloc];
 }
 
@@ -151,21 +147,16 @@
 -(void)callCallback_pushdown{
 	if(callback_pushdown){
 		callback_pushdown(self);
-	}else if(cmmFuncCommon_respondsToSelector(delegate,@selector(menuItem_whenPushdown:)))
-		[delegate menuItem_whenPushdown:self];
+	}
 }
 -(void)callCallback_pushup{
 	if(callback_pushup){
 		callback_pushup(self);
-	}else if(cmmFuncCommon_respondsToSelector(delegate,@selector(menuItem_whenPushup:))){
-		[delegate menuItem_whenPushup:self];
 	}
 }
 -(void)callCallback_pushcancel{
 	if(callback_pushcancel){
 		callback_pushcancel(self);
-	}else if(cmmFuncCommon_respondsToSelector(delegate,@selector(menuItem_whenPushcancel:))){
-		[delegate menuItem_whenPushcancel:self];
 	}
 }
 
@@ -211,14 +202,14 @@
 	
 	switch(titleAlign){
 		case kCCTextAlignmentLeft:
-			targetPoint_ = ccp(labelTitle.contentSize.width/2.0f + 10.0f,contentSize_.height/2);
+			targetPoint_ = ccp(labelTitle.contentSize.width/2.0f + 10.0f,_contentSize.height/2);
 			break;
 		case kCCTextAlignmentRight:
-			targetPoint_ = ccp(contentSize_.width-(labelTitle.contentSize.width/2.0f + 10.0f),contentSize_.height/2);
+			targetPoint_ = ccp(_contentSize.width-(labelTitle.contentSize.width/2.0f + 10.0f),_contentSize.height/2);
 			break;
 		case kCCTextAlignmentCenter:
 		default:
-			targetPoint_ = ccp(contentSize_.width/2,contentSize_.height/2);
+			targetPoint_ = ccp(_contentSize.width/2,_contentSize.height/2);
 			break;
 	}
 	

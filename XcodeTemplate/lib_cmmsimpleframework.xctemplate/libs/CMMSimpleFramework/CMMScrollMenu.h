@@ -5,30 +5,6 @@
 #import "CMMMenuItem.h"
 #import "CMMDrawingUtil.h"
 
-@class CMMScrollMenu;
-
-@protocol CMMScrollMenuDelegate<NSObject>
-
-@optional
--(BOOL)scrollMenu:(CMMScrollMenu *)scrollMenu_ isCanSelectAtIndex:(int)index_;
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenSelectedAtIndex:(int)index_;
-
--(BOOL)scrollMenu:(CMMScrollMenu *)scrollMenu_ isCanAddItem:(CMMMenuItem *)item_ atIndex:(int)index_;
--(BOOL)scrollMenu:(CMMScrollMenu *)scrollMenu_ isCanRemoveItem:(CMMMenuItem *)item_;
--(BOOL)scrollMenu:(CMMScrollMenu *)scrollMenu_ isCanSwitchItem:(CMMMenuItem *)item_ toIndex:(int)toIndex_;
--(BOOL)scrollMenu:(CMMScrollMenu *)scrollMenu_ isCanLinkSwitchItem:(CMMMenuItem *)item_ toScrollMenu:(CMMScrollMenu *)toScrollMenu_ toIndex:(int)toIndex_;
-
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenAddedItem:(CMMMenuItem *)item_ atIndex:(int)index_;
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenRemovedItem:(CMMMenuItem *)item_;
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenSwitchedItem:(CMMMenuItem *)item_ toIndex:(int)toIndex_;
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenLinkSwitchedItem:(CMMMenuItem *)fromItem_ toScrollMenu:(CMMScrollMenu *)toScrollMenu_ toIndex:(int)toIndex_;
-
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenPushdownWithItem:(CMMMenuItem *)item_;
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenPushupWithItem:(CMMMenuItem *)item_;
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenPushcancelWithItem:(CMMMenuItem *)item_;
-
-@end
-
 #define cmmVarCMMScrollMenu_defaultColor ccc4(0, 0, 0, 180)
 #define cmmVarCMMScrollMenu_defaultChildZOrder 1
 #define cmmVarCMMScrollMenu_defaultOrderingAccelRate 10.0f
@@ -36,9 +12,22 @@
 @interface CMMScrollMenu : CMMLayerMD<NSFastEnumeration>{
 	int index;
 	CCArray *itemList;
-	id<CMMScrollMenuDelegate> delegate;
+	
 	float marginPerItem;
-	BOOL isCanSelectItem;
+	BOOL canSelectItem;
+	
+	void (^callback_whenIndexChanged)(int index_);
+	void (^callback_whenTapAtIndex)(int index_);
+	void (^callback_whenItemAdded)(CMMMenuItem *item_, int index_);
+	void (^callback_whenItemRemoved)(CMMMenuItem *item_);
+	void (^callback_whenItemSwitched)(CMMMenuItem *item_, int toIndex_);
+	void (^callback_whenItemLinkSwitched)(CMMMenuItem *fromItem_, CMMScrollMenu *toScrollMenu_, int toIndex_);
+	
+	BOOL (^filter_canChangeIndex)(int index_);
+	BOOL (^filter_canAddItem)(CMMMenuItem *item_, int index_);
+	BOOL (^filter_canRemoveItem)(CMMMenuItem *item_);
+	BOOL (^filter_canSwitchItem)(CMMMenuItem *item_, int toIndex_);
+	BOOL (^filter_canLinkSwitchItem)(CMMMenuItem *fromItem_, CMMScrollMenu *toScrollMenu_, int toIndex_);
 }
 
 +(id)scrollMenuWithFrameSize:(CGSize)frameSize_ color:(ccColor4B)tcolor_;
@@ -49,9 +38,34 @@
 @property (nonatomic, readwrite) int index;
 @property (nonatomic, readonly) int count;
 @property (nonatomic, readonly) CCArray *itemList;
-@property (nonatomic, assign) id<CMMScrollMenuDelegate> delegate;
 @property (nonatomic, readwrite) float marginPerItem;
-@property (nonatomic, readwrite) BOOL isCanSelectItem;
+@property (nonatomic, readwrite, getter = isCanSelectItem) BOOL canSelectItem;
+
+@property (nonatomic, copy) void (^callback_whenIndexChanged)(int index_);
+@property (nonatomic, copy) void (^callback_whenTapAtIndex)(int index_);
+@property (nonatomic, copy) void (^callback_whenItemAdded)(CMMMenuItem *item_, int index_);
+@property (nonatomic, copy) void (^callback_whenItemRemoved)(CMMMenuItem *item_);
+@property (nonatomic, copy) void (^callback_whenItemSwitched)(CMMMenuItem *item_, int toIndex_);
+@property (nonatomic, copy) void (^callback_whenItemLinkSwitched)(CMMMenuItem *fromItem_, CMMScrollMenu *toScrollMenu_, int toIndex_);
+
+@property (nonatomic, copy) BOOL (^filter_canChangeIndex)(int index_);
+@property (nonatomic, copy) BOOL (^filter_canAddItem)(CMMMenuItem *item_, int index_);
+@property (nonatomic, copy) BOOL (^filter_canRemoveItem)(CMMMenuItem *item_);
+@property (nonatomic, copy) BOOL (^filter_canSwitchItem)(CMMMenuItem *item_, int toIndex_);
+@property (nonatomic, copy) BOOL (^filter_canLinkSwitchItem)(CMMMenuItem *fromItem_, CMMScrollMenu *toScrollMenu_, int toIndex_);
+
+-(void)setCallback_whenIndexChanged:(void (^)(int index_))block_;
+-(void)setCallback_whenTapAtIndex:(void (^)(int index_))block_;
+-(void)setCallback_whenItemAdded:(void (^)(CMMMenuItem *item_, int index_))block_;
+-(void)setCallback_whenItemRemoved:(void (^)(CMMMenuItem *item_))block_;
+-(void)setCallback_whenItemSwitched:(void (^)(CMMMenuItem *item_, int toIndex_))block_;
+-(void)setCallback_whenItemLinkSwitched:(void (^)(CMMMenuItem *item_, CMMScrollMenu *toScrollMenu_, int toIndex_))block_;
+
+-(void)setFilter_canChangeIndex:(BOOL (^)(int index_))block_;
+-(void)setFilter_canAddItem:(BOOL (^)(CMMMenuItem *item_, int index_))block_;
+-(void)setFilter_canRemoveItem:(BOOL (^)(CMMMenuItem *item_))block_;
+-(void)setFilter_canSwitchItem:(BOOL (^)(CMMMenuItem *item_, int index_))block_;
+-(void)setFilter_canLinkSwitchItem:(BOOL (^)(CMMMenuItem *item_, CMMScrollMenu * toScrollMenu_, int toIndex_))block_;
 
 @end
 

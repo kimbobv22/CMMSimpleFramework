@@ -6,25 +6,21 @@
 
 @class CMMControlItemText;
 
-@protocol CMMControlItemTextDelegate<CMMControlItemDelegate>
-
-@optional
--(void)controlItemText:(CMMControlItemText *)controlItem_ whenChangedItemValue:(NSString *)itemValue_;
-
--(BOOL)controlItemTextShouldShow:(CMMControlItemText *)controlItem_;
--(BOOL)controlItemTextShouldHide:(CMMControlItemText *)controlItem_;
-
-@end
 
 @interface CMMControlItemText : CMMControlItem<UITextFieldDelegate>{
-	CCLabelTTF *_textLabel;
+	CCLabelTTF *_textLabel,*_placeHolderLabel;
 	CMMSpriteBatchBar *_barSprite;
+	
 	NSString *itemValue;
+	ccColor3B disableColor;
 	
 	UIView *_backView;
 	UILabel *_textTitleLabel;
 	UITextField *_textField;
-	void (^callback_whenChangedItemVale)(id sender_,NSString *itemValue_);
+	
+	void (^callback_whenItemValueChanged)(NSString *itemValue_);
+	void (^callback_whenReturnKeyEntered)(),(^callback_whenKeypadShown)(),(^callback_whenKeypadHidden)();
+	BOOL (^filter_shouldShowKeypad)(),(^filter_shouldHideKeypad)();
 }
 
 +(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ width:(float)width_ height:(float)height_;
@@ -45,8 +41,23 @@
 -(void)hideTextField;
 
 @property (nonatomic, copy) NSString *itemValue;
-@property (nonatomic, assign) NSString *itemTitle;
+@property (nonatomic, readwrite) ccColor3B disableColor;
+@property (nonatomic, assign) NSString *title;
+
+@property (nonatomic, readonly) CCLabelTTF *textLabel;
 @property (nonatomic, readwrite) ccColor3B textColor;
-@property (nonatomic, copy) void (^callback_whenChangedItemVale)(id sender_,NSString *itemValue_);
+
+@property (nonatomic, assign) NSString *placeHolder;
+@property (nonatomic, readonly) CCLabelTTF *placeHolderLabel;
+@property (nonatomic, readwrite) ccColor3B placeHolderColor;
+@property (nonatomic, readwrite) GLubyte placeHolderOpacity;
+
+@property (nonatomic, readwrite, getter = isPasswordForm) BOOL passwordForm;
+
+@property (nonatomic, copy) void (^callback_whenItemValueChanged)(NSString *itemValue_);
+@property (nonatomic, copy) void (^callback_whenReturnKeyEntered)(),(^callback_whenKeypadShown)(),(^callback_whenKeypadHidden)();
+@property (nonatomic, copy) BOOL (^filter_shouldShowKeypad)(),(^filter_shouldHideKeypad)();
+
+-(void)setCallback_whenItemValueChanged:(void (^)(NSString *itemValue_))block_;
 
 @end

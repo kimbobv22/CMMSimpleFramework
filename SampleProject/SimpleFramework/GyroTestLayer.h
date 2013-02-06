@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface GyroTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMMenuItemDelegate,CMMMotionDispatcherDelegate>{
+@interface GyroTestLayer : CMMLayer{
 	CCLabelTTF *displayLabel;
 	CMMStage *stage;
 }

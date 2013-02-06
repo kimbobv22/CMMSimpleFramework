@@ -3,7 +3,7 @@
 @implementation CCSpriteBatchNode(SplitSprite)
 
 -(CCSprite *)addSplitSpriteToRect:(CGRect)rect_{
-	CCTexture2D *tTexture_ = textureAtlas_.texture;
+	CCTexture2D *tTexture_ = [_textureAtlas texture];
 	CGSize textureSize_ = tTexture_.contentSize;
 	
 	CCSprite *backSprite_ = [CCSprite spriteWithTexture:tTexture_ rect:rect_];
@@ -17,7 +17,7 @@
 }
 
 -(void)addSplitSprite:(CGSize)splitUnit_{
-	CCTexture2D *tTexture_ = textureAtlas_.texture;
+	CCTexture2D *tTexture_ = [_textureAtlas texture];
 	if(!tTexture_) return;
 	[tTexture_ setAliasTexParameters];
 	

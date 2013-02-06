@@ -88,15 +88,15 @@ struct _hashUniformEntry;
  */
 @interface CCGLProgram : NSObject
 {
-	struct _hashUniformEntry	*hashForUniforms_;
+	struct _hashUniformEntry	*_hashForUniforms;
 
 @public
-	GLuint          program_,
-					vertShader_,
-					fragShader_;
+	GLuint          _program,
+					_vertShader,
+					_fragShader;
 
-	GLint			uniforms_[kCCUniform_MAX];
-	BOOL usesTime_;
+	GLint			_uniforms[kCCUniform_MAX];
+	BOOL _usesTime;
 }
 
 @property(nonatomic, readonly) GLuint program;
@@ -125,6 +125,9 @@ struct _hashUniformEntry;
  And it will bind "kCCUniformSampler" to 0
  */
 - (void) updateUniforms;
+
+/** calls retrieves the named uniform location for this shader program. */
+- (GLint)uniformLocationForName:(NSString*)name;
 
 /** calls glUniform1i only if the values are different than the previous call for this same shader program. */
 -(void) setUniformLocation:(GLint)location withI1:(GLint)i1;

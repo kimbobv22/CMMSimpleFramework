@@ -34,14 +34,16 @@
 	CMMMenuItemL *menuItemBack_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
 	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,menuItemBack_.contentSize.height/2+20);
-	menuItemBack_.delegate = self;
+	[menuItemBack_ setCallback_pushup:^(id item_) {
+		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
+	}];
 	[self addChild:menuItemBack_];
 	
 	return self;
 }
 
 -(void)menuItem_whenPushup:(CMMMenuItem *)menuItem_{
-	[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
+	
 }
 
 @end

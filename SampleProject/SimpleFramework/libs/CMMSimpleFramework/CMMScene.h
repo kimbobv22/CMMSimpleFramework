@@ -3,34 +3,19 @@
 #import "CMMType.h"
 #import "CMMGLView.h"
 #import "CMMTouchDispatcher.h"
-#import "CMMPopupDispatcher.h"
+#import "CMMPopupView.h"
 #import "CMMNoticeDispatcher.h"
-#import "CMMSequenceMaker.h"
-
-@protocol CMMSceneLoadingProtocol <NSObject>
-
-@optional
--(void)sceneDidStartLoading:(CMMScene *)scene_;
--(void)sceneDidEndLoading:(CMMScene *)scene_;
-
--(void)scene:(CMMScene *)scene_ didChangeLoadingSequence:(uint)curSequence_ sequenceCount:(uint)sequenceCount_;
-
--(void)sceneLoadingProcess000; //first loading seq
-
-@end
 
 @interface CMMSceneStaticLayerItem : NSObject{
 	NSString *key;
-	BOOL isFirstLoad;
-	CMMLayer<CMMSceneLoadingProtocol> *layer;
+	CMMLayer *layer;
 }
 
-+(id)staticLayerItemWithLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_ key:(NSString *)key_;
--(id)initWithLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_ key:(NSString *)key_;
++(id)staticLayerItemWithLayer:(CMMLayer *)layer_ key:(NSString *)key_;
+-(id)initWithLayer:(CMMLayer *)layer_ key:(NSString *)key_;
 
 @property (nonatomic, copy) NSString *key;
-@property (nonatomic, readwrite) BOOL isFirstLoad;
-@property (nonatomic, retain) CMMLayer<CMMSceneLoadingProtocol> *layer;
+@property (nonatomic, retain) CMMLayer *layer;
 
 @end
 
@@ -49,8 +34,27 @@
 
 @end
 
-@interface CMMScene : CCScene<CMMGLViewTouchDelegate,CMMSequenceMakerDelegate>{
-	CMMLayer<CMMSceneLoadingProtocol> *runningLayer;
+@interface CMMLayer(SceneDelegate)
+
+-(void)sceneDidEndTransition:(CMMScene *)scene_;
+
+@end
+
+@interface CMMSceneFrontLayer : CCLayer{
+	void (^filter_sceneDidChangeLayer)(CMMScene *scene_);
+}
+
+@property (nonatomic, copy) void (^filter_sceneDidChangeLayer)(CMMScene *scene_);
+
+-(void)setFilter_sceneDidChangeLayer:(void (^)(CMMScene *scene_))block_;
+
+@end
+
+#define cmmVarCMMScene_frontLayerZOrder NSIntegerMax
+#define cmmVarCMMScene_popupViewZOrder (cmmVarCMMScene_frontLayerZOrder-1)
+
+@interface CMMScene : CCScene<CMMGLViewTouchDelegate>{
+	CMMLayer *runningLayer;
 	
 	CCArray *_pushLayerList;
 	CMMSceneTransitionLayer *transitionLayer;
@@ -58,30 +62,31 @@
 	
 	CCArray *staticLayerItemList;
 	
-	CMMSequenceMakerAuto *_preSequencer;
 	CMMTouchDispatcher *touchDispatcher;
-	CMMPopupDispatcher *popupDispatcher;
+	CMMPopupView *popupView;
 	CMMNoticeDispatcher *noticeDispatcher;
 	
 	BOOL touchEnable;
 	
 	CCNode *defaultBackGroundNode;
+	CMMSceneFrontLayer *frontLayer;
 }
 
 +(CMMScene *)sharedScene;
 
--(void)pushLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_;
+-(void)pushLayer:(CMMLayer *)layer_;
 
-@property (nonatomic, readonly) CMMLayer<CMMSceneLoadingProtocol> *runningLayer;
+@property (nonatomic, readonly) CMMLayer *runningLayer;
 @property (nonatomic, retain) CMMSceneTransitionLayer *transitionLayer;
 @property (nonatomic, readonly) BOOL isOnTransition;
 @property (nonatomic, readonly) CCArray *staticLayerItemList;
 @property (nonatomic, readonly) uint countOfStaticLayerItem;
 @property (nonatomic, readonly) CMMTouchDispatcher *touchDispatcher;
-@property (nonatomic, readonly) CMMPopupDispatcher *popupDispatcher;
+@property (nonatomic, readonly) CMMPopupView *popupView;
 @property (nonatomic, readonly) CMMNoticeDispatcher *noticeDispatcher;
 @property (nonatomic, readwrite, getter = isTouchEnable) BOOL touchEnable;
 @property (nonatomic, assign) CCNode *defaultBackGroundNode;
+@property (nonatomic, readonly) CMMSceneFrontLayer *frontLayer;
 
 @end
 
@@ -91,7 +96,7 @@
 -(void)pushStaticLayerItemAtKey:(NSString *)key_;
 
 -(void)addStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_;
--(CMMSceneStaticLayerItem *)addStaticLayerItemWithLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_ atKey:(NSString *)key_;
+-(CMMSceneStaticLayerItem *)addStaticLayerItemWithLayer:(CMMLayer *)layer_ atKey:(NSString *)key_;
 
 -(void)removeStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_;
 -(void)removeStaticLayerItemAtIndex:(uint)index_;
@@ -100,18 +105,18 @@
 
 -(CMMSceneStaticLayerItem *)staticLayerItemAtIndex:(uint)index_;
 -(CMMSceneStaticLayerItem *)staticLayerItemAtKey:(NSString *)key_;
--(CMMSceneStaticLayerItem *)staticLayerItemAtLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_;
+-(CMMSceneStaticLayerItem *)staticLayerItemAtLayer:(CMMLayer *)layer_;
 
 -(uint)indexOfStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_;
--(uint)indexOfStaticLayerItemWithLayer:(CMMLayer<CMMSceneLoadingProtocol> *)layer_;
+-(uint)indexOfStaticLayerItemWithLayer:(CMMLayer *)layer_;
 -(uint)indexOfStaticLayerItemWithKey:(NSString *)key_;
 
 @end
 
 @interface CMMScene(Popup)
 
--(void)openPopup:(CMMPopupLayer *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_;
--(void)openPopupAtFirst:(CMMPopupLayer *)popup_ delegate:(id<CMMPopupDispatcherDelegate>)delegate_;
+-(void)openPopup:(CMMPopupLayer *)popup_;
+-(void)openPopupAtFirst:(CMMPopupLayer *)popup_;
 
 @end
 

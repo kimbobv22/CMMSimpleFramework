@@ -103,81 +103,80 @@ enum {
 @interface CCNode : NSObject
 {
 	// rotation angle
-	float rotationX_, rotationY_;
+	float _rotationX, _rotationY;
 
 	// scaling factors
-	float scaleX_, scaleY_;
+	float _scaleX, _scaleY;
 
 	// openGL real Z vertex
-	float vertexZ_;
+	float _vertexZ;
 
 	// position of the node
-	CGPoint position_;
+	CGPoint _position;
 
 	// skew angles
-	float skewX_, skewY_;
+	float _skewX, _skewY;
 
 	// anchor point in points
-	CGPoint anchorPointInPoints_;
+	CGPoint _anchorPointInPoints;
 	// anchor point normalized (NOT in points)
-	CGPoint anchorPoint_;
+	CGPoint _anchorPoint;
 
 	// untransformed size of the node
-	CGSize	contentSize_;
+	CGSize	_contentSize;
 
 	// transform
-	CGAffineTransform transform_, inverse_;
+	CGAffineTransform _transform, _inverse;
+	BOOL _isTransformDirty;
+	BOOL _isInverseDirty;
 
 	// a Camera
-	CCCamera *camera_;
+	CCCamera *_camera;
 
 	// a Grid
-	CCGridBase *grid_;
+	CCGridBase *_grid;
 
 	// z-order value
-	NSInteger zOrder_;
+	NSInteger _zOrder;
 
 	// array of children
-	CCArray *children_;
+	CCArray *_children;
 
 	// weak ref to parent
-	CCNode *parent_;
+	CCNode *_parent;
 
 	// a tag. any number you want to assign to the node
-	NSInteger tag_;
+	NSInteger _tag;
 
 	// user data field
-	void *userData_;
-	id userObject_;
+	void *_userData;
+	id _userObject;
 
 	// Shader
-	CCGLProgram	*shaderProgram_;
+	CCGLProgram	*_shaderProgram;
 
 	// Server side state
-	ccGLServerState glServerState_;
+	ccGLServerState _glServerState;
 
 	// used to preserve sequence while sorting children with the same zOrder
-	NSUInteger orderOfArrival_;
+	NSUInteger _orderOfArrival;
 
 	// scheduler used to schedule timers and updates
-	CCScheduler		*scheduler_;
+	CCScheduler		*_scheduler;
 
 	// ActionManager used to handle all the actions
-	CCActionManager	*actionManager_;
+	CCActionManager	*_actionManager;
 
 	// Is running
-	BOOL isRunning_;
-
-	BOOL isTransformDirty_;
-	BOOL isInverseDirty_;
+	BOOL _isRunning;
 
 	// is visible
-	BOOL visible_;
+	BOOL _visible;
 	// If YES, the Anchor Point will be (0,0) when you position the CCNode.
 	// Used by CCLayer and CCScene
-	BOOL ignoreAnchorPointForPosition_;
+	BOOL _ignoreAnchorPointForPosition;
 
-	BOOL isReorderChildDirty_;	
+	BOOL _isReorderChildDirty;
 }
 
 /** The z order of the node relative to its "siblings": children of the same parent */
@@ -296,7 +295,6 @@ enum {
 /** initializes the node */
 -(id) init;
 
-
 // scene management
 
 /** Event that is called every time the CCNode enters the 'stage'.
@@ -347,21 +345,42 @@ enum {
 
 // composition: REMOVE
 
+/** Remove itself from its parent node forcing a cleanup.
+ If the node orphan, then nothing happens.
+ @since v2.1
+ */
+-(void) removeFromParent;
+
 /** Remove itself from its parent node. If cleanup is YES, then also remove all actions and callbacks.
  If the node orphan, then nothing happens.
  @since v0.99.3
  */
 -(void) removeFromParentAndCleanup:(BOOL)cleanup;
 
+/** Removes a child from the container forcing a cleanup
+ @since v2.1
+ */
+-(void) removeChild:(CCNode*)child;
+
 /** Removes a child from the container. It will also cleanup all running actions depending on the cleanup parameter.
  @since v0.7.1
  */
 -(void) removeChild: (CCNode*)node cleanup:(BOOL)cleanup;
 
+/** Removes a child from the container by tag value forcing a cleanup.
+ @since v2.1
+ */
+-(void) removeChildByTag:(NSInteger) tag;
+
 /** Removes a child from the container by tag value. It will also cleanup all running actions depending on the cleanup parameter
  @since v0.7.1
  */
 -(void) removeChildByTag:(NSInteger) tag cleanup:(BOOL)cleanup;
+
+/** Removes all children from the container forcing a cleanup.
+ @since v2.1
+ */
+-(void) removeAllChildren;
 
 /** Removes all children from the container and do a cleanup all running actions depending on the cleanup parameter.
  @since v0.7.1
@@ -573,4 +592,28 @@ enum {
  */
 - (CGPoint)convertTouchToNodeSpaceAR:(UITouch *)touch;
 #endif // __CC_PLATFORM_IOS
+@end
+
+
+#pragma mark - CCNodeRGBA
+
+/** CCNodeRGBA is a subclass of CCNode that implements the CCRGBAProtocol protocol.
+
+ All features from CCNode are valid, plus the following new features:
+ - opacity
+ - RGB colors
+
+ Opacity/Color propagates into children that conform to the CCRGBAProtocol if cascadeOpacity/cascadeColor is enabled.
+ @since v2.1
+ */
+@interface CCNodeRGBA : CCNode <CCRGBAProtocol>
+{
+	GLubyte		_displayedOpacity, _realOpacity;
+	ccColor3B	_displayedColor, _realColor;
+	BOOL		_cascadeColor, _cascadeOpacity;
+}
+
+// XXX To make BridgeSupport happy
+-(GLubyte) opacity;
+
 @end

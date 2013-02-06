@@ -8,11 +8,11 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	CGSize stageSize_ = contentSize_;
+	CGSize stageSize_ = _contentSize;
 	stageSize_.height -= 60.0f;
 	stage = [CMMStage stageWithStageDef:CMMStageDefMake(stageSize_, stageSize_, ccp(0,-9.8))];
-	[stage setIsTouchEnabled:NO];
-	[stage setPosition:ccp(contentSize_.width*0.5f-stageSize_.width*0.5f,contentSize_.height-stageSize_.height)];
+	[stage setTouchEnabled:NO];
+	[stage setPosition:ccp(_contentSize.width*0.5f-stageSize_.width*0.5f,_contentSize.height-stageSize_.height)];
 	[self addChild:stage z:1];
 	
 	target = [CMMSObject spriteWithFile:@"Icon-Small.png"];
@@ -34,9 +34,11 @@
 	[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:joypadSpriteFrameFileName_];
 	joypad = [CMMCustomUIJoypad joypadWithSpriteFrameFileName:joypadSpriteFrameFileName_];
 	joypad.opacity = 120.0f;
-	joypad.delegate = self;
+	[[joypad stick] setCallback_whenStickVectorChanged:^(CGPoint vector_) {
+		targetAccelVector = b2Vec2Mult(b2Vec2Fromccp(vector_), 0.2f);
+	}];
 	
-	joypad.buttonA.isAutoPushdown = YES;
+	joypad.buttonA.autoPushdown = YES;
 	joypad.buttonB.pushDelayTime = 1.0f;
 	
 	[self addChild:joypad z:1];
@@ -60,7 +62,7 @@
 	
 	CMMMenuItemL *menuItemBack_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
-	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,contentSize_.height-menuItemBack_.contentSize.height/2);
+	menuItemBack_.position = ccp(menuItemBack_.contentSize.width/2+20,_contentSize.height-menuItemBack_.contentSize.height/2);
 	menuItemBack_.callback_pushup = ^(id sender_){
 		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
 	};
@@ -79,13 +81,8 @@
 }
 -(void)_setLabelAStr:(NSString *)str_{
 	[self _setLabelStr:str_ atLabel:labelA];
-	labelA.position = ccp(contentSize_.width/2.0f,contentSize_.height/2+50.0f);
+	labelA.position = ccp(_contentSize.width/2.0f,_contentSize.height/2+50.0f);
 }
-
--(void)customUIJoypad:(CMMCustomUIJoypad *)joypad_ whenChangedStickVector:(CGPoint)vector_{
-	targetAccelVector = b2Vec2Mult(b2Vec2Fromccp(vector_), 0.2f);
-}
-
 -(void)update:(ccTime)dt_{
 	b2Body *targetBody_ = [target body];
 	if(targetBody_ && targetAccelVector.Length() > 0){

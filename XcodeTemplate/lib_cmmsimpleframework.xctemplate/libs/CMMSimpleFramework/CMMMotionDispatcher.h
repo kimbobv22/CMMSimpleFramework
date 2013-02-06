@@ -16,33 +16,33 @@ struct CMMMotionState{
 	double roll,pitch,yaw;
 };
 
-@protocol CMMMotionDispatcherDelegate <NSObject>
+@interface CMMMotionObserver : NSObject{
+	id target;
+	void (^block)(CMMMotionState state_);
+}
 
-@optional
--(void)motionDispatcher:(CMMMotionDispatcher *)motionDispatcher_ updateMotion:(CMMMotionState)state_;
++(id)observerWithTarget:(id)target_ block:(void(^)(CMMMotionState state_))block_;
+-(id)initWithTarget:(id)target_ block:(void(^)(CMMMotionState state_))block_;
+
+@property (nonatomic, retain) id target;
+@property (nonatomic, copy) void (^block)(CMMMotionState state_);
 
 @end
 
 @interface CMMMotionDispatcher : NSObject{
 	CMMotionManager *motion;
-	CCArray *targetList;
+	CCArray *observerList;
 	CMMMotionState _motionState,motionFixState;
 	ccTime updateInterval;
 }
 
 +(CMMMotionDispatcher *)sharedDispatcher;
 
--(void)addTarget:(id<CMMMotionDispatcherDelegate>)target_;
-
--(void)removeTarget:(id<CMMMotionDispatcherDelegate>)target_;
--(void)removeTargetAtIndex:(int)index_;
-
--(id<CMMMotionDispatcherDelegate>)targetAtIndex:(int)index_;
-
--(int)indexOfTarget:(id<CMMMotionDispatcherDelegate>)target_;
+-(void)addMotionBlockForTarget:(id)target_ block:(void(^)(CMMMotionState motionState_))block_;
+-(void)removeMotionBlockForTarget:(id)target_;
 
 @property (nonatomic, readonly) CMMotionManager *motion;
-@property (nonatomic, readonly) CCArray *targetList;
+@property (nonatomic, readonly) CCArray *observerList;
 @property (nonatomic, readwrite) CMMMotionState motionFixState;
 @property (nonatomic, readwrite) ccTime updateInterval;
 

@@ -495,7 +495,7 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMLayerPinchZoom.mm</string>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMSequenceMaker.h</key>
+		<key>libs/CMMSimpleFramework/CMMSequencer.h</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -503,11 +503,11 @@
 				<string>CMMSimpleFramework</string>
 			</array>
 			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMSequenceMaker.h</string>
+			<string>libs/CMMSimpleFramework/CMMSequencer.h</string>
 			<key>TargetIndices</key>
 			<array/>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMSequenceMaker.mm</key>
+		<key>libs/CMMSimpleFramework/CMMSequencer.mm</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -515,7 +515,7 @@
 				<string>CMMSimpleFramework</string>
 			</array>
 			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMSequenceMaker.mm</string>
+			<string>libs/CMMSimpleFramework/CMMSequencer.mm</string>
 		</dict>
 		<key>libs/CMMSimpleFramework/CMMMacro.h</key>
 		<dict>
@@ -683,7 +683,7 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMPacketDataHandler.mm</string>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMPopupDispatcher.h</key>
+		<key>libs/CMMSimpleFramework/CMMPopupView.h</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -691,11 +691,11 @@
 				<string>CMMSimpleFramework</string>
 			</array>
 			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMPopupDispatcher.h</string>
+			<string>libs/CMMSimpleFramework/CMMPopupView.h</string>
 			<key>TargetIndices</key>
 			<array/>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMPopupDispatcher.mm</key>
+		<key>libs/CMMSimpleFramework/CMMPopupView.mm</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -703,7 +703,7 @@
 				<string>CMMSimpleFramework</string>
 			</array>
 			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMPopupDispatcher.mm</string>
+			<string>libs/CMMSimpleFramework/CMMPopupView.mm</string>
 		</dict>
 		<key>libs/CMMSimpleFramework/CMMScene.h</key>
 		<dict>
@@ -1457,8 +1457,8 @@
 		<string>libs/CMMSimpleFramework/CMMFileUtil.mm</string>
 		<string>libs/CMMSimpleFramework/CMMFontUtil.h</string>
 		<string>libs/CMMSimpleFramework/CMMFontUtil.m</string>
-		<string>libs/CMMSimpleFramework/CMMSequenceMaker.h</string>
-		<string>libs/CMMSimpleFramework/CMMSequenceMaker.mm</string>
+		<string>libs/CMMSimpleFramework/CMMSequencer.h</string>
+		<string>libs/CMMSimpleFramework/CMMSequencer.mm</string>
 		<string>libs/CMMSimpleFramework/CMMGameKit.h</string>
 		<string>libs/CMMSimpleFramework/CMMGameKit.mm</string>
 		<string>libs/CMMSimpleFramework/CMMGLView.h</string>
@@ -1489,8 +1489,8 @@
 		<string>libs/CMMSimpleFramework/CMMPacketData.mm</string>
 		<string>libs/CMMSimpleFramework/CMMPacketDataHandler.h</string>
 		<string>libs/CMMSimpleFramework/CMMPacketDataHandler.mm</string>
-		<string>libs/CMMSimpleFramework/CMMPopupDispatcher.h</string>
-		<string>libs/CMMSimpleFramework/CMMPopupDispatcher.mm</string>
+		<string>libs/CMMSimpleFramework/CMMPopupView.h</string>
+		<string>libs/CMMSimpleFramework/CMMPopupView.mm</string>
 		<string>libs/CMMSimpleFramework/CMMScene.h</string>
 		<string>libs/CMMSimpleFramework/CMMScene.mm</string>
 		<string>libs/CMMSimpleFramework/CMMScrollMenu.h</string>

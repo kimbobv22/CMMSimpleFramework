@@ -1,26 +1,9 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMScrollMenuV.h"
+#import "CMMScene.h"
 
-@interface CMMScrollMenuV(Private)
-
--(void)_moveDragViewItemTo:(CCNode *)item_;
--(void)_clearDragViewItem;
-
-@end
-
-@implementation CMMScrollMenuV(Private)
-
--(void)_moveDragViewItemTo:(CCNode *)item_{
-	[_dragItemView runAction:[CCSequence actions:[CCEaseOut actionWithAction:[CCMoveTo actionWithDuration:0.2 position:[self convertToNodeSpace:[innerLayer convertToWorldSpace:item_.position]]] rate:3], [CCCallFunc actionWithTarget:self selector:@selector(_clearDragViewItem)], nil]];
-}
--(void)_clearDragViewItem{
-	_dragItemView.opacity = 0;
-}
-
-@end
-
-@implementation CMMScrollMenuDragItem
+@implementation CMMScrollMenuVItemDragView
 @synthesize targetIndex;
 
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
@@ -33,8 +16,52 @@
 
 @end
 
+@interface CMMScrollMenuV(Private)
+
+-(void)_moveItemDragView:(CMMMenuItem *)item_;
+-(void)_addItemDragView;
+-(void)_clearItemDragView;
+
+-(CGPoint)_offsetOfDraggedItemAtPoint:(CGPoint)targetPoint_ dt:(ccTime)dt_;
+
+@end
+
+@implementation CMMScrollMenuV(Private)
+
+-(void)_moveItemDragView:(CMMMenuItem *)item_{
+	if(action_itemDragViewCancelled){
+		CGPoint targetPoint_ = [item_ position];
+		CCFiniteTimeAction *targetAction_ = action_itemDragViewCancelled(_itemDragView,[innerLayer convertToWorldSpace:targetPoint_]);
+		[_itemDragView runAction:[CCSequence actions:targetAction_,[CCCallBlock actionWithBlock:^{
+			[self _clearItemDragView];
+		}], nil]];
+	}else{
+		[self _clearItemDragView];
+	}
+}
+-(void)_addItemDragView{
+	if([_itemDragView parent]) return;
+	[[[CMMScene sharedScene] frontLayer] addChild:_itemDragView];
+}
+-(void)_clearItemDragView{
+	[_itemDragView removeFromParentAndCleanup:NO];
+}
+
+-(CGPoint)_offsetOfDraggedItemAtPoint:(CGPoint)targetPoint_ dt:(ccTime)dt_{
+	CGPoint result_ = targetPoint_;
+	
+	if(filter_offsetOfDraggedItem){
+		result_ = filter_offsetOfDraggedItem([_itemDragView position],targetPoint_,dt_);
+	}
+	
+	return result_;
+}
+
+@end
+
 @implementation CMMScrollMenuV
 @synthesize dragStartDelayTime,dragStartDistance;
+@synthesize filter_canDragItem,filter_offsetOfDraggedItem,action_itemDragViewCancelled;
 
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
@@ -42,9 +69,16 @@
 	_curDragStartDelayTime = 0.0f;
 	dragStartDelayTime = 1.0f;
 	dragStartDistance = 30.0f;
-	_dragItemView = [CMMScrollMenuDragItem node];
-	[self addChild:_dragItemView z:9];
+	_itemDragView = [[CMMScrollMenuVItemDragView node] retain];
 	[self setCanDragY:YES];
+	
+	[self setAction_itemDragViewCancelled:^CCFiniteTimeAction *(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_) {
+		[itemDragView_ setOpacity:180];
+		return [CCMoveTo actionWithDuration:0.2 position:targetPoint_];
+	}];
+	[self setFilter_offsetOfDraggedItem:^CGPoint(CGPoint orginalPoint_ ,CGPoint targetPoint_, ccTime dt_) {
+		return ccpSub(targetPoint_,ccp([_itemDragView contentSize].width *0.2f,0.0f));
+	}];
 	
 	return self;
 }
@@ -58,9 +92,8 @@
 			if(!touchItem_) break;
 			
 			CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
-			
-			if(!cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:isCanDragItem:))
-			   || ![((id<CMMScrollMenuVDelegate>)delegate) scrollMenu:self isCanDragItem:item_]) break;
+		
+			if(!filter_canDragItem || !filter_canDragItem(item_)) break;
 			
 			_curDragStartDelayTime += dt_;
 			
@@ -69,14 +102,13 @@
 				CGRect textureRect_ = CGRectZero;
 				textureRect_.size = texture_.contentSize;
 				
-				[_dragItemView setTexture:texture_];
-				[_dragItemView setTextureRect:textureRect_];
-				_dragItemView.targetIndex = [self indexOfItem:item_];
-				_dragItemView.visible = YES;
-				_dragItemView.opacity = 180;
-				_dragItemView.position = ccpSub([self convertToNodeSpace:[CMMTouchUtil pointFromTouch:touchItem_.touch]], ccp(self.contentSize.width/4.0f,0));
+				[_itemDragView setTexture:texture_];
+				[_itemDragView setTextureRect:textureRect_];
+				[_itemDragView setTargetIndex:[self indexOfItem:item_]];
+				[_itemDragView setPosition:[innerLayer convertToWorldSpace:[item_ position]]];
 				
 				[self setTouchState:CMMTouchState_onFixed];
+				[self _addItemDragView];
 			}
 			break;
 		}
@@ -86,16 +118,18 @@
 			CGSize innerSize_ = [innerLayer contentSize];
 			CGPoint touchPoint_ = [self convertToNodeSpace:[CMMTouchUtil pointFromTouch:touchItem_.touch]];
 			touchPoint_.x = 0;
-			touchPoint_.y -= contentSize_.height/2.0f;
-			touchPoint_.y = (touchPoint_.y/contentSize_.height) * 6.0f;
+			touchPoint_.y -= _contentSize.height/2.0f;
+			touchPoint_.y = (touchPoint_.y/_contentSize.height) * 6.0f;
 			touchPoint_ = ccpSub([innerLayer position], touchPoint_);
 			
 			if(touchPoint_.y>0)
 				touchPoint_.y = 0;
-			else if(touchPoint_.y<-(innerSize_.height-contentSize_.height))
-				touchPoint_.y = -(innerSize_.height-contentSize_.height);
+			else if(touchPoint_.y<-(innerSize_.height-_contentSize.height))
+				touchPoint_.y = -(innerSize_.height-_contentSize.height);
 			
 			[innerLayer setPosition:touchPoint_];
+			[_itemDragView setPosition:[self _offsetOfDraggedItemAtPoint:[CMMTouchUtil pointFromTouch:[touchItem_ touch]] dt:dt_]];
+			
 			break;
 		}
 		default: break;
@@ -117,12 +151,8 @@
 				_curDragStartDelayTime = dragStartDelayTime;
 			
 			break;
-		}case CMMTouchState_onFixed:{
-			_dragItemView.position = ccpSub([self convertToNodeSpace:[CMMTouchUtil pointFromTouch:touch_]], ccp(self.contentSize.width/4.0f,0));
-			break;
 		}
-		default:
-			break;
+		default: break;
 	}
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
@@ -130,8 +160,8 @@
 	
 	switch(touchState){
 		case CMMTouchState_onFixed:{
-			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher touchItemAtTouch:touch_];
-			CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
+			
+			CMMMenuItem *item_ = [self itemAtIndex:[_itemDragView targetIndex]];
 			BOOL isRestoreDragItemView_ = YES;
 			CGPoint touchPoint_ = [CMMTouchUtil pointFromTouch:touch_];
 			
@@ -155,7 +185,6 @@
 					}
 				}
 			}
-			
 			//handle switch
 			if(isRestoreDragItemView_){
 				int tIndex_ = [self indexOfPoint:touchPoint_];
@@ -163,9 +192,7 @@
 					isRestoreDragItemView_ = ![self switchItem:item_ toIndex:tIndex_];
 			}
 			
-			if(isRestoreDragItemView_)
-				[self _moveDragViewItemTo:item_];
-			else [self _clearDragViewItem];
+			if(!isRestoreDragItemView_) [self _clearItemDragView];
 			
 			[self touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
 			
@@ -184,7 +211,7 @@
 		case CMMTouchState_onFixed:{
 			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher touchItemAtTouch:touch_];
 			CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
-			[self _moveDragViewItemTo:item_];
+			[self _moveItemDragView:item_];
 			
 			break;
 		}
@@ -192,6 +219,21 @@
 	}
 	
 	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
+}
+
+-(void)cleanup{
+	[self setFilter_canDragItem:nil];
+	[self setFilter_offsetOfDraggedItem:nil];
+	[self setAction_itemDragViewCancelled:nil];
+	[_itemDragView removeFromParentAndCleanup:YES];
+	[super cleanup];
+}
+-(void)dealloc{
+	[filter_canDragItem release];
+	[filter_offsetOfDraggedItem release];
+	[action_itemDragViewCancelled release];
+	[_itemDragView release];
+	[super dealloc];
 }
 
 @end
@@ -211,8 +253,8 @@
 		targetHeight_ += item_.contentSize.height+marginPerItem;
 	}
 	targetHeight_-= marginPerItem;
-	targetHeight_ = MAX(targetHeight_, contentSize_.height);
-	[innerLayer setContentSize:CGSizeMake(contentSize_.width, targetHeight_)];
+	targetHeight_ = MAX(targetHeight_, _contentSize.height);
+	[innerLayer setContentSize:CGSizeMake(_contentSize.width, targetHeight_)];
 	
 	CGPoint targetPoint_ = ccpAdd([innerLayer position], ccp(0,beforeHeight_-targetHeight_));
 	[innerLayer setPosition:targetPoint_];

@@ -113,6 +113,9 @@
 #import "CCMotionStreak.h"
 #import "CCConfiguration.h"
 #import "CCDrawNode.h"
+#import "CCClippingNode.h"
+
+#import "ccFPSImages.h"
 
 // Shaders
 #import "CCGLProgram.h"
@@ -185,6 +188,7 @@ extern "C" {
 
 // free functions
 NSString * cocos2dVersion(void);
+extern const char * cocos2d_version;
 
 #ifdef __cplusplus
 }

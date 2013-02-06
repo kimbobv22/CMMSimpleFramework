@@ -33,12 +33,29 @@ class b2Body;
 
 /** A CCSprite subclass that is bound to a physics body.
  It works with:
-	- Chipmunk
-	- Objective-Chipmunk
-	- Box2d
+	- Chipmunk: Preprocessor macro CC_ENABLE_CHIPMUNK_INTEGRATION should be defined
+	- Objective-Chipmunk: Preprocessor macro CC_ENABLE_CHIPMUNK_INTEGRATION should be defined
+	- Box2d: Preprocessor macro CC_ENABLE_BOX2D_INTEGRATION should be defined
+ 
+ Features and Limitations:
+    - Scale and Skew properties are ignored.
+    - Position and rotation are going to updated from the physics body
+    - If you update the rotation or position manually, the physics body will be updated
+	- You can't eble both Chipmunk support and Box2d support at the same time. Only one can be enabled at compile time
  */
 @interface CCPhysicsSprite : CCSprite
 {
+	BOOL	_ignoreBodyRotation;
+	
+#if CC_ENABLE_CHIPMUNK_INTEGRATION
+	cpBody	*_cpBody;
+	
+#elif CC_ENABLE_BOX2D_INTEGRATION
+	b2Body	*_b2Body;
+	
+	// Pixels to Meters ratio
+	float	_PTMRatio;
+#endif // CC_ENABLE_BOX2D_INTEGRATION
 }
 
 /** Keep the sprite's rotation separate from the body. */
@@ -47,7 +64,7 @@ class b2Body;
 #if CC_ENABLE_CHIPMUNK_INTEGRATION
 
 /** Body accessor when using regular Chipmunk */
-@property(nonatomic, assign) cpBody *body;
+@property(nonatomic, assign) cpBody *CPBody;
 
 /** Body accessor when using Objective-Chipmunk */
 @property(nonatomic, assign) ChipmunkBody *chipmunkBody;
@@ -56,7 +73,7 @@ class b2Body;
 #elif CC_ENABLE_BOX2D_INTEGRATION
 
 /** Body accessor when using box2d */
-@property(nonatomic, assign) b2Body *body;
+@property(nonatomic, assign) b2Body *b2Body;
 
 @property(nonatomic, assign) float PTMRatio;
 

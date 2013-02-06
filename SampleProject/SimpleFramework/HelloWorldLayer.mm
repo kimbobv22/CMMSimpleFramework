@@ -8,7 +8,6 @@
 #import "DragLayerTestLayer.h"
 #import "PinchZoomTestLayer.h"
 #import "StageTestLayer.h"
-#import "LoadingTestLayer.h"
 #import "SequenceMakerTestLayer.h"
 #import "SoundTestLayer.h"
 #import "PopupTestLayer.h"
@@ -29,7 +28,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	mainMenu = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(contentSize_.width * 0.5f, contentSize_.height * 0.8f)];
+	mainMenu = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(_contentSize.width * 0.5f, _contentSize.height * 0.8f)];
 	[mainMenu setPosition:ccpAdd(cmmFuncCommon_positionInParent(self, mainMenu), ccp(0,-10.0f))];
 	[self addChild:mainMenu];
 	
@@ -72,13 +71,8 @@
  	[mainMenu addItem:menuItem_];
 	
 	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
-	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[LoadingTestLayer node]];};
-	[menuItem_ setTitle:@"Loading Test"];
- 	[mainMenu addItem:menuItem_];
-	
-	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[SequenceMakerTestLayer node]];};
-	[menuItem_ setTitle:@"Sequence Maker Test"];
+	[menuItem_ setTitle:@"Sequencer Test"];
  	[mainMenu addItem:menuItem_];
 	
 	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
@@ -145,7 +139,7 @@
 	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[CFSocketTestLayer node]];};
 	[menuItem_ setTitle:@"CFSocket Test"];
 	[mainMenu addItem:menuItem_];
-	
+
 	return self;
 }
 

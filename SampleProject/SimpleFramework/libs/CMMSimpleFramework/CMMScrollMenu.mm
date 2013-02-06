@@ -26,7 +26,9 @@
 @end
 
 @implementation CMMScrollMenu
-@synthesize index,count,itemList,delegate,marginPerItem,isCanSelectItem;
+@synthesize index,count,itemList,marginPerItem,canSelectItem;
+@synthesize callback_whenIndexChanged,callback_whenTapAtIndex,callback_whenItemAdded,callback_whenItemRemoved,callback_whenItemSwitched,callback_whenItemLinkSwitched;
+@synthesize filter_canChangeIndex,filter_canAddItem,filter_canRemoveItem,filter_canSwitchItem,filter_canLinkSwitchItem;
 
 +(id)scrollMenuWithFrameSize:(CGSize)frameSize_ color:(ccColor4B)tcolor_{
 	return [[[self alloc] initWithColor:tcolor_ width:frameSize_.width height:frameSize_.height] autorelease];
@@ -53,9 +55,8 @@
 	
 	index = -1;
 	itemList = [[CCArray alloc] init];
-	delegate = nil;
 	marginPerItem = 1.0f;
-	isCanSelectItem = YES;
+	canSelectItem = YES;
 	
 	return self;
 }
@@ -76,16 +77,12 @@
 }
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
-	if(!isCanSelectItem || touchState == CMMTouchState_onScroll){
+	if(!canSelectItem || touchState == CMMTouchState_onScroll){
 		[self setTouchState:CMMTouchState_onDrag];
 		return;
 	}
 
 	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
-	
-	CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher touchItemAtTouch:touch_];
-	if(touchItem_ && cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:whenPushdownWithItem:)))
-		[delegate scrollMenu:self whenPushdownWithItem:(CMMMenuItem *)[touchItem_ node]];
 }
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
@@ -93,11 +90,11 @@
 	
 	switch(touchState){
 		case CMMTouchState_onTouchChild:{
-			if(touchItem_ && cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:whenPushupWithItem:)))
-				[delegate scrollMenu:self whenPushupWithItem:(CMMMenuItem *)[touchItem_ node]];
-			
-			CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
-			[self setIndex:[self indexOfItem:item_]];
+			int touchedIndex_ = [self indexOfItem:(CMMMenuItem *)[touchItem_ node]];
+			if(callback_whenTapAtIndex){
+				callback_whenTapAtIndex(touchedIndex_);
+			}
+			[self setIndex:touchedIndex_];
 			
 			break;
 		}
@@ -106,31 +103,17 @@
 	
 	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
 }
--(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
-	switch(touchState){
-		case CMMTouchState_onTouchChild:{
-			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher touchItemAtTouch:touch_];
-			if(touchItem_ && cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:whenPushcancelWithItem:)))
-				[delegate scrollMenu:self whenPushcancelWithItem:(CMMMenuItem *)[touchItem_ node]];
-			
-			break;
-		}
-		default: break;
-	}
-	
-	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
-}
 
 -(void)setIndex:(int)index_{
 	if(index == index_) return;
 
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:isCanSelectAtIndex:)))
-		if(![delegate scrollMenu:self isCanSelectAtIndex:index_]) return;
+	if(filter_canChangeIndex)
+		if(!filter_canChangeIndex(index_)) return;
 	
 	index = index_;
 	
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:whenSelectedAtIndex:)))
-		[delegate scrollMenu:self whenSelectedAtIndex:index];
+	if(callback_whenIndexChanged)
+		callback_whenIndexChanged(index);
 }
 
 -(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id *)stackbuf count:(NSUInteger)len{
@@ -138,11 +121,36 @@
 }
 
 -(void)cleanup{
-	delegate = nil;
+	[self setCallback_whenIndexChanged:nil];
+	[self setCallback_whenTapAtIndex:nil];
+	[self setCallback_whenItemAdded:nil];
+	[self setCallback_whenItemRemoved:nil];
+	[self setCallback_whenItemSwitched:nil];
+	[self setCallback_whenItemLinkSwitched:nil];
+	
+	[self setFilter_canChangeIndex:nil];
+	[self setFilter_canAddItem:nil];
+	[self setFilter_canRemoveItem:nil];
+	[self setFilter_canSwitchItem:nil];
+	[self setFilter_canLinkSwitchItem:nil];
+	
 	[super cleanup];
 }
 
 -(void)dealloc{
+	[callback_whenIndexChanged release];
+	[callback_whenTapAtIndex release];
+	[callback_whenItemAdded release];
+	[callback_whenItemRemoved release];
+	[callback_whenItemSwitched release];
+	[callback_whenItemLinkSwitched release];
+	
+	[filter_canChangeIndex release];
+	[filter_canAddItem release];
+	[filter_canRemoveItem release];
+	[filter_canSwitchItem release];
+	[filter_canLinkSwitchItem release];
+	
 	[itemList release];
 	[super dealloc];
 }
@@ -161,15 +169,15 @@
 -(void)addItem:(CMMMenuItem *)item_ atIndex:(int)index_{
 	if([self indexOfItem:item_] != NSNotFound) return;
 	
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:isCanAddItem:atIndex:)))
-		if(![delegate scrollMenu:self isCanAddItem:item_ atIndex:index_]) return;
+	if(filter_canAddItem)
+		if(!filter_canAddItem(item_,index_)) return;
 	
 	[itemList insertObject:item_ atIndex:index_];
 	[self doUpdateInnerSize];
 	[innerLayer addChild:item_ z:cmmVarCMMScrollMenu_defaultChildZOrder];
 	
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:whenAddedItem:atIndex:)))
-		[delegate scrollMenu:self whenAddedItem:item_ atIndex:index_];
+	if(callback_whenItemAdded)
+		callback_whenItemAdded(item_,index_);
 }
 -(void)addItem:(CMMMenuItem *)item_{
 	[self addItem:item_ atIndex:[self count]];
@@ -179,11 +187,11 @@
 	int targetIndex_ = [self indexOfItem:item_];
 	if(targetIndex_ == NSNotFound) return;
 	
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:isCanRemoveItem:)))
-		if(![delegate scrollMenu:self isCanRemoveItem:item_]) return;
+	if(filter_canRemoveItem)
+		if(!filter_canRemoveItem(item_)) return;
 	
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:whenRemovedItem:)))
-		[delegate scrollMenu:self whenRemovedItem:item_];
+	if(callback_whenItemRemoved)
+		callback_whenItemRemoved(item_);
 	
 	[self _removeItemDirect:item_];
 }
@@ -211,14 +219,15 @@
 	int targetIndex_ = [self indexOfItem:item_];
 	if(targetIndex_ == NSNotFound || targetIndex_ == toIndex_) return NO;
 	
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:isCanSwitchItem:toIndex:))){
-		if(![delegate scrollMenu:self isCanSwitchItem:item_ toIndex:toIndex_]) return NO;
-	}else return NO; //must have delegate
+	
+	if(filter_canSwitchItem){
+		if(!filter_canSwitchItem(item_,toIndex_)) return NO;
+	}else return NO; //must have filter
 	
 	[itemList exchangeObjectAtIndex:targetIndex_ withObjectAtIndex:toIndex_];
 	
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:whenSwitchedItem:toIndex:)))
-		[delegate scrollMenu:self whenSwitchedItem:item_ toIndex:toIndex_];
+	if(callback_whenItemSwitched)
+		callback_whenItemSwitched(item_,toIndex_);
 	
 	return YES;
 }
@@ -229,16 +238,16 @@
 -(BOOL)linkSwitchItem:(CMMMenuItem *)item_ toScrolMenu:(CMMScrollMenu *)toScrolMenu_ toIndex:(int)toIndex_{
 	if([self indexOfItem:item_] == NSNotFound || !toScrolMenu_) return NO;
 	
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:isCanLinkSwitchItem:toScrollMenu:toIndex:))){
-		if(![delegate scrollMenu:self isCanLinkSwitchItem:item_ toScrollMenu:toScrolMenu_ toIndex:toIndex_]) return NO;
-	}else return NO; //must have delegate
+	if(filter_canLinkSwitchItem){
+		if(!filter_canLinkSwitchItem(item_,toScrolMenu_,toIndex_)) return NO;
+	}else return NO; //must have filter
 	
 	item_ = [[item_ retain] autorelease];
 	[self _removeItemDirect:item_]; // delete directly
 	[toScrolMenu_ addItem:item_ atIndex:toIndex_];
 	
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(scrollMenu:whenLinkSwitchedItem:toScrollMenu:toIndex:)))
-		[delegate scrollMenu:self whenLinkSwitchedItem:item_ toScrollMenu:toScrolMenu_ toIndex:toIndex_];
+	if(callback_whenItemLinkSwitched)
+		callback_whenItemLinkSwitched(item_,toScrolMenu_,toIndex_);
 	
 	return YES;
 }

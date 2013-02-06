@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface SoundTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMMenuItemDelegate>{
+@interface SoundTestLayer : CMMLayer{
 	CMMSoundHandler *handler;
 	CMMSprite *listenSprite,*soundSprite1,*soundSprite2;
 }

@@ -175,17 +175,6 @@ typedef enum{
 	CMMStageDNBDirection_right,
 } CMMStageDNBDirection;
 
-@protocol CMMStageDNBDelegate <CMMStageDelegate>
-
-@optional
--(void)stage:(CMMStageDNB *)stage_ didCreateBlockObjects:(CCArray *)createdBlockObjects_;
-
--(void)stage:(CMMStageDNB *)stage_ whenContactStartedWithObject:(CMMSObject *)object_ AtDirection:(CMMStageDNBDirection)direction_;
--(void)stage:(CMMStageDNB *)stage_ whenContactEndedWithObject:(CMMSObject *)object_ AtDirection:(CMMStageDNBDirection)direction_;
--(void)stage:(CMMStageDNB *)stage_ doContactWithObject:(CMMSObject *)object_ AtDirection:(CMMStageDNBDirection)direction_ interval:(ccTime)interval_;
-
-@end
-
 @interface CMMStageDNBLightSystem : CMMStageLight
 
 @end
@@ -202,11 +191,20 @@ typedef enum{
 	CGPoint _lastCreatePoint;
 	float _curMarginPerBlock;
 	CCArray *_lazyTargetBlockItems;
+	
+	void (^callback_whenContactBeganWithObject)(CMMSObject *object_, CMMStageDNBDirection direction_)
+		,(^callback_whenContactEndedWithObject)(CMMSObject *object_, CMMStageDNBDirection direction_);
 }
 
 @property (nonatomic, readonly) CMMStageBlock *block;
 @property (nonatomic, readwrite) CMMFloatRange marginPerBlock,blockHeightRange;
 @property (nonatomic, readwrite, getter = isRemoveObjectOnOutside) BOOL removeObjectOnOutside;
 @property (nonatomic, readwrite) float maxHeightDifferencePerBlock,worldVelocityX;
+
+@property (nonatomic, copy) void (^callback_whenContactBeganWithObject)(CMMSObject *object_, CMMStageDNBDirection direction_)
+									 ,(^callback_whenContactEndedWithObject)(CMMSObject *object_, CMMStageDNBDirection direction_);
+
+-(void)setCallback_whenContactBeganWithObject:(void (^)(CMMSObject *object_, CMMStageDNBDirection direction_))block_;
+-(void)setCallback_whenContactEndedWithObject:(void (^)(CMMSObject *object_, CMMStageDNBDirection direction_))block_;
 
 @end

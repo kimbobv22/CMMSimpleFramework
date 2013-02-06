@@ -14,41 +14,41 @@
 	[profileSprite setOpacity:0];
 	[self addChild:profileSprite];
 	
-	sequencer = [[CMMSequenceMaker alloc] init];
-	[sequencer setDelegate:self];
-	[sequencer setSequenceMethodFormatter:@"seq%03d"];
+	sequencer = [[CMMSequencer alloc] init];
+	[sequencer addSequenceForMainQueue:^{
+		CCLOG(@"intro sequence 1");
+		[profileSprite runAction:[CCSequence actions:[CCFadeIn actionWithDuration:0.5f],[CCDelayTime actionWithDuration:5.0f],[CCCallFunc actionWithTarget:sequencer selector:@selector(callSequence)], nil]];
+	}];
+	
+	[sequencer addSequenceForMainQueue:^{
+		CCLOG(@"intro sequence 2");
+		[profileSprite stopAllActions];
+		[profileSprite setOpacity:255];
+		[profileSprite runAction:[CCSequence actions:[CCFadeOut actionWithDuration:0.5f],[CCCallFunc actionWithTarget:sequencer selector:@selector(callSequence)], nil]];
+	}];
+	[sequencer addSequenceForMainQueue:^{
+		CCLOG(@"intro sequence 3");
+		[profileSprite stopAllActions];
+		[profileSprite setOpacity:0];
+	} callback:^{
+		[[CMMScene sharedScene] pushLayer:[CommonIntroLayer2 node]];
+	}];
 	
 	return self;
 }
--(void)sceneDidEndLoading:(CMMScene *)scene_{
-	[sequencer start];
-}
-
--(void)seq000{
-	[profileSprite runAction:[CCSequence actions:[CCFadeIn actionWithDuration:0.5f],[CCDelayTime actionWithDuration:2.0f],[CCCallFunc actionWithTarget:sequencer selector:@selector(stepSequence)], nil]];
-}
-
--(void)seq001{
-	[profileSprite stopAllActions];
-	[profileSprite setOpacity:255];
-	[profileSprite runAction:[CCSequence actions:[CCFadeOut actionWithDuration:0.5f],[CCCallFunc actionWithTarget:sequencer selector:@selector(stepSequence)], nil]];
-}
-
--(void)sequenceMakerDidEnd:(CMMSequenceMaker *)sequenceMaker_{
-	[profileSprite stopAllActions];
-	[profileSprite setOpacity:0];
-	[[CMMScene sharedScene] pushLayer:[CommonIntroLayer2 node]];
+-(void)sceneDidEndTransition:(CMMScene *)scene_{
+	[sequencer callSequence];
 }
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
 	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
-	if([sequencer sequenceState] == CMMSequenceMakerState_waitingNextSequence){
-		[sequencer stepSequence];
+	if([sequencer state] == CMMSequencerState_waitingNextSequence){
+		[sequencer callSequence];
 	}
 }
 
 -(void)cleanup{
-	[sequencer setDelegate:nil];
+	[sequencer cleanup];
 	[super cleanup];
 }
 
@@ -70,7 +70,69 @@
 	
 	loadingRate = 0.0f;
 	
+	loadingMaker = [[CMMSequencerAuto alloc] init];
+	[loadingMaker setCallback_whenStateChanged:^{
+		loadingRate = ((float)[loadingMaker sequenceIndex]+1)/(float)([loadingMaker count]);
+	}];
+	
+	//loading resources
+	[loadingMaker addSequenceForMainQueue:^{
+		[self _setDisplayStr:@"Loading Resources..."];
+	}];
+	[loadingMaker addSequenceForBackgroundQueue:^{
+		//sprite frame
+		[[CMMDrawingManager sharedManager] addDrawingItemWithFileName:@"IMG_CMN_BFRAME_000"];
+		
+		//motion(gyro)
+		[CMMMotionDispatcher sharedDispatcher];
+		
+		//sound engine
+		[CMMSoundEngine sharedEngine];
+		
+		//notice template
+		[[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [CMMNoticeDispatcherTemplate_DefaultScale templateWithNoticeDispatcher:[[CMMScene sharedScene] noticeDispatcher]];
+	}];
+	
+	//connecting to Game center
+	[loadingMaker addSequenceForMainQueue:^{
+		[self _setDisplayStr:@"connecting to Game Center..."];
+	}];
+	[loadingMaker addSequenceForMainQueue:^{
+		if(![[CMMGameKitPA sharedPA] isAvailableGameCenter]){
+			[self forwardScene];
+			return;
+		}
+		
+		[[CMMGameKitPA sharedPA] setAuthenticateHandler:^(CMMGameKitPAAuthenticationState state_, NSError *error_) {
+			switch(state_){
+				case CMMGameKitPAAuthenticationState_succeed:{
+					[self _setDisplayStr:@"reporting Achievements..."];
+					[[CMMGameKitAchievements sharedAchievements] reportCachedAchievementsWithBlock:^(NSArray *reportedAchievements_, NSError *error_) {
+						if(error_){
+							[self forwardScene];
+						}else{
+							[[CMMGameKitAchievements sharedAchievements] loadReportedAchievementsWithBlock:^(NSError *error_) {
+								[self forwardScene];
+							}];
+						}
+					}];
+					break;
+				}
+				case CMMGameKitPAAuthenticationState_cancelled:
+				case CMMGameKitPAAuthenticationState_failed:
+				default:{
+					[self forwardScene];
+					break;
+				}
+			}
+		}];
+	}];
+	
 	return self;
+}
+
+-(void)sceneDidEndTransition:(CMMScene *)scene_{
+	[loadingMaker callSequence];
 }
 
 -(void)_setDisplayStr:(NSString *)str_{
@@ -83,94 +145,18 @@
 	
 	ccDrawColor4B(255, 255, 255, 120.0f);
 	glLineWidth(5.0f*CC_CONTENT_SCALE_FACTOR());
-	CGPoint lineStartPoint_ = ccp(0,contentSize_.height*0.08f);
-	ccDrawLine(lineStartPoint_, ccpAdd(lineStartPoint_, ccp(contentSize_.width,0)));
+	CGPoint lineStartPoint_ = ccp(0,_contentSize.height*0.08f);
+	ccDrawLine(lineStartPoint_, ccpAdd(lineStartPoint_, ccp(_contentSize.width,0)));
 	
 	ccDrawColor4B(0, 0, 120, 120.0f);
 	glLineWidth(3.0f*CC_CONTENT_SCALE_FACTOR());
-	ccDrawLine(lineStartPoint_, ccpAdd(lineStartPoint_, ccp(contentSize_.width*loadingRate,0)));
-}
-
--(void)scene:(CMMScene *)scene_ didChangeLoadingSequence:(uint)curSequence_ sequenceCount:(uint)sequenceCount_{
-	loadingRate = ((float)curSequence_)/(float)(sequenceCount_);
-}
-
--(void)sceneLoadingProcess000{
-	[self _setDisplayStr:@"Loading sprite frame..."];
-}
--(void)sceneLoadingProcess001{
-	[[CMMDrawingManager sharedManager] addDrawingItemWithFileName:@"IMG_CMN_BFRAME_000"];
-}
-
--(void)sceneLoadingProcess002{
-	[self _setDisplayStr:@"Initializing gyroscope..."];
-}
--(void)sceneLoadingProcess003{
-	[CMMMotionDispatcher sharedDispatcher];
-}
-
--(void)sceneLoadingProcess004{
-	[self _setDisplayStr:@"Initializing sound engine..."];
-}
--(void)sceneLoadingProcess005{
-	[CMMSoundEngine sharedEngine];
-}
-
--(void)sceneLoadingProcess006{
-	[self _setDisplayStr:@"Initializing notice template..."];
-}
--(void)sceneLoadingProcess007{
-	[[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [CMMNoticeDispatcherTemplate_DefaultScale templateWithNoticeDispatcher:[[CMMScene sharedScene] noticeDispatcher]];
-}
-
--(void)sceneLoadingProcess008{
-	[self _setDisplayStr:@"connecting to Game Center..."];
-}
-
--(void)sceneDidEndLoading:(CMMScene *)scene_{
-	if(![[CMMGameKitPA sharedPA] isAvailableGameCenter]){
-		[self forwardScene];
-		return;
-	}
-	
-	[[CMMGameKitPA sharedPA] setDelegate:self];
-}
-
-//handling game center login view.
-/*-(void)gameKitPA:(CMMGameKitPA *)gameKitPA_ whenTryAuthenticationWithViewController:(UIViewController *)viewController_{
-	AppController *appDelegate_ = (AppController*)[[UIApplication sharedApplication] delegate];
-	[[appDelegate_ navController] presentViewController:viewController_ animated:YES completion:nil];
-}*/
--(void)gameKitPA:(CMMGameKitPA *)gameKitPA_ whenCompletedAuthenticationWithLocalPlayer:(GKPlayer *)localPlayer_{
-	[[CMMGameKitAchievements sharedAchievements] setDelegate:self];
-	[[CMMGameKitAchievements sharedAchievements] reportCachedAchievements];
-}
--(void)gameKitPA:(CMMGameKitPA *)gameKitPA_ whenFailedAuthenticationWithError:(NSError *)error_{
-	[self forwardScene];
-}
-
--(void)gameKitAchievements:(CMMGameKitAchievements *)gameKitAchievements_ whenCompletedReportingAchievements:(NSArray *)achievements_{
-	CCLOG(@"whenCompletedReportingAchievements : count %d",[achievements_ count]);
-	[[CMMGameKitAchievements sharedAchievements] loadReportedAchievements];
-}
--(void)gameKitAchievements:(CMMGameKitAchievements *)gameKitAchievements_ whenFailedReportingAchievementsWithError:(NSError *)error_{
-	CCLOG(@"whenFailedReportingAchievementsWithError : %@",[error_ debugDescription]);
-	[self forwardScene];
-}
-
--(void)gameKitAchievements:(CMMGameKitAchievements *)gameKitAchievements_ whenReceiveAchievements:(NSArray *)achievements_{
-	CCLOG(@"whenReceiveAchievements : count %d",[achievements_ count]);
-	[self forwardScene];
-}
--(void)gameKitAchievements:(CMMGameKitAchievements *)gameKitAchievements_ whenFailedReceivingAchievementsWithError:(NSError *)error_{
-	CCLOG(@"whenFailedReceivingAchievementsWithError : %@",[error_ debugDescription]);
-	[self forwardScene];
+	ccDrawLine(lineStartPoint_, ccpAdd(lineStartPoint_, ccp(_contentSize.width*loadingRate,0)));
 }
 
 -(void)forwardScene{
 	//release delegate from CMMGameKitPA
-	[[CMMGameKitPA sharedPA] setDelegate:nil];
-	[[CMMGameKitAchievements sharedAchievements] setDelegate:nil];
+	[[CMMGameKitPA sharedPA] setCallback_whenAuthenticationChanged:nil];
+	[[CMMGameKitPA sharedPA] setAuthenticateHandler:nil];
 	
 	/*
 	 set HelloWorldLayer to static layer.
@@ -185,7 +171,12 @@
 	[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
 }
 
+-(void)cleanup{
+	[loadingMaker cleanup];
+	[super cleanup];
+}
 -(void)dealloc{
+	[loadingMaker release];
 	[super dealloc];
 }
 

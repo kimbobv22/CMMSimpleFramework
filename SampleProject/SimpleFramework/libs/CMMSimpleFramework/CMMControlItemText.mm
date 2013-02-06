@@ -4,7 +4,11 @@
 #import "CMMScene.h"
 
 @implementation CMMControlItemText
-@synthesize itemValue,itemTitle,textColor,callback_whenChangedItemVale;
+@synthesize itemValue,disableColor,title,textColor,passwordForm,placeHolder,placeHolderColor,placeHolderOpacity;
+@synthesize callback_whenItemValueChanged,callback_whenReturnKeyEntered,callback_whenKeypadShown,callback_whenKeypadHidden;
+@synthesize filter_shouldShowKeypad,filter_shouldHideKeypad;
+@synthesize textLabel = _textLabel;
+@synthesize placeHolderLabel = _placeHolderLabel;
 
 +(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ width:(float)width_ height:(float)height_{
 	return [[[self alloc] initWithBarSprite:barSprite_ width:width_ height:height_] autorelease];
@@ -30,11 +34,19 @@
 	[touchDispatcher setMaxMultiTouchCount:0];
 	
 	_textLabel = [CMMFontUtil labelWithString:@"" fontSize:[CMMFontUtil defaultFontSize] dimensions:CGSizeMake(frameSize_.width-10.0f, [CMMFontUtil defaultFontSize]) hAlignment:kCCTextAlignmentLeft vAlignment:kCCVerticalTextAlignmentCenter lineBreakMode:kCCLineBreakModeHeadTruncation];
-	_textLabel.position = ccp(contentSize_.width/2,contentSize_.height/2);
+	[_textLabel setPosition:ccp(_contentSize.width/2,_contentSize.height/2)];
 	[self setTextColor:ccBLACK];
+	
+	disableColor = ccc3(180, 180, 180);
+	
+	_placeHolderLabel = [CMMFontUtil labelWithString:@"" fontSize:[CMMFontUtil defaultFontSize] dimensions:CGSizeMake(frameSize_.width-10.0f, [CMMFontUtil defaultFontSize]) hAlignment:kCCTextAlignmentLeft vAlignment:kCCVerticalTextAlignmentCenter lineBreakMode:kCCLineBreakModeHeadTruncation];
+	[_placeHolderLabel setPosition:ccp(_contentSize.width/2,_contentSize.height/2)];
+	[self setPlaceHolderColor:ccBLACK];
+	[self setPlaceHolderOpacity:100];
 	
 	[self addChild:_barSprite z:0];
 	[self addChild:_textLabel z:1];
+	[self addChild:_placeHolderLabel z:2];
 	[self setItemValue:nil];
 	
 	CGSize screenSize_ = [[CCDirector sharedDirector] winSize];
@@ -92,6 +104,32 @@
 -(ccColor3B)textColor{
 	return _textLabel.color;
 }
+-(void)setPasswordForm:(BOOL)passwordForm_{
+	[_textField setSecureTextEntry:passwordForm_];
+	_doRedraw = YES;
+}
+-(BOOL)isPasswordForm{
+	return [_textField isSecureTextEntry];
+}
+-(void)setPlaceHolder:(NSString *)placeHolder_{
+	[_textField setPlaceholder:placeHolder_];
+	_doRedraw = YES;
+}
+-(NSString *)placeHolder{
+	return [_textField placeholder];
+}
+-(void)setPlaceHolderColor:(ccColor3B)placeHolderColor_{
+	[_placeHolderLabel setColor:placeHolderColor_];
+}
+-(ccColor3B)placeHolderColor{
+	return [_placeHolderLabel color];
+}
+-(void)setPlaceHolderOpacity:(GLubyte)placeHolderOpacity_{
+	[_placeHolderLabel setOpacity:placeHolderOpacity_];
+}
+-(GLubyte)placeHolderOpacity{
+	return [_placeHolderLabel opacity];
+}
 
 -(void)setContentSize:(CGSize)contentSize{
 	[super setContentSize:contentSize];
@@ -107,14 +145,14 @@
 	[_barSprite setColor:color];
 }
 
--(void)setItemTitle:(NSString *)itemTitle_{
-	[_textTitleLabel setText:itemTitle_];
+-(void)setTitle:(NSString *)title_{
+	[_textTitleLabel setText:title_];
 	CGRect curRect_ = [_textTitleLabel frame];
 	CGRect sourceRect_ = [_textField frame];
 	curRect_.origin = ccp(sourceRect_.origin.x-curRect_.size.width-10.0f,sourceRect_.origin.y);
 	[_textTitleLabel setFrame:curRect_];
 }
--(NSString *)itemTitle{
+-(NSString *)title{
 	return [_textTitleLabel text];
 }
 
@@ -122,35 +160,56 @@
 	BOOL doCallback_ = ![itemValue isEqualToString:itemValue_];
 	
 	[itemValue release];
-	itemValue = [!itemValue_?@"":itemValue_ retain];
+	itemValue = [!itemValue_?@"":itemValue_ copy];
 	[_textLabel setString:itemValue];
 	_doRedraw = YES;
 	
-	if(doCallback_){
-		if(!callback_whenChangedItemVale && cmmFuncCommon_respondsToSelector(delegate, @selector(controlItemText:whenChangedItemValue:))){
-			[((id<CMMControlItemTextDelegate>)delegate) controlItemText:self whenChangedItemValue:itemValue_];
-		}else if(callback_whenChangedItemVale){
-			callback_whenChangedItemVale(self, itemValue_);
-		}
+	if(doCallback_ && callback_whenItemValueChanged){
+		callback_whenItemValueChanged(itemValue_);
 	}
+}
+
+-(void)setEnable:(BOOL)enable_{
+	[super setEnable:enable_];
+	[self setColor:(enable?ccWHITE:disableColor)];
 }
 
 -(void)redraw{
 	[super redraw];
+	
+	if([self isPasswordForm]){
+		[_textLabel setString:@""];
+		
+		if(itemValue){
+			uint count_ = [itemValue length];
+			NSMutableString *resultStr_ = [NSMutableString string];
+			for(uint index_=0;index_<count_;++index_){
+				[resultStr_ appendString:@"*"];
+			}
+			
+			[_textLabel setString:resultStr_];
+		}
+	}
+	
+	[_placeHolderLabel setString:@""];
+	if([[self itemValue] length] == 0){
+		[_placeHolderLabel setString:[self placeHolder]];
+	}
+	
 	[_barSprite setPosition:cmmFuncCommon_positionInParent(self, _barSprite)];
 }
 -(void)redrawWithBar{
 	CGRect targetTextureRect_ = CGRectZero;
-	targetTextureRect_.size = contentSize_;
-	[_barSprite setContentSize:contentSize_];
+	targetTextureRect_.size = _contentSize;
+	[_barSprite setContentSize:_contentSize];
 	[self redraw];
 }
 
 -(void)showTextField{
 	if([_backView superview]) return;
 	
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(controlItemTextShouldShow:))){
-		if(![((id<CMMControlItemTextDelegate>)delegate) controlItemTextShouldShow:self])
+	if(filter_shouldShowKeypad){
+		if(!filter_shouldShowKeypad())
 			return;
 	}
 	
@@ -158,12 +217,16 @@
 	[[[CCDirectorIOS sharedDirector] view] addSubview:_backView];
 	[_textField becomeFirstResponder];
 	[[CMMScene sharedScene] setTouchEnable:NO];
+	
+	if(callback_whenKeypadShown){
+		callback_whenKeypadShown();
+	}
 }
 -(void)hideTextField{
 	if(![_backView superview]) return;
 	
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(controlItemTextShouldHide:))){
-		if(![((id<CMMControlItemTextDelegate>)delegate) controlItemTextShouldHide:self])
+	if(filter_shouldHideKeypad){
+		if(!filter_shouldHideKeypad())
 			return;
 	}
 	
@@ -171,6 +234,9 @@
 	[_textField resignFirstResponder];
 	[_backView removeFromSuperview];
 	[self setItemValue:[_textField text]];
+	if(callback_whenKeypadHidden){
+		callback_whenKeypadHidden();
+	}
 }
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
@@ -181,6 +247,9 @@
 -(BOOL)textFieldShouldReturn:(UITextField *)textField{
 	[self setItemValue:[_textField text]];
 	[self hideTextField];
+	if(callback_whenReturnKeyEntered){
+		callback_whenReturnKeyEntered();
+	}
 	return NO;
 }
 
@@ -189,14 +258,24 @@
 }
 
 -(void)cleanup{
-	[callback_whenChangedItemVale release];
-	callback_whenChangedItemVale = nil;
+	[self setCallback_whenItemValueChanged:nil];
+	[self setCallback_whenReturnKeyEntered:nil];
+	[self setCallback_whenKeypadShown:nil];
+	[self setCallback_whenKeypadHidden:nil];
+	[self setFilter_shouldShowKeypad:nil];
+	[self setFilter_shouldHideKeypad:nil];
 	[super cleanup];
 }
 
 -(void)dealloc{
-	[callback_whenChangedItemVale release];
+	[callback_whenItemValueChanged release];
+	[callback_whenReturnKeyEntered release];
+	[callback_whenKeypadShown release];
+	[callback_whenKeypadHidden release];
+	[filter_shouldShowKeypad release];
+	[filter_shouldHideKeypad release];
 	[_backView release];
+	[itemValue release];
 	[super dealloc];
 }
 

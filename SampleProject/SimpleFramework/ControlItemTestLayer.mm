@@ -8,45 +8,68 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	CMMControlItemText *testTextItem_ = [CMMControlItemText controlItemTextWithFrameSeq:0 width:150];
-	testTextItem_.itemValue = @"test";
-	testTextItem_.itemTitle = @"Test Label";
-	testTextItem_.callback_whenChangedItemVale = ^(id sender_, NSString *itemValue_){
-		CCLOG(@"test value : %@",itemValue_);
-	};
-	testTextItem_.position = cmmFuncCommon_positionInParent(self, testTextItem_,ccp(0.5f,0.8f));
-	[self addChild:testTextItem_];
+	textField1 = [CMMControlItemText controlItemTextWithFrameSeq:0 width:150];
+	[textField1 setPlaceHolder:@"Test text field!"];
+	[textField1 setTitle:@"Test Label"];
+	[textField1 setCallback_whenItemValueChanged:^(NSString *itemValue_) {
+		CCLOG(@"textField1 : %@",itemValue_);
+	}];
+	[textField1 setCallback_whenKeypadShown:^{
+		CCLOG(@"textField1 : whenKeypadShown");
+	}];
+	[textField1 setCallback_whenKeypadHidden:^{
+		CCLOG(@"textField1 : whenKeypadHidden");
+	}];
+	[textField1 setCallback_whenReturnKeyEntered:^{
+		CCLOG(@"textField1 : whenReturnKeyEntered");
+	}];
+	[textField1 setPosition:cmmFuncCommon_positionInParent(self, textField1,ccp(0.5f,1.0f),ccp(0.0f,-[textField1 contentSize].height-10.0f))];
+	[self addChild:textField1];
 	
-	CMMControlItemSwitch *testSwitchItem_ = [CMMControlItemSwitch controlItemSwitchWithFrameSeq:0];
-	testSwitchItem_.position = ccp(self.contentSize.width/2-testSwitchItem_.contentSize.width-10,self.contentSize.height/2+30);
-	testSwitchItem_.callback_whenChangedItemVale = ^(id sender_, BOOL itemValue_){
-		[self controlItemSwitch:sender_ whenChangedItemValue:itemValue_];
-	};
-	[self addChild:testSwitchItem_];
+	textField2 = [CMMControlItemText controlItemTextWithFrameSeq:0 width:150];
+	[textField2 setPasswordForm:YES];
+	[textField2 setPlaceHolder:@"Test text field!"];
+	[textField2 setTitle:@"Test Label"];
+	[textField2 setCallback_whenItemValueChanged:^(NSString *itemValue_) {
+		CCLOG(@"textField2 : %@",itemValue_);
+	}];
+	[textField2 setPosition:cmmFuncCommon_positionFromOtherNode(textField1, textField2, ccp(0.0f,-1.0f),ccp(0.0f,-20.0f))];
+	[self addChild:textField2];
 	
-	testSwitchItem_ = [CMMControlItemSwitch controlItemSwitchWithFrameSeq:0];
-	[testSwitchItem_ setButtonSprite:[CCSprite spriteWithFile:@"Icon-Small.png"]];
-	testSwitchItem_.position = ccp(self.contentSize.width/2+10,self.contentSize.height/2+30);
-	testSwitchItem_.delegate = self;
-	[self addChild:testSwitchItem_];
+	switch1 = [CMMControlItemSwitch controlItemSwitchWithFrameSeq:0];
+	[switch1 setPosition:cmmFuncCommon_positionFromOtherNode(textField2, switch1, ccp(0.0f,-1.0f),ccp(-[switch1 contentSize].width/2.0f-10.0f,-20.0f))];
+	[switch1 setCallback_whenItemValueChanged:^(BOOL itemValue_) {
+		CCLOG(@"switch1 : %d",itemValue_);
+	}];
+	[self addChild:switch1];
 	
-	CMMControlItemSlider *testSliderItem_ = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:150];
-	testSliderItem_.minValue = -10.0f;
-	testSliderItem_.maxValue = 10.0f;
-	testSliderItem_.itemValue = 1.0f;
-	testSliderItem_.position = ccp(self.contentSize.width/2-testSliderItem_.contentSize.width-10,testSwitchItem_.position.y-testSwitchItem_.contentSize.height-testSliderItem_.contentSize.height);
-	testSliderItem_.delegate = self;
-	[self addChild:testSliderItem_];
+	switch2 = [CMMControlItemSwitch controlItemSwitchWithFrameSeq:0];
+	[switch2 setButtonSprite:[CCSprite spriteWithFile:@"Icon-Small.png"]];
+	[switch2 setPosition:cmmFuncCommon_positionFromOtherNode(textField2, switch2, ccp(0.0f,-1.0f),ccp(+[switch2 contentSize].width/2.0f+10.0f,-20.0f))];
+	[switch2 setCallback_whenItemValueChanged:^(BOOL itemValue_) {
+		CCLOG(@"switch2 : %d",itemValue_);
+	}];
+	[self addChild:switch2];
+	
+	slider1 = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:150];
+	[slider1 setMinValue:-10.0f];
+	[slider1 setMaxValue:10.0f];
+	[slider1  setItemValue:1.0f];
+	[slider1 setPosition:ccp(_contentSize.width/2.0f-[slider1 contentSize].width/2.0,[switch1 position].y-[slider1 contentSize].height-10.0f)];
+	[slider1 setCallback_whenItemValueChanged:^(float itemValue_, float beforeItemValue_) {
+		CCLOG(@"slider1 : %1.1f -> %1.1f",beforeItemValue_,itemValue_);
+	}];
+	[self addChild:slider1];
 	
 	slider2 = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:150];
 	[slider2 setButtonSprite:[CCSprite spriteWithFile:@"Icon-Small.png"]];
-	slider2.minValue = -10.0f;
-	slider2.maxValue = 10.0f;
-	slider2.itemValue = 1.0f;
-	slider2.position = ccp(self.contentSize.width/2+10,testSwitchItem_.position.y-testSwitchItem_.contentSize.height-slider2.contentSize.height);
-	slider2.callback_whenChangedItemVale = ^(id sender_, float itemValue_, float beforeItemValue_){
-		[self controlItemSlider:sender_ whenChangedItemValue:itemValue_ beforeItemValue:beforeItemValue_];
-	};
+	[slider2 setMinValue:-10.0f];
+	[slider2 setMaxValue:10.0f];
+	[slider2  setItemValue:1.0f];
+	[slider2 setPosition:cmmFuncCommon_positionFromOtherNode(slider1, slider2, ccp(0.0f,-1.0f),ccp(0.0f,-10.0f))];
+	[slider2 setCallback_whenItemValueChanged:^(float itemValue_, float beforeItemValue_) {
+		CCLOG(@"slider2 : %1.1f -> %1.1f",beforeItemValue_,itemValue_);
+	}];
 	[self addChild:slider2];
 	
 	CMMMenuItemL *menuItemBack_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
@@ -66,14 +89,6 @@
 	[self addChild:testMenuItem_];
 	
 	return self;
-}
-
--(void)controlItemSwitch:(CMMControlItemSwitch *)controlItem_ whenChangedItemValue:(BOOL)itemValue_{
-	CCLOG(@"test value : %d",itemValue_);
-}
-
--(void)controlItemSlider:(CMMControlItemSlider *)controlItem_ whenChangedItemValue:(float)itemValue_ beforeItemValue:(float)beforeItemValue_{
-	CCLOG(@"test value : %1.1f -> %1.1f",beforeItemValue_,itemValue_);
 }
 
 @end

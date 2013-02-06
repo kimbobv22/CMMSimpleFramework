@@ -43,16 +43,14 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	menuItemSet = [CMMMenuItemSet menuItemSetWithMenuSize:CGSizeMake(contentSize_.width*0.7f, contentSize_.height*0.7f)];
-
-	//menuItemSet = [CMMMenuItemSet menuItemSetWithMenuSize:CGSizeMake(contentSize_.width*0.7f, contentSize_.height*0.7f) menuItem:[CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)],[CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)],[CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)],[CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)],[CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(50, 50)], nil];
-	/*[menuItemSet setCallback_pushdown:^(id sender_, CMMMenuItem *menuItem_){
-		[self menuItemSet:menuItemSet whenMenuItemPushdownWithMenuItem:menuItem_];
+	menuItemSet = [CMMMenuItemSet menuItemSetWithMenuSize:CGSizeMake(_contentSize.width*0.7f, _contentSize.height*0.7f)];
+	[menuItemSet setCallback_whenItemPushdown:^(CMMMenuItem *item_) {
+		CCLOG(@"whenItemPushdown -> %d",[menuItemSet indexOfMenuItem:item_]);
 	}];
-	[menuItemSet setCallback_pushup:^(id sender_, CMMMenuItem *menuItem_){
-		[self menuItemSet:menuItemSet whenMenuItemPushupWithMenuItem:menuItem_];
-	}];*/
-	[menuItemSet setDelegate:self];
+	[menuItemSet setCallback_whenItemPushup:^(CMMMenuItem *item_) {
+		CCLOG(@"whenItemPushup -> %d",[menuItemSet indexOfMenuItem:item_]);
+	}];
+	
 	[menuItemSet setLineHAlignType:CMMMenuItemSetLineHAlignType_middle];
 	[menuItemSet setPosition:ccpAdd(cmmFuncCommon_positionInParent(self, menuItemSet), ccp(0,20.0f))];
 	[self addChild:menuItemSet];
@@ -67,8 +65,8 @@
 	[controlItem_ setMinValue:1.0f];
 	[controlItem_ setMaxValue:10.0f];
 	[controlItem_ setUnitValue:1.0f];
-	[controlItem_ setPosition:ccp(contentSize_.width-controlItem_.contentSize.width,10)];
-	[controlItem_ setCallback_whenChangedItemVale:^(id sender_, float curValue_, float beforeValue_) {
+	[controlItem_ setPosition:ccp(_contentSize.width-controlItem_.contentSize.width,10)];
+	[controlItem_ setCallback_whenItemValueChanged:^(float curValue_, float beforeValue_) {
 		[menuItemSet setUnitPerLine:(uint)curValue_];
 		[menuItemSet updateDisplay];
 	}];
@@ -90,7 +88,7 @@
 	
 	lineHAlignTypeChangeBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake(30, 30)];
 	[lineHAlignTypeChangeBtn setTitle:@"H"];
-	[lineHAlignTypeChangeBtn setPosition:ccp(contentSize_.width-lineHAlignTypeChangeBtn.contentSize.width/2.0f,contentSize_.height/2.0f)];
+	[lineHAlignTypeChangeBtn setPosition:ccp(_contentSize.width-lineHAlignTypeChangeBtn.contentSize.width/2.0f,_contentSize.height/2.0f)];
 	[lineHAlignTypeChangeBtn setCallback_pushup:^(id sender_){
 		if([menuItemSet lineHAlignType] != CMMMenuItemSetLineHAlignType_bottom){
 			[self setLineHAlignType:(CMMMenuItemSetLineHAlignType)([menuItemSet lineHAlignType]+1)];
@@ -121,13 +119,6 @@
 	[self addChild:menuItemButton_];
 	
 	return self;
-}
-
--(void)menuItemSet:(CMMMenuItemSet *)menuItemSet_ whenMenuItemPushdownWithMenuItem:(CMMMenuItem *)menuItem_{
-	CCLOG(@"whenMenuItemPushdownWithMenuItem -> %d",[menuItemSet indexOfMenuItem:menuItem_]);
-}
--(void)menuItemSet:(CMMMenuItemSet *)menuItemSet_ whenMenuItemPushupWithMenuItem:(CMMMenuItem *)menuItem_{
-	CCLOG(@"whenMenuItemPushupWithMenuItem -> %d",[menuItemSet indexOfMenuItem:menuItem_]);
 }
 
 @end

@@ -9,7 +9,7 @@
 @end
 
 @implementation CMMControlItemSwitch
-@synthesize itemValue,callback_whenChangedItemVale;
+@synthesize itemValue,callback_whenItemValueChanged;
 
 +(id)controlItemSwitchWithMaskSprite:(CCSprite *)maskSprite_ backSprite:(CCSprite *)backSprite_ buttonSprite:(CCSprite *)buttonSprite_{
 	return [[[self alloc] initWithMaskSprite:maskSprite_ backSprite:backSprite_ buttonSprite:buttonSprite_] autorelease];
@@ -76,18 +76,15 @@
 -(void)setItemValue:(BOOL)itemValue_{
 	BOOL doCallback_ = itemValue != itemValue_;
 	itemValue = itemValue_;
-	[self _setPointXOfButton:(itemValue?contentSize_.width-buttonItem.contentSize.width/2:buttonItem.contentSize.width/2)];
+	[self _setPointXOfButton:(itemValue?_contentSize.width-buttonItem.contentSize.width/2:buttonItem.contentSize.width/2)];
 	
-	if(doCallback_){
-		if(!callback_whenChangedItemVale && cmmFuncCommon_respondsToSelector(delegate, @selector(controlItemSwitch:whenChangedItemValue:)))
-			[((id<CMMControlItemSwitchDelegate>)delegate) controlItemSwitch:self whenChangedItemValue:itemValue];
-		else if(callback_whenChangedItemVale)
-			callback_whenChangedItemVale(self,itemValue);
+	if(doCallback_ && callback_whenItemValueChanged){
+		callback_whenItemValueChanged(itemValue);
 	}
 }
 
 -(void)_setPointXOfButton:(float)x_{
-	CGSize frameSize_ = contentSize_;
+	CGSize frameSize_ = _contentSize;
 	CGSize buttonSize_ = [buttonItem contentSize];
 	
 	if(x_<buttonSize_.width/2.0f)
@@ -151,13 +148,12 @@
 }
 
 -(void)cleanup{
-	[callback_whenChangedItemVale release];
-	callback_whenChangedItemVale = nil;
+	[self setCallback_whenItemValueChanged:nil];
 	[super cleanup];
 }
 
 -(void)dealloc{
-	[callback_whenChangedItemVale release];
+	[callback_whenItemValueChanged release];
 	[_backSprite release];
 	[_maskSprite release];
 	[super dealloc];

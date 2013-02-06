@@ -11,7 +11,7 @@
 
 @end
 
-@interface LeaderBoardTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMGameKitLeaderBoardDelegate>{
+@interface LeaderBoardTestLayer : CMMLayer{
 	CMMScrollMenuV *leaderBoardScrollMenu;
 	CCLabelTTF *scroeLabel,*_displayLabel;
 	CMMMenuItemL *bitBtn,*reportBtn,*refreshBtn;

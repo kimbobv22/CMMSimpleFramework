@@ -69,11 +69,11 @@
 @implementation CMMSPlanet(Box2d)
 
 -(void)buildupBody{
-	body = [stage.world createBody:b2_staticBody point:position_ angle:rotationX_];
+	body = [stage.world createBody:b2_staticBody point:_position angle:_rotationX];
 	body->SetUserData(self);
 	
 	b2CircleShape bodyBox_;
-	bodyBox_.m_radius = (contentSize_.width/2.0f)/PTM_RATIO;
+	bodyBox_.m_radius = (_contentSize.width/2.0f)/PTM_RATIO;
 	b2FixtureDef fixtureDef_;
 	fixtureDef_.density = 0.5f;
 	fixtureDef_.restitution = 0.1f;

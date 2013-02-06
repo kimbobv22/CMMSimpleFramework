@@ -4,20 +4,12 @@
 #import "CMMDrawingManager.h"
 #import "CMMTouchUtil.h"
 
-@class CMMControlItem;
-
-//interface
-@protocol CMMControlItemDelegate <NSObject>
-@end
-
 #define cmmVarCMMControlItem_redrawDelayTime 0.05f
 
 //interface
 @interface CMMControlItem : CMMLayer{
-	id<CMMControlItemDelegate> delegate;
-	BOOL isEnable;
-	id userData;
-
+	BOOL enable;
+	
 	ccTime _redrawDelayTime;
 	BOOL _doRedraw;
 }
@@ -28,8 +20,6 @@
 -(void)redraw;
 -(void)update:(ccTime)dt_;
 
-@property (nonatomic, assign) id<CMMControlItemDelegate> delegate;
-@property (nonatomic, readwrite) BOOL isEnable;
-@property (nonatomic, retain) id userData;
+@property (nonatomic, readwrite, getter = isEnable) BOOL enable;
 
 @end

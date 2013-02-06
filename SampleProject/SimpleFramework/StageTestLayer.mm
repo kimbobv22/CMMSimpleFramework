@@ -8,7 +8,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	stageSelector = [CMMMenuItemSet menuItemSetWithMenuSize:CGSizeMake(contentSize_.width*0.8f, contentSize_.height*0.6f)];
+	stageSelector = [CMMMenuItemSet menuItemSetWithMenuSize:CGSizeMake(_contentSize.width*0.8f, _contentSize.height*0.6f)];
 	[stageSelector setLineVAlignType:CMMMenuItemSetLineVAlignType_center];
 	[stageSelector setUnitPerLine:2];
 	[stageSelector setPosition:cmmFuncCommon_positionInParent(self, stageSelector)];
@@ -81,8 +81,8 @@
 	
 	glLineWidth(1.0f);
 	ccDrawColor4F(1.0f, 1.0f, 1.0f, 0.4f);
-	ccDrawLine(ccp(contentSize_.width/2,0), ccp(contentSize_.width/2,contentSize_.height));
-	ccDrawLine(ccp(0,contentSize_.height/2), ccp(contentSize_.width,contentSize_.height/2));
+	ccDrawLine(ccp(_contentSize.width/2,0), ccp(_contentSize.width/2,_contentSize.height));
+	ccDrawLine(ccp(0,_contentSize.height/2), ccp(_contentSize.width,_contentSize.height/2));
 }
 
 @end
@@ -93,9 +93,11 @@
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	//// add control menu
-	controlMenu = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(80.0f, contentSize_.height*0.8f)];
-	[controlMenu setDelegate:self];
-	[controlMenu setPosition:ccp(contentSize_.width-controlMenu.contentSize.width,contentSize_.height/2.0f-controlMenu.contentSize.height/2.0f)];
+	controlMenu = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(80.0f, _contentSize.height*0.8f)];
+	[controlMenu setFilter_canChangeIndex:^BOOL(int index_) {
+		return YES;
+	}];
+	[controlMenu setPosition:ccp(_contentSize.width-controlMenu.contentSize.width,_contentSize.height/2.0f-controlMenu.contentSize.height/2.0f)];
 	[self addChild:controlMenu];
 	
 	//add control menu item
@@ -120,13 +122,13 @@
 	[self addChild:labelGravity];
 	
 	gravitySlider = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:150];
-	gravitySlider.callback_whenChangedItemVale = ^(id sender_, float itemValue_, float beforeItemValue_){
+	[gravitySlider setCallback_whenItemValueChanged:^(float itemValue_, float beforeItemValue_) {
 		CGPoint gravity_ = stage.spec.gravity;
 		gravity_.y = itemValue_;
 		[stage.spec setGravity:gravity_];
 		[labelGravity setString:[NSString stringWithFormat:@"gravity : %1.1f",gravity_.y]];
-		labelGravity.position = ccp(contentSize_.width-labelGravity.contentSize.width/2-5,labelGravity.contentSize.height/2+5);
-	};
+		labelGravity.position = ccp(_contentSize.width-labelGravity.contentSize.width/2-5,labelGravity.contentSize.height/2+5);
+	}];
 	gravitySlider.minValue = -10.0f;
 	gravitySlider.maxValue = 10.0f;
 	gravitySlider.unitValue = 0.5f;
@@ -145,39 +147,31 @@
 	}];
 	[self addChild:backBtn];
 	
+	[self buildupStage];
+	
+	[stage setCallback_whenObjectAdded:^(CMMSObject *object_) {
+		CCLOG(@"object added to stage : %d",[object_ objectTag]);
+	}];
+	[stage setCallback_whenObjectRemoved:^(CMMSObject *object_) {
+		CCLOG(@"object removed to stage : %d",[object_ objectTag]);
+		if(_curTouchObject == object_){
+			_curTouchObject = nil;
+			_isTouchObject = NO;
+		}
+	}];
+	[stage setCallback_whenTouchBegan:^(UITouch *touch, CMMSObject *object_) {
+		if(object_){
+			_isTouchObject = YES;
+			_curTouchObject = object_;
+		}
+	}];
+	
 	[self scheduleUpdate];
 	
 	return self;
 }
 
-//stage basic delegate method
--(void)stage:(CMMStage *)stage_ whenAddedObjects:(CCArray *)objects_{
-	CCLOG(@"added objects. count : %d",objects_.count);
-}
--(void)stage:(CMMStage *)stage_ whenRemovedObjects:(CCArray *)objects_{
-	CCLOG(@"removed objects. count : %d",objects_.count);
-	
-	ccArray *data_ = objects_->data;
-	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
-		CMMSObject *object_ = data_->arr[index_];
-		if(_curTouchObject == object_){
-			_curTouchObject = nil;
-			_isTouchObject = NO;
-		}
-	}
-}
-
-//stage touch delegate method
--(void)stage:(CMMStage *)stage_ whenTouchBegan:(UITouch *)touch_ withObject:(CMMSObject *)object_{
-	if(object_){
-		_isTouchObject = YES;
-		_curTouchObject = object_;
-	}
-}
--(void)stage:(CMMStage *)stage_ whenTouchMoved:(UITouch *)touch_ withObject:(CMMSObject *)object_{}
--(void)stage:(CMMStage *)stage_ whenTouchEnded:(UITouch *)touch_ withObject:(CMMSObject *)object_{}
--(void)stage:(CMMStage *)stage_ whenTouchCancelled:(UITouch *)touch_ withObject:(CMMSObject *)object_{}
+-(void)buildupStage{/*overide me*/}
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
 	_isOnTouch = YES;
@@ -248,9 +242,7 @@
 		stage.worldPoint = ccpSub(stage.worldPoint, ccpMult(diffPoint_, dt_*2.0f));
 	}
 	
-	if(stage){
-		[stage update:dt_];
-	}
+	[stage update:dt_];
 }
 
 -(CMMSObject *)addBox:(CGPoint)point_{
@@ -290,6 +282,23 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
+	stageControlType = StageControlType_addBox;
+	
+	[gravitySlider setItemValue:-9.8f];
+	
+	//add light control item
+	CGSize tempMenuItemSize_ = CGSizeMake(controlMenu.contentSize.width, 30);
+	CMMMenuItemL *tempMenuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:tempMenuItemSize_];
+	[tempMenuItem_ setTitle:@"add Light"];
+	[tempMenuItem_ setCallback_pushup:^(id) {
+		stageControlType = StageControlType_addLight;
+	}];
+	[controlMenu addItem:tempMenuItem_];
+
+	return self;
+}
+
+-(void)buildupStage{
 	//// add stage
 	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
 	CMMStageDef stageDef_;
@@ -301,9 +310,9 @@
 	
 	stage = [CMMStage stageWithStageDef:stageDef_];
 	stage.sound.soundDistance = 300.0f;
-	stage.position = ccp(0,contentSize_.height-stage.contentSize.height);
-	stage.delegate = self;
-	stage.isTouchEnabled = YES;
+	stage.position = ccp(0,_contentSize.height-stage.contentSize.height);
+	
+	stage.touchEnabled = YES;
 	[stage initializeLightSystem]; // lazy initialization
 	
 	[self addChild:stage z:0];
@@ -320,21 +329,6 @@
 	batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"IMG_STG_ball.png" isInDocument:NO];
 	batchNode_.objectClass = [CMMSBall class];
 	[stage.world addObatchNode:batchNode_];
-	
-	stageControlType = StageControlType_addBox;
-	
-	[gravitySlider setItemValue:-9.8f];
-	
-	//add light control item
-	CGSize tempMenuItemSize_ = CGSizeMake(controlMenu.contentSize.width, 30);
-	CMMMenuItemL *tempMenuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:tempMenuItemSize_];
-	[tempMenuItem_ setTitle:@"add Light"];
-	[tempMenuItem_ setCallback_pushup:^(id) {
-		stageControlType = StageControlType_addLight;
-	}];
-	[controlMenu addItem:tempMenuItem_];
-
-	return self;
 }
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
@@ -360,36 +354,6 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
-	CMMStageDef stageDef_;
-	stageDef_.stageSize = CGSizeMake(targetSize_.width-80.0f, targetSize_.height-50.0f);
-	stageDef_.gravity = CGPointZero;
-	stageDef_.friction = 0.3f;
-	stageDef_.restitution = 0.3f;
-	stageDef_.brightness = 0.2f;
-
-	stage = [CMMStagePXL stageWithStageDef:stageDef_ fileName:@"IMG_STG_TEST_001.png" isInDocument:NO];
-	stage.sound.soundDistance = 300.0f;
-	stage.position = ccp(0,self.contentSize.height-stage.contentSize.height);
-	stage.delegate = self;
-	stage.isTouchEnabled = YES;
-	[stage initializeLightSystem]; // lazy initialization
-	
-	[self addChild:stage z:0];
-	
-	//add background
-	CCLayerGradientTest *backgroundLayer_ = [CCLayerGradientTest layerWithColor:ccc4(130, 130, 130, 255) fadingTo:ccc4(130, 130, 130, 255) alongVector:ccp(0.1,0.4)];
-	[backgroundLayer_ setContentSize:[stage worldSize]];
-	[stage addBackgroundNode:backgroundLayer_];
-	
-	////add object batchNode
-	CMMSObjectBatchNode *batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"Icon.png" isInDocument:NO];
-	[stage.world addObatchNode:batchNode_];
-	
-	batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"IMG_STG_ball.png" isInDocument:NO];
-	batchNode_.objectClass = [CMMSBall class];
-	[stage.world addObatchNode:batchNode_];
-	
 	//add control menu item
 	CGSize tempMenuItemSize_ = CGSizeMake(controlMenu.contentSize.width, 30);
 	
@@ -410,6 +374,37 @@
 	[gravitySlider setItemValue:-9.8f];
 		
 	return self;
+}
+
+-(void)buildupStage{
+	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
+	CMMStageDef stageDef_;
+	stageDef_.stageSize = CGSizeMake(targetSize_.width-80.0f, targetSize_.height-50.0f);
+	stageDef_.gravity = CGPointZero;
+	stageDef_.friction = 0.3f;
+	stageDef_.restitution = 0.3f;
+	stageDef_.brightness = 0.2f;
+	
+	stage = [CMMStagePXL stageWithStageDef:stageDef_ fileName:@"IMG_STG_TEST_001.png" isInDocument:NO];
+	stage.sound.soundDistance = 300.0f;
+	stage.position = ccp(0,self.contentSize.height-stage.contentSize.height);
+	stage.touchEnabled = YES;
+	[stage initializeLightSystem]; // lazy initialization
+	
+	[self addChild:stage z:0];
+	
+	//add background
+	CCLayerGradientTest *backgroundLayer_ = [CCLayerGradientTest layerWithColor:ccc4(130, 130, 130, 255) fadingTo:ccc4(130, 130, 130, 255) alongVector:ccp(0.1,0.4)];
+	[backgroundLayer_ setContentSize:[stage worldSize]];
+	[stage addBackgroundNode:backgroundLayer_];
+	
+	////add object batchNode
+	CMMSObjectBatchNode *batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"Icon.png" isInDocument:NO];
+	[stage.world addObatchNode:batchNode_];
+	
+	batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"IMG_STG_ball.png" isInDocument:NO];
+	batchNode_.objectClass = [CMMSBall class];
+	[stage.world addObatchNode:batchNode_];
 }
 
 -(void)update:(ccTime)dt_{
@@ -450,51 +445,50 @@
 
 @implementation StageTestLayerTile
 
--(void)sceneLoadingProcess000{
-	[self unscheduleUpdate];
-	[backBtn setEnable:NO];
-	
+-(void)buildupStage{
 	CGSize targetSize_ = [[CCDirector sharedDirector] winSize];
 	CMMStageDef stageDef_ = CMMStageDefMake(CGSizeMake(targetSize_.width-80.0f, targetSize_.height-50.0f),CGSizeZero,ccp(0,0));
 	
 	stage = [CMMStageTMX stageWithStageDef:stageDef_ tmxFileName:@"TMX_SAMPLE_000.tmx" isInDocument:NO];
 	[stage light];
-	stage.position = ccp(0,contentSize_.height-stage.contentSize.height);
-	stage.delegate = self;
-	stage.isTouchEnabled = YES;
+	stage.position = ccp(0,_contentSize.height-stage.contentSize.height);
+	stage.touchEnabled = YES;
 	[stage initializeLightSystem]; // lazy initialization
+	
+	[((CMMStageTMX *)stage) setFilter_isSingleTile:^BOOL(CCTMXLayer *tmxLayer_, CCSprite *tile_, float xIndex_, float yIndex_) {
+		return NO;
+	}];
+	[((CMMStageTMX *)stage) setCallback_tileBuiltup:^(CCTMXLayer *tmxLayer_, float fromXIndex_, float toXIndex_, float yIndex_, b2Fixture *tileFixture_) {
+		CCLOG(@"tile built up! [ X : %d -> %d , Y: %d ]",(int)fromXIndex_,(int)toXIndex_,(int)yIndex_);
+	}];
 	
 	[self addChild:stage];
 	
 	////add object batchNode
 	CMMSObjectBatchNode *batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"Icon-Small.png" isInDocument:NO];
 	[stage.world addObatchNode:batchNode_];
-	
+
 	batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"IMG_STG_ball.png" isInDocument:NO];
 	batchNode_.objectClass = [CMMSBall class];
 	[stage.world addObatchNode:batchNode_];
 	
 	[gravitySlider setItemValue:-9.8f];
 }
--(void)sceneLoadingProcess001{
+
+-(void)sceneDidEndTransition:(CMMScene *)scene_{
+	[self unscheduleUpdate];
+	[backBtn setEnable:NO];
+	
 	CMMStageTMX *stage_ = (CMMStageTMX *)stage;
 	[stage_ addGroundTMXLayerAtLayerName:@"ground"];
-	[stage_ buildupTilemap];
-}
--(void)sceneDidEndLoading:(CMMScene *)scene_{
-	[self scheduleUpdate];
-	[backBtn setEnable:YES];
+	[stage_ buildupTilemapWithBlock:^{
+		[self scheduleUpdate];
+		[backBtn setEnable:YES];
+	}];
 }
 
 -(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
 	return [((CMMStageTMX *)stage) isTilemapBuiltup];
-}
-
--(void)tilemapStage:(CMMStageTMX *)stage_ whenTileBuiltupAtTMXLayer:(CCTMXLayer *)tmxLayer_ fromXIndex:(float)fromXIndex_ toXIndex:(float)toXIndex_ yIndex:(float)yIndex_ tileFixture:(b2Fixture *)tileFixture_{
-	CCLOG(@"tile built up! [ X : %d -> %d , Y: %d ]",(int)fromXIndex_,(int)toXIndex_,(int)yIndex_);
-}
--(BOOL)tilemapStage:(CMMStageTMX *)stage_ isSingleTileAtTMXLayer:(CCTMXLayer *)tmxLayer_ tile:(CCSprite *)tile_ xIndex:(float)xIndex_ yIndex:(float)yIndex_{
-	return NO; // if return value is 'yes', the tile will be built up as a single tile;
 }
 
 -(CMMSObject *)addBox:(CGPoint)point_{
@@ -550,9 +544,9 @@
 -(void)buildupBody{
 	[super buildupBody];
 	
-	b2Vec2 targetSize_ = b2Vec2FromSize_PTM_RATIO(CGSizeMake(contentSize_.width*0.3f, contentSize_.height*0.3f));
+	b2Vec2 targetSize_ = b2Vec2FromSize_PTM_RATIO(CGSizeMake(_contentSize.width*0.3f, _contentSize.height*0.3f));
 	b2PolygonShape bodyBox_;
-	bodyBox_.SetAsBox(targetSize_.x, targetSize_.y, b2Vec2(0.0f,-(contentSize_.height/2.0f)/PTM_RATIO), 0.0f);
+	bodyBox_.SetAsBox(targetSize_.x, targetSize_.y, b2Vec2(0.0f,-(_contentSize.height/2.0f)/PTM_RATIO), 0.0f);
 	b2FixtureDef fixtureDef_;
 	fixtureDef_.shape = &bodyBox_;
 	fixtureDef_.isSensor = YES;
@@ -581,7 +575,7 @@
 	
 	CMMMenuItemL *backBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[backBtn_ setTitle:@"BACK"];
-	backBtn_.position = ccp(backBtn_.contentSize.width/2,contentSize_.height-backBtn_.contentSize.height/2);
+	backBtn_.position = ccp(backBtn_.contentSize.width/2,_contentSize.height-backBtn_.contentSize.height/2);
 	[backBtn_ setCallback_pushup:^(id) {
 		[[CMMScene sharedScene] pushLayer:[StageTestLayer node]];
 	}];
@@ -591,12 +585,19 @@
 	CMMStageDef stageDef_ = CMMStageDefMake(CGSizeMake(targetSize_.width, targetSize_.height-50.0f), CGSizeZero, ccp(0.0f, -9.8f));
 	stageDef_.brightness = 0.4f;
 	stage = [CMMStageDNB stageWithStageDef:stageDef_];
-	[stage setDelegate:self];
 	[stage setMarginPerBlock:CMMFloatRange(50.0f, 80.0f)];
 	[stage setBlockHeightRange:CMMFloatRange(0.0f, 120.0f)];
 	[stage setMaxHeightDifferencePerBlock:30.0f];
 	[[stage block] setBlockRandomizeRatio:1.0f];
 	[self addChild:stage];
+	
+	[stage setCallback_whenContactBeganWithObject:^(CMMSObject *object_, CMMStageDNBDirection direction_) {
+		if(direction_ == CMMStageDNBDirection_top) return;
+		
+		if(object_ == targetObject){
+			[self _regenTargetObject];
+		}
+	}];
 	
 	//[stage initializeLightSystem];
 	
@@ -664,7 +665,9 @@
 	[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:joypadSpriteFrameFileName_];
 	ui = [CMMCustomUIJoypad joypadWithSpriteFrameFileName:joypadSpriteFrameFileName_];
 	[ui setOpacity:120.0f];
-	[ui setDelegate:self];
+	[[ui stick] setCallback_whenStickVectorChanged:^(CGPoint vector_) {
+		if(targetObject) [targetObject setVelocity:vector_];
+	}];
 	
 	[[ui buttonB] setCallback_pushdown:^(id sender_){
 		if(!targetObject) return;
@@ -675,7 +678,7 @@
 	[self addChild:ui z:1];
 	
 	worldVelocityLabel = [CMMFontUtil labelWithString:@" "];
-	[worldVelocityLabel setPosition:ccp(contentSize_.width/2.0f, contentSize_.height/2.0f+50.0f)];
+	[worldVelocityLabel setPosition:ccp(_contentSize.width/2.0f, _contentSize.height/2.0f+50.0f)];
 	[self addChild:worldVelocityLabel z:9];
 	
 	[self _setWorldVelocity:100.0f];
@@ -692,7 +695,7 @@
 	}
 	
 	targetObject = [TestHero spriteWithFile:@"Icon-Small.png"];
-	[targetObject setPosition:[stage convertToStageWorldSpace:ccp(contentSize_.width/2.0f,contentSize_.height/2.0f)]];
+	[targetObject setPosition:[stage convertToStageWorldSpace:ccp(_contentSize.width/2.0f,_contentSize.height/2.0f)]];
 	[[stage world] addObject:targetObject];
 	CMMStageLightItem *lightItem_ = [[stage light] addLightItemAtPoint:[targetObject position]];
 	[lightItem_ setTarget:targetObject];
@@ -718,18 +721,6 @@
 		_curStackTime = 0.0f;
 		[self _setWorldVelocity:MIN([stage worldVelocityX]+20.0f,240.f)];
 	}
-}
-
--(void)stage:(CMMStageDNB *)stage_ whenContactStartedWithObject:(CMMSObject *)object_ AtDirection:(CMMStageDNBDirection)direction_{
-	if(direction_ == CMMStageDNBDirection_top) return;
-	
-	if(object_ == targetObject){
-		[self _regenTargetObject];
-	}
-}
-
--(void)customUIJoypad:(CMMCustomUIJoypad *)joypad_ whenChangedStickVector:(CGPoint)vector_{
-	if(targetObject) [targetObject setVelocity:vector_];
 }
 
 @end

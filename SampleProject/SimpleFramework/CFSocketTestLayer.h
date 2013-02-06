@@ -8,11 +8,11 @@
 
 #import "CMMHeader.h"
 
-@interface CFSocketTestLayer : CMMLayer<CMMSceneLoadingProtocol>
+@interface CFSocketTestLayer : CMMLayer
 
 @end
 
-@interface CFSocketTestLayer_Master : CMMLayer<CMMSceneLoadingProtocol,CMMSocketHandlerDelegate>{
+@interface CFSocketTestLayer_Master : CMMLayer<CMMSocketHandlerDelegate>{
 	CMMSocketHandler *socketHandler;
 	CCLabelTTF *labelDisplay;
 }

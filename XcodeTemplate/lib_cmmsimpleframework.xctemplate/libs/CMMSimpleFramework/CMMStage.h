@@ -284,29 +284,8 @@ typedef enum{
 
 @end
 
-@protocol CMMStageDelegate<NSObject>
-
-@optional
--(void)stage:(CMMStage *)stage_ whenAddedObjects:(CCArray *)objects_;
--(void)stage:(CMMStage *)stage_ whenRemovedObjects:(CCArray *)objects_;
-
-@end
-
-//optional protocal
-@protocol CMMStageTouchDelegate <NSObject>
-
-@optional
--(void)stage:(CMMStage *)stage_ whenTouchBegan:(UITouch *)touch_ withObject:(CMMSObject *)object_;
--(void)stage:(CMMStage *)stage_ whenTouchMoved:(UITouch *)touch_ withObject:(CMMSObject *)object_;
--(void)stage:(CMMStage *)stage_ whenTouchEnded:(UITouch *)touch_ withObject:(CMMSObject *)object_;
--(void)stage:(CMMStage *)stage_ whenTouchCancelled:(UITouch *)touch_ withObject:(CMMSObject *)object_;
-
-@end
-
 @interface CMMStage : CMMLayer<CMMStageWorldDelegate,CMMSContactProtocol>{
 	CMMSSpecStage *spec;
-
-	id<CMMStageDelegate,CMMStageTouchDelegate> delegate;
 	
 	CMMStageWorld *world;
 	CMMStageParticle *particle;
@@ -317,6 +296,9 @@ typedef enum{
 	
 	ccTime timeInterval,_stackTime;
 	uint maxTimeIntervalProcessCount;
+	
+	void (^callback_whenObjectAdded)(CMMSObject *object_),(^callback_whenObjectRemoved)(CMMSObject *object_);
+	void (^callback_whenTouchBegan)(UITouch *touch_, CMMSObject *object_),(^callback_whenTouchMoved)(UITouch *touch_, CMMSObject *object_),(^callback_whenTouchEnded)(UITouch *touch_, CMMSObject *object_),(^callback_whenTouchCancelled)(UITouch *touch_, CMMSObject *object_);
 }
 
 +(id)stageWithStageDef:(CMMStageDef)stageDef_;
@@ -329,7 +311,6 @@ typedef enum{
 -(void)initializeLightSystem;
 
 @property (nonatomic, retain) CMMSSpecStage *spec;
-@property (nonatomic, assign) id<CMMStageDelegate>delegate;
 @property (nonatomic, readonly) CMMStageWorld *world;
 @property (nonatomic, readonly) CMMStageParticle *particle;
 @property (nonatomic, readonly) CMMStageObjectSView *stateView;
@@ -339,9 +320,19 @@ typedef enum{
 @property (nonatomic, readonly) CGSize worldSize;
 @property (nonatomic, readwrite) CGPoint worldPoint;
 @property (nonatomic, readwrite) float worldScale;
-@property (nonatomic, readwrite) BOOL isPinchMoveEnable;
 @property (nonatomic, readwrite) ccTime timeInterval;
 @property (nonatomic, readwrite) uint maxTimeIntervalProcessCount;
+
+@property (nonatomic, copy) void (^callback_whenObjectAdded)(CMMSObject *object_),(^callback_whenObjectRemoved)(CMMSObject *object_);
+@property (nonatomic, copy) void (^callback_whenTouchBegan)(UITouch *touch_, CMMSObject *object_),(^callback_whenTouchMoved)(UITouch *touch_, CMMSObject *object_),(^callback_whenTouchEnded)(UITouch *touch_, CMMSObject *object_),(^callback_whenTouchCancelled)(UITouch *touch_, CMMSObject *object_);
+
+//guide for block
+-(void)setCallback_whenObjectAdded:(void (^)(CMMSObject *object_))block_;
+-(void)setCallback_whenObjectRemoved:(void (^)(CMMSObject *object_))block_;
+-(void)setCallback_whenTouchBegan:(void (^)(UITouch *touch_, CMMSObject *object_))block_;
+-(void)setCallback_whenTouchMoved:(void (^)(UITouch *touch_, CMMSObject *object_))block_;
+-(void)setCallback_whenTouchEnded:(void (^)(UITouch *touch_, CMMSObject *object_))block_;
+-(void)setCallback_whenTouchCancelled:(void (^)(UITouch *touch_, CMMSObject *object_))block_;
 
 @end
 

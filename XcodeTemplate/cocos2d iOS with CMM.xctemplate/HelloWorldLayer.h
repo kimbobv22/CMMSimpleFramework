@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface HelloWorldLayer : CMMLayer<CMMSceneLoadingProtocol,CMMScrollMenuVDelegate>{
+@interface HelloWorldLayer : CMMLayer{
 	CMMScrollMenuV *scrollMenu1,*scrollMenu2;
 	uint tempCount;
 }

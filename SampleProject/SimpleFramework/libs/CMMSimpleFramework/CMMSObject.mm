@@ -39,8 +39,8 @@
 }
 
 -(int)count{
-	if(!children_) return 0;
-	return [children_ count];
+	if(!_children) return 0;
+	return [_children count];
 }
 
 -(CMMSObject *)createObjectWithRect:(CGRect)rect_{
@@ -62,7 +62,7 @@
 }
 -(CMMSObject *)createObject{
 	CGRect rect_ = CGRectZero;
-	rect_.size = [[textureAtlas_ texture] contentSize];
+	rect_.size = [[_textureAtlas texture] contentSize];
 	return [self createObjectWithRect:rect_];
 }
 
@@ -176,10 +176,10 @@
 @implementation CMMSObject(Box2d)
 
 -(void)buildupBody{
-	body = [[stage world] createBody:b2_dynamicBody point:position_ angle:rotationX_];
+	body = [[stage world] createBody:b2_dynamicBody point:_position angle:_rotationX];
 	body->SetUserData(self);
 	
-	b2Vec2 targetSize_ = b2Vec2Div(b2Vec2FromSize_PTM_RATIO(contentSize_), 2.0f);
+	b2Vec2 targetSize_ = b2Vec2Div(b2Vec2FromSize_PTM_RATIO(_contentSize), 2.0f);
 	b2PolygonShape bodyBox_;
 	bodyBox_.SetAsBox(targetSize_.x,targetSize_.y);
 	b2FixtureDef fixtureDef_;
@@ -194,7 +194,7 @@
 	body->SetTransform(b2Vec2Fromccp_PTM_RATIO(point_), -CC_DEGREES_TO_RADIANS(tRotation_));
 }
 -(void)updateBodyPosition:(CGPoint)point_{
-	[self updateBodyPosition:point_ rotation:rotationX_];
+	[self updateBodyPosition:point_ rotation:_rotationX];
 }
 
 -(void)updateBodyLinearVelocity:(b2Vec2)linearVelocity angularVelocity:(float)angularVelocity_{
@@ -230,7 +230,7 @@
 	}
 	[[stage world] world]->DestroyBody(body);
 	body = NULL;
-	[parent_ removeChild:self cleanup:YES];
+	[_parent removeChild:self cleanup:YES];
 }
 
 @end

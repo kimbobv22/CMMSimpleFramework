@@ -1,7 +1,26 @@
 #import "CMMStringUtil.h"
 
-static NSString *_resourcePath_ = nil;
-static NSString *_documentPath_ = nil;
+static NSDateFormatter *_staticCMMStringUtil_dateFormatter_ = nil;
+
+@interface CMMStringUtil(Private)
+
++(NSDateFormatter *)_cmmDateFormatterWithFormat:(NSString *)format_;
+
+@end
+
+@implementation CMMStringUtil(Private)
+
++(NSDateFormatter *)_cmmDateFormatterWithFormat:(NSString *)format_{
+	if(!_staticCMMStringUtil_dateFormatter_){
+		_staticCMMStringUtil_dateFormatter_ = [[NSDateFormatter alloc] init];
+		[_staticCMMStringUtil_dateFormatter_ setLocale:[NSLocale currentLocale]];
+	}
+	
+	[_staticCMMStringUtil_dateFormatter_ setDateFormat:format_];
+	return _staticCMMStringUtil_dateFormatter_;
+}
+
+@end
 
 @implementation CMMStringUtil
 
@@ -18,17 +37,14 @@ static NSString *_documentPath_ = nil;
 }
 
 +(NSString *)stringPathOfResoruce:(NSString *)fileName_ extension:(NSString *)extension_{
-	if(!_resourcePath_)
-		_resourcePath_ = [[NSString stringWithFormat:@"%@/",[[NSBundle mainBundle] resourcePath]] retain];
-	
-	NSString *resultStr_ = _resourcePath_;
+	NSString *resultStr_ = @""; //issue
 	if(fileName_){
 		resultStr_ = [resultStr_ stringByAppendingString:fileName_];
 		if(extension_)
-			resultStr_ = [resultStr_ stringByAppendingFormat:@".%@",extension_];
+			resultStr_ = [resultStr_ stringByAppendingPathExtension:extension_];
 	}
 	
-	return resultStr_;
+	return [[CCFileUtils sharedFileUtils] fullPathFromRelativePath:resultStr_];
 }
 +(NSString *)stringPathOfResoruce:(NSString *)fileName_{
 	return [self stringPathOfResoruce:fileName_ extension:nil];
@@ -38,21 +54,14 @@ static NSString *_documentPath_ = nil;
 }
 
 +(NSString *)stringPathOfDocument:(NSString *)fileName_ extension:(NSString *)extension_{
-	if(!_documentPath_){
-		NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-															 NSUserDomainMask,
-															 YES);
-		_documentPath_ = [[NSString stringWithFormat:@"%@/",[paths objectAtIndex:0]] retain];
-	}
-	
-	NSString *resultStr_ = _documentPath_;
+	NSString *resultStr_ = @"../Documents/"; //issue
 	if(fileName_){
 		resultStr_ = [resultStr_ stringByAppendingString:fileName_];
 		if(extension_)
-			resultStr_ = [resultStr_ stringByAppendingFormat:@".%@",extension_];
+			resultStr_ = [resultStr_ stringByAppendingPathExtension:extension_];
 	}
 	
-	return resultStr_;
+	return [[CCFileUtils sharedFileUtils] fullPathFromRelativePath:resultStr_];
 }
 +(NSString *)stringPathOfDocument:(NSString *)fileName_{
 	return [self stringPathOfDocument:fileName_ extension:nil];
@@ -75,6 +84,16 @@ static NSString *_documentPath_ = nil;
 	NSNumberFormatter *formatter_ = [[[NSNumberFormatter alloc] init] autorelease];
 	[formatter_ setNumberStyle:kCFNumberFormatterDecimalStyle];
 	return [formatter_ stringFromNumber:[NSNumber numberWithFloat:number_]];
+}
+
++(NSDate *)dateWithString:(NSString *)string_ dateFormat:(NSString *)dateFormat_{
+	return [[self _cmmDateFormatterWithFormat:dateFormat_] dateFromString:string_];
+}
++(NSString *)stringWithDate:(NSDate *)date_ dateFormat:(NSString *)dateFormat_{
+	return [[self _cmmDateFormatterWithFormat:dateFormat_] stringFromDate:date_];
+}
++(NSString *)stringWithTodayDateWithdateFormat:(NSString *)dateFormat_{
+	return [self stringWithDate:[NSDate date] dateFormat:dateFormat_];
 }
 
 @end

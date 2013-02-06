@@ -3,7 +3,8 @@
 #import "CMMMenuItemSet.h"
 
 @implementation CMMMenuItemSet
-@synthesize itemList,alignType,lineHAlignType,lineVAlignType,unitPerLine,enable,count,delegate,callback_pushdown,callback_pushup;
+@synthesize itemList,alignType,lineHAlignType,lineVAlignType,unitPerLine,enable,count;
+@synthesize callback_whenItemPushdown,callback_whenItemPushup;
 
 +(id)menuItemSetWithMenuSize:(CGSize)menuSize_{
 	return [[[self alloc] initWithMenuSize:menuSize_] autorelease];
@@ -74,13 +75,13 @@
 	CGSize areaSize_ = CGSizeZero;
 	switch(alignType){
 		case CMMMenuItemSetAlignType_horizontal:{
-			areaSize_.width = contentSize_.width/targetLine_;
-			areaSize_.height = contentSize_.height/(float)unitPerLine;
+			areaSize_.width = _contentSize.width/targetLine_;
+			areaSize_.height = _contentSize.height/(float)unitPerLine;
 			break;
 		}
 		case CMMMenuItemSetAlignType_vertical:{
-			areaSize_.width = contentSize_.width/(float)unitPerLine;
-			areaSize_.height = contentSize_.height/targetLine_;
+			areaSize_.width = _contentSize.width/(float)unitPerLine;
+			areaSize_.height = _contentSize.height/targetLine_;
 			break;
 		}
 		default:{
@@ -134,7 +135,7 @@
 				}
 				
 				targetPoint_.x = (areaSize_.width*curLine_)+((areaSize_.width*0.5f)+menuItemSize_.width*(0.5f-menuItemAnchorPoint_.x));
-				targetPoint_.y = contentSize_.height - (areaSize_.height*curUnitPerLine_)-((areaSize_.height*0.5f)+menuItemSize_.height*(0.5f-menuItemAnchorPoint_.y));
+				targetPoint_.y = _contentSize.height - (areaSize_.height*curUnitPerLine_)-((areaSize_.height*0.5f)+menuItemSize_.height*(0.5f-menuItemAnchorPoint_.y));
 				targetPoint_.y -= lineStartOffsetValue_;
 				
 				break;
@@ -160,7 +161,7 @@
 				
 				targetPoint_.x = (areaSize_.width * curUnitPerLine_)+((areaSize_.width*0.5f)+menuItemSize_.width*(0.5f-menuItemAnchorPoint_.x));
 				targetPoint_.x += lineStartOffsetValue_;
-				targetPoint_.y = contentSize_.height - (areaSize_.height * curLine_)-((areaSize_.height*0.5f)+menuItemSize_.height*(0.5f-menuItemAnchorPoint_.y));
+				targetPoint_.y = _contentSize.height - (areaSize_.height * curLine_)-((areaSize_.height*0.5f)+menuItemSize_.height*(0.5f-menuItemAnchorPoint_.y));
 				
 				break;
 			}
@@ -177,7 +178,7 @@
 -(void)draw{
 	ccDrawColor4B(0, 255, 0, 180);
 	glLineWidth(1.0f);
-	ccDrawRect(CGPointZero, ccpFromSize(contentSize_));
+	ccDrawRect(CGPointZero, ccpFromSize(_contentSize));
 	[super draw];
 }
 #endif
@@ -202,18 +203,15 @@
 }
 
 -(void)cleanup{
-	[callback_pushdown release];
-	callback_pushdown = nil;
-	[callback_pushup release];
-	callback_pushup = nil;
-	delegate = nil;
+	[self setCallback_whenItemPushdown:nil];
+	[self setCallback_whenItemPushup:nil];
 	[super cleanup];
 }
 
 -(void)dealloc{
 	[itemList release];
-	[callback_pushdown release];
-	[callback_pushup release];
+	[callback_whenItemPushdown release];
+	[callback_whenItemPushup release];
 	[super dealloc];
 }
 
@@ -270,17 +268,13 @@
 @implementation CMMMenuItemSet(Callback)
 
 -(void)callCallback_pushdownWithMenuItem:(CMMMenuItem *)menuItem_{
-	if(callback_pushdown){
-		callback_pushdown(self, menuItem_);
-	}else if(cmmFuncCommon_respondsToSelector(delegate, @selector(menuItemSet:whenMenuItemPushdownWithMenuItem:))){
-		[delegate menuItemSet:self whenMenuItemPushdownWithMenuItem:menuItem_];
+	if(callback_whenItemPushdown){
+		callback_whenItemPushdown(menuItem_);
 	}
 }
 -(void)callCallback_pushupWithMenuItem:(CMMMenuItem *)menuItem_{
-	if(callback_pushup){
-		callback_pushup(self, menuItem_);
-	}else if(cmmFuncCommon_respondsToSelector(delegate, @selector(menuItemSet:whenMenuItemPushupWithMenuItem:))){
-		[delegate menuItemSet:self whenMenuItemPushupWithMenuItem:menuItem_];
+	if(callback_whenItemPushup){
+		callback_whenItemPushup(menuItem_);
 	}
 }
 

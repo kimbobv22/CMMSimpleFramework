@@ -61,7 +61,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	menuSelector = [CMMMenuItemSet menuItemSetWithMenuSize:CGSizeMake(contentSize_.width*0.7f, contentSize_.height*0.5f)];
+	menuSelector = [CMMMenuItemSet menuItemSetWithMenuSize:CGSizeMake(_contentSize.width*0.7f, _contentSize.height*0.5f)];
 	[menuSelector setAlignType:CMMMenuItemSetAlignType_horizontal];
 	[menuSelector setPosition:cmmFuncCommon_positionInParent(self, menuSelector)];
 	[self addChild:menuSelector];
@@ -85,7 +85,7 @@
 	
 	if([[CMMConnectionMonitor sharedMonitor] connectionStatus] != CMMConnectionStatus_WiFi){
 		CCLabelTTF *tempDisplayLabel_ = [CMMFontUtil labelWithString:@"Game Center must required connection as WiFi"];
-		[tempDisplayLabel_ setPosition:ccp(contentSize_.width*0.5f,menuSelector.position.y+menuSelector.contentSize.height+tempDisplayLabel_.contentSize.height*0.5f + 10.0f)];
+		[tempDisplayLabel_ setPosition:ccp(_contentSize.width*0.5f,menuSelector.position.y+menuSelector.contentSize.height+tempDisplayLabel_.contentSize.height*0.5f + 10.0f)];
 		[self addChild:tempDisplayLabel_];
 		//[menuSelector setIsEnable:NO];
 	}
@@ -111,16 +111,16 @@
 	
 	CMMMenuItemL *menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"BACK"];
-	menuItemBtn_.position = ccp(menuItemBtn_.contentSize.width/2,contentSize_.height-menuItemBtn_.contentSize.height/2);
+	menuItemBtn_.position = ccp(menuItemBtn_.contentSize.width/2,_contentSize.height-menuItemBtn_.contentSize.height/2);
 	menuItemBtn_.callback_pushup = ^(id sender_){
 		[[CMMScene sharedScene] pushLayer:[GameCenterTestLayer node]];
 	};
 	[self addChild:menuItemBtn_];
 	
 	//adding stage
-	CGSize stageSize_ = CGSizeMake(contentSize_.width, contentSize_.height-60.0f);
+	CGSize stageSize_ = CGSizeMake(_contentSize.width, _contentSize.height-60.0f);
 	stage = [CMMStage stageWithStageDef:CMMStageDefMake(stageSize_, stageSize_, CGPointZero)];
-	[stage setPosition:ccp(0,contentSize_.height-stage.contentSize.height)];
+	[stage setPosition:ccp(0,_contentSize.height-stage.contentSize.height)];
 	[self addChild:stage z:1];
 	
 	//adding player & opponent
@@ -129,8 +129,8 @@
 	opponent = [CMMSObject spriteWithFile:@"Icon-Small.png"];
 	[opponent setColor:ccc3(100, 100, 255)];
 	
-	[player setPosition:ccp(contentSize_.width*0.5f-50.0f,contentSize_.height*0.5f)];
-	[opponent setPosition:ccp(contentSize_.width*0.5f+50.0f,contentSize_.height*0.5f)];
+	[player setPosition:ccp(_contentSize.width*0.5f-50.0f,_contentSize.height*0.5f)];
+	[opponent setPosition:ccp(_contentSize.width*0.5f+50.0f,_contentSize.height*0.5f)];
 	
 	[stage.world addObject:player];
 	[stage.world addObject:opponent];
@@ -140,7 +140,7 @@
 	[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:joypadSpriteFrameFileName_];
 	joypad = [CMMCustomUIJoypad joypadWithSpriteFrameFileName:joypadSpriteFrameFileName_];
 	[joypad setOpacity:100];
-	[joypad setIsEnable:NO];
+	[joypad setEnable:NO];
 	[self addChild:joypad z:2];
 	
 	//packet handler
@@ -169,7 +169,7 @@
 }
 
 -(void)playGame{
-	[joypad setIsEnable:YES];
+	[joypad setEnable:YES];
 	[self scheduleUpdate];
 }
 

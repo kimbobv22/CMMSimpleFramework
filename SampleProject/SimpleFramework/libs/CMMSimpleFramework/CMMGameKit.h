@@ -7,123 +7,125 @@
 #import "CMMStringUtil.h"
 #import "CMMFileUtil.h"
 
-@class CMMGameKitPA;
-
-@protocol CMMGameKitPADelegate<NSObject>
-
-@optional
-//Authentication
--(void)gameKitPA:(CMMGameKitPA *)gameKitPA_ whenChangedAuthenticationWithBOOL:(BOOL)isAuthenticated_;
-
--(void)gameKitPA:(CMMGameKitPA *)gameKitPA_ whenTryAuthenticationWithViewController:(UIViewController *)viewController_;
--(void)gameKitPA:(CMMGameKitPA *)gameKitPA_ whenCompletedAuthenticationWithLocalPlayer:(GKPlayer *)localPlayer_;
--(void)gameKitPA:(CMMGameKitPA *)gameKitPA_ whenFailedAuthenticationWithError:(NSError *)error_;
-
-@end
+typedef enum{
+	CMMGameKitPAAuthenticationState_succeed,
+	CMMGameKitPAAuthenticationState_failed,
+	CMMGameKitPAAuthenticationState_cancelled,
+} CMMGameKitPAAuthenticationState;
 
 //Player Authentication
 @interface CMMGameKitPA : NSObject{
-	id<CMMGameKitPADelegate> delegate;
 	BOOL availableGameCenter;
+	
+	void (^callback_whenAuthenticationChanged)(BOOL isAuthenticated_);
+	void (^authenticateHandler)(CMMGameKitPAAuthenticationState state_, NSError *error_);
 }
 
 +(CMMGameKitPA *)sharedPA;
 
-@property (nonatomic, assign) id<CMMGameKitPADelegate> delegate;
 @property (nonatomic, readonly, getter = isAvailableGameCenter) BOOL availableGameCenter;
 @property (nonatomic, readonly, getter = isAuthenticated) BOOL authenticated;
+@property (nonatomic, copy) void (^callback_whenAuthenticationChanged)(BOOL isAuthenticated_);
+@property (nonatomic, copy) void (^authenticateHandler)(CMMGameKitPAAuthenticationState state_, NSError *error_);
+
+-(void)setCallback_whenAuthenticationChanged:(void (^)(BOOL isAuthenticated_))block_;
+-(void)setAuthenticateHandler:(void (^)(CMMGameKitPAAuthenticationState state_, NSError *error_))block_;
 
 @end
 
-@class CMMGameKitLeaderBoard;
+@interface CMMGameKitLeaderBoardCategory : NSObject{
+	NSString *category,*title;
+}
 
-@protocol CMMGameKitLeaderBoardDelegate <NSObject>
++(id)categoryWithCategory:(NSString *)category_ title:(NSString *)title_;
+-(id)initWithCategory:(NSString *)category_ title:(NSString *)title_;
 
-@optional
--(void)gameKitLeaderBoard:(CMMGameKitLeaderBoard *)gameKitLeaderBoard_ whenReceiveCategory:(NSArray *)category_ withTitle:(NSArray *)title_;
--(void)gameKitLeaderBoard:(CMMGameKitLeaderBoard *)gameKitLeaderBoard_ whenFailedReceivingCategoryWithError:(NSError *)error_;
-
--(void)gameKitLeaderBoard:(CMMGameKitLeaderBoard *)gameKitLeaderBoard_ whenReceiveLeaderBoard:(GKLeaderboard *)leaderBoard_;
--(void)gameKitLeaderBoard:(CMMGameKitLeaderBoard *)gameKitLeaderBoard_ whenFailedReceivingLeaderBoard:(GKLeaderboard *)leaderBoard_ withError:(NSError *)error_;
-
--(void)gameKitLeaderBoard:(CMMGameKitLeaderBoard *)gameKitLeaderBoard_ whenCompletedSendingScore:(GKScore *)score_;
--(void)gameKitLeaderBoard:(CMMGameKitLeaderBoard *)gameKitLeaderBoard_ whenFailedSendingScore:(GKScore *)score_ withError:(NSError *)error_;
+@property (nonatomic, copy) NSString *category,*title;
 
 @end
 
 @interface CMMGameKitLeaderBoard : NSObject{
-	id<CMMGameKitLeaderBoardDelegate> delegate;
+	CCArray *loadedCategories;
 }
 
 +(CMMGameKitLeaderBoard *)sharedLeaderBoard;
 
--(void)loadCategory;
-
--(void)loadLeaderBoardWithCategory:(NSString *)category_ range:(NSRange)range_ timeScope:(GKLeaderboardTimeScope)timeScope_ playerScope:(GKLeaderboardPlayerScope)playerScope_;
--(void)loadLeaderBoardWithCategory:(NSString *)category_ range:(NSRange)range_ timeScope:(GKLeaderboardTimeScope)timeScope_;
--(void)loadLeaderBoardWithCategory:(NSString *)category_ range:(NSRange)range_;
-
--(void)reportScore:(int64_t)score_ category:(NSString*)category_;
-
-@property (nonatomic, assign) id<CMMGameKitLeaderBoardDelegate> delegate;
+@property (nonatomic, readonly) CCArray *loadedCategories;
 
 @end
 
-@class CMMGameKitAchievements;
+@interface CMMGameKitLeaderBoard(Category)
 
-@protocol CMMGameKitAchievementsDelegate <NSObject>
+-(CMMGameKitLeaderBoardCategory *)categoryAtIndex:(uint)index_;
 
-@optional
--(void)gameKitAchievements:(CMMGameKitAchievements *)gameKitAchievements_ whenCompletedReportingAchievements:(NSArray *)reportedAchievements_;
--(void)gameKitAchievements:(CMMGameKitAchievements *)gameKitAchievements_ whenFailedReportingAchievementsWithError:(NSError *)error_;
+-(void)loadCategoriesWithBlock:(void(^)(CCArray *categories_))block_;
+-(void)loadCategories;
 
--(void)gameKitAchievements:(CMMGameKitAchievements *)gameKitAchievements_ whenReceiveAchievements:(NSArray *)achievements_;
--(void)gameKitAchievements:(CMMGameKitAchievements *)gameKitAchievements_ whenFailedReceivingAchievementsWithError:(NSError *)error_;
+@end
 
--(void)gameKitAchievements_whenCompletedResettingAchievements:(CMMGameKitAchievements *)gameKitAchievements_;
--(void)gameKitAchievements:(CMMGameKitAchievements *)gameKitAchievements_ whenFailedResettingAchievementsWithError:(NSError *)error_;
+@interface CMMGameKitLeaderBoard(Score)
+
+-(void)loadLeaderBoardWithCategory:(NSString *)category_ range:(NSRange)range_ timeScope:(GKLeaderboardTimeScope)timeScope_ playerScope:(GKLeaderboardPlayerScope)playerScope_ block:(void(^)(GKLeaderboard *leaderboard_, NSError *error_))block_;
+-(void)loadLeaderBoardWithCategory:(NSString *)category_ range:(NSRange)range_ timeScope:(GKLeaderboardTimeScope)timeScope_ block:(void(^)(GKLeaderboard *leaderboard_, NSError *error_))block_;
+-(void)loadLeaderBoardWithCategory:(NSString *)category_ range:(NSRange)range_ block:(void(^)(GKLeaderboard *leaderboard_, NSError *error_))block_;
+
+-(void)reportScore:(int64_t)score_ category:(NSString*)category_ block:(void(^)(GKScore *score_, NSError *error_))block_;
+
+@end
+
+#define cmmVarCMMGameKitAchievement_key_achievement @"achiev"
+#define cmmVarCMMGameKitAchievement_key_reported @"reported"
+
+@interface CMMGameKitAchievement : NSObject<NSCoding>{
+	GKAchievement *achievement;
+	BOOL reported;
+}
+
++(id)achievementWithAchievement:(GKAchievement *)achievement_;
+-(id)initWithAchievement:(GKAchievement *)achievement_;
+
+@property (nonatomic, readonly) NSString *identifier;
+@property (nonatomic, retain) GKAchievement *achievement;
+@property (nonatomic, readwrite) double percentComplete;
+@property (nonatomic, readonly, getter = isReported) BOOL reported;
 
 @end
 
 #define cmmVarCMMGameKitAchievements_cacheName @"_cmmFile_achievements_cache_"
 
 @interface CMMGameKitAchievements : NSObject{
-	id<CMMGameKitAchievementsDelegate> delegate;
-	NSMutableArray *_cachedAchievements,*_reportedAchievements;
+	NSMutableDictionary *_achievements;
 }
 
 +(CMMGameKitAchievements *)sharedAchievements;
 
 -(void)setAchievementWithIdentifier:(NSString *)identifier_ percentComplete:(double)percentComplete_;
+-(CMMGameKitAchievement *)achievementForIdentifier:(NSString *)identifier_;
+
+-(void)resetAchievementsWithBlock:(void(^)(NSError *error_))block_;
 -(void)resetAchievements;
 
-@property (nonatomic, assign) id<CMMGameKitAchievementsDelegate> delegate;
 @property (nonatomic, readonly) NSArray *cachedAchievements,*reportedAchievements;
 
 @end
 
 @interface CMMGameKitAchievements(ReportedAchievements)
 
--(GKAchievement *)reportedAchievementAtIndex:(uint)index_;
--(GKAchievement *)reportedAchievementAtIdentifier:(NSString *)identifier_;
-
--(uint)indexOfReportedAchievement:(GKAchievement *)achievement_;
--(uint)indexOfReportedAchievementWithIdentifier_:(NSString *)identifier_;
-
+-(void)loadReportedAchievementsWithBlock:(void(^)(NSError *error_))block_;
 -(void)loadReportedAchievements;
 
 @end
 
 @interface CMMGameKitAchievements(CachedAchievements)
 
--(GKAchievement *)cachedAchievementAtIndex:(uint)index_;
--(GKAchievement *)cachedAchievementAtIdentifier:(NSString *)identifier_;
-
--(uint)indexOfCachedAchievement:(GKAchievement *)achievement_;
--(uint)indexOfCachedAchievementWithIdentifier_:(NSString *)identifier_;
-
+-(void)reportCachedAchievementsWithBlock:(void(^)(NSArray *reportedAchievements_ ,NSError *error_))block_;
 -(void)reportCachedAchievements;
--(void)writeCachedAchievements;
+
+-(void)writeCachedAchievementsToFileWithBlock:(void(^)(NSError *error_))block_;
+-(void)writeCachedAchievementsToFile;
+
+-(void)loadCachedAchievementsFromFileWithBlock:(void(^)(BOOL isSucceed))block_;
+-(void)loadCachedAchievementsFromFile;
 
 @end
 

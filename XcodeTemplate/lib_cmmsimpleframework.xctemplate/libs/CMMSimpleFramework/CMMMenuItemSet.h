@@ -6,14 +6,6 @@
 
 @class CMMMenuItemSet;
 
-@protocol CMMMenuItemSetDelegate<NSObject>
-
-@optional
--(void)menuItemSet:(CMMMenuItemSet *)menuItemSet_ whenMenuItemPushdownWithMenuItem:(CMMMenuItem *)menuItem_;
--(void)menuItemSet:(CMMMenuItemSet *)menuItemSet_ whenMenuItemPushupWithMenuItem:(CMMMenuItem *)menuItem_;
-
-@end
-
 enum CMMMenuItemSetAlignType{
 	CMMMenuItemSetAlignType_horizontal,
 	CMMMenuItemSetAlignType_vertical,
@@ -39,8 +31,7 @@ enum CMMMenuItemSetLineVAlignType{
 	uint unitPerLine;
 	BOOL enable;
 	
-	id<CMMMenuItemSetDelegate> delegate;
-	void (^callback_pushdown)(id sender_,CMMMenuItem *menuItem_),(^callback_pushup)(id sender_,CMMMenuItem *menuItem_);
+	void (^callback_whenItemPushdown)(CMMMenuItem *item_),(^callback_whenItemPushup)(CMMMenuItem *item_);
 }
 
 +(id)menuItemSetWithMenuSize:(CGSize)menuSize_;
@@ -59,8 +50,10 @@ enum CMMMenuItemSetLineVAlignType{
 @property (nonatomic, readwrite) uint unitPerLine;
 @property (nonatomic, readwrite, getter = isEnable) BOOL enable;
 @property (nonatomic, readonly) uint count;
-@property (nonatomic, assign) id<CMMMenuItemSetDelegate> delegate;
-@property (nonatomic, copy) void (^callback_pushdown)(id sender_,CMMMenuItem *menuItem_),(^callback_pushup)(id sender_,CMMMenuItem *menuItem_);
+@property (nonatomic, copy) void (^callback_whenItemPushdown)(CMMMenuItem *item_),(^callback_whenItemPushup)(CMMMenuItem *item_);
+
+-(void)setCallback_whenItemPushdown:(void (^)(CMMMenuItem *item_))block_;
+-(void)setCallback_whenItemPushup:(void (^)(CMMMenuItem *item_))block_;
 
 @end
 

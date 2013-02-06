@@ -18,4 +18,8 @@
 +(NSString *)stringTimeStyleFromccTime:(ccTime)dt_;
 +(NSString *)stringDecimalStyleFromNumber:(float)number_;
 
++(NSDate *)dateWithString:(NSString *)string_ dateFormat:(NSString *)dateFormat_;
++(NSString *)stringWithDate:(NSDate *)date_ dateFormat:(NSString *)dateFormat_;
++(NSString *)stringWithTodayDateWithdateFormat:(NSString *)dateFormat_;
+
 @end

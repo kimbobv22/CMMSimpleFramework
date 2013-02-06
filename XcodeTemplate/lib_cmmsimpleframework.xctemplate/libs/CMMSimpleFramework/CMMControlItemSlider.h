@@ -4,15 +4,6 @@
 #import "CMMSpriteBatchBar.h"
 #import "CMMMenuItem.h"
 
-@class CMMControlItemSlider;
-
-@protocol CMMControlItemSliderDelegate <CMMControlItemDelegate>
-
-@optional
--(void)controlItemSlider:(CMMControlItemSlider *)controlItem_ whenChangedItemValue:(float)itemValue_ beforeItemValue:(float)beforeItemValue_;
-
-@end
-
 @interface CMMControlItemSlider : CMMControlItem{
 	CMMSpriteBatchBar *_maskSprite,*_barSprite;
 	CCSprite *_resultBackSprite;
@@ -21,7 +12,7 @@
 	ccColor3B backColorL,backColorR;
 	
 	float itemValue,unitValue,minValue,maxValue;
-	void (^callback_whenChangedItemVale)(id sender_,float itemValue_, float beforeItemValue_);
+	void (^callback_whenItemValueChanged)(float itemValue_, float beforeItemValue_);
 }
 
 +(id)controlItemSliderWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_;
@@ -40,6 +31,8 @@
 @property (nonatomic, readonly) CMMMenuItem *buttonItem;
 @property (nonatomic, readwrite) ccColor3B backColorL,backColorR;
 @property (nonatomic, readwrite) float itemValue,unitValue,minValue,maxValue;
-@property (nonatomic, copy) void (^callback_whenChangedItemVale)(id sender_,float itemValue_, float beforeItemValue_);
+@property (nonatomic, copy) void (^callback_whenItemValueChanged)(float itemValue_, float beforeItemValue_);
+
+-(void)setCallback_whenItemValueChanged:(void (^)(float itemValue_, float beforeItemValue_))block_;
 
 @end

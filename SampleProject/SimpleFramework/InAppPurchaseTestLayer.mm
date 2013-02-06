@@ -33,7 +33,7 @@
 
 -(void)updateDisplay{
 	[super updateDisplay];
-	[labelProductName setPosition:ccp([labelProductName contentSize].width/2.0f + 10.0f,contentSize_.height-([labelProductName contentSize].height/2.0f + 10.0f))];
+	[labelProductName setPosition:ccp([labelProductName contentSize].width/2.0f + 10.0f,_contentSize.height-([labelProductName contentSize].height/2.0f + 10.0f))];
 }
 
 -(void)dealloc{
@@ -94,14 +94,19 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	inAppList = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(contentSize_.width*0.6f, contentSize_.height*0.6f)];
-	[inAppList setDelegate:self];
+	inAppList = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(_contentSize.width*0.6f, _contentSize.height*0.6f)];
+	[inAppList setCallback_whenTapAtIndex:^(int index_) {
+		InAppMenuItem *inAppItem_ = (InAppMenuItem *)[inAppList itemAtIndex:index_];
+		if([inAppItem_ isPurchased]) return;
+		[[CMMInAppPurchasesManager sharedManager] purchaseProductAtProductID:[inAppItem_ productID]];
+		[self switchIndicatorTo:YES withState:@"Purchasing..."];
+	}];
 	[inAppList setPosition:ccpAdd(cmmFuncCommon_positionInParent(self, inAppList), ccp(0,20.0f))];
 	[self addChild:inAppList];
 	
 	restorBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[restorBtn setTitle:@"RESTORE"];
-	restorBtn.position = ccp(contentSize_.width-restorBtn.contentSize.width/2,restorBtn.contentSize.height/2);
+	restorBtn.position = ccp(_contentSize.width-restorBtn.contentSize.width/2,restorBtn.contentSize.height/2);
 	restorBtn.callback_pushup = ^(id sender_){
 		[[CMMInAppPurchasesManager sharedManager] restorePurchases];
 		[self switchIndicatorTo:YES withState:@"Restoring..."];
@@ -179,13 +184,6 @@
 	[self runAction:[CCSequence actionOne:[CCDelayTime actionWithDuration:1.0f] two:[CCCallBlock actionWithBlock:^{
 		[self switchIndicatorTo:NO withState:nil];
 	}]]];
-}
-
--(void)scrollMenu:(CMMScrollMenu *)scrollMenu_ whenPushupWithItem:(CMMMenuItem *)item_{
-	InAppMenuItem *inAppItem_ = (InAppMenuItem *)item_;
-	if([inAppItem_ isPurchased]) return;
-	[[CMMInAppPurchasesManager sharedManager] purchaseProductAtProductID:[inAppItem_ productID]];
-	[self switchIndicatorTo:YES withState:@"Purchasing..."];
 }
 
 -(void)cleanup{

@@ -9,25 +9,14 @@
 
 #define cmmVarCMMMenuItem_defaultMenuItemSize CGSizeMake(150, 45)
 
-@class CMMMenuItem;
-
-@protocol CMMMenuItemDelegate<NSObject>
-
-@optional
--(void)menuItem_whenPushdown:(CMMMenuItem *)menuItem_;
--(void)menuItem_whenPushup:(CMMMenuItem *)menuItem_;
--(void)menuItem_whenPushcancel:(CMMMenuItem *)menuItem_;
-
-@end
-
 @interface CMMMenuItem : CMMSprite{
-	id key,userData;
+	id key;
 	CCSprite *normalImage,*selectedImage;
-	id<CMMMenuItemDelegate> delegate;
 	BOOL enable,onSelect;
 	
 	CCAction *pushDownAction,*pushUpAction;
-	void (^callback_pushdown)(id sender_),(^callback_pushup)(id sender_),(^callback_pushcancel)(id sender_);
+	BOOL (^filter_canSelectItem)(id item_);
+	void (^callback_pushdown)(id item_),(^callback_pushup)(id item_),(^callback_pushcancel)(id item_);
 }
 
 +(id)menuItemWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ frameSize:(CGSize)frameSize_;
@@ -38,13 +27,18 @@
 
 -(void)updateDisplay;
 
-@property (nonatomic, retain) id key,userData;
+@property (nonatomic, retain) id key;
 @property (nonatomic, retain) CCSprite *normalImage,*selectedImage;
-@property (nonatomic, assign) id<CMMMenuItemDelegate> delegate;
 @property (nonatomic, readwrite, getter = isEnable) BOOL enable;
 @property (nonatomic, readonly, getter = isOnSelect) BOOL onSelect;
-@property (nonatomic, copy) void (^callback_pushdown)(id sender_),(^callback_pushup)(id sender_),(^callback_pushcancel)(id sender_);
+@property (nonatomic, copy) BOOL (^filter_canSelectItem)(id item_);
+@property (nonatomic, copy) void (^callback_pushdown)(id item_),(^callback_pushup)(id item_),(^callback_pushcancel)(id item_);
 @property (nonatomic, retain) CCAction *pushDownAction,*pushUpAction;
+
+-(void)setFilter_canSelectItem:(BOOL (^)(id item_))block_;
+-(void)setCallback_pushdown:(void (^)(id item_))block_;
+-(void)setCallback_pushup:(void (^)(id item_))block_;
+-(void)setCallback_pushcancel:(void (^)(id item_))block_;
 
 @end
 

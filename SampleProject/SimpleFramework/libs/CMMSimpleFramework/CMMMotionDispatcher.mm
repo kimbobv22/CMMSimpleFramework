@@ -2,10 +2,60 @@
 
 #import "CMMMotionDispatcher.h"
 
+@implementation CMMMotionObserver
+@synthesize target,block;
+
++(id)observerWithTarget:(id)target_ block:(void(^)(CMMMotionState state_))block_{
+	return [[[self alloc] initWithTarget:target_ block:block_] autorelease];
+}
+-(id)initWithTarget:(id)target_ block:(void(^)(CMMMotionState state_))block_{
+	if(!(self = [super init])) return self;
+	
+	[self setTarget:target_];
+	[self setBlock:block_];
+	
+	return self;
+}
+
+-(void)dealloc{
+	[target release];
+	[block release];
+	[super dealloc];
+}
+
+@end
+
 static CMMMotionDispatcher *_sharedCMMMotionDispatcher_ = nil;
 
+@interface CMMMotionDispatcher(Private)
+
+-(uint)_indexOfTarget:(id)target_;
+-(void)_removeObserverAtIndex:(uint)index_;
+
+@end
+
+@implementation CMMMotionDispatcher(Private)
+
+-(uint)_indexOfTarget:(id)target_{
+	ccArray *data_ = observerList->data;
+	uint count_ = data_->num;
+	for(uint index_=0;index_<count_;++index_){
+		CMMMotionObserver *observer_ = data_->arr[index_];
+		if([observer_ target] == target_){
+			return index_;
+		}
+	}
+	
+	return NSNotFound;
+}
+-(void)_removeObserverAtIndex:(uint)index_{
+	[observerList removeObjectAtIndex:index_];
+}
+
+@end
+
 @implementation CMMMotionDispatcher
-@synthesize motion,targetList,motionFixState,updateInterval;
+@synthesize motion,observerList,motionFixState,updateInterval;
 
 +(CMMMotionDispatcher *)sharedDispatcher{
 	if(!_sharedCMMMotionDispatcher_){
@@ -18,7 +68,7 @@ static CMMMotionDispatcher *_sharedCMMMotionDispatcher_ = nil;
 -(id)init{
 	if(!(self = [super init])) return self;
 	
-	targetList = [[CCArray alloc] init];
+	observerList = [[CCArray alloc] init];
 	
 	motion = [[CMMotionManager alloc] init];
 	if(motion.gyroAvailable){
@@ -35,43 +85,25 @@ static CMMMotionDispatcher *_sharedCMMMotionDispatcher_ = nil;
 	return self;
 }
 
+-(void)addMotionBlockForTarget:(id)target_ block:(void(^)(CMMMotionState motionState_))block_{
+	[self removeMotionBlockForTarget:target_];
+	[observerList addObject:[CMMMotionObserver observerWithTarget:target_ block:block_]];
+}
+-(void)removeMotionBlockForTarget:(id)target_{
+	uint index_ = [self _indexOfTarget:target_];
+	if(index_ != NSNotFound){
+		[self _removeObserverAtIndex:index_];
+	}
+}
+
 -(void)setUpdateInterval:(ccTime)updateInterval_{
 	updateInterval = updateInterval_;
 	if(!motion) return;
 	[motion setDeviceMotionUpdateInterval:updateInterval];
 	SEL targetSelector_ = @selector(update);
-	[[CCDirector sharedDirector].scheduler unscheduleSelector:targetSelector_ forTarget:self];
-	[[CCDirector sharedDirector].scheduler scheduleSelector:targetSelector_ forTarget:self interval:updateInterval paused:NO];
-}
-
--(void)addTarget:(id<CMMMotionDispatcherDelegate>)target_{
-	if([self indexOfTarget:target_] != NSNotFound) return;
-	[targetList addObject:target_];
-}
-
--(void)removeTarget:(id<CMMMotionDispatcherDelegate>)target_{
-	if(!target_) return;
-	[targetList removeObject:target_];
-}
--(void)removeTargetAtIndex:(int)index_{
-	[self removeTarget:[self targetAtIndex:index_]];
-}
-
--(id<CMMMotionDispatcherDelegate>)targetAtIndex:(int)index_{
-	if(index_ == NSNotFound) return nil;
-	return [targetList objectAtIndex:index_];
-}
-
--(int)indexOfTarget:(id<CMMMotionDispatcherDelegate>)target_{
-	ccArray *data_ = targetList->data;
-	int count_ = data_->num;
-	for(uint index_=0;index_<count_;++index_){
-		id<CMMMotionDispatcherDelegate> oTarget_ = data_->arr[index_];
-		if(target_ == oTarget_)
-			return index_;
-	}
-	
-	return NSNotFound;
+	CCScheduler *sharedScheduler_ = [[CCDirector sharedDirector] scheduler];
+	[sharedScheduler_ unscheduleSelector:targetSelector_ forTarget:self];
+	[sharedScheduler_ scheduleSelector:targetSelector_ forTarget:self interval:updateInterval paused:NO];
 }
 
 -(void)update{
@@ -80,18 +112,16 @@ static CMMMotionDispatcher *_sharedCMMMotionDispatcher_ = nil;
 	_motionState.pitch = attitude_.pitch+motionFixState.pitch;
 	_motionState.yaw = attitude_.yaw+motionFixState.yaw;
 	
-	ccArray *data_ = targetList->data;
+	ccArray *data_ = observerList->data;
 	int count_ = data_->num;
 	for(uint index_=0;index_<count_;++index_){
-		id<CMMMotionDispatcherDelegate> target_ = data_->arr[index_];
-		
-		if(cmmFuncCommon_respondsToSelector(target_, @selector(motionDispatcher:updateMotion:)))
-			[target_ motionDispatcher:self updateMotion:_motionState];
+		CMMMotionObserver *observer_ = data_->arr[index_];
+		[observer_ block](_motionState);
 	}
 }
 
 -(void)dealloc{
-	[targetList release];
+	[observerList release];
 	[motion release];
 	[super dealloc];
 }

@@ -16,15 +16,15 @@
 @implementation CMMSBlockObject(Box2d)
 
 -(void)buildupBody{
-	body = [[stage world] createBody:b2_staticBody point:position_ angle:0.0f];
+	body = [[stage world] createBody:b2_staticBody point:_position angle:0.0f];
 	body->SetUserData(self);
 	
 	CMMBlockType blockType_ = [blockItem blockType];
 	CMMSBlockObjectB2BodyType b2bodyType_ = [blockItem blockB2BodyType];
 	CMMSBlockObjectPhysicalSpec physicalSpec_ = [blockItem blockPhysicalSpec];
-	b2Vec2 totalSizeVector_ = b2Vec2Div(b2Vec2FromSize_PTM_RATIO(contentSize_),2.0f);
+	b2Vec2 totalSizeVector_ = b2Vec2Div(b2Vec2FromSize_PTM_RATIO(_contentSize),2.0f);
 	CGSize blockSize_ = [blockItem blockSize];
-	blockSize_.width = contentSize_.width;
+	blockSize_.width = _contentSize.width;
 	
 	b2PolygonShape bodyBox_;
 	b2Vec2 targetSize_ = b2Vec2Div(b2Vec2FromSize_PTM_RATIO(blockSize_), 2.0f);
@@ -47,7 +47,7 @@
 			break;
 		}
 		case CMMSBlockObjectB2BodyType_full:{
-			b2Vec2 boxSize_ = b2Vec2FromSize_PTM_RATIO(CGSizeDiv(contentSize_, 2.0f));
+			b2Vec2 boxSize_ = b2Vec2FromSize_PTM_RATIO(CGSizeDiv(_contentSize, 2.0f));
 			bodyBox_.SetAsBox(boxSize_.x,boxSize_.y);
 			break;
 		}
@@ -453,6 +453,7 @@
 
 @implementation CMMStageDNB
 @synthesize block,marginPerBlock,blockHeightRange,maxHeightDifferencePerBlock,worldVelocityX,removeObjectOnOutside;
+@synthesize callback_whenContactBeganWithObject,callback_whenContactEndedWithObject;
 
 -(id)initWithStageDef:(CMMStageDef)stageDef_{
 	
@@ -519,7 +520,7 @@
 		
 		float curWorldPointX_ = _lastCreatePoint.x - _addedWorldPointX;
 		BOOL isLazyDraw_ = _lazyTargetBlockItems->data->num > 0;
-		if(curWorldPointX_ < contentSize_.width || isLazyDraw_){
+		if(curWorldPointX_ < _contentSize.width || isLazyDraw_){
 			CMMStageBlockItem *mainBlockItem_ = nil;
 			
 			if(isLazyDraw_){
@@ -550,11 +551,11 @@
 					targetBlockHeight_ = orgBlockHeight_;
 					break;
 				case CMMBlockType_filledUp:
-					targetBlockHeight_ = contentSize_.height - orgBlockHeight_;
-					objectPointYOffset_ = contentSize_.height - targetBlockHeight_/2.0f;
+					targetBlockHeight_ = _contentSize.height - orgBlockHeight_;
+					objectPointYOffset_ = _contentSize.height - targetBlockHeight_/2.0f;
 					break;
 				case CMMBlockType_filledUpAndCeiling :
-					objectPointYOffset_ = contentSize_.height - targetBlockHeight_/2.0f;
+					objectPointYOffset_ = _contentSize.height - targetBlockHeight_/2.0f;
 					break;
 				default: break;
 			}
@@ -593,36 +594,31 @@
 -(void)whenContactBeganWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{
 	if(![otherObject_ isKindOfClass:[CMMSObject class]]) return;
 	
-	id<CMMStageDNBDelegate> delegate_ = (id<CMMStageDNBDelegate>)delegate;
-	if(cmmFuncCommon_respondsToSelector(delegate_, @selector(stage:whenContactStartedWithObject:AtDirection:))){
+	if(callback_whenContactBeganWithObject){
 		CMMStageDNBDirection contactDirection_ = [self _getWorldDirectionAtFixture:fixtureType_];
 		if(contactDirection_ == CMMStageDNBDirection_none) return;
-		[delegate_ stage:self whenContactStartedWithObject:(CMMSObject *)otherObject_ AtDirection:contactDirection_];
+		callback_whenContactBeganWithObject((CMMSObject *)otherObject_,contactDirection_);
 	}
 }
 
 -(void)whenContactEndedWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{
 	if(![otherObject_ isKindOfClass:[CMMSObject class]]) return;
 	
-	id<CMMStageDNBDelegate> delegate_ = (id<CMMStageDNBDelegate>)delegate;
-	if(cmmFuncCommon_respondsToSelector(delegate_, @selector(stage:whenContactEndedWithObject:AtDirection:))){
+	if(callback_whenContactEndedWithObject){
 		CMMStageDNBDirection contactDirection_ = [self _getWorldDirectionAtFixture:fixtureType_];
 		if(contactDirection_ == CMMStageDNBDirection_none) return;
-		[delegate_ stage:self whenContactEndedWithObject:(CMMSObject *)otherObject_ AtDirection:contactDirection_];
-	}
-}
--(void)doContactWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_ interval:(ccTime)interval_{
-	if(![otherObject_ isKindOfClass:[CMMSObject class]]) return;
-	
-	id<CMMStageDNBDelegate> delegate_ = (id<CMMStageDNBDelegate>)delegate;
-	if(cmmFuncCommon_respondsToSelector(delegate_, @selector(stage:doContactWithObject:AtDirection:interval:))){
-		CMMStageDNBDirection contactDirection_ = [self _getWorldDirectionAtFixture:fixtureType_];
-		if(contactDirection_ == CMMStageDNBDirection_none) return;
-		[delegate_ stage:self doContactWithObject:(CMMSObject *)otherObject_ AtDirection:contactDirection_ interval:interval_];
+		callback_whenContactEndedWithObject((CMMSObject *)otherObject_,contactDirection_);
 	}
 }
 
+-(void)cleanup{
+	[self setCallback_whenContactBeganWithObject:nil];
+	[self setCallback_whenContactEndedWithObject:nil];
+	[super cleanup];
+}
 -(void)dealloc{
+	[callback_whenContactBeganWithObject release];
+	[callback_whenContactEndedWithObject release];
 	[block release];
 	[_lazyTargetBlockItems release];
 	[super dealloc];

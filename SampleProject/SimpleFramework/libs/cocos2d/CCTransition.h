@@ -43,24 +43,30 @@
  */
 typedef enum {
 	/// An horizontal orientation where the Left is nearer
-	kOrientationLeftOver = 0,
+	kCCTransitionOrientationLeftOver = 0,
 	/// An horizontal orientation where the Right is nearer
-	kOrientationRightOver = 1,
+	kCCTransitionOrientationRightOver = 1,
 	/// A vertical orientation where the Up is nearer
-	kOrientationUpOver = 0,
+	kCCTransitionOrientationUpOver = 0,
 	/// A vertical orientation where the Bottom is nearer
-	kOrientationDownOver = 1,
+	kCCTransitionOrientationDownOver = 1,
+
+	// Deprecated
+//	kOrientationLeftOver = kCCTransitionOrientationLeftOver,
+//	kOrientationRightOver = kCCTransitionOrientationRightOver,
+//	kOrientationUpOver = kCCTransitionOrientationUpOver,
+//	kOrientationDownOver = kCCTransitionOrientationDownOver,
 } tOrientation;
 
 /** Base class for CCTransition scenes
  */
 @interface CCTransitionScene : CCScene
 {
-	CCScene	*inScene_;
-	CCScene	*outScene_;
-	ccTime	duration_;
-	BOOL	inSceneOnTop_;
-	BOOL	sendCleanupToScene_;
+	CCScene	*_inScene;
+	CCScene	*_outScene;
+	ccTime	_duration;
+	BOOL	_inSceneOnTop;
+	BOOL	_sendCleanupToScene;
 }
 /** creates a base transition with duration and incoming scene */
 +(id) transitionWithDuration:(ccTime) t scene:(CCScene*)s;
@@ -307,7 +313,7 @@ typedef enum {
  */
 @interface CCTransitionFadeTR : CCTransitionScene <CCTransitionEaseScene>
 {}
--(CCActionInterval*) actionWithSize:(ccGridSize) vector;
+-(CCActionInterval*) actionWithSize:(CGSize) vector;
 @end
 
 /** CCTransitionFadeBL:
@@ -315,7 +321,7 @@ typedef enum {
  */
 @interface CCTransitionFadeBL : CCTransitionFadeTR
 {}
--(CCActionInterval*) actionWithSize:(ccGridSize) vector;
+-(CCActionInterval*) actionWithSize:(CGSize) vector;
 @end
 
 /** CCTransitionFadeUp:
@@ -323,7 +329,7 @@ typedef enum {
  */
 @interface CCTransitionFadeUp : CCTransitionFadeTR
 {}
--(CCActionInterval*) actionWithSize: (ccGridSize) v;
+-(CCActionInterval*) actionWithSize: (CGSize) v;
 @end
 
 /** CCTransitionFadeDown:
@@ -331,5 +337,5 @@ typedef enum {
  */
 @interface CCTransitionFadeDown : CCTransitionFadeTR
 {}
--(CCActionInterval*) actionWithSize: (ccGridSize) v;
+-(CCActionInterval*) actionWithSize: (CGSize) v;
 @end

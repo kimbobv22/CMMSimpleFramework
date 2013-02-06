@@ -12,4 +12,3 @@
 @property (nonatomic, readonly) CMMTouchDispatcher *touchDispatcher;
 
 @end
-

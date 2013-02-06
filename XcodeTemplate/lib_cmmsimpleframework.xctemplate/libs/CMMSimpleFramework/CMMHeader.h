@@ -1,10 +1,9 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#define CMMSimpleFrameworkVersion 0x00010100
-static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.1.0";
+#define CMMSimpleFrameworkVersion 0x00010200
+#define CMMSimpleFrameworkVersionString @"CMMSimpleFramework v1.2.0"
 
 //common
-
 #import "cocos2d.h"
 
 #import "CCMutableTexture2D.h"
@@ -28,7 +27,7 @@ static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.1.0";
 #import "CMMSpriteBatchBar.h"
 
 #import "CMMTouchDispatcher.h"
-#import "CMMPopupDispatcher.h"
+#import "CMMPopupView.h"
 #import "CMMMotionDispatcher.h"
 #import "CMMNoticeDispatcher.h"
 
@@ -39,7 +38,7 @@ static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.1.0";
 #import "CMMTouchUtil.h"
 #import "CMMDrawingUtil.h"
 #import "CMMEncryptionUtil.h"
-#import "CMMSequenceMaker.h"
+#import "CMMSequencer.h"
 #import "CMMSimpleCache.h"
 #import "CMMConnectionMonitor.h"
 #import "CMMTimeIntervalArray.h"
@@ -50,7 +49,6 @@ static NSString *CMMSimpleFrameworkVersionStr = @"CMMSimpleFramework v1.1.0";
 #import "CMMGameKit.h"
 
 //component
-
 #import "CMMDrawingManager.h"
 #import "CMMCaremaManager.h"
 #import "CMMInAppPurchasesManager.h"

@@ -2,18 +2,12 @@
 
 #import "CMMLayer.h"
 
-@protocol CMMCustomUIDelegate <NSObject>
-
-@end
-
 @interface CMMCustomUI : CMMLayer{
-	id<CMMCustomUIDelegate>delegate;
-	BOOL isEnable;
+	BOOL enable;
 }
 
 -(void)update:(ccTime)dt_;
 
-@property (nonatomic, assign) id<CMMCustomUIDelegate>delegate;
-@property (nonatomic, readwrite) BOOL isEnable;
+@property (nonatomic, readwrite, getter = isEnable) BOOL enable;
 
 @end

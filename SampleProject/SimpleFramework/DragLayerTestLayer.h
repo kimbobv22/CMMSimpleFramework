@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface DragLayerTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMMenuItemDelegate>{
+@interface DragLayerTestLayer : CMMLayer{
 	CMMLayerMD *dragLayer;
 }
 

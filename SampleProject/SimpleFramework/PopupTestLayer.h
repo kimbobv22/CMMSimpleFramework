@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface PopupTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMPopupDispatcherDelegate>{
+@interface PopupTestLayer : CMMLayer{
 	CCLabelTTF *testLabel;
 	CMMMenuItemL *menuItemOpen,*menuItemClose;
 }

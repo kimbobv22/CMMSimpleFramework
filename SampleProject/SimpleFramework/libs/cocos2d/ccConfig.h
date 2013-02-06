@@ -64,7 +64,7 @@
  It is recommended to enable it whenever possible to improve speed.
  If you are migrating your code from GL ES 1.1, then keep it disabled. Once all your code works as expected, turn it on.
 
- Default value: Disabled by default
+ Default value: Enabled by default
 
  @since v2.0.0
  */
@@ -132,7 +132,7 @@
 /** @def CC_DIRECTOR_IOS_USE_BACKGROUND_THREAD
  If enabled, cocos2d-ios will run on a background thread. If disabled cocos2d-ios will run the main thread.
 
- To enable set it to a 1, to disable it set to 0. Enabled by default.
+ To enable set it to a 1, to disable it set to 0. Disabled by default.
 
  Only valid for cocos2d-ios. Not supported on cocos2d-mac.
  
@@ -267,3 +267,4 @@
 #ifndef CC_ENABLE_PROFILERS
 #define CC_ENABLE_PROFILERS 0
 #endif
+

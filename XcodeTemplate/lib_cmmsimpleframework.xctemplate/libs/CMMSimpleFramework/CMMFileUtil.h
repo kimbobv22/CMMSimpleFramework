@@ -1,5 +1,6 @@
 #import "cocos2d.h"
 #import "CMMEncryptionUtil.h"
+#import "CMMMacro.h"
 
 @interface CMMFileUtil : NSObject
 
@@ -17,6 +18,8 @@
 
 +(void)deleteFileWithFileName:(NSString *)fileName_ extension:(NSString *)extension_;
 +(void)deleteFileWithFileName:(NSString *)fileName_;
+
++(void)writeFileInBackgroundWithData:(NSData *)data_ path:(NSString *)path_ block:(void(^)(NSError *))block_;
 
 @end
 

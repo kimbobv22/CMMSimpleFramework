@@ -118,3 +118,13 @@ static CGPoint cmmFuncCommon_positionFromOtherNode(CCNode *otherNode_,CCNode *ta
 static BOOL cmmFuncCommon_respondsToSelector(id target_,SEL selector_){
 	return (target_ && [target_ respondsToSelector:selector_]);
 }
+
+inline static void cmmFuncCallDispatcher_mainQueue(void(^block_)()){
+	dispatch_async(dispatch_get_main_queue(),block_);
+}
+inline static void cmmFuncCallDispatcher_backQueue(dispatch_queue_priority_t priority_,void(^block_)()){
+	dispatch_async(dispatch_get_global_queue(priority_,0), block_);
+}
+inline static void cmmFuncCallDispatcher_backQueue(void(^block_)()){
+	cmmFuncCallDispatcher_backQueue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, block_);
+}

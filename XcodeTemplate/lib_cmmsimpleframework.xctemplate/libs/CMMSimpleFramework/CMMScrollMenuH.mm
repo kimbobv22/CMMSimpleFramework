@@ -30,13 +30,13 @@
 @end
 
 @implementation CMMScrollMenuH
-@synthesize fouceItemScale,nonefouceItemScale,minScrollAccelToSnap,isSnapAtItem;
+@synthesize fouceItemScale,nonefouceItemScale,minScrollAccelToSnap,snapAtItem;
 
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	marginPerItem = 5.0f;
-	isSnapAtItem = YES;
+	snapAtItem = YES;
 	fouceItemScale = nonefouceItemScale = 1.0f;
 	minScrollAccelToSnap = 10.0f;
 	[super setCanDragX:YES];
@@ -46,7 +46,7 @@
 
 -(void)setIndex:(int)index_{
 	[super setIndex:index_];
-	_isOnSnap = YES && isSnapAtItem;
+	_OnSnap = YES && snapAtItem;
 }
 
 -(void)update:(ccTime)dt_{
@@ -54,7 +54,7 @@
 	
 	switch(touchState){
 		case CMMTouchState_none:{
-			if(!_isOnSnap) break;
+			if(!_OnSnap) break;
 			CMMMenuItem *item_ = [self itemAtIndex:index];
 			if(!item_) break;
 			
@@ -65,7 +65,7 @@
 			itemPoint_.x += itemSize_.width*(0.5f-itemAnchorPoint_.x);
 			itemPoint_.y += itemSize_.height*(0.5f-itemAnchorPoint_.y);
 			itemPoint_ = [innerLayer convertToWorldSpace:itemPoint_];
-			CGPoint centerPoint_ = [self convertToWorldSpace:ccp(contentSize_.width/2.0f,contentSize_.height/2.0f)];
+			CGPoint centerPoint_ = [self convertToWorldSpace:ccp(_contentSize.width/2.0f,_contentSize.height/2.0f)];
 			CGPoint diffPoint_ = ccpSub(itemPoint_,centerPoint_);
 			
 			diffPoint_ = ccpMult(diffPoint_, dt_*dragSpeed);
@@ -77,17 +77,17 @@
 			if(ccpDistance(targetPoint_, [innerLayer position]) > 0.1f){
 				[innerLayer setPosition:targetPoint_];
 			}else{
-				_isOnSnap = NO;
+				_OnSnap = NO;
 			}
 			
 			break;
 		}
 		case CMMTouchState_onScroll:{
-			if(!isSnapAtItem || [itemList count] <= 0 || minScrollAccelToSnap < ABS(_curScrollSpeedX)) break;
+			if(!snapAtItem || [itemList count] <= 0 || minScrollAccelToSnap < ABS(_curScrollSpeedX)) break;
 			
 			int minIndex_ = -1;
-			float minDistance_ = contentSize_.width;
-			CGPoint centerPoint_ = [self convertToWorldSpace:ccp(contentSize_.width/2.0f,contentSize_.height/2.0f)];
+			float minDistance_ = _contentSize.width;
+			CGPoint centerPoint_ = [self convertToWorldSpace:ccp(_contentSize.width/2.0f,_contentSize.height/2.0f)];
 			ccArray *data_ = itemList->data;
 			int count_ = data_->num;
 			for(uint index_=0;index_<count_;++index_){
@@ -129,8 +129,8 @@
 		targetWidth_ += item_.contentSize.width+marginPerItem;
 	}
 	targetWidth_-= marginPerItem;
-	targetWidth_ = MAX(targetWidth_, contentSize_.width);
-	[innerLayer setContentSize:CGSizeMake(targetWidth_,contentSize_.height)];
+	targetWidth_ = MAX(targetWidth_, _contentSize.width);
+	[innerLayer setContentSize:CGSizeMake(targetWidth_,_contentSize.height)];
 }
 -(void)updateMenuArrangeWithInterval:(ccTime)dt_{
 	float totalItemWidth_ = marginPerItem;

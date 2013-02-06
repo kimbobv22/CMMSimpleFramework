@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface MenuItemTestLayer : CMMLayer<CMMSceneLoadingProtocol,CMMMenuItemDelegate>{
+@interface MenuItemTestLayer : CMMLayer{
 	CMMMenuItemL *menuItem1,*menuItem2,*menuItem3,*menuItemBack;
 	
 	CCLabelTTF *displayLabel;

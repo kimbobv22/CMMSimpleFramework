@@ -30,27 +30,35 @@
 @class CCTexture2D;
 @class CCDirector;
 
-#pragma mark -
-#pragma mark CCRGBAProtocol
+#pragma mark - CCRGBAProtocol
 
 /// CC RGBA protocol
 @protocol CCRGBAProtocol <NSObject>
-/** sets Color
+/** sets and returns the color (tint)
  @since v0.8
  */
--(void) setColor:(ccColor3B)color;
-/** returns the color
- @since v0.8
- */
--(ccColor3B) color;
+@property (nonatomic) ccColor3B color;
+/** returns the displayed color */
+@property (nonatomic, readonly) ccColor3B displayedColor;
+/** whether or not color should be propagated to its children */
+@property (nonatomic) BOOL cascadeColor;
 
-/// returns the opacity
--(GLubyte) opacity;
-/** sets the opacity.
+/** recursive method that updates display color */
+- (void)updateDisplayedColor:(ccColor3B)color;
+
+/** sets and returns the opacity.
  @warning If the the texture has premultiplied alpha then, the R, G and B channels will be modified.
  Values goes from 0 to 255, where 255 means fully opaque.
  */
--(void) setOpacity: (GLubyte) opacity;
+@property (nonatomic) GLubyte opacity;
+/** returns the displayed opacity */
+@property (nonatomic, readonly) GLubyte displayedOpacity;
+/** whether or not opacity should be propagated to its children */
+@property (nonatomic) BOOL cascadeOpacity;
+
+/** recursive method that updates the displayed opacity */
+- (void)updateDisplayedOpacity:(GLubyte)opacity;
+
 @optional
 /** sets the premultipliedAlphaOpacity property.
  If set to NO then opacity will be applied as: glColor(R,G,B,opacity);
@@ -65,8 +73,7 @@
  -(BOOL) doesOpacityModifyRGB;
 @end
 
-#pragma mark -
-#pragma mark CCBlendProtocol
+#pragma mark - CCBlendProtocol
 /**
  You can specify the blending function.
  @since v0.99.0
@@ -79,8 +86,7 @@
 @end
 
 
-#pragma mark -
-#pragma mark CCTextureProtocol
+#pragma mark - CCTextureProtocol
 
 /** CCNode objects that uses a Texture2D to render the images.
  The texture can have a blending function.
@@ -98,8 +104,7 @@
 -(void) setTexture:(CCTexture2D*)texture;
 @end
 
-#pragma mark -
-#pragma mark CCLabelProtocol
+#pragma mark - CCLabelProtocol
 /** Common interface for Labels */
 @protocol CCLabelProtocol <NSObject>
 /** sets a new label using an NSString.
@@ -117,8 +122,7 @@
 @end
 
 
-#pragma mark -
-#pragma mark CCDirectorDelegate
+#pragma mark - CCDirectorDelegate
 /** CCDirector delegate */
 @protocol CCDirectorDelegate <NSObject>
 
@@ -130,6 +134,9 @@
 /** Returns a Boolean value indicating whether the CCDirector supports the specified orientation. Default value is YES (supports all possible orientations) */
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation;
 
+// Commented. See issue #1453 for further info: http://code.google.com/p/cocos2d-iphone/issues/detail?id=1453
+//- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration;
+
 /** Called when projection is resized (due to layoutSubviews on the view). This is important to respond to in order to setup your scene with the proper dimensions (which only exist after the first call to layoutSubviews) so that you can set your scene as early as possible to avoid startup flicker
  */
 -(void) directorDidReshapeProjection:(CCDirector*)director;
@@ -137,3 +144,17 @@
 #endif // __CC_PLATFORM_IOS
 
 @end
+
+
+#pragma mark - CCAccelerometerDelegate
+
+#ifdef __CC_PLATFORM_IOS
+/** CCAccelerometerDelegate delegate */
+@class UIAcceleration;
+@class UIAccelerometer;
+@protocol CCAccelerometerDelegate <NSObject>
+
+@optional
+- (void)accelerometer:(UIAccelerometer *)accelerometer didAccelerate:(UIAcceleration *)acceleration;
+@end
+#endif // __CC_PLATFORM_IOS

@@ -150,9 +150,11 @@ static CMMSpriteBatchBar *_cachedCMMSpriteBatchBar_ = nil;
 	[frameList addObject:drawingItem_];
 }
 -(CMMDrawingManagerItem *)addDrawingItemWithFileName:(NSString *)fileName_{
-	NSString *frameFilePath_ = [CMMStringUtil stringPathOfResoruce:fileName_ extension:@"plist"];
+	NSString *fixedFileName_ = [[fileName_ stringByDeletingPathExtension] stringByAppendingPathExtension:@"plist"];
+	NSString *frameFilePath_ = [CMMStringUtil stringPathOfResoruce:fixedFileName_ extension:nil];
 	
 	if(![CMMFileUtil isExistWithFilePath:frameFilePath_]){
+		NSAssert(NO, @"CMMDrawingManager : addDrawingItemWithFileName -> file not exists.");
 		return nil;
 	}
 	
@@ -160,7 +162,7 @@ static CMMSpriteBatchBar *_cachedCMMSpriteBatchBar_ = nil;
 		return nil;
 	}
 	
-	[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:frameFilePath_];
+	[[CCSpriteFrameCache sharedSpriteFrameCache] addSpriteFramesWithFile:fixedFileName_]; //only for resoruce
 	CMMDrawingManagerItem *drawingItem_ = [CMMDrawingManagerItem drawingItemWithFileName:fileName_];
 	[self addDrawingItem:drawingItem_];
 	return drawingItem_;
@@ -177,7 +179,7 @@ static CMMSpriteBatchBar *_cachedCMMSpriteBatchBar_ = nil;
 -(void)removeDrawingItem:(CMMDrawingManagerItem *)drawingItem_{
 	uint index_ = [self indexOfDrawingItem:drawingItem_];
 	if(index_ == NSNotFound) return;
-	[[CCSpriteFrameCache sharedSpriteFrameCache] removeSpriteFramesFromFile:[CMMStringUtil stringPathOfResoruce:[drawingItem_ fileName] extension:@"plist"]];
+	[[CCSpriteFrameCache sharedSpriteFrameCache] removeSpriteFramesFromFile:[[drawingItem_ fileName] stringByAppendingPathExtension:@"plist"]];
 	[frameList removeObjectAtIndex:index_];
 }
 -(void)removeDrawingItemAtIndex:(uint)index_{

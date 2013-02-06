@@ -84,6 +84,7 @@ typedef enum{
 -(id)initWithTarget:(CCNode *)target_;
 
 -(void)addNoticeItem:(CMMNoticeDispatcherItem *)noticeItem_;
+-(CMMNoticeDispatcherItem *)addNoticeItemWithTitle:(NSString *)title_ subject:(NSString *)subject_ block:(void(^)(CMMNoticeDispatcherItem *sender_))block_;
 -(CMMNoticeDispatcherItem *)addNoticeItemWithTitle:(NSString *)title_ subject:(NSString *)subject_;
 
 @property (nonatomic, retain) CCNode *target;

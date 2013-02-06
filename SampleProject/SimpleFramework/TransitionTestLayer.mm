@@ -28,18 +28,18 @@
 	[door1 stopAllActions];
 	[door2 stopAllActions];
 	
-	[door1 setPosition:ccp(-contentSize_.width*0.5f,0)];
-	[door2 setPosition:ccp(contentSize_.width,0)];
+	[door1 setPosition:ccp(-_contentSize.width*0.5f,0)];
+	[door2 setPosition:ccp(_contentSize.width,0)];
 	
 	[door1 runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(0,0)]];
-	[door2 runAction:[CCSequence actions:[CCMoveTo actionWithDuration:0.2f position:ccp(contentSize_.width*0.5f,0)],[CCDelayTime actionWithDuration:0.2f],[CCCallFunc actionWithTarget:target_ selector:selector_],nil]];
+	[door2 runAction:[CCSequence actions:[CCMoveTo actionWithDuration:0.2f position:ccp(_contentSize.width*0.5f,0)],[CCDelayTime actionWithDuration:0.2f],[CCCallFunc actionWithTarget:target_ selector:selector_],nil]];
 }
 -(void)startFadeOutTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_{
 	[door1 stopAllActions];
 	[door2 stopAllActions];
 	
-	[door1 runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(-contentSize_.width*0.5f,0)]];
-	[door2 runAction:[CCSequence actionOne:[CCMoveTo actionWithDuration:0.2f position:ccp(contentSize_.width,0)] two:[CCCallFunc actionWithTarget:target_ selector:selector_]]];
+	[door1 runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(-_contentSize.width*0.5f,0)]];
+	[door2 runAction:[CCSequence actionOne:[CCMoveTo actionWithDuration:0.2f position:ccp(_contentSize.width,0)] two:[CCCallFunc actionWithTarget:target_ selector:selector_]]];
 }
 
 @end
@@ -62,7 +62,7 @@
 	[menuItemBtn_ setCallback_pushup:^(id sender_){
 		[[CMMScene sharedScene] setTransitionLayer:[CMMSceneTransitionLayer_FadeInOut node]];
 	}];
-	menuItemBtn_.position = ccp(contentSize_.width/2.0f-menuItemBtn_.contentSize.width/2-10,contentSize_.height/2);
+	menuItemBtn_.position = ccp(_contentSize.width/2.0f-menuItemBtn_.contentSize.width/2-10,_contentSize.height/2);
 	[self addChild:menuItemBtn_];
 	
 	menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
@@ -70,7 +70,7 @@
 	[menuItemBtn_ setCallback_pushup:^(id sender_){
 		[[CMMScene sharedScene] setTransitionLayer:[TestTransitionLayer_door node]];
 	}];
-	menuItemBtn_.position = ccp(contentSize_.width/2.0f+menuItemBtn_.contentSize.width/2+10,contentSize_.height/2);
+	menuItemBtn_.position = ccp(_contentSize.width/2.0f+menuItemBtn_.contentSize.width/2+10,_contentSize.height/2);
 	[self addChild:menuItemBtn_];
 	
 	return self;

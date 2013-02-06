@@ -42,7 +42,7 @@
 
 @implementation CCGLView
 
-@synthesize eventDelegate = eventDelegate_;
+@synthesize eventDelegate = _eventDelegate;
 
 +(void) load_
 {
@@ -84,7 +84,7 @@
 			[self setOpenGLContext:context];
 
 		// event delegate
-		eventDelegate_ = nil;
+		_eventDelegate = nil;
 	}
 
 	return self;
@@ -168,7 +168,7 @@
 }
 
 #define DISPATCH_EVENT(__event__, __selector__)												\
-	id obj = eventDelegate_;																\
+	id obj = _eventDelegate;																\
 	CCEventObject *event = [[CCEventObject alloc] init];									\
 	event->event = [__event__ retain];														\
 	event->selector = __selector__;															\
@@ -285,6 +285,37 @@
 }
 
 - (void)touchesCancelledWithEvent:(NSEvent *)theEvent
+{
+	DISPATCH_EVENT(theEvent, _cmd);
+}
+
+#pragma mark CCGLView - Gesture events
+- (void)beginGestureWithEvent:(NSEvent *)theEvent
+{
+	DISPATCH_EVENT(theEvent, _cmd);
+}
+
+- (void)magnifyWithEvent:(NSEvent *)theEvent
+{
+	DISPATCH_EVENT(theEvent, _cmd);
+}
+
+- (void)smartMagnifyWithEvent:(NSEvent *)theEvent
+{
+	DISPATCH_EVENT(theEvent, _cmd);
+}
+
+- (void)rotateWithEvent:(NSEvent *)theEvent
+{
+	DISPATCH_EVENT(theEvent, _cmd);
+}
+
+- (void)swipeWithEvent:(NSEvent *)theEvent
+{
+	DISPATCH_EVENT(theEvent, _cmd);
+}
+
+- (void)endGestureWithEvent:(NSEvent *)theEvent
 {
 	DISPATCH_EVENT(theEvent, _cmd);
 }

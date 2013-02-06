@@ -9,7 +9,7 @@
 @end
 
 @implementation CMMControlItemSlider
-@synthesize buttonItem,backColorL,backColorR,itemValue,unitValue,minValue,maxValue,callback_whenChangedItemVale;
+@synthesize buttonItem,backColorL,backColorR,itemValue,unitValue,minValue,maxValue,callback_whenItemValueChanged;
 
 +(id)controlItemSliderWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_{
 	return [[[self alloc] initWithWidth:width_ maskSprite:maskSprite_ barSprite:barSprite_ backColorL:backColorL_ backColorR:backColorR_ buttonSprite:buttonSprite_] autorelease];
@@ -44,7 +44,6 @@
 	
 	[touchDispatcher setMaxMultiTouchCount:0];
 	
-	callback_whenChangedItemVale = nil;
 	[self addChild:buttonItem z:2];
 	[self addChild:_barSprite z:1];
 	[self addChild:_resultBackSprite z:0];
@@ -120,11 +119,8 @@
 	float buttonPointX_ = ((self.contentSize.width-[buttonItem contentSize].width)*((itemValue_-minValue)/(maxValue-minValue)))+[buttonItem contentSize].width/2.0f;
 	[self _setPointXOfButton:buttonPointX_];
 	
-	if(doCallback_){
-		if(!callback_whenChangedItemVale && cmmFuncCommon_respondsToSelector(delegate, @selector(controlItemSlider:whenChangedItemValue:beforeItemValue:)))
-			[((id<CMMControlItemSliderDelegate>)delegate) controlItemSlider:self whenChangedItemValue:itemValue beforeItemValue:beforeItemValue_];
-		else if(callback_whenChangedItemVale)
-			callback_whenChangedItemVale(self,itemValue,beforeItemValue_);
+	if(doCallback_ && callback_whenItemValueChanged){
+		callback_whenItemValueChanged(itemValue,beforeItemValue_);
 	}
 }
 
@@ -146,16 +142,16 @@
 	
 	if(x_<buttonSize_.width/2)
 		x_ = buttonSize_.width/2;
-	else if(x_>contentSize_.width-buttonSize_.width/2)
-		x_ = contentSize_.width-buttonSize_.width/2;
+	else if(x_>_contentSize.width-buttonSize_.width/2)
+		x_ = _contentSize.width-buttonSize_.width/2;
 	
-	[buttonItem setPosition:ccp(x_,contentSize_.height/2)];
+	[buttonItem setPosition:ccp(x_,_contentSize.height/2)];
 	_doRedraw = YES;
 }
 
 -(void)redraw{
 	[super redraw];
-	CCRenderTexture *render_ = [CCRenderTexture renderTextureWithWidth:contentSize_.width height:contentSize_.height];
+	CCRenderTexture *render_ = [CCRenderTexture renderTextureWithWidth:_contentSize.width height:_contentSize.height];
 	
 	[render_ begin];
 	[render_ addChild:_maskSprite];
@@ -166,27 +162,27 @@
 	CGPoint buttonPoint_ = [buttonItem position];
 	
 	ccGLBlendFunc(GL_DST_ALPHA, GL_ZERO);
-	glLineWidth(contentSize_.height);
+	glLineWidth(_contentSize.height);
 	
-	ccDrawColor4B(backColorL.r, backColorL.g, backColorL.b, opacity_);
-	ccDrawLine(ccp(0.0f,contentSize_.height/2.0f), ccp(buttonPoint_.x,contentSize_.height/2.0f));
+	ccDrawColor4B(backColorL.r, backColorL.g, backColorL.b, _realOpacity);
+	ccDrawLine(ccp(0.0f,_contentSize.height/2.0f), ccp(buttonPoint_.x,_contentSize.height/2.0f));
 	
-	ccDrawColor4B(backColorR.r, backColorR.g, backColorR.b, opacity_);
-	ccDrawLine(ccp(buttonPoint_.x,contentSize_.height/2.0f), ccp(contentSize_.width,contentSize_.height/2.0f));
+	ccDrawColor4B(backColorR.r, backColorR.g, backColorR.b, _realOpacity);
+	ccDrawLine(ccp(buttonPoint_.x,_contentSize.height/2.0f), ccp(_contentSize.width,_contentSize.height/2.0f));
 	
 	[render_ end];
 	
 	[_resultBackSprite setTexture:render_.sprite.texture];
 	CGRect targetTextureRect_ = CGRectZero;
-	targetTextureRect_.size = contentSize_;
+	targetTextureRect_.size = _contentSize;
 	[_resultBackSprite setTextureRect:targetTextureRect_];
-	_resultBackSprite.position = ccp(contentSize_.width/2,contentSize_.height/2);
+	_resultBackSprite.position = ccp(_contentSize.width/2,_contentSize.height/2);
 	[_barSprite setPosition:cmmFuncCommon_positionInParent(self, _barSprite)];
 }
 
 -(void)redrawWithBar{
 	CGSize buttonSize_ = [buttonItem contentSize];
-	_maskSprite.contentSize = _barSprite.contentSize = CGSizeMake(contentSize_.width-buttonSize_.width/2.0f, [_maskSprite contentSize].height);
+	_maskSprite.contentSize = _barSprite.contentSize = CGSizeMake(_contentSize.width-buttonSize_.width/2.0f, [_maskSprite contentSize].height);
 	
 	[self redraw];
 	[self setItemValue:itemValue];
@@ -215,13 +211,12 @@
 }
 
 -(void)cleanup{
-	[callback_whenChangedItemVale release];
-	callback_whenChangedItemVale = nil;
+	[self setCallback_whenItemValueChanged:nil];
 	[super cleanup];
 }
 
 -(void)dealloc{
-	[callback_whenChangedItemVale release];
+	[callback_whenItemValueChanged release];
 	[_maskSprite release];
 	[super dealloc];
 }

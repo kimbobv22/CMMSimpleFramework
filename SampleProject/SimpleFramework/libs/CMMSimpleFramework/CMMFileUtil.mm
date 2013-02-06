@@ -51,6 +51,18 @@
 	[self deleteFileWithFileName:fileName_ extension:nil];
 }
 
++(void)writeFileInBackgroundWithData:(NSData *)data_ path:(NSString *)path_ block:(void(^)(NSError *))block_{
+	cmmFuncCallDispatcher_backQueue(^{
+		NSError *error_ = nil;
+		[data_ writeToFile:path_ options:NSDataWritingAtomic error:&error_];
+		if(block_){
+			cmmFuncCallDispatcher_mainQueue(^{
+				block_(error_);
+			});
+		}
+	});
+}
+
 @end
 
 @implementation CMMFileUtil(Dictionary)

@@ -7,29 +7,21 @@
 
 @interface CMMCustomUIJoypadButton : CMMMenuItem{
 	ccTime _curPushDelayTime,pushDelayTime;
-	BOOL _isOnPush,isAutoPushdown;
+	BOOL _isOnPush,autoPushdown;
 }
 
 -(void)update:(ccTime)dt_;
 
 @property (nonatomic, readwrite) ccTime pushDelayTime;
-@property (nonatomic, readwrite) BOOL isAutoPushdown;
-
-@end
-
-@class CMMCustomUIJoypadStick;
-
-@protocol CMMCustomUIJoypadStickDelegate <NSObject>
-
-@required
--(void)customUIJoypadStick:(CMMCustomUIJoypadStick *)stick_ whenChangedStickVector:(CGPoint)vector_;
+@property (nonatomic, readwrite, getter = isAutoPushdown) BOOL autoPushdown;
 
 @end
 
 @interface CMMCustomUIJoypadStick : CMMLayer{
-	id<CMMCustomUIJoypadStickDelegate> delegate;
 	CMMMenuItem *_stick;
 	CCSprite *_backSprite;
+	
+	void (^callback_whenStickVectorChanged)(CGPoint vector_);
 }
 
 +(id)stickWithStickSprite:(CCSprite *)stickSprite_ backSprite:(CCSprite *)backSprite_ radius:(float)radius_;
@@ -40,17 +32,10 @@
 
 -(void)moveStickPositionTo:(CGPoint)worldPoint_;
 
-@property (nonatomic, retain) id<CMMCustomUIJoypadStickDelegate> delegate;
 @property (nonatomic, readwrite) CGPoint stickVector;
+@property (nonatomic, copy) void (^callback_whenStickVectorChanged)(CGPoint vector_);
 
-@end
-
-@class CMMCustomUIJoypad;
-
-@protocol CMMCustomUIJoypadDelegate <CMMCustomUIDelegate>
-
-@optional
--(void)customUIJoypad:(CMMCustomUIJoypad *)joypad_ whenChangedStickVector:(CGPoint)vector_;
+-(void)setCallback_whenStickVectorChanged:(void (^)(CGPoint vector_))block_;
 
 @end
 
@@ -58,7 +43,7 @@
 #define cmmVarCMMCustomUIJoypad_positionKey_buttonA @"btnA"
 #define cmmVarCMMCustomUIJoypad_positionKey_buttonB @"btnB"
 
-@interface CMMCustomUIJoypad : CMMCustomUI<CMMCustomUIJoypadStickDelegate>{
+@interface CMMCustomUIJoypad : CMMCustomUI{
 	CMMCustomUIJoypadStick *stick;
 	CMMCustomUIJoypadButton *buttonA,*buttonB;
 }

@@ -13,13 +13,13 @@ enum StageControlType{
 	StageControlType_maxCount,
 };
 
-@interface StageTestLayer : CMMLayer<CMMSceneLoadingProtocol>{
+@interface StageTestLayer : CMMLayer{
 	CMMMenuItemSet *stageSelector;
 }
 
 @end
 
-@interface StageTestLayerMaster : CMMLayer<CMMSceneLoadingProtocol,CMMStageDelegate,CMMStageTouchDelegate,CMMScrollMenuDelegate>{
+@interface StageTestLayerMaster : CMMLayer{
 	CMMStage *stage;
 	CMMScrollMenuV *controlMenu;
 	CMMControlItemSlider *gravitySlider;
@@ -32,6 +32,8 @@ enum StageControlType{
 	
 	StageControlType stageControlType;
 }
+
+-(void)buildupStage;
 
 -(CMMSObject *)addBox:(CGPoint)point_;
 -(CMMSBall *)addBall:(CGPoint)point_;
@@ -50,7 +52,7 @@ enum StageControlType{
 
 @end
 
-@interface StageTestLayerTile : StageTestLayerMaster<CMMStageTMXDelegate>
+@interface StageTestLayerTile : StageTestLayerMaster
 
 @end
 
@@ -66,7 +68,7 @@ enum StageControlType{
 
 @end
 
-@interface StageTestLayerDynamicBlock : CMMLayer<CMMSceneLoadingProtocol,CMMPopupDispatcherDelegate,CMMStageDNBDelegate,CMMCustomUIJoypadDelegate>{
+@interface StageTestLayerDynamicBlock : CMMLayer{
 	CMMStageDNB *stage;
 	TestHero *targetObject;
 	CMMCustomUIJoypad *ui;

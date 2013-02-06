@@ -3,7 +3,7 @@
 #import "CMMControlItem.h"
 
 @implementation CMMControlItem
-@synthesize delegate,isEnable,userData;
+@synthesize enable;
 
 +(id)controlItemWithFrameSize:(CGSize)frameSize_{
 	return [[[self alloc] initWithFrameSize:frameSize_] autorelease];
@@ -11,8 +11,7 @@
 -(id)initWithFrameSize:(CGSize)frameSize_{
 	if(!(self = [super initWithColor:ccc4(0, 0, 0, 255) width:frameSize_.width height:frameSize_.height])) return self;
 	
-	isEnable = YES;
-	userData = nil;
+	enable = YES;
 	_doRedraw = YES;
 	
 	return self;
@@ -22,7 +21,7 @@
 #if COCOS2D_DEBUG >= 1
 	ccDrawColor4B(0, 255, 0, 180);
 	glLineWidth(1.0f);
-	ccDrawRect(CGPointZero, ccpFromSize(contentSize_));
+	ccDrawRect(CGPointZero, ccpFromSize(_contentSize));
 #endif
 }
 
@@ -37,17 +36,7 @@
 }
 
 -(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
-	return isEnable;
-}
-
--(void)cleanup{
-	delegate = nil;
-	[super cleanup];
-}
-
--(void)dealloc{
-	[userData release];
-	[super dealloc];
+	return enable;
 }
 
 @end

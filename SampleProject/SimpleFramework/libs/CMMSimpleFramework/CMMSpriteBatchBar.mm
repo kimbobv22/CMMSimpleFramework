@@ -56,6 +56,39 @@
 	return [_backSprite color];
 }
 
+-(ccColor3B)displayedColor{
+	return [_backSprite displayedColor];
+}
+
+-(void)setCascadeColor:(BOOL)cascadeColor{
+	[_backSprite setCascadeColor:cascadeColor];
+	[_barTopSprite setCascadeColor:cascadeColor];
+	[_barBottomSprite setCascadeColor:cascadeColor];
+	[_barLeftSprite setCascadeColor:cascadeColor];
+	[_barRightSprite setCascadeColor:cascadeColor];
+	[_backSprite setCascadeColor:cascadeColor];
+	[_edge1Sprite setCascadeColor:cascadeColor];
+	[_edge2Sprite setCascadeColor:cascadeColor];
+	[_edge3Sprite setCascadeColor:cascadeColor];
+	[_edge4Sprite setCascadeColor:cascadeColor];
+}
+-(BOOL)cascadeColor{
+	return [_backSprite cascadeColor];
+}
+
+-(void)updateDisplayedColor:(ccColor3B)color{
+	[_backSprite updateDisplayedColor:color];
+	[_barTopSprite updateDisplayedColor:color];
+	[_barBottomSprite updateDisplayedColor:color];
+	[_barLeftSprite updateDisplayedColor:color];
+	[_barRightSprite updateDisplayedColor:color];
+	[_backSprite updateDisplayedColor:color];
+	[_edge1Sprite updateDisplayedColor:color];
+	[_edge2Sprite updateDisplayedColor:color];
+	[_edge3Sprite updateDisplayedColor:color];
+	[_edge4Sprite updateDisplayedColor:color];
+}
+
 -(GLubyte)opacity{
 	return [_backSprite opacity];
 }
@@ -69,6 +102,38 @@
 	[_edge2Sprite setOpacity:opacity];
 	[_edge3Sprite setOpacity:opacity];
 	[_edge4Sprite setOpacity:opacity];
+}
+
+-(GLubyte)displayedOpacity{
+	return [_backSprite displayedOpacity];
+}
+-(void)setCascadeOpacity:(BOOL)cascadeOpacity{
+	[_backSprite setCascadeOpacity:cascadeOpacity];
+	[_barTopSprite setCascadeOpacity:cascadeOpacity];
+	[_barBottomSprite setCascadeOpacity:cascadeOpacity];
+	[_barLeftSprite setCascadeOpacity:cascadeOpacity];
+	[_barRightSprite setCascadeOpacity:cascadeOpacity];
+	[_backSprite setCascadeOpacity:cascadeOpacity];
+	[_edge1Sprite setCascadeOpacity:cascadeOpacity];
+	[_edge2Sprite setCascadeOpacity:cascadeOpacity];
+	[_edge3Sprite setCascadeOpacity:cascadeOpacity];
+	[_edge4Sprite setCascadeOpacity:cascadeOpacity];
+}
+-(BOOL)cascadeOpacity{
+	return [_backSprite cascadeOpacity];
+}
+
+- (void)updateDisplayedOpacity:(GLubyte)opacity{
+	[_backSprite updateDisplayedOpacity:opacity];
+	[_barTopSprite updateDisplayedOpacity:opacity];
+	[_barBottomSprite updateDisplayedOpacity:opacity];
+	[_barLeftSprite updateDisplayedOpacity:opacity];
+	[_barRightSprite updateDisplayedOpacity:opacity];
+	[_backSprite updateDisplayedOpacity:opacity];
+	[_edge1Sprite updateDisplayedOpacity:opacity];
+	[_edge2Sprite updateDisplayedOpacity:opacity];
+	[_edge3Sprite updateDisplayedOpacity:opacity];
+	[_edge4Sprite updateDisplayedOpacity:opacity];
 }
 
 -(void)setTargetSprite:(CCSprite *)targetSprite_{
@@ -158,34 +223,34 @@
 		CGSize spriteSize_ = [_barTopSprite contentSize];
 		
 		//top
-		[_barTopSprite setScaleX:(contentSize_.width-edgeSize.width*2.0f)/spriteSize_.width];
-		[_barTopSprite setPosition:ccp(contentSize_.width/2.0f,spriteSize_.height/2.0f)];
+		[_barTopSprite setScaleX:(_contentSize.width-edgeSize.width*2.0f)/spriteSize_.width];
+		[_barTopSprite setPosition:ccp(_contentSize.width/2.0f,spriteSize_.height/2.0f)];
 		
 		//bottom
-		[_barBottomSprite setScaleX:(contentSize_.width-edgeSize.width*2.0f)/spriteSize_.width];
-		[_barBottomSprite setPosition:ccp(contentSize_.width/2.0f,contentSize_.height-spriteSize_.height/2.0f)];
+		[_barBottomSprite setScaleX:(_contentSize.width-edgeSize.width*2.0f)/spriteSize_.width];
+		[_barBottomSprite setPosition:ccp(_contentSize.width/2.0f,_contentSize.height-spriteSize_.height/2.0f)];
 		
 		spriteSize_ = [_barLeftSprite contentSize];
 		
 		//left
-		[_barLeftSprite setScaleY:(contentSize_.height-edgeSize.height*2.0f)/spriteSize_.height];
-		[_barLeftSprite setPosition:ccp(spriteSize_.width/2.0f,contentSize_.height/2.0f)];
+		[_barLeftSprite setScaleY:(_contentSize.height-edgeSize.height*2.0f)/spriteSize_.height];
+		[_barLeftSprite setPosition:ccp(spriteSize_.width/2.0f,_contentSize.height/2.0f)];
 		
 		//right
-		[_barRightSprite setScaleY:(contentSize_.height-edgeSize.height*2.0f)/spriteSize_.height];
-		[_barRightSprite setPosition:ccp(contentSize_.width-spriteSize_.width/2.0f,contentSize_.height/2.0f)];
+		[_barRightSprite setScaleY:(_contentSize.height-edgeSize.height*2.0f)/spriteSize_.height];
+		[_barRightSprite setPosition:ccp(_contentSize.width-spriteSize_.width/2.0f,_contentSize.height/2.0f)];
 		
 		//(back)center
 		spriteSize_ = [_backSprite contentSize];
-		[_backSprite setScaleX:(contentSize_.width-edgeSize.width)/spriteSize_.width];
-		[_backSprite setScaleY:(contentSize_.height-edgeSize.height)/spriteSize_.height];
-		[_backSprite setPosition:ccp(contentSize_.width/2.0f,contentSize_.height/2.0f)];
+		[_backSprite setScaleX:(_contentSize.width-edgeSize.width)/spriteSize_.width];
+		[_backSprite setScaleY:(_contentSize.height-edgeSize.height)/spriteSize_.height];
+		[_backSprite setPosition:ccp(_contentSize.width/2.0f,_contentSize.height/2.0f)];
 		
 		//edges
-		[_edge1Sprite setPosition:ccp(edgeSize.width/2.0f,contentSize_.height-edgeSize.height/2.0f)];
-		[_edge2Sprite setPosition:ccp(contentSize_.width-edgeSize.width/2.0f,contentSize_.height-edgeSize.height/2.0f)];
+		[_edge1Sprite setPosition:ccp(edgeSize.width/2.0f,_contentSize.height-edgeSize.height/2.0f)];
+		[_edge2Sprite setPosition:ccp(_contentSize.width-edgeSize.width/2.0f,_contentSize.height-edgeSize.height/2.0f)];
 		[_edge3Sprite setPosition:ccp(edgeSize.width/2.0f,edgeSize.height/2.0f)];
-		[_edge4Sprite setPosition:ccp(contentSize_.width-edgeSize.width/2.0f,edgeSize.height/2.0f)];
+		[_edge4Sprite setPosition:ccp(_contentSize.width-edgeSize.width/2.0f,edgeSize.height/2.0f)];
 		
 		_isDirty = NO;
 	}

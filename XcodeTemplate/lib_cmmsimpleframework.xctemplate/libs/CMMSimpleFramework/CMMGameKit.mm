@@ -14,15 +14,16 @@ static CMMGameKitPA *_sharedCMMGameKitPA_ = nil;
 @implementation CMMGameKitPA(Private)
 
 -(void)onLocalPlayerAuthenticationChanged{
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitPA:whenChangedAuthenticationWithBOOL:))){
-		[delegate gameKitPA:self whenChangedAuthenticationWithBOOL:[self isAuthenticated]];
+	if(callback_whenAuthenticationChanged){
+		callback_whenAuthenticationChanged([self isAuthenticated]);
 	}
 }
 
 @end
 
 @implementation CMMGameKitPA
-@synthesize delegate,availableGameCenter,authenticated;
+@synthesize availableGameCenter,authenticated;
+@synthesize callback_whenAuthenticationChanged,authenticateHandler;
 
 +(CMMGameKitPA *)sharedPA{
 	if(!_sharedCMMGameKitPA_){
@@ -51,15 +52,24 @@ static CMMGameKitPA *_sharedCMMGameKitPA_ = nil;
 	
 	[[GKLocalPlayer localPlayer] setAuthenticateHandler:^(UIViewController *viewController_, NSError *error_){
 		if(viewController_){
-			if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitPA:whenTryAuthenticationWithViewController:))){
-				[delegate gameKitPA:self whenTryAuthenticationWithViewController:viewController_];
-			}else{
-				[[CMMScene sharedScene] presentViewController:viewController_ animated:YES completion:nil];
+			[[CMMScene sharedScene] presentViewController:viewController_ animated:YES completion:nil];
+			return;
+		}
+		
+		if(authenticateHandler){
+			CMMGameKitPAAuthenticationState state_ = CMMGameKitPAAuthenticationState_succeed;
+			if(error_){
+				state_ = CMMGameKitPAAuthenticationState_failed;
+				
+				switch([error_ code]){
+					case GKErrorCancelled:
+						state_ = CMMGameKitPAAuthenticationState_cancelled;
+						break;
+					default: break;
+				}
 			}
-		}else if(error_ && cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitPA:whenFailedAuthenticationWithError:))){
-			[delegate gameKitPA:self whenFailedAuthenticationWithError:error_];
-		}else if(!error_ && cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitPA:whenCompletedAuthenticationWithLocalPlayer:))){
-			[delegate gameKitPA:self whenCompletedAuthenticationWithLocalPlayer:[GKLocalPlayer localPlayer]];
+			
+			authenticateHandler(state_,error_);
 		}
 	}];
 	
@@ -71,7 +81,31 @@ static CMMGameKitPA *_sharedCMMGameKitPA_ = nil;
 }
 
 -(void)dealloc{
-	[delegate release];
+	[callback_whenAuthenticationChanged release];
+	[authenticateHandler release];
+	[super dealloc];
+}
+
+@end
+
+@implementation CMMGameKitLeaderBoardCategory
+@synthesize category,title;
+
++(id)categoryWithCategory:(NSString *)category_ title:(NSString *)title_{
+	return [[[self alloc] initWithCategory:category_ title:title_] autorelease];
+}
+-(id)initWithCategory:(NSString *)category_ title:(NSString *)title_{
+	if(!(self = [super init])) return self;
+	
+	[self setCategory:category_];
+	[self setTitle:title_];
+	
+	return self;
+}
+
+-(void)dealloc{
+	[category release];
+	[title release];
 	[super dealloc];
 }
 
@@ -80,7 +114,7 @@ static CMMGameKitPA *_sharedCMMGameKitPA_ = nil;
 static CMMGameKitLeaderBoard *_sharedCMMGameKitLeaderBoard_ = nil;
 
 @implementation CMMGameKitLeaderBoard
-@synthesize delegate;
+@synthesize loadedCategories;
 
 +(CMMGameKitLeaderBoard *)sharedLeaderBoard{
 	if(!_sharedCMMGameKitLeaderBoard_){
@@ -93,67 +127,125 @@ static CMMGameKitLeaderBoard *_sharedCMMGameKitLeaderBoard_ = nil;
 -(id)init{
 	if(!(self = [super init])) return self;
 	
+	loadedCategories = [[CCArray alloc] init];
+	
 	return self;
 }
 
--(void)loadCategory{
+-(CCArray *)loadedCategories{
+	return [[loadedCategories copy] autorelease];
+}
+
+-(void)dealloc{
+	[loadedCategories release];
+	[super dealloc];
+}
+
+@end
+
+@implementation CMMGameKitLeaderBoard(Category)
+
+-(CMMGameKitLeaderBoardCategory *)categoryAtIndex:(uint)index_{
+	return [loadedCategories objectAtIndex:index_];
+}
+
+-(void)loadCategoriesWithBlock:(void(^)(CCArray *categories_))block_{
+	[loadedCategories removeAllObjects];
 	[GKLeaderboard loadCategoriesWithCompletionHandler:^(NSArray *categories_, NSArray *titles_, NSError *error_) {
-		if(error_){
-			if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitLeaderBoard:whenFailedReceivingCategoryWithError:))){
-				[delegate gameKitLeaderBoard:self whenFailedReceivingCategoryWithError:error_];
-			}
-		}else{
-			if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitLeaderBoard:whenReceiveCategory:withTitle:))){
-				[delegate gameKitLeaderBoard:self whenReceiveCategory:categories_ withTitle:titles_];
-			}
+		if(block_){
+			block_([self loadedCategories]);
 		}
 	}];
 }
+-(void)loadCategories{
+	[self loadCategoriesWithBlock:nil];
+}
 
--(void)loadLeaderBoardWithCategory:(NSString *)category_ range:(NSRange)range_ timeScope:(GKLeaderboardTimeScope)timeScope_ playerScope:(GKLeaderboardPlayerScope)playerScope_{
+@end
+
+@implementation CMMGameKitLeaderBoard(Score)
+
+-(void)loadLeaderBoardWithCategory:(NSString *)category_ range:(NSRange)range_ timeScope:(GKLeaderboardTimeScope)timeScope_ playerScope:(GKLeaderboardPlayerScope)playerScope_ block:(void(^)(GKLeaderboard *leaderboard_, NSError *error_))block_{
 	GKLeaderboard *leaderBoard_ = [[[GKLeaderboard alloc] init] autorelease];
 	[leaderBoard_ setCategory:category_];
 	[leaderBoard_ setTimeScope:timeScope_];
 	[leaderBoard_ setPlayerScope:playerScope_];
 	[leaderBoard_ setRange:range_];
 	[leaderBoard_ loadScoresWithCompletionHandler:^(NSArray *scores_, NSError *error_) {
-		if(error_){
-			if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitLeaderBoard:whenFailedReceivingLeaderBoard:withError:))){
-				[delegate gameKitLeaderBoard:self whenFailedReceivingLeaderBoard:leaderBoard_ withError:error_];
-			}
-		}else{
-			if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitLeaderBoard:whenReceiveLeaderBoard:))){
-				[delegate gameKitLeaderBoard:self whenReceiveLeaderBoard:leaderBoard_];
-			}
-		}
+		block_(leaderBoard_,error_);
 	}];
 }
--(void)loadLeaderBoardWithCategory:(NSString *)category_ range:(NSRange)range_ timeScope:(GKLeaderboardTimeScope)timeScope_{
-	[self loadLeaderBoardWithCategory:category_ range:range_ timeScope:timeScope_ playerScope:GKLeaderboardPlayerScopeGlobal];
+-(void)loadLeaderBoardWithCategory:(NSString *)category_ range:(NSRange)range_ timeScope:(GKLeaderboardTimeScope)timeScope_ block:(void(^)(GKLeaderboard *leaderboard_, NSError *error_))block_{
+	[self loadLeaderBoardWithCategory:category_ range:range_ timeScope:timeScope_ playerScope:GKLeaderboardPlayerScopeGlobal block:block_];
 }
--(void)loadLeaderBoardWithCategory:(NSString *)category_ range:(NSRange)range_{
-	[self loadLeaderBoardWithCategory:category_ range:range_ timeScope:GKLeaderboardTimeScopeAllTime];
+-(void)loadLeaderBoardWithCategory:(NSString *)category_ range:(NSRange)range_ block:(void(^)(GKLeaderboard *leaderboard_, NSError *error_))block_{
+	[self loadLeaderBoardWithCategory:category_ range:range_ timeScope:GKLeaderboardTimeScopeAllTime block:block_];
 }
 
--(void)reportScore:(int64_t)score_ category:(NSString*)category_{
+-(void)reportScore:(int64_t)score_ category:(NSString*)category_ block:(void(^)(GKScore *score_, NSError *error_))block_{
 	GKScore *gkScore_ = [[[GKScore alloc] init] autorelease];
 	[gkScore_ setCategory:category_];
 	[gkScore_ setValue:score_];
 	[gkScore_ reportScoreWithCompletionHandler:^(NSError *error_){
-		if(error_){
-			if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitLeaderBoard:whenFailedSendingScore:withError:))){
-				[delegate gameKitLeaderBoard:self whenFailedSendingScore:gkScore_ withError:error_];
-			}
-		}else{
-			if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitLeaderBoard:whenCompletedSendingScore:))){
-				[delegate gameKitLeaderBoard:self whenCompletedSendingScore:gkScore_];
-			}
-		}
+		block_(gkScore_,error_);
 	}];
 }
 
+@end
+
+@interface CMMGameKitAchievement(Private)
+
+-(void)_setReported:(BOOL)isReported_;
+
+@end
+
+@implementation CMMGameKitAchievement(Private)
+
+-(void)_setReported:(BOOL)isReported_{
+	reported = isReported_;
+}
+
+@end
+
+@implementation CMMGameKitAchievement
+@synthesize identifier,achievement,reported;
+
++(id)achievementWithAchievement:(GKAchievement *)achievement_{
+	return [[[self alloc] initWithAchievement:achievement_] autorelease];
+}
+-(id)initWithAchievement:(GKAchievement *)achievement_{
+	if(!(self = [super init])) return self;
+	
+	[self setAchievement:achievement_];
+	reported = NO;
+	
+	return self;
+}
+-(id)initWithCoder:(NSCoder *)decoder_{
+	if(!(self = [self initWithAchievement:[decoder_ decodeObjectForKey:cmmVarCMMGameKitAchievement_key_achievement]])) return self;
+	reported = [decoder_ decodeBoolForKey:cmmVarCMMGameKitAchievement_key_reported];
+	return self;
+}
+
+-(NSString *)identifier{
+	return [achievement identifier];
+}
+-(void)setPercentComplete:(double)percentComplete_{
+	if([self percentComplete] == percentComplete_) return;
+	[achievement setPercentComplete:percentComplete_];
+	[self _setReported:NO];
+}
+-(double)percentComplete{
+	return [achievement percentComplete];
+}
+
+-(void)encodeWithCoder:(NSCoder *)encoder_{
+	[encoder_ encodeObject:achievement forKey:cmmVarCMMGameKitAchievement_key_achievement];
+	[encoder_ encodeBool:reported forKey:cmmVarCMMGameKitAchievement_key_reported];
+}
+
 -(void)dealloc{
-	[delegate release];
+	[achievement release];
 	[super dealloc];
 }
 
@@ -161,14 +253,8 @@ static CMMGameKitLeaderBoard *_sharedCMMGameKitLeaderBoard_ = nil;
 
 static CMMGameKitAchievements *_sharedCMMGameKitAchievements_ = nil;
 
-@interface CMMGameKitAchievements(Private)
-
--(void)setReportedAchievements:(NSArray *)reportedAchievements_;
-
-@end
-
 @implementation CMMGameKitAchievements
-@synthesize delegate,cachedAchievements,reportedAchievements;
+@synthesize cachedAchievements,reportedAchievements;
 
 +(CMMGameKitAchievements *)sharedAchievements{
 	if(!_sharedCMMGameKitAchievements_){
@@ -181,66 +267,68 @@ static CMMGameKitAchievements *_sharedCMMGameKitAchievements_ = nil;
 -(id)init{
 	if(!(self = [super init])) return self;
 	
-	_cachedAchievements = [[NSMutableArray alloc] init];
-	_reportedAchievements = [[NSMutableArray alloc] init];
-	
-	NSData *achievementsData_ = [CMMFileUtil dataWithFileName:cmmVarCMMGameKitAchievements_cacheName isInDocument:YES];
-	if(achievementsData_){
-		NSArray *targetArray_ = [NSKeyedUnarchiver unarchiveObjectWithData:achievementsData_];
-		for(GKAchievement *achievement_ in targetArray_){
-			[_cachedAchievements addObject:achievement_];
-		}
-	}
+	_achievements = [[NSMutableDictionary alloc] init];
 	
 	return self;
 }
 
--(NSArray *)cachedAchievements{
-	return [NSArray arrayWithArray:_cachedAchievements];
-}
--(NSArray *)reportedAchievements{
-	return [NSArray arrayWithArray:_reportedAchievements];
-}
-
--(void)setAchievementWithIdentifier:(NSString *)identifier_ percentComplete:(double)percentComplete_{
-	GKAchievement *achievement_ = [self cachedAchievementAtIdentifier:identifier_];
-	BOOL doCache_ = !achievement_;
-	
-	achievement_ = [self reportedAchievementAtIdentifier:identifier_];
+-(CMMGameKitAchievement *)_setAchievementWithGkAchievement:(GKAchievement *)gkAchievement_ isReported:(BOOL)isReported_{
+	NSString *identifier_ = [gkAchievement_ identifier];
+	CMMGameKitAchievement *achievement_ = [self achievementForIdentifier:identifier_];
 	if(!achievement_){
-		achievement_ = [[[GKAchievement alloc] initWithIdentifier:identifier_] autorelease];
-	}else if([achievement_ percentComplete] >= percentComplete_){
-		return;
+		achievement_ = [CMMGameKitAchievement achievementWithAchievement:gkAchievement_];
+		[achievement_ _setReported:isReported_];
+		[_achievements setObject:achievement_ forKey:identifier_];
+	}else if([achievement_ percentComplete] < [gkAchievement_ percentComplete]){
+		[achievement_ setPercentComplete:[gkAchievement_ percentComplete]];
+		[achievement_ _setReported:NO];
 	}
 	
-	if(doCache_){
-		[_cachedAchievements addObject:achievement_];
-	}
-	
-	[achievement_ setPercentComplete:percentComplete_];
+	return achievement_;
+}
+-(void)setAchievementWithIdentifier:(NSString *)identifier_ percentComplete:(double)percentComplete_{
+	GKAchievement *gkAchievement_ = [[[GKAchievement alloc] initWithIdentifier:identifier_] autorelease];
+	[gkAchievement_ setPercentComplete:percentComplete_];
+	[self _setAchievementWithGkAchievement:gkAchievement_ isReported:NO];
+}
+-(CMMGameKitAchievement *)achievementForIdentifier:(NSString *)identifier_{
+	return [_achievements objectForKey:identifier_];
 }
 
--(void)resetAchievements{
+-(void)resetAchievementsWithBlock:(void(^)(NSError *error_))block_{
 	[GKAchievement resetAchievementsWithCompletionHandler:^(NSError *error_){
-		if(error_){
-			if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitAchievements:whenFailedResettingAchievementsWithError:))){
-				[delegate gameKitAchievements:self whenFailedResettingAchievementsWithError:error_];
-			}
-		}else{
-			[_cachedAchievements removeAllObjects];
-			[_reportedAchievements removeAllObjects];
-			if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitAchievements_whenCompletedResettingAchievements:))){
-				[delegate gameKitAchievements_whenCompletedResettingAchievements:self];
-			}
+		if(!error_){
+			[_achievements removeAllObjects];
+		}
+		if(block_){
+			block_(error_);
 		}
 	}];
 }
+-(void)resetAchievements{
+	[self resetAchievementsWithBlock:nil];
+}
+
+-(NSArray *)_achievements:(BOOL)isReported_{
+	NSMutableArray *result_ = [NSMutableArray array];
+	NSArray *target_ = [_achievements allValues];
+	for(CMMGameKitAchievement *achievement_ in target_){
+		if([achievement_ isReported] == isReported_){
+			[result_ addObject:achievement_];
+		}
+	}
+
+	return result_;
+}
+-(NSArray *)cachedAchievements{
+	return [self _achievements:NO];
+}
+-(NSArray *)reportedAchievements{
+	return [self _achievements:YES];
+}
 
 -(void)dealloc{
-	[self writeCachedAchievements];
-	[delegate release];
-	[_cachedAchievements release];
-	[_reportedAchievements release];
+	[_achievements release];
 	[super dealloc];
 }
 
@@ -248,104 +336,74 @@ static CMMGameKitAchievements *_sharedCMMGameKitAchievements_ = nil;
 
 @implementation CMMGameKitAchievements(ReportedAchievements)
 
--(GKAchievement *)reportedAchievementAtIndex:(uint)index_{
-	if(index_ == NSNotFound) return nil;
-	return [_reportedAchievements objectAtIndex:index_];
-}
--(GKAchievement *)reportedAchievementAtIdentifier:(NSString *)identifier_{
-	return [self reportedAchievementAtIndex:[self indexOfReportedAchievementWithIdentifier_:identifier_]];
-}
-
--(uint)indexOfReportedAchievement:(GKAchievement *)achievement_{
-	return [_reportedAchievements indexOfObject:achievement_];
-}
--(uint)indexOfReportedAchievementWithIdentifier_:(NSString *)identifier_{
-	uint count_ = [_reportedAchievements count];
-	for(uint index_=0;index_<count_;++index_){
-		GKAchievement *achievement_ = [_reportedAchievements objectAtIndex:index_];
-		if([[achievement_ identifier] isEqualToString:identifier_]){
-			return index_;
-		}
-	}
-	
-	return NSNotFound;
-}
-
--(void)loadReportedAchievements{
+-(void)loadReportedAchievementsWithBlock:(void(^)(NSError *error_))block_{
 	[GKAchievement loadAchievementsWithCompletionHandler:^(NSArray *achievements_, NSError *error_){
-		if(error_){
-			if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitAchievements:whenFailedReceivingAchievementsWithError:))){
-				[delegate gameKitAchievements:self whenFailedReceivingAchievementsWithError:error_];
+		if(!error_){
+			for(GKAchievement *achievement_ in achievements_){
+				[self _setAchievementWithGkAchievement:achievement_ isReported:YES];
 			}
-		}else{
-			[_reportedAchievements removeAllObjects];
-			[_reportedAchievements addObjectsFromArray:achievements_];
-			if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitAchievements:whenReceiveAchievements:))){
-				[delegate gameKitAchievements:self whenReceiveAchievements:reportedAchievements];
-			}
+		}
+		if(block_){
+			block_(error_);
 		}
 	}];
+}
+-(void)loadReportedAchievements{
+	[self loadReportedAchievementsWithBlock:nil];
 }
 
 @end
 
 @implementation CMMGameKitAchievements(CachedAchievements)
 
--(GKAchievement *)cachedAchievementAtIndex:(uint)index_{
-	if(index_ == NSNotFound) return nil;
-	return [_cachedAchievements objectAtIndex:index_];
-}
--(GKAchievement *)cachedAchievementAtIdentifier:(NSString *)identifier_{
-	return [self cachedAchievementAtIndex:[self indexOfCachedAchievementWithIdentifier_:identifier_]];
-}
-
--(uint)indexOfCachedAchievement:(GKAchievement *)achievement_{
-	return [_cachedAchievements indexOfObject:achievement_];
-}
--(uint)indexOfCachedAchievementWithIdentifier_:(NSString *)identifier_{
-	uint count_ = [_cachedAchievements count];
-	for(uint index_=0;index_<count_;++index_){
-		GKAchievement *achievement_ = [_cachedAchievements objectAtIndex:index_];
-		if([[achievement_ identifier] isEqualToString:identifier_]){
-			return index_;
-		}
+-(void)reportCachedAchievementsWithBlock:(void(^)(NSArray *reportedAchievements_ ,NSError *error_))block_{
+	NSArray *cachedAchievements_ = [self cachedAchievements];
+	NSMutableArray *targetArray_ = [NSMutableArray array];
+	for(CMMGameKitAchievement *achievement_ in cachedAchievements_){
+		[targetArray_ addObject:[achievement_ achievement]];
 	}
-	
-	return NSNotFound;
-}
 
--(void)reportCachedAchievements{
-	[GKAchievement reportAchievements:_cachedAchievements withCompletionHandler:^(NSError *error_) {
-		if(error_){
-			if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitAchievements:whenFailedReportingAchievementsWithError:))){
-				[delegate gameKitAchievements:self whenFailedReportingAchievementsWithError:error_];
+	[GKAchievement reportAchievements:targetArray_ withCompletionHandler:^(NSError *error_) {
+		if(!error_){
+			for(CMMGameKitAchievement *achievement_ in cachedAchievements_){
+				[achievement_ _setReported:YES];
 			}
-		}else{
-			if(cmmFuncCommon_respondsToSelector(delegate, @selector(gameKitAchievements:whenCompletedReportingAchievements:))){
-				[delegate gameKitAchievements:self whenCompletedReportingAchievements:[self cachedAchievements]];
-			}
-			
-			for(GKAchievement *cachedAchievement_ in _cachedAchievements){
-				BOOL isExistsAchievement_ = NO;
-				for(GKAchievement *reportedAchievement_ in _reportedAchievements){
-					if([[reportedAchievement_ identifier] isEqualToString:[cachedAchievement_ identifier]]){
-						isExistsAchievement_ = YES;
-						break;
-					}
-				}
-				
-				if(!isExistsAchievement_){
-					[_reportedAchievements addObject:cachedAchievement_];
-				}
-			}
-			
-			[_cachedAchievements removeAllObjects];
+		}
+		if(block_){
+			block_(cachedAchievements_, error_);
 		}
 	}];
 }
--(void)writeCachedAchievements{
-	NSData *targetData_ = [NSKeyedArchiver archivedDataWithRootObject:_cachedAchievements];
-	[targetData_ writeToFile:[CMMStringUtil stringPathOfDocument:cmmVarCMMGameKitAchievements_cacheName] atomically:YES];
+-(void)reportCachedAchievements{
+	[self reportCachedAchievementsWithBlock:nil];
+}
+
+-(void)writeCachedAchievementsToFileWithBlock:(void(^)(NSError *error_))block_{
+	NSData *targetData_ = [NSKeyedArchiver archivedDataWithRootObject:[self cachedAchievements]];
+	[CMMFileUtil writeFileInBackgroundWithData:targetData_ path:[CMMStringUtil stringPathOfDocument:cmmVarCMMGameKitAchievements_cacheName] block:block_];
+}
+-(void)writeCachedAchievementsToFile{
+	[self writeCachedAchievementsToFileWithBlock:nil];
+}
+
+-(void)loadCachedAchievementsFromFileWithBlock:(void(^)(BOOL isSucceed_))block_{
+	cmmFuncCallDispatcher_backQueue(^{
+		NSData *achievementsData_ = [CMMFileUtil dataWithFileName:cmmVarCMMGameKitAchievements_cacheName isInDocument:YES];
+		if(achievementsData_){
+			NSDictionary *cachedDict_ = [NSKeyedUnarchiver unarchiveObjectWithData:achievementsData_];
+			NSArray *cachedValues_ = [cachedDict_ allValues];
+			for(CMMGameKitAchievement *achievement_ in cachedValues_){
+				[self setAchievementWithIdentifier:[achievement_ identifier] percentComplete:[achievement_ percentComplete]];
+			}
+		}
+		
+		if(block_){
+			block_(achievementsData_ != nil);
+		}
+	});
+}
+-(void)loadCachedAchievementsFromFile{
+	[self loadCachedAchievementsFromFileWithBlock:nil];
 }
 
 @end
