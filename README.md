@@ -1,7 +1,7 @@
 #CMMSimpleFramework
 
-CMMSimpleframework which coded based on Cocos2d 2.x will be helpful to develop your cocos2d project!<br>
-cocos2d 2.x 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프로젝트 개발에 도움이 될 것입니다!
+CMMSimpleframework which coded based on Cocos2d v2.1-rc0 will be helpful to develop your cocos2d project!<br>
+cocos2d v2.1-rc0 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 프로젝트 개발에 도움이 될 것입니다!
 
 ##How to use
 
