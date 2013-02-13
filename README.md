@@ -14,12 +14,5 @@ cocos2d v2.1-rc0 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 
 >2. copy files to ${USER}/Library/Developer/Xcode/Templates/cocos2d v2.x/<br>
 >2. ${USER}/Library/Developer/Xcode/Templates/cocos2d v2.x/ 로 파일을 복사합니다.<br>
 <br>
-    
-##Class List - Common
-
->The classes in "Common" required for running of CMMSimpleFramework.<br>
->"Common"의 클래스는 CMMSimpleFramework를 실행하기 위해 필요합니다.
-
-<br>
 
 write soon!
