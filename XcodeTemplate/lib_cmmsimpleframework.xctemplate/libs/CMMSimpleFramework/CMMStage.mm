@@ -65,6 +65,8 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 			CMMSObject *object_ = data_->arr[index_];
 			
 			[object_ whenRemovedToStage];
+			world->DestroyBody([object_ body]);
+			[object_ setBody:nil];
 			
 			//remove touch
 			[touchDispatcher cancelTouchAtNode:object_];
@@ -92,6 +94,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 		uint count_ = data_->num;
 		for(uint index_=0;index_<count_;++index_){
 			CMMSObject *object_ = data_->arr[index_];
+			[object_ buildupBodyWithWorld:self];
 			[object_ whenAddedToStage];
 			[stage stageWorld:self whenAddedObject:object_];
 			
@@ -296,15 +299,10 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 }
 
 -(void)addObatchNode:(CMMSObjectBatchNode *)obatchNode_{
-	if([self indexOfObatchNodeFileName:obatchNode_.fileName isInDocument:obatchNode_.isInDocument] != NSNotFound) return;
+	if([self indexOfObatchNodeWithTexture:[obatchNode_ texture]] != NSNotFound) return;
 	obatchNode_.obatchNodeTag = [self _nextObatchNodeTag];
 	[obatchNode_list addObject:obatchNode_];
 	[self addChild:obatchNode_];
-}
--(CMMSObjectBatchNode *)addObatchNodeWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
-	CMMSObjectBatchNode *obatchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:fileName_ isInDocument:isInDocument_];
-	[self addObatchNode:obatchNode_];
-	return obatchNode_;
 }
 
 -(void)removeObatchNode:(CMMSObjectBatchNode *)obatchNode_{
@@ -314,33 +312,33 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 -(void)removeObatchNodeAtIndex:(int)index_{
 	[self removeObatchNode:[self obatchNodeAtIndex:index_]];
 }
--(void)removeObatchNodeAtFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
-	[self removeObatchNodeAtIndex:[self indexOfObatchNodeFileName:fileName_ isInDocument:isInDocument_]];
+-(void)removeObatchNodeAtTexture:(CCTexture2D *)texture_{
+	[self removeObatchNodeAtIndex:[self indexOfObatchNodeWithTexture:texture_]];
 }
 
 -(CMMSObjectBatchNode *)obatchNodeAtIndex:(int)index_{
 	if(index_ == NSNotFound || index_ >= [self countOfObatchNode]) return nil;
 	return [obatchNode_list objectAtIndex:index_];
 }
--(CMMSObjectBatchNode *)obatchNodeAtFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
-	return [self obatchNodeAtIndex:[self indexOfObatchNodeFileName:fileName_ isInDocument:isInDocument_]];
+-(CMMSObjectBatchNode *)obatchNodeAtTexture:(CCTexture2D *)texture_{
+	return [self obatchNodeAtIndex:[self indexOfObatchNodeWithTexture:texture_]];
 }
 
 -(int)indexOfObatchNode:(CMMSObjectBatchNode *)obatchNode_{
 	return [obatchNode_list indexOfObject:obatchNode_];
 }
--(int)indexOfObatchNodeFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
+-(int)indexOfObatchNodeWithTexture:(CCTexture2D *)texture_{
 	ccArray *data_ = obatchNode_list->data;
 	uint count_ = data_->num;
 	for(uint index_=0;index_<count_;++index_){
-		CMMSObjectBatchNode *obatchNode_ = data_->arr[index_];
-		if([obatchNode_.fileName isEqualToString:fileName_]
-		   && obatchNode_.isInDocument == isInDocument_)
+		if([data_->arr[index_] texture] == texture_){
 			return index_;
+		}
 	}
 	
 	return NSNotFound;
 }
+
 
 @end
 
@@ -349,17 +347,36 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 -(int)_nextObjectTag{
 	return ++_OBJECTTAG_;
 }
-	
--(void)addObject:(CMMSObject *)object_{
+
+-(void)addObject:(CMMSObject *)object_ buildInObatchNode:(BOOL)buildInObatchNode_{
 	if([[object_list createList] indexOfObject:object_] != NSNotFound) return;
+
+	if(buildInObatchNode_){
+		CCTexture2D *obatchNodeTexture_ = [object_ texture];
+		CMMSObjectBatchNode *obatchNode_ = [self obatchNodeAtTexture:obatchNodeTexture_];
+		if(!obatchNode_){
+			obatchNode_ = [CMMSObjectBatchNode batchNodeWithTexture:obatchNodeTexture_];
+			[self addObatchNode:obatchNode_];
+		}
+		
+		[object_ setObatchNode:obatchNode_];
+		[obatchNode_ addChild:object_];
+	}else{
+		[self addChild:object_];
+	}
+	
 	[object_ setStage:stage];
 	[object_ setObjectTag:[self _nextObjectTag]];
 	[object_list addObject:object_];
+}
+-(void)addObject:(CMMSObject *)object_{
+	[self addObject:object_ buildInObatchNode:YES];
 }
 
 -(void)removeObject:(CMMSObject *)object_{
 	if([[object_list destroyList] indexOfObject:object_] != NSNotFound) return;
 	[object_list removeObject:object_];
+	[object_ removeFromParentAndCleanup:YES];
 }
 -(void)removeObjectAtIndex:(int)index_{
 	return [self removeObject:[self objectAtIndex:index_]];

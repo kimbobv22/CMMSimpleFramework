@@ -32,11 +32,11 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 	mapObjectList = [[CCArray alloc] init];
 
 	collisionCheckSegOfRadians = 16;
-	collisionCheckSegOfStraight = 4;
-	collisionCheckCountOfStraight = 4;
+	collisionCheckSegOfStraight = 5;
+	collisionCheckCountOfStraight = 5;
 	collisionCheckUpdateRateOfDistance = 0.1f;
-	collisionCheckUnitOfRotation = CC_DEGREES_TO_RADIANS(30.0f); //to radians
-	mapFixtureNormalizeLimitDistance = 10.0f;
+	collisionCheckUnitOfRotation = CC_DEGREES_TO_RADIANS(10.0f); //to radians
+	mapFixtureNormalizeLimitDistance = 5.0f;
 	
 	if(!_CMMStagePixelObjectCache_)
 		_CMMStagePixelObjectCache_ = [[CMMSimpleCache alloc] init];

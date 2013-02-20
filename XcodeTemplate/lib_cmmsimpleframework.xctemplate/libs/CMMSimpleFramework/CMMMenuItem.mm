@@ -35,7 +35,7 @@
 @end
 
 @implementation CMMMenuItem
-@synthesize key,userData,normalImage,selectedImage,enable,onSelect,filter_canSelectItem,callback_pushdown,callback_pushup,callback_pushcancel,pushDownAction,pushUpAction;
+@synthesize key,normalImage,selectedImage,enable,onSelect,filter_canSelectItem,callback_pushdown,callback_pushup,callback_pushcancel,pushDownAction,pushUpAction;
 
 +(id)menuItemWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ frameSize:(CGSize)frameSize_{
 	return [[[self alloc] initWithFrameSeq:frameSeq_ batchBarSeq:batchBarSeq_ frameSize:frameSize_] autorelease];

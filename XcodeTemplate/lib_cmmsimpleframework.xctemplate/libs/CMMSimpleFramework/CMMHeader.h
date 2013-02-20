@@ -62,7 +62,6 @@
 
 #import "CMMSSpecStage.h"
 #import "CMMSObject.h"
-#import "CMMSPlanet.h"
 #import "CMMSObject_Test.h"
 
 #import "CMMMenuItem.h"
