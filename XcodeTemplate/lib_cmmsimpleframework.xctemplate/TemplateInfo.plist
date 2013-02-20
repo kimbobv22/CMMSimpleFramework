@@ -925,28 +925,6 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMSParticle.mm</string>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMSPlanet.h</key>
-		<dict>
-			<key>Group</key>
-			<array>
-				<string>libs</string>
-				<string>CMMSimpleFramework</string>
-			</array>
-			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMSPlanet.h</string>
-			<key>TargetIndices</key>
-			<array/>
-		</dict>
-		<key>libs/CMMSimpleFramework/CMMSPlanet.mm</key>
-		<dict>
-			<key>Group</key>
-			<array>
-				<string>libs</string>
-				<string>CMMSimpleFramework</string>
-			</array>
-			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMSPlanet.mm</string>
-		</dict>
 		<key>libs/CMMSimpleFramework/CMMSPMapObject.h</key>
 		<dict>
 			<key>Group</key>
@@ -1511,8 +1489,6 @@
 		<string>libs/CMMSimpleFramework/CMMSoundEngine.mm</string>
 		<string>libs/CMMSimpleFramework/CMMSParticle.h</string>
 		<string>libs/CMMSimpleFramework/CMMSParticle.mm</string>
-		<string>libs/CMMSimpleFramework/CMMSPlanet.h</string>
-		<string>libs/CMMSimpleFramework/CMMSPlanet.mm</string>
 		<string>libs/CMMSimpleFramework/CMMSPMapObject.h</string>
 		<string>libs/CMMSimpleFramework/CMMSPMapObject.mm</string>
 		<string>libs/CMMSimpleFramework/CMMSprite.h</string>
