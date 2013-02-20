@@ -31,6 +31,7 @@ typedef enum{
 	CCArray *sequences;
 	CMMSequencerState state;
 	int sequenceIndex,_tSequenceIndex;
+	BOOL cleanupWhenAllSequencesEnded;
 	
 	void (^callback_whenStateChanged)();
 	void (^callback_whenSequenceIndexChanged)(int currentIndex_, int beforeIndex_);
@@ -53,6 +54,7 @@ typedef enum{
 @property (nonatomic, readonly) CCArray *sequences;
 @property (nonatomic, readonly) CMMSequencerState state;
 @property (nonatomic, readonly) int sequenceIndex;
+@property (nonatomic, readwrite, getter = isCleanupWhenAllSequencesEnded)BOOL cleanupWhenAllSequencesEnded;
 @property (nonatomic, readonly) uint count;
 @property (nonatomic, copy) void (^callback_whenStateChanged)();
 @property (nonatomic, copy) void (^callback_whenSequenceIndexChanged)(int currentIndex_, int beforeIndex_);

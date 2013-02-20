@@ -81,22 +81,22 @@ public:
 @interface CMMStageWorld(ObjectBatchNode)
 
 -(void)addObatchNode:(CMMSObjectBatchNode *)obatchNode_;
--(CMMSObjectBatchNode *)addObatchNodeWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
 
 -(void)removeObatchNode:(CMMSObjectBatchNode *)obatchNode_;
 -(void)removeObatchNodeAtIndex:(int)index_;
--(void)removeObatchNodeAtFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
+-(void)removeObatchNodeAtTexture:(CCTexture2D *)texture_;
 
 -(CMMSObjectBatchNode *)obatchNodeAtIndex:(int)index_;
--(CMMSObjectBatchNode *)obatchNodeAtFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
+-(CMMSObjectBatchNode *)obatchNodeAtTexture:(CCTexture2D *)texture_;
 
 -(int)indexOfObatchNode:(CMMSObjectBatchNode *)obatchNode_;
--(int)indexOfObatchNodeFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
+-(int)indexOfObatchNodeWithTexture:(CCTexture2D *)texture_;
 
 @end
 
 @interface CMMStageWorld(Common)
 
+-(void)addObject:(CMMSObject *)object_ buildInObatchNode:(BOOL)buildInObatchNode_;
 -(void)addObject:(CMMSObject *)object_;
 
 -(void)removeObject:(CMMSObject *)object_;

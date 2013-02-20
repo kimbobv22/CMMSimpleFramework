@@ -31,4 +31,7 @@
 -(void)setFilter_offsetOfDraggedItem:(CGPoint (^)(CGPoint orginalPoint_, CGPoint targetPoint_,ccTime dt_))block_;
 -(void)setAction_itemDragViewCancelled:(CCFiniteTimeAction *(^)(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_))block_;
 
++(void)setDefaultFilter_offsetOfDraggedItem:(CGPoint (^)(CGPoint orginalPoint_, CGPoint targetPoint_,ccTime dt_))block_;
++(void)setDefaultAction_itemDragViewCancelled:(CCFiniteTimeAction *(^)(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_))block_;
+
 @end

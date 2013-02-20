@@ -683,6 +683,18 @@
 	return [self objectsInTouches];
 }
 
+-(CMMSObjectBatchNode *)addObatchNodeWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
+	[self addObatchNode:[CMMSObjectBatchNode batchNodeWithFile:fileName_]];
+	return nil;
+}
+-(void)removeObatchNodeAtFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{}
+-(CMMSObjectBatchNode *)obatchNodeAtFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
+	return nil;
+}
+-(int)indexOfObatchNodeFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
+	return NSNotFound;
+}
+
 @end
 
 @implementation CMMStageParticle(Deprecated)
@@ -744,7 +756,42 @@
 
 @end
 
+@implementation CMMSObjectBatchNode(Deprecated_Nonfunctional)
+
+-(CMMSObject *)createObjectWithRect:(CGRect)rect_{
+	CMMSObject *object_ = [CMMSObject spriteWithTexture:[self texture] rect:rect_];
+	return object_;
+}
+-(CMMSObject *)createObjectWithSpriteFrame:(CCSpriteFrame *)spriteFrame_{
+	CMMSObject *object_ = [CMMSObject spriteWithSpriteFrame:spriteFrame_];
+	return object_;
+}
+-(CMMSObject *)createObject{
+	CMMSObject *object_ = [CMMSObject spriteWithTexture:[self texture]];
+	return object_;
+}
+
++(id)batchNodeWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
+	return [self batchNodeWithFile:fileName_];
+}
+-(id)initWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
+	return [self initWithFile:fileName_ capacity:10];
+}
+
+-(void)setFileName:(NSString *)fileName_{}
+-(NSString *)fileName{return nil;}
+-(void)setIsInDocument:(BOOL)isInDocument{}
+-(BOOL)isInDocument{return NO;}
+-(void)setObjectClass:(Class)objectClass{}
+-(Class)objectClass{return nil;}
+
+@end
+
 @implementation CMMSObject(Deprecated)
+
+-(void)buildupBody{
+	[self buildupBodyWithWorld:[stage world]];
+}
 
 -(void)updateBodyWithPosition:(CGPoint)point_ andRotation:(float)tRotation_{
 	[self updateBodyPosition:point_ rotation:tRotation_];
@@ -752,6 +799,9 @@
 -(void)updateBodyWithPosition:(CGPoint)point_{
 	[self updateBodyPosition:point_];
 }
+
+-(void)setAddToBatchNode:(BOOL)addToBatchNode{}
+-(BOOL)isAddToBatchNode{return NO;}
 
 @end
 

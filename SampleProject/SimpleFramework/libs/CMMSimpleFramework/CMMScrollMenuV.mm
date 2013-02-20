@@ -59,6 +59,14 @@
 
 @end
 
+static CCFiniteTimeAction *(^_staticCMMScrollMenuV_block_action_itemDragViewCancelled_)(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_) = ^CCFiniteTimeAction *(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_) {
+	[itemDragView_ setOpacity:180];
+	return [CCMoveTo actionWithDuration:0.2 position:targetPoint_];
+};
+static CGPoint(^_staticCMMScrollMenuV_block_filter_offsetOfDraggedItem)(CGPoint orginalPoint_ ,CGPoint targetPoint_, ccTime dt_) = ^CGPoint(CGPoint orginalPoint_ ,CGPoint targetPoint_, ccTime dt_) {
+	return ccpSub(targetPoint_,ccp(-30.0f,0.0f));
+};
+
 @implementation CMMScrollMenuV
 @synthesize dragStartDelayTime,dragStartDistance;
 @synthesize filter_canDragItem,filter_offsetOfDraggedItem,action_itemDragViewCancelled;
@@ -72,13 +80,13 @@
 	_itemDragView = [[CMMScrollMenuVItemDragView node] retain];
 	[self setCanDragY:YES];
 	
-	[self setAction_itemDragViewCancelled:^CCFiniteTimeAction *(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_) {
-		[itemDragView_ setOpacity:180];
-		return [CCMoveTo actionWithDuration:0.2 position:targetPoint_];
-	}];
-	[self setFilter_offsetOfDraggedItem:^CGPoint(CGPoint orginalPoint_ ,CGPoint targetPoint_, ccTime dt_) {
-		return ccpSub(targetPoint_,ccp([_itemDragView contentSize].width *0.2f,0.0f));
-	}];
+	if(_staticCMMScrollMenuV_block_filter_offsetOfDraggedItem){
+		[self setFilter_offsetOfDraggedItem:_staticCMMScrollMenuV_block_filter_offsetOfDraggedItem];
+	}
+	
+	if(_staticCMMScrollMenuV_block_action_itemDragViewCancelled_){
+		[self setAction_itemDragViewCancelled:_staticCMMScrollMenuV_block_action_itemDragViewCancelled_];
+	}
 	
 	return self;
 }
@@ -219,6 +227,15 @@
 	}
 	
 	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
+}
+
++(void)setDefaultFilter_offsetOfDraggedItem:(CGPoint (^)(CGPoint orginalPoint_, CGPoint targetPoint_,ccTime dt_))block_{
+	[_staticCMMScrollMenuV_block_filter_offsetOfDraggedItem release];
+	_staticCMMScrollMenuV_block_filter_offsetOfDraggedItem = [block_ copy];
+}
++(void)setDefaultAction_itemDragViewCancelled:(CCFiniteTimeAction *(^)(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_))block_{
+	[_staticCMMScrollMenuV_block_action_itemDragViewCancelled_ release];
+	_staticCMMScrollMenuV_block_action_itemDragViewCancelled_ = [block_ copy];
 }
 
 -(void)cleanup{

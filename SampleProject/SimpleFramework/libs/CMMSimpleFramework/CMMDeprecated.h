@@ -623,6 +623,11 @@ DEPRECATED_ATTRIBUTE @interface CMMStageBackGround : NSObject{
 
 -(CCArray *)objectsInTouched DEPRECATED_ATTRIBUTE;
 
+-(CMMSObjectBatchNode *)addObatchNodeWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ DEPRECATED_ATTRIBUTE;
+-(void)removeObatchNodeAtFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ DEPRECATED_ATTRIBUTE;
+-(CMMSObjectBatchNode *)obatchNodeAtFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ DEPRECATED_ATTRIBUTE;
+-(int)indexOfObatchNodeFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ DEPRECATED_ATTRIBUTE;
+
 @end
 
 DEPRECATED_ATTRIBUTE @interface CMMSParticleFollow : CMMSParticle
@@ -699,10 +704,29 @@ DEPRECATED_ATTRIBUTE @protocol CMMStageDNBDelegate
 
 @end
 
+@interface CMMSObjectBatchNode(Deprecated_Nonfunctional)
+
+-(CMMSObject *)createObjectWithRect:(CGRect)rect_ DEPRECATED_ATTRIBUTE;
+-(CMMSObject *)createObjectWithSpriteFrame:(CCSpriteFrame *)spriteFrame_ DEPRECATED_ATTRIBUTE;
+-(CMMSObject *)createObject DEPRECATED_ATTRIBUTE;
+
++(id)batchNodeWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ DEPRECATED_ATTRIBUTE;
+-(id)initWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ DEPRECATED_ATTRIBUTE;
+
+@property (nonatomic, copy) NSString *fileName DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readwrite) BOOL isInDocument DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readwrite) Class objectClass DEPRECATED_ATTRIBUTE;
+
+@end
+
 @interface CMMSObject(Deprecated)
+
+-(void)buildupBody DEPRECATED_ATTRIBUTE;
 
 -(void)updateBodyWithPosition:(CGPoint)point_ andRotation:(float)tRotation_ DEPRECATED_ATTRIBUTE;
 -(void)updateBodyWithPosition:(CGPoint)point_ DEPRECATED_ATTRIBUTE;
+
+@property (nonatomic, readwrite, getter = isAddToBatchNode) BOOL addToBatchNode DEPRECATED_ATTRIBUTE;
 
 @end
 

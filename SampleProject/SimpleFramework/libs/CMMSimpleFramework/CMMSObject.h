@@ -7,33 +7,17 @@
 #import "CMMSObjectSView.h"
 
 @class CMMStage;
+@class CMMStageWorld;
 @class CMMSObject;
-
-#define cmmVarCMMSObjectBatchNode_defaultCapacity 10
 
 @interface CMMSObjectBatchNode : CCSpriteBatchNode{
 	int obatchNodeTag;
 	CMMStage *stage;
-	
-	Class objectClass;
-	NSString *fileName;
-	BOOL isInDocument;
-	
 	CMMSimpleCache *_cachedObjects;
 }
 
-+(id)batchNodeWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
--(id)initWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
-
--(CMMSObject *)createObjectWithRect:(CGRect)rect_;
--(CMMSObject *)createObjectWithSpriteFrame:(CCSpriteFrame *)spriteFrame_;
--(CMMSObject *)createObject;
-
 @property (nonatomic, readwrite) int obatchNodeTag;
 @property (nonatomic, assign) CMMStage *stage;
-@property (nonatomic, readwrite) Class objectClass;
-@property (nonatomic, copy) NSString *fileName;
-@property (nonatomic, readwrite) BOOL isInDocument;
 @property (nonatomic, readonly) int count;
 
 @end
@@ -56,7 +40,6 @@
 	CMMStage *stage;
 	
 	CMMSObjectBatchNode *obatchNode;
-	BOOL addToBatchNode;
 	
 	void (^callback_whenAddedToStage)(CMMSObject *object_, CMMStage *stage_),(^callback_whenRemovedToStage)(CMMSObject *object_, CMMStage *stage_);
 }
@@ -76,14 +59,13 @@
 @property (nonatomic, readwrite) CMMb2ContactMask b2CMask;
 @property (nonatomic, assign) CMMStage *stage;
 @property (nonatomic, assign) CMMSObjectBatchNode *obatchNode;
-@property (nonatomic, readwrite, getter = isAddToBatchNode) BOOL addToBatchNode;
 @property (nonatomic, copy) void (^callback_whenAddedToStage)(CMMSObject *object_, CMMStage *stage_),(^callback_whenRemovedToStage)(CMMSObject *object_, CMMStage *stage_);
 
 @end
 
 @interface CMMSObject(Box2d)
 
--(void)buildupBody;
+-(void)buildupBodyWithWorld:(CMMStageWorld *)world_;
 
 -(void)updateBodyPosition:(CGPoint)point_ rotation:(float)tRotation_;
 -(void)updateBodyPosition:(CGPoint)point_;

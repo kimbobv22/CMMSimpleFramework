@@ -246,11 +246,9 @@
 }
 
 -(CMMSObject *)addBox:(CGPoint)point_{
-	CMMSObjectBatchNode *batchNode_ = [[stage world] obatchNodeAtFileName:@"Icon.png" isInDocument:NO];
-	CMMSObject *object_ = [batchNode_ createObject];
-	[object_ setAddToBatchNode:YES];
+	CMMSObject *object_ = [CMMSObject spriteWithFile:@"Icon.png"];
 	object_.position = point_;
-	[stage.world addObject:object_];
+	[[stage world] addObject:object_];
 	
 	CMMStageLightItem *lightItem_ = [[stage light] addLightItemAtPoint:CGPointZero brightness:1.0f radius:100.0f];
 	[lightItem_ setTarget:object_];
@@ -258,9 +256,7 @@
 	return object_;
 }
 -(CMMSBall *)addBall:(CGPoint)point_{
-	CMMSObjectBatchNode *batchNode_ = [[stage world] obatchNodeAtFileName:@"IMG_STG_ball.png" isInDocument:NO];
-	CMMSBall *ball_ = (CMMSBall *)[batchNode_ createObject];
-	[ball_ setAddToBatchNode:YES];
+	CMMSBall *ball_ = [CMMSBall spriteWithFile:@"IMG_STG_ball.png"];
 	[ball_ setCallback_whenAddedToStage:^(CMMSObject *target_, CMMStage *stage_) {
 		[[stage_ stateView] addStateView:[CMMSBallStateView stateViewWithTarget:target_]];
 	}];
@@ -323,12 +319,12 @@
 	[stage addBackgroundNode:backgroundLayer_];
 	
 	////add object batchNode
-	CMMSObjectBatchNode *batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"Icon.png" isInDocument:NO];
-	[stage.world addObatchNode:batchNode_];
+	//CMMSObjectBatchNode *batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"Icon.png" isInDocument:NO];
+//	[stage.world addObatchNode:batchNode_];
 	
-	batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"IMG_STG_ball.png" isInDocument:NO];
-	batchNode_.objectClass = [CMMSBall class];
-	[stage.world addObatchNode:batchNode_];
+//	batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"IMG_STG_ball.png" isInDocument:NO];
+//	batchNode_.objectClass = [CMMSBall class];
+//	[stage.world addObatchNode:batchNode_];
 }
 
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
@@ -399,12 +395,12 @@
 	[stage addBackgroundNode:backgroundLayer_];
 	
 	////add object batchNode
-	CMMSObjectBatchNode *batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"Icon.png" isInDocument:NO];
-	[stage.world addObatchNode:batchNode_];
+//	CMMSObjectBatchNode *batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"Icon.png" isInDocument:NO];
+//	[stage.world addObatchNode:batchNode_];
 	
-	batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"IMG_STG_ball.png" isInDocument:NO];
-	batchNode_.objectClass = [CMMSBall class];
-	[stage.world addObatchNode:batchNode_];
+//	batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"IMG_STG_ball.png" isInDocument:NO];
+//	batchNode_.objectClass = [CMMSBall class];
+//	[stage.world addObatchNode:batchNode_];
 }
 
 -(void)update:(ccTime)dt_{
@@ -465,12 +461,12 @@
 	[self addChild:stage];
 	
 	////add object batchNode
-	CMMSObjectBatchNode *batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"Icon-Small.png" isInDocument:NO];
-	[stage.world addObatchNode:batchNode_];
+//	CMMSObjectBatchNode *batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"Icon-Small.png" isInDocument:NO];
+//	[stage.world addObatchNode:batchNode_];
 
-	batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"IMG_STG_ball.png" isInDocument:NO];
-	batchNode_.objectClass = [CMMSBall class];
-	[stage.world addObatchNode:batchNode_];
+//	batchNode_ = [CMMSObjectBatchNode batchNodeWithFileName:@"IMG_STG_ball.png" isInDocument:NO];
+//	batchNode_.objectClass = [CMMSBall class];
+//	[stage.world addObatchNode:batchNode_];
 	
 	[gravitySlider setItemValue:-9.8f];
 }
@@ -492,9 +488,7 @@
 }
 
 -(CMMSObject *)addBox:(CGPoint)point_{
-	CMMSObjectBatchNode *batchNode_ = [[stage world] obatchNodeAtFileName:@"Icon-Small.png" isInDocument:NO];
-	CMMSObject *object_ = [batchNode_ createObject];
-	[object_ setAddToBatchNode:YES];
+	CMMSObject *object_ = [CMMSObject spriteWithFile:@"Icon-Small.png"];
 	object_.position = point_;
 	[[stage world] addObject:object_];
 	

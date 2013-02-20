@@ -5,30 +5,13 @@
 #import "CMMStringUtil.h"
 
 @implementation CMMSObjectBatchNode
-@synthesize obatchNodeTag,stage,objectClass,fileName,isInDocument,count;
-
-+(id)batchNodeWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
-	return [[[self alloc] initWithFileName:fileName_ isInDocument:isInDocument_] autorelease];
-}
+@synthesize obatchNodeTag,stage,count;
 
 -(id)initWithTexture:(CCTexture2D *)tex capacity:(NSUInteger)capacity{
 	if(!(self = [super initWithTexture:tex capacity:capacity])) return self;
 	
 	obatchNodeTag = -1;
-	objectClass = [CMMSObject class];
-	fileName = nil;
-	isInDocument = NO;
-	
 	_cachedObjects = [[CMMSimpleCache alloc] init];
-	
-	return self;
-}
--(id)initWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
-	CCTexture2D *tex_ = [[CCTextureCache sharedTextureCache] addImage:[CMMStringUtil stringPathWithFileName:fileName_ isInDocument:isInDocument_]];
-	if(!(self = [self initWithTexture:tex_ capacity:cmmVarCMMSObjectBatchNode_defaultCapacity])) return self;
-	
-	fileName = [fileName_ copy];
-	isInDocument = isInDocument_;
 	
 	return self;
 }
@@ -43,32 +26,8 @@
 	return [_children count];
 }
 
--(CMMSObject *)createObjectWithRect:(CGRect)rect_{
-	CMMSObject *object_ = [self cachedObject];
-	if(!object_){
-		object_ = [objectClass spriteWithObatchNode:self rect:rect_];
-	}else{
-		[object_ setTextureRect:rect_];
-	}
-	
-	return object_;
-}
--(CMMSObject *)createObjectWithSpriteFrame:(CCSpriteFrame *)spriteFrame_{
-	CCTexture2D *targetTexture_ = [spriteFrame_ texture];
-	if([self texture] != targetTexture_){
-		return nil;
-	}
-	return [self createObjectWithRect:[spriteFrame_ rect]];
-}
--(CMMSObject *)createObject{
-	CGRect rect_ = CGRectZero;
-	rect_.size = [[_textureAtlas texture] contentSize];
-	return [self createObjectWithRect:rect_];
-}
-
 -(void)dealloc{
 	[_cachedObjects release];
-	[fileName release];
 	[super dealloc];
 }
 
@@ -86,9 +45,8 @@
 
 @end
 
-
 @implementation CMMSObject
-@synthesize objectTag,spec,state,body,b2CMask,stage,obatchNode,addToBatchNode,callback_whenAddedToStage,callback_whenRemovedToStage;
+@synthesize objectTag,spec,state,body,b2CMask,stage,obatchNode,callback_whenAddedToStage,callback_whenRemovedToStage;
 
 +(id)spriteWithObatchNode:(CMMSObjectBatchNode *)obatchNode_ rect:(CGRect)rect_{
 	return [[[self alloc] initWithObatchNode:obatchNode_ rect:rect_] autorelease];
@@ -105,8 +63,7 @@
 
 	[self buildupObject];
 	[self resetObject];
-	
-	addToBatchNode = NO;
+
 	callback_whenAddedToStage = nil;
 	callback_whenRemovedToStage = nil;
 	
@@ -175,8 +132,8 @@
 
 @implementation CMMSObject(Box2d)
 
--(void)buildupBody{
-	body = [[stage world] createBody:b2_dynamicBody point:_position angle:_rotationX];
+-(void)buildupBodyWithWorld:(CMMStageWorld *)world_{
+	body = [world_ createBody:b2_dynamicBody point:_position angle:_rotationX];
 	body->SetUserData(self);
 	
 	b2Vec2 targetSize_ = b2Vec2Div(b2Vec2FromSize_PTM_RATIO(_contentSize), 2.0f);
@@ -212,14 +169,6 @@
 @implementation CMMSObject(Stage)
 
 -(void)whenAddedToStage{
-	[self buildupBody];
-	if(obatchNode && addToBatchNode){
-		[self setBatchNode:obatchNode];
-		[obatchNode addChild:self];
-	}else{
-		[[stage world] addChild:self];
-	}
-	
 	if(callback_whenAddedToStage){
 		callback_whenAddedToStage(self, stage);
 	}
@@ -228,9 +177,6 @@
 	if(callback_whenRemovedToStage){
 		callback_whenRemovedToStage(self, stage);
 	}
-	[[stage world] world]->DestroyBody(body);
-	body = NULL;
-	[_parent removeChild:self cleanup:YES];
 }
 
 @end

@@ -53,18 +53,23 @@
 }
 -(void)_callbackSequence{
 	++_tSequenceIndex;
-	[self _setState:([self count] <= _tSequenceIndex ? CMMSequencerState_stop : CMMSequencerState_waitingNextSequence)];
+	BOOL isEnd_ = ([self count] <= _tSequenceIndex);
+	[self _setState:(isEnd_ ? CMMSequencerState_stop : CMMSequencerState_waitingNextSequence)];
 	
 	CMMSequenceBlock *sBlock_ = [sequences objectAtIndex:sequenceIndex];
 	if([sBlock_ callback]){
 		[sBlock_ callback]();
+	}
+	
+	if(isEnd_ && cleanupWhenAllSequencesEnded){
+		[self cleanup];
 	}
 }
 
 @end
 
 @implementation CMMSequencer
-@synthesize sequences,state,sequenceIndex,count;
+@synthesize sequences,state,sequenceIndex,cleanupWhenAllSequencesEnded,count;
 @synthesize callback_whenStateChanged,callback_whenSequenceIndexChanged;
 
 +(CMMSequencer *)sequencer{
@@ -76,6 +81,8 @@
 	sequences = [[CCArray alloc] init];
 	sequenceIndex = -1;
 	_tSequenceIndex = 0;
+	
+	cleanupWhenAllSequencesEnded = YES;
 	
 	return self;
 }
