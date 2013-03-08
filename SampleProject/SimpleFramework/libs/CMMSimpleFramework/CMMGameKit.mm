@@ -387,7 +387,7 @@ static CMMGameKitAchievements *_sharedCMMGameKitAchievements_ = nil;
 }
 
 -(void)loadCachedAchievementsFromFileWithBlock:(void(^)(BOOL isSucceed_))block_{
-	cmmFuncCallDispatcher_backQueue(^{
+	cmmFunc_callBackQueue(^{
 		NSData *achievementsData_ = [CMMFileUtil dataWithFileName:cmmVarCMMGameKitAchievements_cacheName isInDocument:YES];
 		if(achievementsData_){
 			NSDictionary *cachedDict_ = [NSKeyedUnarchiver unarchiveObjectWithData:achievementsData_];
@@ -500,11 +500,11 @@ static GKMatch *_sharedCMMGameKitHandlerMatch_GKMatch_ = nil;
 		id<CMMGameKitHandlerMatchDelegate>delegate_ = (id<CMMGameKitHandlerMatchDelegate>)delegate;
 		
 		if(error_){
-			if(cmmFuncCommon_respondsToSelector(delegate_, @selector(gameKitHandlerMatch:whenFailedFindingMatchWithError:))){
+			if(cmmFunc_respondsToSelector(delegate_, @selector(gameKitHandlerMatch:whenFailedFindingMatchWithError:))){
 				[delegate_ gameKitHandlerMatch:self whenFailedFindingMatchWithError:error_];
 			}
 		}else{
-			if(cmmFuncCommon_respondsToSelector(delegate_, @selector(gameKitHandlerMatch:whenFoundMatch:withRequest:))){
+			if(cmmFunc_respondsToSelector(delegate_, @selector(gameKitHandlerMatch:whenFoundMatch:withRequest:))){
 				[delegate_ gameKitHandlerMatch:self whenFoundMatch:match_ withRequest:request_];
 			}
 		}
@@ -521,10 +521,10 @@ static GKMatch *_sharedCMMGameKitHandlerMatch_GKMatch_ = nil;
 		id<CMMGameKitHandlerMatchDelegate>delegate_ = (id<CMMGameKitHandlerMatchDelegate>)delegate;
 
 		if(error_){
-			if(cmmFuncCommon_respondsToSelector(delegate_, @selector(gameKitHandlerMatch:whenFailedConnetingToMatch:withError:))){
+			if(cmmFunc_respondsToSelector(delegate_, @selector(gameKitHandlerMatch:whenFailedConnetingToMatch:withError:))){
 				[delegate_ gameKitHandlerMatch:self whenFailedConnetingToMatch:match_ withError:error_];
 			}
-		}else if(cmmFuncCommon_respondsToSelector(delegate_, @selector(gameKitHandlerMatch:whenConnectedToMatch:))){
+		}else if(cmmFunc_respondsToSelector(delegate_, @selector(gameKitHandlerMatch:whenConnectedToMatch:))){
 			[self setMatch:match_];
 			[delegate_ gameKitHandlerMatch:self whenConnectedToMatch:match_];
 		}
@@ -579,21 +579,21 @@ static GKMatch *_sharedCMMGameKitHandlerMatch_GKMatch_ = nil;
 
 -(void)match:(GKMatch *)match_ player:(NSString *)playerID_ didChangeState:(GKPlayerConnectionState)state_{
 	id<CMMGameKitHandlerMatchDelegate> delegate_ = (id<CMMGameKitHandlerMatchDelegate>)delegate;
-	if(cmmFuncCommon_respondsToSelector(delegate_, @selector(gameKitHandlerMatch:playerID:didChangeState:))){
+	if(cmmFunc_respondsToSelector(delegate_, @selector(gameKitHandlerMatch:playerID:didChangeState:))){
 		[delegate_ gameKitHandlerMatch:self playerID:playerID_ didChangeState:state_];
 	}
 }
 
 -(void)match:(GKMatch *)match_ didFailWithError:(NSError *)error_{
 	id<CMMGameKitHandlerMatchDelegate> delegate_ = (id<CMMGameKitHandlerMatchDelegate>)delegate;
-	if(cmmFuncCommon_respondsToSelector(delegate_, @selector(gameKitHandlerMatch:whenMatchFailedWithError:))){
+	if(cmmFunc_respondsToSelector(delegate_, @selector(gameKitHandlerMatch:whenMatchFailedWithError:))){
 		[delegate_ gameKitHandlerMatch:self whenMatchFailedWithError:error_];
 	}
 }
 
 -(BOOL)match:(GKMatch *)match_ shouldReinvitePlayer:(NSString *)playerID_{
 	id<CMMGameKitHandlerMatchDelegate> delegate_ = (id<CMMGameKitHandlerMatchDelegate>)delegate;
-	if(cmmFuncCommon_respondsToSelector(delegate_, @selector(gameKitHandlerMatch:shouldReinvitePlayer:))){
+	if(cmmFunc_respondsToSelector(delegate_, @selector(gameKitHandlerMatch:shouldReinvitePlayer:))){
 		return [delegate_ gameKitHandlerMatch:self shouldReinvitePlayer:playerID_];
 	}
 	
@@ -715,28 +715,28 @@ static GKSession *_sharedCMMGameKitHandlerSession_GKSession_ = nil;
 
 -(void)session:(GKSession *)session_ peer:(NSString *)peerID_ didChangeState:(GKPeerConnectionState)state_{
 	id<CMMGameKitHandlerSessionDelegate> delegate_ = (id<CMMGameKitHandlerSessionDelegate>)delegate;
-	if(cmmFuncCommon_respondsToSelector(delegate_, @selector(gameKitHandlerSession:peer:didChangeState:))){
+	if(cmmFunc_respondsToSelector(delegate_, @selector(gameKitHandlerSession:peer:didChangeState:))){
 		[delegate_ gameKitHandlerSession:self peer:peerID_ didChangeState:state_];
 	}
 }
 
 -(void)session:(GKSession *)session_ didReceiveConnectionRequestFromPeer:(NSString *)peerID_{
 	id<CMMGameKitHandlerSessionDelegate> delegate_ = (id<CMMGameKitHandlerSessionDelegate>)delegate;
-	if(cmmFuncCommon_respondsToSelector(delegate_, @selector(gameKitHandlerSession:whenFoundConnectionWithPeer:))){
+	if(cmmFunc_respondsToSelector(delegate_, @selector(gameKitHandlerSession:whenFoundConnectionWithPeer:))){
 		[delegate_ gameKitHandlerSession:self whenFoundConnectionWithPeer:peerID_];
 	}
 }
 
 -(void)session:(GKSession *)session_ connectionWithPeerFailed:(NSString *)peerID_ withError:(NSError *)error_{
 	id<CMMGameKitHandlerSessionDelegate> delegate_ = (id<CMMGameKitHandlerSessionDelegate>)delegate;
-	if(cmmFuncCommon_respondsToSelector(delegate_, @selector(gameKitHandlerSession:whenFailedConnectionWithPeer:withError:))){
+	if(cmmFunc_respondsToSelector(delegate_, @selector(gameKitHandlerSession:whenFailedConnectionWithPeer:withError:))){
 		[delegate_ gameKitHandlerSession:self whenFailedConnectionWithPeer:peerID_ withError:error_];
 	}
 }
 
 -(void)session:(GKSession *)session_ didFailWithError:(NSError *)error_{
 	id<CMMGameKitHandlerSessionDelegate> delegate_ = (id<CMMGameKitHandlerSessionDelegate>)delegate;
-	if(cmmFuncCommon_respondsToSelector(delegate_, @selector(gameKitHandlerSession:whenSessionFailedWithError:))){
+	if(cmmFunc_respondsToSelector(delegate_, @selector(gameKitHandlerSession:whenSessionFailedWithError:))){
 		[delegate_ gameKitHandlerSession:self whenSessionFailedWithError:error_];
 	}
 }

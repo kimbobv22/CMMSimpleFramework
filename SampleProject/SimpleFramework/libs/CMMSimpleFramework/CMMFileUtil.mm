@@ -52,11 +52,11 @@
 }
 
 +(void)writeFileInBackgroundWithData:(NSData *)data_ path:(NSString *)path_ block:(void(^)(NSError *))block_{
-	cmmFuncCallDispatcher_backQueue(^{
+	cmmFunc_callBackQueue(^{
 		NSError *error_ = nil;
 		[data_ writeToFile:path_ options:NSDataWritingAtomic error:&error_];
 		if(block_){
-			cmmFuncCallDispatcher_mainQueue(^{
+			cmmFunc_callMainQueue(^{
 				block_(error_);
 			});
 		}

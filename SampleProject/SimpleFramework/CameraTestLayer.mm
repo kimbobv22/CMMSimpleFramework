@@ -20,13 +20,15 @@
 	[menuItemBtn_ setTitle:@"CAMERA"];
 	menuItemBtn_.position = ccp(_contentSize.width-menuItemBtn_.contentSize.width/2,menuItemBtn_.contentSize.height/2);
 	menuItemBtn_.callback_pushup = ^(id sender_){
-		[[CMMCaremaManager sharedManager] openCameraWithSourceType:(TARGET_IPHONE_SIMULATOR ? UIImagePickerControllerSourceTypePhotoLibrary : UIImagePickerControllerSourceTypeCamera)];
+		[[CMMCaremaManager sharedManager] openCameraWithSourceType:(TARGET_IPHONE_SIMULATOR ? UIImagePickerControllerSourceTypePhotoLibrary : UIImagePickerControllerSourceTypeCamera) callback:^(UIImagePickerController *picker_) {
+			[picker_ setAllowsEditing:YES];
+		}];
 	};
 	[self addChild:menuItemBtn_];
 	
 	if(TARGET_IPHONE_SIMULATOR){
 		CCLabelTTF *noticeLabel_ = [CMMFontUtil labelWithString:@"Simulator not supported camera. support photo library only"];
-		[noticeLabel_ setPosition:cmmFuncCommon_positionInParent(self, noticeLabel_)];
+		[noticeLabel_ setPosition:cmmFunc_positionIPN(self, noticeLabel_)];
 		[self addChild:noticeLabel_];
 	}
 	
@@ -51,6 +53,7 @@
 	[stage update:dt_];
 }
 
+-(void)cameraManager:(CMMCaremaManager *)cameraManger_ whenReturnedUIImage:(UIImage *)uIImage_{}
 -(void)cameraManager:(CMMCaremaManager *)cameraManger_ whenReturnedImageTexture:(CCTexture2D *)imageTexture_{
 	CMMSObject *object_ = [CMMSObject spriteWithTexture:imageTexture_];
 	[object_ setPosition:[stage convertToStageWorldSpace:ccp(_contentSize.width/2.0f,_contentSize.height/2.0f)]];

@@ -34,7 +34,7 @@
 }
 
 +(BOOL)isNodeInPoint:(CCNode *)node_ point:(CGPoint)point_ margin:(float)margin_{
-	return [self isRectInPoint:cmmFuncCommon_nodeToworldRect(node_) point:point_ margin:margin_];
+	return [self isRectInPoint:cmmFunc_nodeToWorldRect(node_) point:point_ margin:margin_];
 }
 +(BOOL)isNodeInPoint:(CCNode *)node_ point:(CGPoint)point_{
 	return [self isNodeInPoint:node_ point:point_ margin:0.0f];

@@ -3,7 +3,7 @@
 #import "CMMControlItem.h"
 
 @implementation CMMControlItem
-@synthesize enable;
+@synthesize enable,disabledColor;
 
 +(id)controlItemWithFrameSize:(CGSize)frameSize_{
 	return [[[self alloc] initWithFrameSize:frameSize_] autorelease];
@@ -12,7 +12,10 @@
 	if(!(self = [super initWithColor:ccc4(0, 0, 0, 255) width:frameSize_.width height:frameSize_.height])) return self;
 	
 	enable = YES;
+	disabledColor = ccc3(180, 180, 180);
 	_doRedraw = YES;
+	
+	[self scheduleUpdate];
 	
 	return self;
 }

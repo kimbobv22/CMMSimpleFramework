@@ -1,11 +1,19 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#import "cocos2d.h"
-
 #import "AppDelegate.h"
-#import "CMMHeader.h"
-
 #import "CommonIntroLayer.h"
+
+@implementation MyViewController
+
+-(NSUInteger)supportedInterfaceOrientations{
+	UIApplication *application_ = [UIApplication sharedApplication];
+	return [application_ supportedInterfaceOrientationsForWindow:[application_ keyWindow]];
+}
+-(BOOL)shouldAutorotate{
+	return YES;
+}
+
+@end
 
 @implementation AppController
 
@@ -49,7 +57,7 @@
 		CCLOG(@"Retina Display Not supported");
 
 	// Create a Navigation Controller with the Director
-	navController_ = [[CMMViewController alloc] initWithRootViewController:director_];
+	navController_ = [[MyViewController alloc] initWithRootViewController:director_];
 	navController_.navigationBarHidden = YES;
 	
 	// set the Navigation Controller as the root view controller
@@ -84,7 +92,7 @@
 	
 	//add default background
 	CCSprite *defaultBackGround_ = [CCSprite spriteWithFile:@"IMG_CMN_DEFAULT_BACK.png"];
-	[defaultBackGround_ setPosition:cmmFuncCommon_positionInParent([CMMScene sharedScene],defaultBackGround_)];
+	[defaultBackGround_ setPosition:cmmFunc_positionIPN([CMMScene sharedScene],defaultBackGround_)];
 	[[CMMScene sharedScene] setDefaultBackGroundNode:defaultBackGround_];
 
 	return YES;

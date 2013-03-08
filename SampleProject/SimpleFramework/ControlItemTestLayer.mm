@@ -23,21 +23,22 @@
 	[textField1 setCallback_whenReturnKeyEntered:^{
 		CCLOG(@"textField1 : whenReturnKeyEntered");
 	}];
-	[textField1 setPosition:cmmFuncCommon_positionInParent(self, textField1,ccp(0.5f,1.0f),ccp(0.0f,-[textField1 contentSize].height-10.0f))];
+	[textField1 setPosition:cmmFunc_positionIPN(self, textField1,ccp(0.5f,1.0f),ccp(-[textField1 contentSize].width/2.0f-10.0f,-[textField1 contentSize].height-10.0f))];
 	[self addChild:textField1];
 	
 	textField2 = [CMMControlItemText controlItemTextWithFrameSeq:0 width:150];
 	[textField2 setPasswordForm:YES];
+	//[textField2 setKeyboardType:UIKeyboardTypeNumberPad];
 	[textField2 setPlaceHolder:@"Test text field!"];
 	[textField2 setTitle:@"Test Label"];
 	[textField2 setCallback_whenItemValueChanged:^(NSString *itemValue_) {
 		CCLOG(@"textField2 : %@",itemValue_);
 	}];
-	[textField2 setPosition:cmmFuncCommon_positionFromOtherNode(textField1, textField2, ccp(0.0f,-1.0f),ccp(0.0f,-20.0f))];
+	[textField2 setPosition:cmmFunc_positionFON(textField1, textField2, ccp(1.0f,0.0f),ccp(20.0f,0.0f))];
 	[self addChild:textField2];
 	
 	switch1 = [CMMControlItemSwitch controlItemSwitchWithFrameSeq:0];
-	[switch1 setPosition:cmmFuncCommon_positionFromOtherNode(textField2, switch1, ccp(0.0f,-1.0f),ccp(-[switch1 contentSize].width/2.0f-10.0f,-20.0f))];
+	[switch1 setPosition:cmmFunc_positionFON(textField1, switch1, ccp(0.0f,-1.0f),ccp(0.0f,-20.0f))];
 	[switch1 setCallback_whenItemValueChanged:^(BOOL itemValue_) {
 		CCLOG(@"switch1 : %d",itemValue_);
 	}];
@@ -45,7 +46,7 @@
 	
 	switch2 = [CMMControlItemSwitch controlItemSwitchWithFrameSeq:0];
 	[switch2 setButtonSprite:[CCSprite spriteWithFile:@"Icon-Small.png"]];
-	[switch2 setPosition:cmmFuncCommon_positionFromOtherNode(textField2, switch2, ccp(0.0f,-1.0f),ccp(+[switch2 contentSize].width/2.0f+10.0f,-20.0f))];
+	[switch2 setPosition:cmmFunc_positionFON(switch1, switch2, ccp(1.0f,0.0f),ccp(20.0f,0.0f))];
 	[switch2 setCallback_whenItemValueChanged:^(BOOL itemValue_) {
 		CCLOG(@"switch2 : %d",itemValue_);
 	}];
@@ -55,7 +56,7 @@
 	[slider1 setMinValue:-10.0f];
 	[slider1 setMaxValue:10.0f];
 	[slider1  setItemValue:1.0f];
-	[slider1 setPosition:ccp(_contentSize.width/2.0f-[slider1 contentSize].width/2.0,[switch1 position].y-[slider1 contentSize].height-10.0f)];
+	[slider1 setPosition:cmmFunc_positionFON(switch1, slider1, ccp(0.0f,-1.0f),ccp(0.0f,-20.0f))];
 	[slider1 setCallback_whenItemValueChanged:^(float itemValue_, float beforeItemValue_) {
 		CCLOG(@"slider1 : %1.1f -> %1.1f",beforeItemValue_,itemValue_);
 	}];
@@ -66,11 +67,18 @@
 	[slider2 setMinValue:-10.0f];
 	[slider2 setMaxValue:10.0f];
 	[slider2  setItemValue:1.0f];
-	[slider2 setPosition:cmmFuncCommon_positionFromOtherNode(slider1, slider2, ccp(0.0f,-1.0f),ccp(0.0f,-10.0f))];
+	[slider2 setPosition:cmmFunc_positionFON(slider1, slider2, ccp(1.0f,0.0f),ccp(20.0f,0.0f))];
 	[slider2 setCallback_whenItemValueChanged:^(float itemValue_, float beforeItemValue_) {
 		CCLOG(@"slider2 : %1.1f -> %1.1f",beforeItemValue_,itemValue_);
 	}];
 	[self addChild:slider2];
+	
+	checkBox = [CMMControlItemCheckbox controlItemCheckboxWithFrameSeq:0];
+	[checkBox setCallback_whenChanged:^(BOOL isChecked_) {
+		CCLOG(@"checkBox : %d",isChecked_);
+	}];
+	[checkBox setPosition:cmmFunc_positionFON(switch2, checkBox, ccp(1.0f,0.0f),ccp(10.0f,0.0f))];
+	[self addChild:checkBox];
 	
 	CMMMenuItemL *menuItemBack_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBack_ setTitle:@"BACK"];
@@ -93,6 +101,15 @@
 
 @end
 
+@implementation TestSliceBar
+
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{}
+
+@end
+
 @implementation ControlItemTestLayer2
 
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
@@ -101,7 +118,8 @@
 	[touchDispatcher setMaxMultiTouchCount:0];
 	
 	CMMDrawingManagerItem *drawingItem_ = [[CMMDrawingManager sharedManager] drawingItemAtIndex:0];
-	batchBar = [CMMSpriteBatchBar batchBarWithTargetSprite:[CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_text_bar]] batchBarSize:CGSizeMake(100, 40)];
+	batchBar = [TestSliceBar sliceBarWithTargetSprite:[CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_text_bar]]];
+	[batchBar setContentSize:CGSizeMake(100, 40)];
 	[batchBar setPosition:ccp(10,80)];
 	[self addChild:batchBar];
 	

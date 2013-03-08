@@ -80,9 +80,10 @@
 		E049D20216561E4E00150CDE /* IMG_STG_TEST_001-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E049D20116561E4E00150CDE /* IMG_STG_TEST_001-hd.png */; };
 		E049E24B15DE9FCC00CD80E1 /* IMG_TMX_SAMPLE_000.png in Resources */ = {isa = PBXBuildFile; fileRef = E049E24915DE9FCC00CD80E1 /* IMG_TMX_SAMPLE_000.png */; };
 		E049E24C15DE9FCC00CD80E1 /* TMX_SAMPLE_000.tmx in Resources */ = {isa = PBXBuildFile; fileRef = E049E24A15DE9FCC00CD80E1 /* TMX_SAMPLE_000.tmx */; };
+		E058EF9116E480AF0079733C /* CMMControlItemCheckbox.mm in Sources */ = {isa = PBXBuildFile; fileRef = E058EF9016E480AF0079733C /* CMMControlItemCheckbox.mm */; };
 		E066C5541621375000CE0172 /* CMMCaremaManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E066C5531621375000CE0172 /* CMMCaremaManager.mm */; };
 		E070503B15EC701500CFC81E /* CMMNoticeDispatcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = E070503A15EC701500CFC81E /* CMMNoticeDispatcher.mm */; };
-		E076BB5D16131DAE00C94718 /* CMMSpriteBatchBar.mm in Sources */ = {isa = PBXBuildFile; fileRef = E076BB5C16131DAE00C94718 /* CMMSpriteBatchBar.mm */; };
+		E076BB5D16131DAE00C94718 /* CMM9SliceBar.mm in Sources */ = {isa = PBXBuildFile; fileRef = E076BB5C16131DAE00C94718 /* CMM9SliceBar.mm */; };
 		E08DBA9515E7D90A0090F7F7 /* CMMCustomUIJoypad.mm in Sources */ = {isa = PBXBuildFile; fileRef = E08DBA9415E7D90A0090F7F7 /* CMMCustomUIJoypad.mm */; };
 		E08DBA9A15E7E5D90090F7F7 /* IMG_JOYPAD_000-hd.plist in Resources */ = {isa = PBXBuildFile; fileRef = E08DBA9615E7E5D90090F7F7 /* IMG_JOYPAD_000-hd.plist */; };
 		E08DBA9B15E7E5D90090F7F7 /* IMG_JOYPAD_000-hd.png in Resources */ = {isa = PBXBuildFile; fileRef = E08DBA9715E7E5D90090F7F7 /* IMG_JOYPAD_000-hd.png */; };
@@ -103,7 +104,6 @@
 		E0AEC76215E4A1F40015A2BB /* CMMControlItemText.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AEC76115E4A1F40015A2BB /* CMMControlItemText.mm */; };
 		E0AF13EF1614766C00D9FA68 /* CMMMenuItemSet.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AF13EE1614766C00D9FA68 /* CMMMenuItemSet.mm */; };
 		E0B248631621C52D003DDE16 /* GameCenterTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0B248621621C52D003DDE16 /* GameCenterTestLayer.mm */; };
-		E0B42419161C251B00BEC59E /* CMMViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0B42418161C251B00BEC59E /* CMMViewController.mm */; };
 		E0B4ED1F15FB0E3A00F640D0 /* IMG_STG_TEST_001.png in Resources */ = {isa = PBXBuildFile; fileRef = E0B4ED1E15FB0E3A00F640D0 /* IMG_STG_TEST_001.png */; };
 		E0B586CE15DCB406006C8B7F /* ScrollMenuTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0B586CD15DCB406006C8B7F /* ScrollMenuTestLayer.mm */; };
 		E0B5C2C616C36FB2008E7B62 /* Box2DConfig.cmake in Resources */ = {isa = PBXBuildFile; fileRef = E0B5C26316C36FB2008E7B62 /* Box2DConfig.cmake */; };
@@ -426,12 +426,14 @@
 		E049D20116561E4E00150CDE /* IMG_STG_TEST_001-hd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "IMG_STG_TEST_001-hd.png"; path = "Resources/IMG_STG_TEST_001-hd.png"; sourceTree = "<group>"; };
 		E049E24915DE9FCC00CD80E1 /* IMG_TMX_SAMPLE_000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_TMX_SAMPLE_000.png; path = Resources/IMG_TMX_SAMPLE_000.png; sourceTree = "<group>"; };
 		E049E24A15DE9FCC00CD80E1 /* TMX_SAMPLE_000.tmx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = TMX_SAMPLE_000.tmx; path = Resources/TMX_SAMPLE_000.tmx; sourceTree = "<group>"; };
+		E058EF8F16E480AF0079733C /* CMMControlItemCheckbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMControlItemCheckbox.h; path = libs/CMMSimpleFramework/CMMControlItemCheckbox.h; sourceTree = "<group>"; };
+		E058EF9016E480AF0079733C /* CMMControlItemCheckbox.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMControlItemCheckbox.mm; path = libs/CMMSimpleFramework/CMMControlItemCheckbox.mm; sourceTree = "<group>"; };
 		E066C5521621375000CE0172 /* CMMCaremaManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMCaremaManager.h; path = libs/CMMSimpleFramework/CMMCaremaManager.h; sourceTree = "<group>"; };
 		E066C5531621375000CE0172 /* CMMCaremaManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMCaremaManager.mm; path = libs/CMMSimpleFramework/CMMCaremaManager.mm; sourceTree = "<group>"; };
 		E070503915EC701500CFC81E /* CMMNoticeDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMNoticeDispatcher.h; path = libs/CMMSimpleFramework/CMMNoticeDispatcher.h; sourceTree = "<group>"; };
 		E070503A15EC701500CFC81E /* CMMNoticeDispatcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMNoticeDispatcher.mm; path = libs/CMMSimpleFramework/CMMNoticeDispatcher.mm; sourceTree = "<group>"; };
-		E076BB5B16131DAE00C94718 /* CMMSpriteBatchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSpriteBatchBar.h; path = libs/CMMSimpleFramework/CMMSpriteBatchBar.h; sourceTree = "<group>"; };
-		E076BB5C16131DAE00C94718 /* CMMSpriteBatchBar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSpriteBatchBar.mm; path = libs/CMMSimpleFramework/CMMSpriteBatchBar.mm; sourceTree = "<group>"; };
+		E076BB5B16131DAE00C94718 /* CMM9SliceBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMM9SliceBar.h; path = libs/CMMSimpleFramework/CMM9SliceBar.h; sourceTree = "<group>"; };
+		E076BB5C16131DAE00C94718 /* CMM9SliceBar.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMM9SliceBar.mm; path = libs/CMMSimpleFramework/CMM9SliceBar.mm; sourceTree = "<group>"; };
 		E08DBA9315E7D90A0090F7F7 /* CMMCustomUIJoypad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMCustomUIJoypad.h; path = libs/CMMSimpleFramework/CMMCustomUIJoypad.h; sourceTree = "<group>"; };
 		E08DBA9415E7D90A0090F7F7 /* CMMCustomUIJoypad.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMCustomUIJoypad.mm; path = libs/CMMSimpleFramework/CMMCustomUIJoypad.mm; sourceTree = "<group>"; };
 		E08DBA9615E7E5D90090F7F7 /* IMG_JOYPAD_000-hd.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "IMG_JOYPAD_000-hd.plist"; path = "Resources/IMG_JOYPAD_000-hd.plist"; sourceTree = "<group>"; };
@@ -466,8 +468,6 @@
 		E0AF13EE1614766C00D9FA68 /* CMMMenuItemSet.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMMenuItemSet.mm; path = libs/CMMSimpleFramework/CMMMenuItemSet.mm; sourceTree = "<group>"; };
 		E0B2485E1621C29F003DDE16 /* GameCenterTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameCenterTestLayer.h; sourceTree = "<group>"; };
 		E0B248621621C52D003DDE16 /* GameCenterTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GameCenterTestLayer.mm; sourceTree = "<group>"; };
-		E0B42417161C251B00BEC59E /* CMMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMViewController.h; path = libs/CMMSimpleFramework/CMMViewController.h; sourceTree = "<group>"; };
-		E0B42418161C251B00BEC59E /* CMMViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMViewController.mm; path = libs/CMMSimpleFramework/CMMViewController.mm; sourceTree = "<group>"; };
 		E0B4ED1E15FB0E3A00F640D0 /* IMG_STG_TEST_001.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_STG_TEST_001.png; path = Resources/IMG_STG_TEST_001.png; sourceTree = "<group>"; };
 		E0B586CC15DCB406006C8B7F /* ScrollMenuTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollMenuTestLayer.h; sourceTree = "<group>"; };
 		E0B586CD15DCB406006C8B7F /* ScrollMenuTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ScrollMenuTestLayer.mm; sourceTree = "<group>"; };
@@ -1095,8 +1095,6 @@
 				E0C1FE7E161428D800562E27 /* CMMDeprecated.mm */,
 				E032FC3315E1E97F00B28B61 /* CMMGLView.h */,
 				E032FC3415E1E98100B28B61 /* CMMGLView.mm */,
-				E0B42417161C251B00BEC59E /* CMMViewController.h */,
-				E0B42418161C251B00BEC59E /* CMMViewController.mm */,
 				E047705415D4C79C0079EAE9 /* view */,
 				E046596715D559F500D3ADF0 /* dispatcher */,
 				E0D4096615D4F4A400953AFC /* sound */,
@@ -1256,8 +1254,8 @@
 				E0A1CE66162E59250008EF60 /* CMMLayerMD.mm */,
 				E032FC5215E1EDE500B28B61 /* CMMSprite.h */,
 				E032FC5315E1EDE500B28B61 /* CMMSprite.mm */,
-				E076BB5B16131DAE00C94718 /* CMMSpriteBatchBar.h */,
-				E076BB5C16131DAE00C94718 /* CMMSpriteBatchBar.mm */,
+				E076BB5B16131DAE00C94718 /* CMM9SliceBar.h */,
+				E076BB5C16131DAE00C94718 /* CMM9SliceBar.mm */,
 			);
 			name = view;
 			sourceTree = "<group>";
@@ -1341,6 +1339,8 @@
 				E0AEC75E15E47D7D0015A2BB /* CMMControlItemSlider.mm */,
 				E0AEC76015E4A1F30015A2BB /* CMMControlItemText.h */,
 				E0AEC76115E4A1F40015A2BB /* CMMControlItemText.mm */,
+				E058EF8F16E480AF0079733C /* CMMControlItemCheckbox.h */,
+				E058EF9016E480AF0079733C /* CMMControlItemCheckbox.mm */,
 			);
 			name = control;
 			sourceTree = "<group>";
@@ -2018,13 +2018,12 @@
 				E0D8100715FDE80100F8C94C /* CCMutableTexture2D.m in Sources */,
 				E0257A2215FF3C55008C54C2 /* CMMSPMapObject.mm in Sources */,
 				E00E2E6A15FF506A003551B4 /* CMMSimpleCache.mm in Sources */,
-				E076BB5D16131DAE00C94718 /* CMMSpriteBatchBar.mm in Sources */,
+				E076BB5D16131DAE00C94718 /* CMM9SliceBar.mm in Sources */,
 				E0C1FE7F161428D800562E27 /* CMMDeprecated.mm in Sources */,
 				E0AF13EF1614766C00D9FA68 /* CMMMenuItemSet.mm in Sources */,
 				E09D8382161577A1003E39A7 /* MenuItemSetTestLayer.mm in Sources */,
 				E026250D1615F33600B158CF /* CMMGameKit.mm in Sources */,
 				E0262512161696BE00B158CF /* CMMPacket.mm in Sources */,
-				E0B42419161C251B00BEC59E /* CMMViewController.mm in Sources */,
 				E0C6B483161EB592005F5749 /* AchievementsTestLayer.mm in Sources */,
 				E0F8979616200F8600B34567 /* LeaderBoardTestLayer.mm in Sources */,
 				E0025053162128E4001DF0C0 /* CameraTestLayer.mm in Sources */,
@@ -2199,6 +2198,7 @@
 				E0B5C2F216C36FB2008E7B62 /* b2WeldJoint.cpp in Sources */,
 				E0B5C2F316C36FB2008E7B62 /* b2WheelJoint.cpp in Sources */,
 				E0B5C2F416C36FB2008E7B62 /* b2Rope.cpp in Sources */,
+				E058EF9116E480AF0079733C /* CMMControlItemCheckbox.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

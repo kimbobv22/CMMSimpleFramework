@@ -2,6 +2,18 @@
 
 #import "CMMDeprecated.h"
 
+@implementation CMMViewController
+
+-(NSUInteger)supportedInterfaceOrientations{
+	UIApplication *application_ = [UIApplication sharedApplication];
+	return [application_ supportedInterfaceOrientationsForWindow:[application_ keyWindow]];
+}
+-(BOOL)shouldAutorotate{
+	return YES;
+}
+
+@end
+
 @implementation CMMScene(Deprecated)
 
 -(ccTime)fadeTime{
@@ -112,19 +124,34 @@
 
 @end
 
-@implementation CMMSpriteBatchBar(Deprecated)
+@implementation CMMSpriteBatchBar
+@synthesize edgeSize;
 
-+(id)batchBarWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_ barCropWidth:(float)barCropWidth_{
-	return [self batchBarWithTargetSprite:targetSprite_ batchBarSize:batchBarSize_ edgeSize:edgeSize_];
++(id)batchBarWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_{
+	return [self sliceBarWithTargetSprite:targetSprite_ edgeOffset:CMM9SliceEdgeOffset(edgeSize_)];
 }
--(id)initWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_ barCropWidth:(float)barCropWidth_{
-	return [self initWithTargetSprite:targetSprite_ batchBarSize:batchBarSize_ edgeSize:edgeSize_];
++(id)batchBarWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_{
+	return [self sliceBarWithTargetSprite:targetSprite_];
 }
 
--(void)setBarCropWidth:(float)barCropWidth{}
--(float)barCropWidth{
-	return 0.0f;
+-(id)initWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_{
+	return [self initWithTargetSprite:targetSprite_ edgeOffset:CMM9SliceEdgeOffset(edgeSize_)];
 }
+-(id)initWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_{
+	return [self initWithTargetSprite:targetSprite_];
+}
+
+-(void)setEdgeSize:(CGSize)edgeSize_{
+	[self setEdgeOffset:CMM9SliceEdgeOffset(edgeSize_)];
+}
+-(CGSize)edgeSize{
+	return CGSizeMake(edgeOffset.left, edgeOffset.bottom);
+}
+
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{}
 
 @end
 
@@ -547,6 +574,19 @@
 }
 -(id)initWithWidth:(float)width_ barSprite:(CCSprite *)barSprite_{
 	return [self initWithBarSprite:barSprite_ width:width_];
+}
+
++(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ width:(float)width_ height:(float)height_{
+	return [self controlItemTextWithBarSprite:barSprite_ frameSize:CGSizeMake(width_, height_)];
+}
++(id)controlItemTextWithFrameSeq:(int)frameSeq_ width:(float)width_ height:(float)height_{
+	return [self controlItemTextWithFrameSeq:frameSeq_ frameSize:CGSizeMake(width_, height_)];
+}
+-(id)initWithBarSprite:(CCSprite *)barSprite_ width:(float)width_ height:(float)height_{
+	return [self initWithBarSprite:barSprite_ frameSize:CGSizeMake(width_, height_)];
+}
+-(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_ height:(float)height_{
+	return [self initWithFrameSeq:frameSeq_ frameSize:CGSizeMake(width_, height_)];
 }
 
 -(void)setCallback_whenChangedItemVale:(void (^)(id, NSString *))callback_whenChangedItemVale_{

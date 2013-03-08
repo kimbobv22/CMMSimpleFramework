@@ -23,7 +23,7 @@
 	[self addChild:menuItemBtn_];
 	
 	CMMMenuItemSet *btnSet_ = [CMMMenuItemSet menuItemSetWithMenuSize:CGSizeMake(_contentSize.width*0.7f, _contentSize.height*0.6f)];
-	[btnSet_ setPosition:cmmFuncCommon_positionInParent(self, btnSet_)];
+	[btnSet_ setPosition:cmmFunc_positionIPN(self, btnSet_)];
 	[self addChild:btnSet_];
 	
 	CMMMenuItemL *serverBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
@@ -71,7 +71,7 @@
 
 -(void)setDisplayString:(NSString *)str_{
 	[labelDisplay setString:str_];
-	[labelDisplay setPosition:ccpAdd(cmmFuncCommon_positionInParent(self, labelDisplay), ccp(0,50))];
+	[labelDisplay setPosition:ccpAdd(cmmFunc_positionIPN(self, labelDisplay), ccp(0,50))];
 }
 
 -(void)dealloc{
@@ -114,13 +114,13 @@
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	hostTextField = [CMMControlItemText controlItemTextWithFrameSeq:0 width:_contentSize.width*0.4f];
-	[hostTextField setPosition:ccpAdd(cmmFuncCommon_positionInParent(self, hostTextField), ccp(-50,-50))];
+	[hostTextField setPosition:ccpAdd(cmmFunc_positionIPN(self, hostTextField), ccp(-50,-50))];
 	[hostTextField setTitle:@"Host IP"];
 	[self addChild:hostTextField];
 	
 	connectBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[connectBtn setTitle:@"CONNECT"];
-	[connectBtn setPosition:cmmFuncCommon_positionFromOtherNode(hostTextField, connectBtn, ccp(1.0f,0))];
+	[connectBtn setPosition:cmmFunc_positionFON(hostTextField, connectBtn, ccp(1.0f,0))];
 	[connectBtn setCallback_pushup:^(id) {
 		[self connectToHost];
 	}];

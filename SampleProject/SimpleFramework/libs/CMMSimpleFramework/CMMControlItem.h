@@ -9,6 +9,7 @@
 //interface
 @interface CMMControlItem : CMMLayer{
 	BOOL enable;
+	ccColor3B disabledColor;
 	
 	ccTime _redrawDelayTime;
 	BOOL _doRedraw;
@@ -21,5 +22,6 @@
 -(void)update:(ccTime)dt_;
 
 @property (nonatomic, readwrite, getter = isEnable) BOOL enable;
+@property (nonatomic, readwrite) ccColor3B disabledColor;
 
 @end

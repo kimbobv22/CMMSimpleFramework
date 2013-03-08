@@ -10,7 +10,7 @@
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	profileSprite = [CCSprite spriteWithFile:@"develop.png"];
-	[profileSprite setPosition:cmmFuncCommon_positionInParent(self, profileSprite)];
+	[profileSprite setPosition:cmmFunc_positionIPN(self, profileSprite)];
 	[profileSprite setOpacity:0];
 	[self addChild:profileSprite];
 	
@@ -137,7 +137,7 @@
 
 -(void)_setDisplayStr:(NSString *)str_{
 	[labelDisplay setString:str_];
-	[labelDisplay setPosition:cmmFuncCommon_positionInParent(self, labelDisplay)];
+	[labelDisplay setPosition:cmmFunc_positionIPN(self, labelDisplay)];
 }
 
 -(void)draw{

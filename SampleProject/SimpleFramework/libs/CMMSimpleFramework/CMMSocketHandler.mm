@@ -227,7 +227,7 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
 }
 -(void)stopWithError:(NSError *)error_{
 	[self closeSocket];
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(socketHandler:didStopWithError:))){
+	if(cmmFunc_respondsToSelector(delegate, @selector(socketHandler:didStopWithError:))){
 		[delegate socketHandler:self didStopWithError:error_];
 	}
 }
@@ -274,7 +274,7 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
 	
 	if(error_ == nil){
 		[self stopHostResolution];
-		if(cmmFuncCommon_respondsToSelector(delegate, @selector(socketHandler:didStartWithAddressData:))){
+		if(cmmFunc_respondsToSelector(delegate, @selector(socketHandler:didStartWithAddressData:))){
 			[delegate socketHandler:self didStartWithAddressData:hostAddress];
 		}
 	}else{
@@ -328,7 +328,7 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
 		if([self setupSocketConnectedToAddress:nil port:port_ error:&error_]){
 			port = port_;
 			
-			if(cmmFuncCommon_respondsToSelector(delegate, @selector(socketHandler:didStartWithAddressData:))){
+			if(cmmFunc_respondsToSelector(delegate, @selector(socketHandler:didStartWithAddressData:))){
 				CFDataRef localAddress_ = CFSocketCopyAddress(_cfSocket);
 				[delegate socketHandler:self didStartWithAddressData:(NSData *)localAddress_];
 				CFRelease(localAddress_);
@@ -367,9 +367,9 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
 }
 
 -(void)receivePacketData:(CMMPacketData *)packetData_ fromAddressData:(NSData *)addressData_{
-	if(packetData_ && cmmFuncCommon_respondsToSelector(delegate, @selector(socketHandler:didReceivePacketData:fromAddressData:))){
+	if(packetData_ && cmmFunc_respondsToSelector(delegate, @selector(socketHandler:didReceivePacketData:fromAddressData:))){
 		[delegate socketHandler:self didReceivePacketData:packetData_ fromAddressData:addressData_];
-	}else if(!packetData_ && cmmFuncCommon_respondsToSelector(delegate, @selector(socketHandler:didReceiveError:))){
+	}else if(!packetData_ && cmmFunc_respondsToSelector(delegate, @selector(socketHandler:didReceiveError:))){
 		[delegate socketHandler:self didReceiveError:[NSError errorWithDomain:NSPOSIXErrorDomain code:errno userInfo:nil]];
 	}
 }
@@ -403,11 +403,11 @@ static void _callbackCFSocketHostResolve(CFHostRef theHost, CFHostInfoType typeI
 	}
     
 	if(error_ == 0){
-		if(cmmFuncCommon_respondsToSelector(delegate, @selector(socketHandler:didSendPacketData:toAddressData:))){
+		if(cmmFunc_respondsToSelector(delegate, @selector(socketHandler:didSendPacketData:toAddressData:))){
 			[delegate socketHandler:self didSendPacketData:packetData_ toAddressData:addressData_];
 		}
 	}else{
-		if(cmmFuncCommon_respondsToSelector(delegate, @selector(socketHandler:didFailToSendPacketData:toAddressData:withError:))){
+		if(cmmFunc_respondsToSelector(delegate, @selector(socketHandler:didFailToSendPacketData:toAddressData:withError:))){
 			[delegate socketHandler:self didFailToSendPacketData:packetData_ toAddressData:addressData_ withError:[NSError errorWithDomain:NSPOSIXErrorDomain code:error_ userInfo:nil]];
 		}
 	}

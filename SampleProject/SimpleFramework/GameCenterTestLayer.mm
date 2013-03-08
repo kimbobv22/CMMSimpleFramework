@@ -63,7 +63,7 @@
 	
 	menuSelector = [CMMMenuItemSet menuItemSetWithMenuSize:CGSizeMake(_contentSize.width*0.7f, _contentSize.height*0.5f)];
 	[menuSelector setAlignType:CMMMenuItemSetAlignType_horizontal];
-	[menuSelector setPosition:cmmFuncCommon_positionInParent(self, menuSelector)];
+	[menuSelector setPosition:cmmFunc_positionIPN(self, menuSelector)];
 	[self addChild:menuSelector];
 	
 	CMMMenuItemL *menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
@@ -156,7 +156,7 @@
 
 -(void)setDisplayStr:(NSString *)str_{
 	[displayLabel setString:str_];
-	CGPoint targetPoint_ = cmmFuncCommon_positionInParent(self, displayLabel);
+	CGPoint targetPoint_ = cmmFunc_positionIPN(self, displayLabel);
 	targetPoint_.y += 50.0f;
 	[displayLabel setPosition:targetPoint_];
 	[displayLabel stopAllActions];

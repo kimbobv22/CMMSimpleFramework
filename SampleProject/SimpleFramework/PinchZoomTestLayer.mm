@@ -9,7 +9,7 @@
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	tempSprite = [CCSprite spriteWithFile:@"Default.png"];
-	[tempSprite setPosition:cmmFuncCommon_positionInParent(self, tempSprite)];
+	[tempSprite setPosition:cmmFunc_positionIPN(self, tempSprite)];
 	[tempSprite setScale:0.5];
 	[self addChild:tempSprite];
 	

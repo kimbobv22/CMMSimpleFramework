@@ -89,7 +89,7 @@
 		return;
 	}
 	
-	cmmFuncCallDispatcher_backQueue(^{
+	cmmFunc_callBackQueue(^{
 		b2Body *worldBody_ = world.worldBody;
 		ccArray *groundData_ = groundTMXLayers->data;
 		int count_ = groundData_->num;
@@ -158,7 +158,7 @@
 		}
 		tilemapBuiltup = YES;
 		if(block_){
-			cmmFuncCallDispatcher_mainQueue(block_);
+			cmmFunc_callMainQueue(block_);
 		}
 	});
 }

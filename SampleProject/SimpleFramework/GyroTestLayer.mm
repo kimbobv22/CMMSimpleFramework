@@ -44,7 +44,7 @@
 	
 	if(TARGET_IPHONE_SIMULATOR){
 		CCLabelTTF *noticeLabel_ = [CMMFontUtil labelWithString:@"Simulator not supported gyro sensor."];
-		[noticeLabel_ setPosition:cmmFuncCommon_positionInParent(self, noticeLabel_)];
+		[noticeLabel_ setPosition:cmmFunc_positionIPN(self, noticeLabel_)];
 		[self addChild:noticeLabel_ z:9];
 	}
 	

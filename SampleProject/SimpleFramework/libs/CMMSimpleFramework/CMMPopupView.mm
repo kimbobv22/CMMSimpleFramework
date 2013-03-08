@@ -157,11 +157,8 @@
 }
 
 -(void)removePopup:(CMMPopupLayer *)popup_{
-	uint index_ = [self indexOfPopup:popup_];
-	if(index_ == NSNotFound) return;
-	
 	[popup_ removeFromParentAndCleanup:![popup_ isLazyCleanup]];
-	[popupList removeObjectAtIndex:index_];
+	[popupList removeObject:popup_];
 	[self _updatePopupOrder];
 }
 -(void)removePopupAtIndex:(uint)index_{
@@ -188,6 +185,13 @@
 
 -(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
 	return (_children && _children->data->num > 0);
+}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
+	CMMPopupLayer *headPopup_ = [self headPopup];
+	if(headPopup_){
+		[touchDispatcher addTouchItemWithTouch:touch_ node:headPopup_];
+		[headPopup_ touchDispatcher:touchDispatcher whenTouchBegan:touch_ event:event_];
+	}
 }
 
 -(void)cleanup{

@@ -4,16 +4,63 @@
 
 #import "CMMMacro.h"
 
-DEPRECATED_ATTRIBUTE static inline CGPoint cmmFuncCommon_position_center(CGRect parentRect_,CGRect targetRect_,CGPoint targetAPoint_){
-	return cmmFuncCommon_positionInParent(parentRect_, targetRect_, targetAPoint_, ccp(0.5f,0.5f));
+DEPRECATED_ATTRIBUTE inline static inline CGPoint cmmFuncCommon_position_center(CGRect parentRect_,CGRect targetRect_,CGPoint targetAPoint_){
+	return cmmFunc_positionIPN(parentRect_, targetRect_, targetAPoint_, ccp(0.5f,0.5f));
 }
-DEPRECATED_ATTRIBUTE static inline CGPoint cmmFuncCommon_position_center(CCNode *parent_,CCNode *target_){
-	return cmmFuncCommon_positionInParent(parent_, target_, ccp(0.5f,0.5f));
+DEPRECATED_ATTRIBUTE inline static inline CGPoint cmmFuncCommon_position_center(CCNode *parent_,CCNode *target_){
+	return cmmFunc_positionIPN(parent_, target_, ccp(0.5f,0.5f));
+}
+
+DEPRECATED_ATTRIBUTE inline static CGRect cmmFuncCommon_nodeToworldRect(CCNode *node_){
+	return cmmFunc_nodeToWorldRect(node_);
+}
+
+DEPRECATED_ATTRIBUTE inline static CGPoint cmmFuncCommon_positionInParent(CGRect sourceRect_,CGRect targetRect_,CGPoint targetAPoint_,CGPoint ratio_, CGPoint offset_){
+	return cmmFunc_positionIPN(sourceRect_, targetRect_, targetAPoint_, ratio_, offset_);
+}
+DEPRECATED_ATTRIBUTE inline static CGPoint cmmFuncCommon_positionInParent(CGRect sourceRect_,CGRect targetRect_,CGPoint targetAPoint_,CGPoint ratio_){
+	return cmmFunc_positionIPN(sourceRect_,targetRect_,targetAPoint_,ratio_);
+}
+DEPRECATED_ATTRIBUTE inline static CGPoint cmmFuncCommon_positionInParent(CCNode *parentNode_,CCNode *targetNode_,CGPoint ratio_,CGPoint offset_){
+	return cmmFunc_positionIPN(parentNode_,targetNode_,ratio_,offset_);
+}
+DEPRECATED_ATTRIBUTE inline static CGPoint cmmFuncCommon_positionInParent(CCNode *parentNode_,CCNode *targetNode_,CGPoint ratio_){
+	return cmmFunc_positionIPN(parentNode_, targetNode_, ratio_);
+}
+DEPRECATED_ATTRIBUTE inline static CGPoint cmmFuncCommon_positionInParent(CCNode *parentNode_,CCNode *targetNode_){
+	return cmmFunc_positionIPN(parentNode_,targetNode_);
+}
+DEPRECATED_ATTRIBUTE inline static CGPoint cmmFuncCommon_positionFromOtherNode(CCNode *otherNode_,CCNode *targetNode_,CGPoint ratio_,CGPoint offset_){
+	return cmmFunc_positionFON(otherNode_,targetNode_,ratio_,offset_);
+}
+DEPRECATED_ATTRIBUTE inline static CGPoint cmmFuncCommon_positionFromOtherNode(CCNode *otherNode_,CCNode *targetNode_,CGPoint ratio_){
+	return cmmFunc_positionFON(otherNode_,targetNode_,ratio_);
+}
+
+DEPRECATED_ATTRIBUTE inline static BOOL cmmFuncCommon_respondsToSelector(id target_,SEL selector_){
+	return cmmFunc_respondsToSelector(target_, selector_);
+}
+DEPRECATED_ATTRIBUTE inline static void cmmFuncCallDispatcher_mainQueue(void(^block_)()){
+	cmmFunc_callMainQueue(block_);
+}
+DEPRECATED_ATTRIBUTE inline static void cmmFuncCallDispatcher_backQueue(dispatch_queue_priority_t priority_,void(^block_)()){
+	cmmFunc_callBackQueue(priority_, block_);
+}
+DEPRECATED_ATTRIBUTE inline static void cmmFuncCallDispatcher_backQueue(void(^block_)()){
+	cmmFunc_callBackQueue(block_);
 }
 
 #pragma mark - common view
 
 #import "CMMScene.h"
+
+DEPRECATED_ATTRIBUTE @interface CMMViewController : UIViewController
+
+/*
+ Please use freely produced.
+ */
+
+@end
 
 @interface CMMScene(Deprecated)
 
@@ -53,7 +100,7 @@ UNAVAILABLE_ATTRIBUTE @protocol CMMSceneLoadingProtocol <NSObject>
 #import "CMMLayerM.h"
 #import "CMMLayerMD.h"
 #import "CCSpriteBatchNode+SplitSprite.h"
-#import "CMMSpriteBatchBar.h"
+#import "CMM9SliceBar.h"
 #import "CMMDrawingManager.h"
 
 @interface CMMLayer(Deprecated)
@@ -97,12 +144,15 @@ UNAVAILABLE_ATTRIBUTE @interface CMMLayerPinchZoom : CMMLayer
 
 @end
 
-@interface CMMSpriteBatchBar(Deprecated)
+DEPRECATED_ATTRIBUTE @interface CMMSpriteBatchBar : CMM9SliceBar<CMMTouchDispatcherDelegate>
 
-+(id)batchBarWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_ barCropWidth:(float)barCropWidth_ DEPRECATED_ATTRIBUTE;
--(id)initWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_ barCropWidth:(float)barCropWidth_ DEPRECATED_ATTRIBUTE;
++(id)batchBarWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_;
++(id)batchBarWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_;
 
-@property (nonatomic, readwrite) float barCropWidth DEPRECATED_ATTRIBUTE;
+-(id)initWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_;
+-(id)initWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_;
+
+@property (nonatomic, readwrite) CGSize edgeSize;
 
 @end
 
@@ -468,7 +518,7 @@ DEPRECATED_ATTRIBUTE @protocol CMMScrollMenuHDelegate
 
 @end
 
-DEPRECATED_ATTRIBUTE @interface CMMControlItemBatchBar : CMMSpriteBatchBar
+DEPRECATED_ATTRIBUTE @interface CMMControlItemBatchBar : CMM9SliceBar
 
 @end
 
@@ -512,6 +562,11 @@ DEPRECATED_ATTRIBUTE @protocol CMMControlItemSliderDelegate
 
 +(id)controlItemTextWithWidth:(float)width_ barSprite:(CCSprite *)barSprite_ DEPRECATED_ATTRIBUTE;
 -(id)initWithWidth:(float)width_ barSprite:(CCSprite *)barSprite_ DEPRECATED_ATTRIBUTE;
+
++(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ width:(float)width_ height:(float)height_ DEPRECATED_ATTRIBUTE;
++(id)controlItemTextWithFrameSeq:(int)frameSeq_ width:(float)width_ height:(float)height_ DEPRECATED_ATTRIBUTE;
+-(id)initWithBarSprite:(CCSprite *)barSprite_ width:(float)width_ height:(float)height_ DEPRECATED_ATTRIBUTE;
+-(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_ height:(float)height_ DEPRECATED_ATTRIBUTE;
 
 @property (nonatomic, assign) void (^callback_whenChangedItemVale)(id sender_,NSString *itemValue_) DEPRECATED_ATTRIBUTE;
 @property (nonatomic, assign) NSString *itemTitle DEPRECATED_ATTRIBUTE;

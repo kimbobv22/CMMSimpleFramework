@@ -80,7 +80,7 @@
 		
 	[self addChild:_backSprite z:0];
 	[self addChild:_stick z:1];
-	[_stick setPosition:cmmFuncCommon_positionInParent(self, _stick)];
+	[_stick setPosition:cmmFunc_positionIPN(self, _stick)];
 	
 	return self;
 }

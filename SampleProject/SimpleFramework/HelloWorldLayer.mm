@@ -29,7 +29,7 @@
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	mainMenu = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:CGSizeMake(_contentSize.width * 0.5f, _contentSize.height * 0.8f)];
-	[mainMenu setPosition:ccpAdd(cmmFuncCommon_positionInParent(self, mainMenu), ccp(0,-10.0f))];
+	[mainMenu setPosition:ccpAdd(cmmFunc_positionIPN(self, mainMenu), ccp(0,-10.0f))];
 	[self addChild:mainMenu];
 	
 	connectionStatusLabel = [CMMFontUtil labelWithString:@" "];
@@ -160,7 +160,7 @@
 	}
 	
 	[connectionStatusLabel setString:connectionStatusStr_];
-	[connectionStatusLabel setPosition:cmmFuncCommon_positionFromOtherNode(mainMenu, connectionStatusLabel, ccp(0,1.0f), ccp(0,5.0f))];
+	[connectionStatusLabel setPosition:cmmFunc_positionFON(mainMenu, connectionStatusLabel, ccp(0,1.0f), ccp(0,5.0f))];
 }
 
 @end

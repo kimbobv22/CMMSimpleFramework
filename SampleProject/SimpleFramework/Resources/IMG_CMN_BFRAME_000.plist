@@ -6,110 +6,220 @@
 	<dict>
 		<key>IMG_CMN_BFRAME_000_BATCHBAR_00.png</key>
 		<dict>
-			<key>frame</key>
-			<string>{{62, 76}, {22, 21}}</string>
-			<key>offset</key>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{0, 0}, {21.5, 20.5}}</string>
+			<key>spriteOffset</key>
 			<string>{0, 0}</string>
-			<key>sourceColorRect</key>
-			<string>{{62, 76}, {22, 21}}</string>
-			<key>sourceSize</key>
-			<string>{22, 21}</string>
+			<key>spriteSize</key>
+			<string>{21.5, 20.5}</string>
+			<key>spriteSourceSize</key>
+			<string>{21.5, 20.5}</string>
+			<key>spriteTrimmed</key>
+			<false/>
+			<key>textureRect</key>
+			<string>{{2, 132}, {21.5, 20.5}}</string>
+			<key>textureRotated</key>
+			<false/>
 		</dict>
 		<key>IMG_CMN_BFRAME_000_BATCHBAR_01.png</key>
 		<dict>
-			<key>frame</key>
-			<string>{{90, 76}, {22, 21}}</string>
-			<key>offset</key>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{0, 0}, {21.5, 20.5}}</string>
+			<key>spriteOffset</key>
 			<string>{0, 0}</string>
-			<key>sourceColorRect</key>
-			<string>{{90, 76}, {22, 21}}</string>
-			<key>sourceSize</key>
-			<string>{22, 21}</string>
+			<key>spriteSize</key>
+			<string>{21.5, 20.5}</string>
+			<key>spriteSourceSize</key>
+			<string>{21.5, 20.5}</string>
+			<key>spriteTrimmed</key>
+			<false/>
+			<key>textureRect</key>
+			<string>{{2, 108}, {21.5, 20.5}}</string>
+			<key>textureRotated</key>
+			<false/>
+		</dict>
+		<key>IMG_CMN_BFRAME_000_CHECKBOX_BACK.png</key>
+		<dict>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{0, 0}, {25, 25}}</string>
+			<key>spriteOffset</key>
+			<string>{0, 0}</string>
+			<key>spriteSize</key>
+			<string>{25, 25}</string>
+			<key>spriteSourceSize</key>
+			<string>{25, 25}</string>
+			<key>spriteTrimmed</key>
+			<false/>
+			<key>textureRect</key>
+			<string>{{34, 76}, {25, 25}}</string>
+			<key>textureRotated</key>
+			<false/>
+		</dict>
+		<key>IMG_CMN_BFRAME_000_CHECKBOX_CHECK.png</key>
+		<dict>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{0, 0}, {25, 25}}</string>
+			<key>spriteOffset</key>
+			<string>{0, 0}</string>
+			<key>spriteSize</key>
+			<string>{25, 25}</string>
+			<key>spriteSourceSize</key>
+			<string>{25, 25}</string>
+			<key>spriteTrimmed</key>
+			<false/>
+			<key>textureRect</key>
+			<string>{{64, 78}, {25, 25}}</string>
+			<key>textureRotated</key>
+			<false/>
 		</dict>
 		<key>IMG_CMN_BFRAME_000_SLIDE_BAR.png</key>
 		<dict>
-			<key>frame</key>
-			<string>{{62, 102}, {10, 9}}</string>
-			<key>offset</key>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{0, 0}, {29, 15}}</string>
+			<key>spriteOffset</key>
 			<string>{0, 0}</string>
-			<key>sourceColorRect</key>
-			<string>{{62, 102}, {10, 9}}</string>
-			<key>sourceSize</key>
-			<string>{10, 9}</string>
+			<key>spriteSize</key>
+			<string>{29, 15}</string>
+			<key>spriteSourceSize</key>
+			<string>{29, 15}</string>
+			<key>spriteTrimmed</key>
+			<false/>
+			<key>textureRect</key>
+			<string>{{92, 78}, {29, 15}}</string>
+			<key>textureRotated</key>
+			<false/>
 		</dict>
 		<key>IMG_CMN_BFRAME_000_SLIDE_BTN.png</key>
 		<dict>
-			<key>frame</key>
-			<string>{{82, 40}, {28, 28}}</string>
-			<key>offset</key>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{0, 0}, {28, 28}}</string>
+			<key>spriteOffset</key>
 			<string>{0, 0}</string>
-			<key>sourceColorRect</key>
-			<string>{{82, 40}, {28, 28}}</string>
-			<key>sourceSize</key>
+			<key>spriteSize</key>
 			<string>{28, 28}</string>
+			<key>spriteSourceSize</key>
+			<string>{28, 28}</string>
+			<key>spriteTrimmed</key>
+			<false/>
+			<key>textureRect</key>
+			<string>{{2, 76}, {28, 28}}</string>
+			<key>textureRotated</key>
+			<false/>
 		</dict>
 		<key>IMG_CMN_BFRAME_000_SLIDE_MASK.png</key>
 		<dict>
-			<key>frame</key>
-			<string>{{90, 102}, {10, 9}}</string>
-			<key>offset</key>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{0, 0}, {29, 15}}</string>
+			<key>spriteOffset</key>
 			<string>{0, 0}</string>
-			<key>sourceColorRect</key>
-			<string>{{90, 102}, {10, 9}}</string>
-			<key>sourceSize</key>
-			<string>{10, 9}</string>
+			<key>spriteSize</key>
+			<string>{29, 15}</string>
+			<key>spriteSourceSize</key>
+			<string>{29, 15}</string>
+			<key>spriteTrimmed</key>
+			<false/>
+			<key>textureRect</key>
+			<string>{{92, 98}, {29, 15}}</string>
+			<key>textureRotated</key>
+			<false/>
 		</dict>
 		<key>IMG_CMN_BFRAME_000_SWITCH_BACK.png</key>
 		<dict>
-			<key>frame</key>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
 			<string>{{0, 0}, {120, 34}}</string>
-			<key>offset</key>
+			<key>spriteOffset</key>
 			<string>{0, 0}</string>
-			<key>sourceColorRect</key>
-			<string>{{0, 0}, {120, 34}}</string>
-			<key>sourceSize</key>
+			<key>spriteSize</key>
 			<string>{120, 34}</string>
+			<key>spriteSourceSize</key>
+			<string>{120, 34}</string>
+			<key>spriteTrimmed</key>
+			<false/>
+			<key>textureRect</key>
+			<string>{{2, 2}, {120, 34}}</string>
+			<key>textureRotated</key>
+			<false/>
 		</dict>
 		<key>IMG_CMN_BFRAME_000_SWITCH_BTN.png</key>
 		<dict>
-			<key>frame</key>
-			<string>{{0, 76}, {33, 34}}</string>
-			<key>offset</key>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{0, 0}, {33, 33.5}}</string>
+			<key>spriteOffset</key>
 			<string>{0, 0}</string>
-			<key>sourceColorRect</key>
-			<string>{{0, 76}, {33, 34}}</string>
-			<key>sourceSize</key>
-			<string>{33, 34}</string>
+			<key>spriteSize</key>
+			<string>{33, 33.5}</string>
+			<key>spriteSourceSize</key>
+			<string>{33, 33.5}</string>
+			<key>spriteTrimmed</key>
+			<false/>
+			<key>textureRect</key>
+			<string>{{82, 40}, {33, 33.5}}</string>
+			<key>textureRotated</key>
+			<false/>
 		</dict>
 		<key>IMG_CMN_BFRAME_000_SWITCH_MASK.png</key>
 		<dict>
-			<key>frame</key>
-			<string>{{0, 40}, {76, 31}}</string>
-			<key>offset</key>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{0, 0}, {76, 31}}</string>
+			<key>spriteOffset</key>
 			<string>{0, 0}</string>
-			<key>sourceColorRect</key>
-			<string>{{0, 40}, {76, 31}}</string>
-			<key>sourceSize</key>
+			<key>spriteSize</key>
 			<string>{76, 31}</string>
+			<key>spriteSourceSize</key>
+			<string>{76, 31}</string>
+			<key>spriteTrimmed</key>
+			<false/>
+			<key>textureRect</key>
+			<string>{{2, 40}, {76, 31}}</string>
+			<key>textureRotated</key>
+			<false/>
 		</dict>
 		<key>IMG_CMN_BFRAME_000_TEXT_BAR.png</key>
 		<dict>
-			<key>frame</key>
-			<string>{{38, 76}, {19, 31}}</string>
-			<key>offset</key>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{0, 0}, {18.5, 31}}</string>
+			<key>spriteOffset</key>
 			<string>{0, 0}</string>
-			<key>sourceColorRect</key>
-			<string>{{38, 76}, {19, 31}}</string>
-			<key>sourceSize</key>
-			<string>{19, 31}</string>
+			<key>spriteSize</key>
+			<string>{18.5, 31}</string>
+			<key>spriteSourceSize</key>
+			<string>{18.5, 31}</string>
+			<key>spriteTrimmed</key>
+			<false/>
+			<key>textureRect</key>
+			<string>{{34, 104}, {18.5, 31}}</string>
+			<key>textureRotated</key>
+			<false/>
 		</dict>
 	</dict>
 	<key>metadata</key>
 	<dict>
+		<key>GeneratedWith</key>
+		<string>SpriteHelper</string>
 		<key>format</key>
-		<integer>1</integer>
-		<key>size</key>
-		<string>{128, 128}</string>
+		<integer>3</integer>
 	</dict>
 </dict>
 </plist>

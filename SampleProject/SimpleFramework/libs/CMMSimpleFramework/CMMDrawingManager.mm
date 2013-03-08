@@ -4,12 +4,12 @@
 #import "CMMStringUtil.h"
 #import "CMMDrawingUtil.h"
 #import "CMMFileUtil.h"
-#import "CMMSpriteBatchBar.h"
+#import "CMM9SliceBar.h"
 
 #define cmmVarCMMDrawingManagerItem_makeKey(_key_) [NSString stringWithFormat:@"%d",(_key_)]
 
 static CMMDrawingManager *_sharedDrawingManager_ = nil;
-static CMMSpriteBatchBar *_cachedCMMSpriteBatchBar_ = nil;
+static CMM9SliceBar *_cachedCMMSpriteBatchBar_ = nil;
 
 @implementation CMMDrawingManagerItem
 @synthesize fileName,batchBarFrames,countOfBatchBar;
@@ -37,8 +37,10 @@ static CMMSpriteBatchBar *_cachedCMMSpriteBatchBar_ = nil;
 	CCSpriteFrameCache *spriteFrameCache_ = [CCSpriteFrameCache sharedSpriteFrameCache];
 	fileName = [fileName_ copy];
 	
+	NSString *lastFileName_ = [fileName lastPathComponent];
+	
 	//add default bar frame
-	NSString *barFrameFormatter_ = [fileName_ stringByAppendingString:@"_BATCHBAR_%02d.png"];
+	NSString *barFrameFormatter_ = [lastFileName_ stringByAppendingString:@"_BATCHBAR_%02d.png"];
 	uint curBarFrameSeq_ = 0;
 	while(YES){
 		CCSpriteFrame *barFrame_ = [spriteFrameCache_ spriteFrameByName:[NSString stringWithFormat:barFrameFormatter_,curBarFrameSeq_]];
@@ -49,20 +51,25 @@ static CMMSpriteBatchBar *_cachedCMMSpriteBatchBar_ = nil;
 	}
 	
 	//add control frame - switch
-	NSString *switchFrameName_ = [fileName_ stringByAppendingString:@"_SWITCH"];
+	NSString *switchFrameName_ = [lastFileName_ stringByAppendingString:@"_SWITCH"];
 	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[switchFrameName_ stringByAppendingString:@"_BTN.png"]] forKey:CMMDrawingManagerItemKey_switch_button];
 	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[switchFrameName_ stringByAppendingString:@"_BACK.png"]] forKey:CMMDrawingManagerItemKey_switch_back];
 	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[switchFrameName_ stringByAppendingString:@"_MASK.png"]] forKey:CMMDrawingManagerItemKey_switch_mask];
 	
 	//add control frame - slider
-	NSString *sliderFrameName_ = [fileName_ stringByAppendingString:@"_SLIDE"];
+	NSString *sliderFrameName_ = [lastFileName_ stringByAppendingString:@"_SLIDE"];
 	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[sliderFrameName_ stringByAppendingString:@"_BAR.png"]] forKey:CMMDrawingManagerItemKey_slider_bar];
 	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[sliderFrameName_ stringByAppendingString:@"_BTN.png"]] forKey:CMMDrawingManagerItemKey_slider_button];
 	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[sliderFrameName_ stringByAppendingString:@"_MASK.png"]] forKey:CMMDrawingManagerItemKey_slider_mask];
 	
 	//add control frame - text
-	NSString *textFrameName_ = [fileName_ stringByAppendingString:@"_TEXT"];
+	NSString *textFrameName_ = [lastFileName_ stringByAppendingString:@"_TEXT"];
 	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[textFrameName_ stringByAppendingString:@"_BAR.png"]] forKey:CMMDrawingManagerItemKey_text_bar];
+	
+	//add control frame - checkbox
+	NSString *checkboxFrameName_ = [lastFileName_ stringByAppendingString:@"_CHECKBOX"];
+	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[checkboxFrameName_ stringByAppendingString:@"_BACK.png"]] forKey:CMMDrawingManagerItemKey_checkbox_back];
+	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[checkboxFrameName_ stringByAppendingString:@"_CHECK.png"]] forKey:CMMDrawingManagerItemKey_checkbox_check];
 	
 	return self;
 }
@@ -235,7 +242,7 @@ static CMMSpriteBatchBar *_cachedCMMSpriteBatchBar_ = nil;
 		CCSprite *batchBarSprite_ = [CCSprite spriteWithSpriteFrame:batchBarSpriteFrame_];
 		
 		if(!_cachedCMMSpriteBatchBar_){
-			_cachedCMMSpriteBatchBar_ = [[CMMSpriteBatchBar alloc] initWithTargetSprite:batchBarSprite_ batchBarSize:size_];
+			_cachedCMMSpriteBatchBar_ = [[CMM9SliceBar alloc] initWithTargetSprite:batchBarSprite_];
 		}
 		
 		[_cachedCMMSpriteBatchBar_ setTargetSprite:batchBarSprite_];

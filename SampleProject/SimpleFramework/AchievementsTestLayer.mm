@@ -49,9 +49,9 @@
 		[self _resetAchievements];
 	}];
 	
-	[btnReport2 setPosition:cmmFuncCommon_positionInParent(self, btnReport1,ccp(0.5f,0.4f))];
-	[btnReport1 setPosition:cmmFuncCommon_positionFromOtherNode(btnReport2, btnReport1, ccp(-1.0,0.0f),ccp(-10.0f,0.0f))];
-	[btnReset setPosition:cmmFuncCommon_positionFromOtherNode(btnReport2, btnReset, ccp(1.0,0.0f),ccp(10.0f,0.0f))];
+	[btnReport2 setPosition:cmmFunc_positionIPN(self, btnReport1,ccp(0.5f,0.4f))];
+	[btnReport1 setPosition:cmmFunc_positionFON(btnReport2, btnReport1, ccp(-1.0,0.0f),ccp(-10.0f,0.0f))];
+	[btnReset setPosition:cmmFunc_positionFON(btnReport2, btnReset, ccp(1.0,0.0f),ccp(10.0f,0.0f))];
 	
 	[self addChild:btnReport1];
 	[self addChild:btnReport2];
@@ -75,7 +75,7 @@
 }
 -(void)setDisplayStr:(NSString *)str_{
 	[displayLb setString:str_];
-	[displayLb setPosition:cmmFuncCommon_positionInParent(self, displayLb,ccp(0.5,1.0f),ccp(0.0f,-[displayLb contentSize].height))];
+	[displayLb setPosition:cmmFunc_positionIPN(self, displayLb,ccp(0.5,1.0f),ccp(0.0f,-[displayLb contentSize].height))];
 }
 
 -(void)_loadAchievements{

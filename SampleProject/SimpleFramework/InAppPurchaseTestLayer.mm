@@ -59,7 +59,7 @@
 
 -(void)setState:(NSString *)state_{
 	[labelState setString:state_];
-	[labelState setPosition:cmmFuncCommon_positionInParent(self, labelState)];
+	[labelState setPosition:cmmFunc_positionIPN(self, labelState)];
 }
 -(NSString *)state{
 	return [labelState string];
@@ -101,7 +101,7 @@
 		[[CMMInAppPurchasesManager sharedManager] purchaseProductAtProductID:[inAppItem_ productID]];
 		[self switchIndicatorTo:YES withState:@"Purchasing..."];
 	}];
-	[inAppList setPosition:ccpAdd(cmmFuncCommon_positionInParent(self, inAppList), ccp(0,20.0f))];
+	[inAppList setPosition:ccpAdd(cmmFunc_positionIPN(self, inAppList), ccp(0,20.0f))];
 	[self addChild:inAppList];
 	
 	restorBtn = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];

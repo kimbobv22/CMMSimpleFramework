@@ -15,11 +15,11 @@
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	testSprite = [CCSprite spriteWithFile:@"Icon.png"];
-	[testSprite setPosition:cmmFuncCommon_positionInParent(self, testSprite)];
+	[testSprite setPosition:cmmFunc_positionIPN(self, testSprite)];
 	[self addChild:testSprite];
 	
 	CCLabelTTF *labelNotice_ = [CMMFontUtil labelWithString:@" "];
-	[labelNotice_ setPosition:cmmFuncCommon_positionFromOtherNode(testSprite, labelNotice_, ccp(0.0f,1.0f),ccp(0.0f,20.0f))];
+	[labelNotice_ setPosition:cmmFunc_positionFON(testSprite, labelNotice_, ccp(0.0f,1.0f),ccp(0.0f,20.0f))];
 	[self addChild:labelNotice_];
 	
 	sequencer = [[CMMSequencer alloc] init];
@@ -67,8 +67,8 @@
 	}];
 	[self addChild:prevBtn];
 	
-	[nextBtn setPosition:cmmFuncCommon_positionFromOtherNode(testSprite, nextBtn,ccp(0, -1.0f),ccp(buttonSize_.width/2.0f+5.0f,-_contentSize.height*0.08f))];
-	[prevBtn setPosition:cmmFuncCommon_positionFromOtherNode(nextBtn, prevBtn,ccp(-1.0f, 0),ccp(-10,0))];
+	[nextBtn setPosition:cmmFunc_positionFON(testSprite, nextBtn,ccp(0, -1.0f),ccp(buttonSize_.width/2.0f+5.0f,-_contentSize.height*0.08f))];
+	[prevBtn setPosition:cmmFunc_positionFON(nextBtn, prevBtn,ccp(-1.0f, 0),ccp(-10,0))];
 	
 	CMMMenuItemL *backBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[backBtn_ setTitle:@"BACK"];
@@ -99,7 +99,7 @@
 
 -(void)resetSprite{
 	[testSprite stopAllActions];
-	[testSprite setPosition:cmmFuncCommon_positionInParent(self, testSprite)];
+	[testSprite setPosition:cmmFunc_positionIPN(self, testSprite)];
 	[testSprite setColor:ccc3(255, 255, 255)];
 	[testSprite setOpacity:255];
 	[testSprite setScale:1.0f];

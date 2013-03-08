@@ -6,12 +6,18 @@
 	CMMControlItemText *textField1,*textField2;
 	CMMControlItemSwitch *switch1,*switch2;
 	CMMControlItemSlider *slider1,*slider2;
+	
+	CMMControlItemCheckbox *checkBox;
 }
 
 @end
 
+@interface TestSliceBar : CMM9SliceBar<CMMTouchDispatcherDelegate>
+
+@end
+
 @interface ControlItemTestLayer2 : CMMLayer{
-	CMMSpriteBatchBar *batchBar;
+	TestSliceBar *batchBar;
 	CCLabelTTF *label;
 }
 

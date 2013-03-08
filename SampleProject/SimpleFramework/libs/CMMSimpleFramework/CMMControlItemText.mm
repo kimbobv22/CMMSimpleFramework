@@ -4,30 +4,29 @@
 #import "CMMScene.h"
 
 @implementation CMMControlItemText
-@synthesize itemValue,disableColor,title,textColor,passwordForm,placeHolder,placeHolderColor,placeHolderOpacity;
+@synthesize itemValue,title,textColor,placeHolder,placeHolderColor,placeHolderOpacity,passwordForm,keyboardType;
 @synthesize callback_whenItemValueChanged,callback_whenReturnKeyEntered,callback_whenKeypadShown,callback_whenKeypadHidden;
 @synthesize filter_shouldShowKeypad,filter_shouldHideKeypad;
 @synthesize textLabel = _textLabel;
 @synthesize placeHolderLabel = _placeHolderLabel;
 
-+(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ width:(float)width_ height:(float)height_{
-	return [[[self alloc] initWithBarSprite:barSprite_ width:width_ height:height_] autorelease];
++(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ frameSize:(CGSize)frameSize_{
+	return [[[self alloc] initWithBarSprite:barSprite_ frameSize:frameSize_] autorelease];
 }
 +(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ width:(float)width_{
 	return [[[self alloc] initWithBarSprite:barSprite_ width:width_] autorelease];
 }
 
-+(id)controlItemTextWithFrameSeq:(int)frameSeq_ width:(float)width_ height:(float)height_{
-	return [[[self alloc] initWithFrameSeq:frameSeq_ width:width_ height:height_] autorelease];
++(id)controlItemTextWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_{
+	return [[[self alloc] initWithFrameSeq:frameSeq_ frameSize:frameSize_] autorelease];
 }
 +(id)controlItemTextWithFrameSeq:(int)frameSeq_ width:(float)width_{
 	return [[[self alloc] initWithFrameSeq:frameSeq_ width:width_] autorelease];
 }
 
--(id)initWithBarSprite:(CCSprite *)barSprite_ width:(float)width_ height:(float)height_{
-	CGSize frameSize_ = CGSizeMake(width_, height_);
-	
-	_barSprite = [CMMSpriteBatchBar batchBarWithTargetSprite:barSprite_ batchBarSize:frameSize_];
+-(id)initWithBarSprite:(CCSprite *)barSprite_ frameSize:(CGSize)frameSize_{
+	_barSprite = [CMM9SliceBar sliceBarWithTargetSprite:barSprite_];
+	[_barSprite setContentSize:frameSize_];
 	
 	if(!(self = [super initWithFrameSize:frameSize_])) return self;
 	
@@ -36,8 +35,6 @@
 	_textLabel = [CMMFontUtil labelWithString:@"" fontSize:[CMMFontUtil defaultFontSize] dimensions:CGSizeMake(frameSize_.width-10.0f, [CMMFontUtil defaultFontSize]) hAlignment:kCCTextAlignmentLeft vAlignment:kCCVerticalTextAlignmentCenter lineBreakMode:kCCLineBreakModeHeadTruncation];
 	[_textLabel setPosition:ccp(_contentSize.width/2,_contentSize.height/2)];
 	[self setTextColor:ccBLACK];
-	
-	disableColor = ccc3(180, 180, 180);
 	
 	_placeHolderLabel = [CMMFontUtil labelWithString:@"" fontSize:[CMMFontUtil defaultFontSize] dimensions:CGSizeMake(frameSize_.width-10.0f, [CMMFontUtil defaultFontSize]) hAlignment:kCCTextAlignmentLeft vAlignment:kCCVerticalTextAlignmentCenter lineBreakMode:kCCLineBreakModeHeadTruncation];
 	[_placeHolderLabel setPosition:ccp(_contentSize.width/2,_contentSize.height/2)];
@@ -52,17 +49,18 @@
 	CGSize screenSize_ = [[CCDirector sharedDirector] winSize];
 	_backView = [[UIView alloc] initWithFrame:CGRectMake(0,0,screenSize_.width,screenSize_.height)];
 	[_backView setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.8f]];
-
+	
 	CGRect textFieldRect_ = CGRectZero;
 	textFieldRect_.size = CGSizeMake(screenSize_.width *0.5f, 27);
 	textFieldRect_.origin = ccp(screenSize_.width *0.5f-textFieldRect_.size.width*0.5f+30.0f,screenSize_.height*0.2f-textFieldRect_.size.height*0.5f);
-
+	
 	//text field
 	_textField = [[[UITextField alloc] initWithFrame:textFieldRect_] autorelease];
-	_textField.borderStyle = UITextBorderStyleRoundedRect;
-	_textField.delegate = self;
-	_textField.keyboardType = UIKeyboardTypeDefault;
-	_textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+	[_textField setBorderStyle:UITextBorderStyleRoundedRect];
+	[_textField setDelegate:self];
+	[_textField setReturnKeyType:UIReturnKeyDone];
+	[self setKeyboardType:UIKeyboardTypeDefault];
+	[_textField setClearButtonMode:UITextFieldViewModeWhileEditing];
 	
 	//label
 	_textTitleLabel = [[[UILabel alloc] initWithFrame:textFieldRect_] autorelease];
@@ -76,15 +74,13 @@
 	[backViewGesture_ setNumberOfTapsRequired:1];
 	[_backView addGestureRecognizer:backViewGesture_];
 	
-	[self scheduleUpdate];
-	
 	return self;
 }
 -(id)initWithBarSprite:(CCSprite *)barSprite_ width:(float)width_{
-	return [self initWithBarSprite:barSprite_ width:width_ height:[barSprite_ contentSize].height];
+	return [self initWithBarSprite:barSprite_ frameSize:CGSizeMake(width_, [barSprite_ contentSize].height)];
 }
 
--(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_ height:(float)height_{
+-(id)initWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_{
 	CMMDrawingManagerItem *drawingItem_ = [[CMMDrawingManager sharedManager] drawingItemAtIndex:0];
 	if(!drawingItem_){
 		[self release];
@@ -92,10 +88,11 @@
 	}
 	
 	CCSprite *barSprite_ = [CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_text_bar]];
-	return [self initWithBarSprite:barSprite_ width:width_ height:MAX([barSprite_ contentSize].height,height_)];
+	frameSize_.height = MAX([barSprite_ contentSize].height,frameSize_.height);
+	return [self initWithBarSprite:barSprite_ frameSize:frameSize_];
 }
 -(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_{
-	return [self initWithFrameSeq:frameSeq_ width:width_ height:0];
+	return [self initWithFrameSeq:frameSeq_ frameSize:CGSizeMake(width_, 0.0f)];
 }
 
 -(void)setTextColor:(ccColor3B)textColor_{
@@ -104,15 +101,9 @@
 -(ccColor3B)textColor{
 	return _textLabel.color;
 }
--(void)setPasswordForm:(BOOL)passwordForm_{
-	[_textField setSecureTextEntry:passwordForm_];
-	_doRedraw = YES;
-}
--(BOOL)isPasswordForm{
-	return [_textField isSecureTextEntry];
-}
 -(void)setPlaceHolder:(NSString *)placeHolder_{
 	[_textField setPlaceholder:placeHolder_];
+	[_placeHolderLabel setString:placeHolder_];
 	_doRedraw = YES;
 }
 -(NSString *)placeHolder{
@@ -131,18 +122,23 @@
 	return [_placeHolderLabel opacity];
 }
 
+-(void)setPasswordForm:(BOOL)passwordForm_{
+	[_textField setSecureTextEntry:passwordForm_];
+	_doRedraw = YES;
+}
+-(BOOL)isPasswordForm{
+	return [_textField isSecureTextEntry];
+}
+-(void)setKeyboardType:(UIKeyboardType)keyboardType_{
+	[_textField setKeyboardType:keyboardType_];
+}
+-(UIKeyboardType)keyboardType{
+	return [_textField keyboardType];
+}
+
 -(void)setContentSize:(CGSize)contentSize{
 	[super setContentSize:contentSize];
 	[self redrawWithBar];
-}
-
--(void)setOpacity:(GLubyte)opacity{
-	[super setOpacity:opacity];
-	[_barSprite setOpacity:opacity];
-}
--(void)setColor:(ccColor3B)color{
-	[super setColor:color];
-	[_barSprite setColor:color];
 }
 
 -(void)setTitle:(NSString *)title_{
@@ -171,7 +167,7 @@
 
 -(void)setEnable:(BOOL)enable_{
 	[super setEnable:enable_];
-	[self setColor:(enable?ccWHITE:disableColor)];
+	[_barSprite setColor:(enable?ccWHITE:disabledColor)];
 }
 
 -(void)redraw{
@@ -191,12 +187,8 @@
 		}
 	}
 	
-	[_placeHolderLabel setString:@""];
-	if([[self itemValue] length] == 0){
-		[_placeHolderLabel setString:[self placeHolder]];
-	}
-	
-	[_barSprite setPosition:cmmFuncCommon_positionInParent(self, _barSprite)];
+	[_placeHolderLabel setVisible:([[self itemValue] length] == 0)];
+	[_barSprite setPosition:cmmFunc_positionIPN(self, _barSprite)];
 }
 -(void)redrawWithBar{
 	CGRect targetTextureRect_ = CGRectZero;

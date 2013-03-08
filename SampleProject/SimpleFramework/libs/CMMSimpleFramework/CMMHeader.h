@@ -17,14 +17,13 @@
 #import "CMMDeprecated.h"
 
 #import "CMMGLView.h"
-#import "CMMViewController.h"
 
 #import "CMMScene.h"
 #import "CMMLayer.h"
 #import "CMMLayerM.h"
 #import "CMMLayerMD.h"
 #import "CMMSprite.h"
-#import "CMMSpriteBatchBar.h"
+#import "CMM9SliceBar.h"
 
 #import "CMMTouchDispatcher.h"
 #import "CMMPopupView.h"
@@ -74,6 +73,7 @@
 #import "CMMControlItemSwitch.h"
 #import "CMMControlItemSlider.h"
 #import "CMMControlItemText.h"
+#import "CMMControlItemCheckbox.h"
 
 #import "CMMCustomUI.h"
 #import "CMMCustomUIJoypad.h"

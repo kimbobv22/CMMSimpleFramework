@@ -17,13 +17,13 @@
 	[self addChild:tempButton_];
 	
 	CCLabelTTF *tempLabel_ = [CMMFontUtil labelWithString:@"change template to push the button"];
-	CGPoint tempPoint_ = cmmFuncCommon_positionInParent(self, tempLabel_);
+	CGPoint tempPoint_ = cmmFunc_positionIPN(self, tempLabel_);
 	tempPoint_.y += 100;
 	tempLabel_.position = tempPoint_;
 	[self addChild:tempLabel_];
 	
 	tempButton_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
-	tempButton_.position = cmmFuncCommon_positionInParent(self, tempButton_);
+	tempButton_.position = cmmFunc_positionIPN(self, tempButton_);
 	[tempButton_ setTitle:@"Scale"];
 	tempButton_.callback_pushup = ^(CMMMenuItem *menuItem_){
 		[[CMMScene sharedScene] noticeDispatcher].noticeTemplate = [CMMNoticeDispatcherTemplate_DefaultScale templateWithNoticeDispatcher:[[CMMScene sharedScene] noticeDispatcher]];
@@ -31,7 +31,7 @@
 	[self addChild:tempButton_];
 	
 	tempButton_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
-	tempPoint_ = cmmFuncCommon_positionInParent(self, tempButton_);
+	tempPoint_ = cmmFunc_positionIPN(self, tempButton_);
 	tempPoint_.x -= tempButton_.contentSize.width+10;
 	tempButton_.position = tempPoint_;
 	[tempButton_ setTitle:@"MoveDown"];
@@ -41,7 +41,7 @@
 	[self addChild:tempButton_];
 	
 	tempButton_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
-	tempPoint_ = cmmFuncCommon_positionInParent(self, tempButton_);
+	tempPoint_ = cmmFunc_positionIPN(self, tempButton_);
 	tempPoint_.x += tempButton_.contentSize.width+10;
 	tempButton_.position = tempPoint_;
 	[tempButton_ setTitle:@"FadeInOut"];
@@ -57,7 +57,7 @@
 			CCLOG(@"notice completed!");
 		}];
 	};
-	tempPoint_ = cmmFuncCommon_positionInParent(self, tempLabel_);
+	tempPoint_ = cmmFunc_positionIPN(self, tempLabel_);
 	tempPoint_.y -= 70;
 	tempButton_.position = tempPoint_;
 	[self addChild:tempButton_];
