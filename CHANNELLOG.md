@@ -1,3 +1,6 @@
+##Version 1.2.3
+// todo
+
 ##Version 1.2.2
 * [FIX] fix an issue that caused the file path in the `CMMDrawingManager`
 * [FIX] change the name of the macro.

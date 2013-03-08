@@ -15,8 +15,8 @@
 
 @implementation CMMSBlockObject(Box2d)
 
--(void)buildupBody{
-	body = [[stage world] createBody:b2_staticBody point:_position angle:0.0f];
+-(void)buildupBodyWithWorld:(CMMStageWorld *)world_{
+	body = [world_ createBody:b2_staticBody point:_position angle:0.0f];
 	body->SetUserData(self);
 	
 	CMMBlockType blockType_ = [blockItem blockType];

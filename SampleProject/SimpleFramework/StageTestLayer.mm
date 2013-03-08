@@ -535,8 +535,8 @@
 
 @implementation TestHero(Box2d)
 
--(void)buildupBody{
-	[super buildupBody];
+-(void)buildupBodyWithWorld:(CMMStageWorld *)world_{
+	[super buildupBodyWithWorld:world_];
 	
 	b2Vec2 targetSize_ = b2Vec2FromSize_PTM_RATIO(CGSizeMake(_contentSize.width*0.3f, _contentSize.height*0.3f));
 	b2PolygonShape bodyBox_;
