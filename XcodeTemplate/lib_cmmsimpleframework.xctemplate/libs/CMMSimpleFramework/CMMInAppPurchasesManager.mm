@@ -65,12 +65,12 @@ static CMMInAppPurchasesManager *_sharedCMMInAppPurchasesManager_ = nil;
 		[products addObject:product_];
 	}
 	
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(inAppPurchasesManagerDidReceiveProducts:))){
+	if(cmmFunc_respondsToSelector(delegate, @selector(inAppPurchasesManagerDidReceiveProducts:))){
 		[delegate inAppPurchasesManagerDidReceiveProducts:self];
 	}
 }
 -(void)request:(SKRequest *)request didFailWithError:(NSError *)error{
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(inAppPurchasesManager:didFailedReceivingProductsWithError:))){
+	if(cmmFunc_respondsToSelector(delegate, @selector(inAppPurchasesManager:didFailedReceivingProductsWithError:))){
 		[delegate inAppPurchasesManager:self didFailedReceivingProductsWithError:error];
 	}
 }
@@ -78,7 +78,7 @@ static CMMInAppPurchasesManager *_sharedCMMInAppPurchasesManager_ = nil;
 -(void)paymentQueue:(SKPaymentQueue *)queue updatedTransactions:(NSArray *)transactions{
 	for(SKPaymentTransaction *transaction_ in transactions){
 		SKPaymentTransactionState state_ = [transaction_ transactionState];
-		if(cmmFuncCommon_respondsToSelector(delegate, @selector(inAppPurchasesManager:paymentTransaction:didUpdateState:))){
+		if(cmmFunc_respondsToSelector(delegate, @selector(inAppPurchasesManager:paymentTransaction:didUpdateState:))){
 			[delegate inAppPurchasesManager:self paymentTransaction:transaction_ didUpdateState:state_];
 		}
 		
@@ -93,7 +93,7 @@ static CMMInAppPurchasesManager *_sharedCMMInAppPurchasesManager_ = nil;
 	}
 }
 -(void)paymentQueue:(SKPaymentQueue *)queue restoreCompletedTransactionsFailedWithError:(NSError *)error{
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(inAppPurchasesManager:didFailedRestoreWithError:))){
+	if(cmmFunc_respondsToSelector(delegate, @selector(inAppPurchasesManager:didFailedRestoreWithError:))){
 		[delegate inAppPurchasesManager:self didFailedRestoreWithError:error];
 	}
 }

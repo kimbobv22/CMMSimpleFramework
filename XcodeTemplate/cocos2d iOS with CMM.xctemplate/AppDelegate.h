@@ -1,7 +1,10 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#import <UIKit/UIKit.h>
-#import "cocos2d.h"
+#import "CMMHeader.h"
+
+@interface MyViewController : UINavigationController
+
+@end
 
 @interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>{
 	UIWindow *window_;

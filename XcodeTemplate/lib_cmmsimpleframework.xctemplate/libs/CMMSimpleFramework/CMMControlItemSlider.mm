@@ -25,8 +25,10 @@
 -(id)initWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_{
 	
 	CGSize sliderSize_ = CGSizeMake(width_, [maskSprite_ contentSize].height);
-	_maskSprite = [[CMMSpriteBatchBar batchBarWithTargetSprite:maskSprite_  batchBarSize:sliderSize_] retain];
-	_barSprite = [CMMSpriteBatchBar batchBarWithTargetSprite:barSprite_ batchBarSize:sliderSize_];
+	_maskSprite = [[CMM9SliceBar sliceBarWithTargetSprite:maskSprite_] retain];
+	[_maskSprite setContentSize:sliderSize_];
+	_barSprite = [CMM9SliceBar sliceBarWithTargetSprite:barSprite_];
+	[_barSprite setContentSize:sliderSize_];
 	
 	_resultBackSprite = [CCSprite node];
 	
@@ -52,8 +54,6 @@
 	[self setMinValue:0.0f];
 	[self setMaxValue:10.0f];
 	[self setItemValue:0.0f];
-	
-	[self scheduleUpdate];
 	
 	return self;
 }
@@ -81,17 +81,11 @@
 	[self redrawWithBar];
 }
 
--(void)setColor:(ccColor3B)color{
-	[super setColor:color];
-	[_barSprite setColor:color];
-	[buttonItem setColor:color];
-	[_resultBackSprite setColor:color];
-}
--(void)setOpacity:(GLubyte)opacity{
-	[super setOpacity:opacity];
-	[_barSprite setOpacity:opacity];
-	[buttonItem setOpacity:opacity];
-	[_resultBackSprite setOpacity:opacity];
+-(void)setEnable:(BOOL)enable_{
+	[super setEnable:enable_];
+	[_barSprite setColor:(enable?ccWHITE:disabledColor)];
+	[buttonItem setColor:(enable?ccWHITE:disabledColor)];
+	[_resultBackSprite setColor:(enable?ccWHITE:disabledColor)];
 }
 
 -(void)setButtonSprite:(CCSprite *)buttonSprite_{
@@ -155,29 +149,26 @@
 	
 	[render_ begin];
 	[render_ addChild:_maskSprite];
-	[_maskSprite setPosition:cmmFuncCommon_positionInParent(self,_maskSprite)];
+	
+	ccGLBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	[_maskSprite setPosition:cmmFunc_positionIPN(self,_maskSprite)];
 	[_maskSprite visit];
 	[_maskSprite removeFromParentAndCleanup:YES];
 	
 	CGPoint buttonPoint_ = [buttonItem position];
 	
 	ccGLBlendFunc(GL_DST_ALPHA, GL_ZERO);
-	glLineWidth(_contentSize.height);
-	
-	ccDrawColor4B(backColorL.r, backColorL.g, backColorL.b, _realOpacity);
-	ccDrawLine(ccp(0.0f,_contentSize.height/2.0f), ccp(buttonPoint_.x,_contentSize.height/2.0f));
-	
-	ccDrawColor4B(backColorR.r, backColorR.g, backColorR.b, _realOpacity);
-	ccDrawLine(ccp(buttonPoint_.x,_contentSize.height/2.0f), ccp(_contentSize.width,_contentSize.height/2.0f));
+	ccDrawSolidRect(CGPointZero, ccp(buttonPoint_.x,_contentSize.height),ccc4f(backColorL.r/255.0f, backColorL.g/255.0f, backColorL.b/255.0f, _realOpacity/255.0f));
+	ccDrawSolidRect(ccp(buttonPoint_.x,0.0f), ccp(_contentSize.width,_contentSize.height),ccc4f(backColorR.r/255.0f, backColorR.g/255.0f, backColorR.b/255.0f, _realOpacity/255.0f));
 	
 	[render_ end];
 	
-	[_resultBackSprite setTexture:render_.sprite.texture];
+	[_resultBackSprite setTexture:[[render_ sprite] texture]];
 	CGRect targetTextureRect_ = CGRectZero;
 	targetTextureRect_.size = _contentSize;
 	[_resultBackSprite setTextureRect:targetTextureRect_];
 	_resultBackSprite.position = ccp(_contentSize.width/2,_contentSize.height/2);
-	[_barSprite setPosition:cmmFuncCommon_positionInParent(self, _barSprite)];
+	[_barSprite setPosition:cmmFunc_positionIPN(self, _barSprite)];
 }
 
 -(void)redrawWithBar{

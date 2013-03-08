@@ -120,7 +120,7 @@ static CMMScene *_sharedScene_ = nil;
 	[transitionLayer removeFromParentAndCleanup:YES];
 	[runningLayer setTouchEnabled:YES];
 	isOnTransition = NO;
-	if(cmmFuncCommon_respondsToSelector(runningLayer, @selector(sceneDidEndTransition:))){
+	if(cmmFunc_respondsToSelector(runningLayer, @selector(sceneDidEndTransition:))){
 		[runningLayer sceneDidEndTransition:self];
 	}
 	

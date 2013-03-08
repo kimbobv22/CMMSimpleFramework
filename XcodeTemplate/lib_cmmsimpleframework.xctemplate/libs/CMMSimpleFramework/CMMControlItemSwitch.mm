@@ -34,8 +34,6 @@
 	[self addChild:_resultBackSprite z:0];
 	[self setItemValue:NO];
 	
-	[self scheduleUpdate];
-	
 	return self;
 	
 }
@@ -54,17 +52,11 @@
 	return [self initWithMaskSprite:maskSprite_ backSprite:backSprite_ buttonSprite:buttonSprite_];
 }
 
--(void)setColor:(ccColor3B)color{
-	[super setColor:color];
-	[_backSprite setColor:color];
-	[buttonItem setColor:color];
-	[_resultBackSprite setColor:color];
-}
--(void)setOpacity:(GLubyte)opacity{
-	[super setOpacity:opacity];
-	[_backSprite setOpacity:opacity];
-	[buttonItem setOpacity:opacity];
-	[_resultBackSprite setOpacity:opacity];
+-(void)setEnable:(BOOL)enable_{
+	[super setEnable:enable_];
+	[_backSprite setColor:(enable?ccWHITE:disabledColor)];
+	[buttonItem setColor:(enable?ccWHITE:disabledColor)];
+	[_resultBackSprite setColor:(enable?ccWHITE:disabledColor)];
 }
 
 -(void)setButtonSprite:(CCSprite *)buttonSprite_{
@@ -98,7 +90,7 @@
 
 -(void)redraw{
 	[super redraw];
-	CGSize frameSize_ = self.contentSize;
+	CGSize frameSize_ = _contentSize;
 	CCRenderTexture *render_ = [CCRenderTexture renderTextureWithWidth:frameSize_.width height:frameSize_.height];
 	[render_ begin];
 	[CMMDrawingUtil drawMask:render_ sprite:_backSprite spritePoint:[buttonItem position] maskSprite:_maskSprite maskPoint:ccp(frameSize_.width/2,frameSize_.height/2)];

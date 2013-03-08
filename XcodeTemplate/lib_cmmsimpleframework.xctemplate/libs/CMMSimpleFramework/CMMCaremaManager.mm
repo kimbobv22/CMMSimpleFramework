@@ -5,7 +5,7 @@
 static CMMCaremaManager *_sharedCMMCaremaManager_ = nil;
 
 @implementation CMMCaremaManager
-@synthesize delegate,imageLimitSize;
+@synthesize delegate,imageLimitSize,returnType;
 
 +(CMMCaremaManager *)sharedManager{
 	if(!_sharedCMMCaremaManager_){
@@ -20,23 +20,29 @@ static CMMCaremaManager *_sharedCMMCaremaManager_ = nil;
 	
 	_IMAGE_SEQ_ = 0;
 	imageLimitSize = [[CCDirector sharedDirector] winSize];
+	returnType = CMMCaremaManagerReturnType_CCTexture2D;
 	
 	return self;
 }
 
--(void)openCameraWithSourceType:(UIImagePickerControllerSourceType)sourceType_{
+-(void)openCameraWithSourceType:(UIImagePickerControllerSourceType)sourceType_ callback:(void(^)(UIImagePickerController *picker_))callback_{
 	UIImagePickerController *imagePicker_ = [[[UIImagePickerController alloc] init] autorelease];
+	
 	[imagePicker_ setSourceType:sourceType_];
 	[imagePicker_ setDelegate:self];
 	
 	[[CMMScene sharedScene] presentViewController:imagePicker_ animated:YES completion:nil];
+	if(callback_) callback_(imagePicker_); //issue
+}
+-(void)openCameraWithSourceType:(UIImagePickerControllerSourceType)sourceType_{
+	[self openCameraWithSourceType:sourceType_ callback:nil];
 }
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(cameraManager:whenReturnedImageTexture:))){
+	if(cmmFunc_respondsToSelector(delegate, @selector(cameraManager:whenReturnedImageTexture:))){
 		UIImage *targetImage_ = [info objectForKey:UIImagePickerControllerOriginalImage];
 		CGSize targetImageSize_ = [targetImage_ size];
-
+		
 		//resize
 		float resultResizeRate_ = 1.0f;
 		if(imageLimitSize.width < targetImageSize_.width){
@@ -60,19 +66,29 @@ static CMMCaremaManager *_sharedCMMCaremaManager_ = nil;
 		targetImage_ = UIGraphicsGetImageFromCurrentImageContext();
 		UIGraphicsEndImageContext();
 		
-		NSString *textureKey_ = [NSString stringWithFormat:@"%@%04d",cmmVarCMMCaremaManager_textureSeqName,++_IMAGE_SEQ_];
-		CCTexture2D *imageTexture_ = [[CCTextureCache sharedTextureCache] addCGImage:[targetImage_ CGImage]  forKey:textureKey_];
+		switch(returnType){
+			case CMMCaremaManagerReturnType_UIImage:{
+				[delegate cameraManager:self whenReturnedUIImage:targetImage_];
+				break;
+			}
+			case CMMCaremaManagerReturnType_CCTexture2D:
+			default:{
+				NSString *textureKey_ = [NSString stringWithFormat:@"%@%04d",cmmVarCMMCaremaManager_textureSeqName,++_IMAGE_SEQ_];
+				CCTexture2D *imageTexture_ = [[CCTextureCache sharedTextureCache] addCGImage:[targetImage_ CGImage]  forKey:textureKey_];
 #if COCOS2D_DEBUG >= 1
-		CCLOG(@"CMMCaremaManager : add texture from UIImage [ %@ ]",textureKey_);
+				CCLOG(@"CMMCaremaManager : add texture from UIImage [ %@ ]",textureKey_);
 #endif
-		
-		[delegate cameraManager:self whenReturnedImageTexture:imageTexture_];
+				
+				[delegate cameraManager:self whenReturnedImageTexture:imageTexture_];
+				break;
+			}
+		}
 	}
-
+	
 	[picker dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
-	if(cmmFuncCommon_respondsToSelector(delegate, @selector(cameraManager_whenCancelled:))){
+	if(cmmFunc_respondsToSelector(delegate, @selector(cameraManager_whenCancelled:))){
 		[delegate cameraManager_whenCancelled:self];
 	}
 	

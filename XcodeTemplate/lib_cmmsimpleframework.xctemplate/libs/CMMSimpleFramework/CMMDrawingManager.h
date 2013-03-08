@@ -13,6 +13,9 @@ typedef enum{
 	
 	CMMDrawingManagerItemKey_text_bar,
 	
+	CMMDrawingManagerItemKey_checkbox_back,
+	CMMDrawingManagerItemKey_checkbox_check,
+	
 	CMMDrawingManagerItemKey_maxCount,
 } CMMDrawingManagerItemKey;
 

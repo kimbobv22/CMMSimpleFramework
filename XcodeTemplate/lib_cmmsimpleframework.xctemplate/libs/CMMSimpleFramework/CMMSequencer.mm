@@ -120,9 +120,9 @@
 	CMMSequenceBlock *sBlock_ = [sequences objectAtIndex:sequenceIndex];
 	switch([sBlock_ queueType]){
 		case CMMSequenceQueueType_background:{
-			cmmFuncCallDispatcher_backQueue(^{
+			cmmFunc_callBackQueue(^{
 				[sBlock_ block]();
-				cmmFuncCallDispatcher_mainQueue(^{
+				cmmFunc_callMainQueue(^{
 					[self _callbackSequence];
 				});
 			});

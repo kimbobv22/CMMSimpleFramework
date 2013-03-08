@@ -1,7 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMControlItem.h"
-#import "CMMSpriteBatchBar.h"
+#import "CMM9SliceBar.h"
 #import "CMMFontUtil.h"
 
 @class CMMControlItemText;
@@ -9,10 +9,9 @@
 
 @interface CMMControlItemText : CMMControlItem<UITextFieldDelegate>{
 	CCLabelTTF *_textLabel,*_placeHolderLabel;
-	CMMSpriteBatchBar *_barSprite;
+	CMM9SliceBar *_barSprite;
 	
 	NSString *itemValue;
-	ccColor3B disableColor;
 	
 	UIView *_backView;
 	UILabel *_textTitleLabel;
@@ -23,16 +22,16 @@
 	BOOL (^filter_shouldShowKeypad)(),(^filter_shouldHideKeypad)();
 }
 
-+(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ width:(float)width_ height:(float)height_;
++(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ frameSize:(CGSize)frameSize_;
 +(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ width:(float)width_;
 
-+(id)controlItemTextWithFrameSeq:(int)frameSeq_ width:(float)width_ height:(float)height_;
++(id)controlItemTextWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_;
 +(id)controlItemTextWithFrameSeq:(int)frameSeq_ width:(float)width_;
 
--(id)initWithBarSprite:(CCSprite *)barSprite_ width:(float)width_ height:(float)height_;
+-(id)initWithBarSprite:(CCSprite *)barSprite_ frameSize:(CGSize)frameSize_;
 -(id)initWithBarSprite:(CCSprite *)barSprite_ width:(float)width_;
 
--(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_ height:(float)height_;
+-(id)initWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_;
 -(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_;
 
 -(void)redrawWithBar;
@@ -41,7 +40,6 @@
 -(void)hideTextField;
 
 @property (nonatomic, copy) NSString *itemValue;
-@property (nonatomic, readwrite) ccColor3B disableColor;
 @property (nonatomic, assign) NSString *title;
 
 @property (nonatomic, readonly) CCLabelTTF *textLabel;
@@ -53,6 +51,7 @@
 @property (nonatomic, readwrite) GLubyte placeHolderOpacity;
 
 @property (nonatomic, readwrite, getter = isPasswordForm) BOOL passwordForm;
+@property (nonatomic, readwrite) UIKeyboardType keyboardType;
 
 @property (nonatomic, copy) void (^callback_whenItemValueChanged)(NSString *itemValue_);
 @property (nonatomic, copy) void (^callback_whenReturnKeyEntered)(),(^callback_whenKeypadShown)(),(^callback_whenKeypadHidden)();

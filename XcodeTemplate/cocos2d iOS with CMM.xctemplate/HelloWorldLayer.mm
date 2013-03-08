@@ -23,10 +23,10 @@
 		return YES;
 	}];
 	
-	[scrollMenu1 setPosition:cmmFuncCommon_positionInParent(self, scrollMenu1,ccp(0.5f,0.6f),ccp(scrollSize_.width*0.5f+5.0f,0.0f))];
+	[scrollMenu1 setPosition:cmmFunc_positionIPN(self, scrollMenu1,ccp(0.5f,0.6f),ccp(scrollSize_.width*0.5f+5.0f,0.0f))];
 	
 	scrollMenu2 = [CMMScrollMenuV scrollMenuWithFrameSeq:0 batchBarSeq:1 frameSize:scrollSize_];
-	[scrollMenu2 setPosition:cmmFuncCommon_positionInParent(self, scrollMenu1,ccp(0.5f,0.6f),ccp(-scrollSize_.width*0.5f-5.0f,0.0f))];
+	[scrollMenu2 setPosition:cmmFunc_positionIPN(self, scrollMenu1,ccp(0.5f,0.6f),ccp(-scrollSize_.width*0.5f-5.0f,0.0f))];
 	
 	[self addChild:scrollMenu1 z:1];
 	[self addChild:scrollMenu2 z:0];
@@ -42,8 +42,8 @@
 		[self removeMenuItem:[scrollMenu2 itemAtIndex:0]];
 	}];
 	
-	[btnAdd_ setPosition:cmmFuncCommon_positionFromOtherNode(scrollMenu1, btnAdd_, ccp(0.0f,-1.0f),ccp(0.0f,-10.0f))];
-	[btnRemove_ setPosition:cmmFuncCommon_positionFromOtherNode(scrollMenu2, btnRemove_, ccp(0.0f,-1.0f),ccp(0.0f,-10.0f))];
+	[btnAdd_ setPosition:cmmFunc_positionFON(scrollMenu1, btnAdd_, ccp(0.0f,-1.0f),ccp(0.0f,-10.0f))];
+	[btnRemove_ setPosition:cmmFunc_positionFON(scrollMenu2, btnRemove_, ccp(0.0f,-1.0f),ccp(0.0f,-10.0f))];
 	
 	[self addChild:btnAdd_];
 	[self addChild:btnRemove_];

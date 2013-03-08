@@ -288,7 +288,7 @@ static CGPoint(^_staticCMMScrollMenuV_block_filter_offsetOfDraggedItem)(CGPoint 
 	for(int index_=0;index_<count_;++index_){
 		CMMMenuItem *item_ = data_->arr[index_];
 		CGSize itemSize_ = [item_ contentSize];
-		CGPoint targetPoint_ = cmmFuncCommon_positionInParent(self, item_);
+		CGPoint targetPoint_ = cmmFunc_positionIPN(self, item_);
 		targetPoint_.y = innerSize_.height-(totalItemHeight_+itemSize_.height*(1.0f-item_.anchorPoint.y));
 		targetPoint_ = ccpAdd(item_.position, ccpMult(ccpSub(targetPoint_,item_.position), dt_*cmmVarCMMScrollMenu_defaultOrderingAccelRate));
 		item_.position = targetPoint_;
@@ -304,7 +304,7 @@ static CGPoint(^_staticCMMScrollMenuV_block_filter_offsetOfDraggedItem)(CGPoint 
 	NSAssert([item_ isKindOfClass:[CMMSprite class]], @"CMMScrolMenuH only support CMMSprite as children.");
 	[super addItem:item_ atIndex:index_];
 	
-	CGPoint targetPoint_ = cmmFuncCommon_positionInParent(self, item_);
+	CGPoint targetPoint_ = cmmFunc_positionIPN(self, item_);
 	targetPoint_.y = [innerLayer contentSize].height;
 	CMMMenuItem *preItem_ = [self itemAtIndex:index_-1];
 	if(preItem_) targetPoint_.y = preItem_.position.y-preItem_.contentSize.height;

@@ -210,16 +210,16 @@ static CCArray *_cachedNoticeDispatcherItems_ = nil;
 	CGSize templateSize_ = [noticeTemplate contentSize];
 	switch(noticePositionType){
 		case CMMNoticePositionType_top:{
-			targetPoint_ = cmmFuncCommon_positionInParent(target, noticeTemplate);
+			targetPoint_ = cmmFunc_positionIPN(target, noticeTemplate);
 			targetPoint_.y = target.contentSize.height-templateSize_.height*(1.0f-noticeTemplate.anchorPoint.y);
 			break;
 		}
 		case CMMNoticePositionType_center:{
-			targetPoint_ = cmmFuncCommon_positionInParent(target, noticeTemplate);
+			targetPoint_ = cmmFunc_positionIPN(target, noticeTemplate);
 			break;
 		}
 		case CMMNoticePositionType_bottom:{
-			targetPoint_ = cmmFuncCommon_positionInParent(target, noticeTemplate);
+			targetPoint_ = cmmFunc_positionIPN(target, noticeTemplate);
 			targetPoint_.y = templateSize_.height*noticeTemplate.anchorPoint.y;
 			break;
 		}

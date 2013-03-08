@@ -119,9 +119,9 @@ static SEL _sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_maxCount
 	for(int index_=data_->num-1;index_>=0;--index_){
 		CCNode<CMMTouchDispatcherDelegate> *child_ = data_->arr[index_];
 		if([CMMTouchUtil isNodeInTouch:child_ touch:touch_]
-		   && cmmFuncCommon_respondsToSelector(child_, _sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_TouchBegan])){
+		   && cmmFunc_respondsToSelector(child_, _sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_TouchBegan])){
 			
-			if(cmmFuncCommon_respondsToSelector(child_, _sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_TouchShouldAllow]))
+			if(cmmFunc_respondsToSelector(child_, _sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_TouchShouldAllow]))
 				if(![child_ touchDispatcher:self shouldAllowTouch:touch_ event:event_])
 					continue;
 			
@@ -166,7 +166,7 @@ static SEL _sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_maxCount
 		CCNode<CMMTouchDispatcherDelegate> *child_ = [touchItem_ node];
 		UITouch *touch_ = [touchItem_ touch];
 		if([touch_ phase] == touchPhase_
-		   && cmmFuncCommon_respondsToSelector(child_, _sharedCMMTouchDispatcher_TouchSelectors_[selectorID_])
+		   && cmmFunc_respondsToSelector(child_, _sharedCMMTouchDispatcher_TouchSelectors_[selectorID_])
 		   && [targetNodes_ indexOfObject:child_] == NSNotFound){
 			[targetNodes_ addObject:child_];
 			

@@ -1,11 +1,11 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMControlItem.h"
-#import "CMMSpriteBatchBar.h"
+#import "CMM9SliceBar.h"
 #import "CMMMenuItem.h"
 
 @interface CMMControlItemSlider : CMMControlItem{
-	CMMSpriteBatchBar *_maskSprite,*_barSprite;
+	CMM9SliceBar *_maskSprite,*_barSprite;
 	CCSprite *_resultBackSprite;
 	CMMMenuItem *buttonItem;
 	

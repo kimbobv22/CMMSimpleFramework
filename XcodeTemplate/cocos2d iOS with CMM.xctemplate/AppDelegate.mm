@@ -1,9 +1,19 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#import "cocos2d.h"
-
 #import "AppDelegate.h"
-#import "CMMHeader.h"
+
+@implementation MyViewController
+
+-(NSUInteger)supportedInterfaceOrientations{
+	UIApplication *application_ = [UIApplication sharedApplication];
+	return [application_ supportedInterfaceOrientationsForWindow:[application_ keyWindow]];
+}
+-(BOOL)shouldAutorotate{
+	return YES;
+}
+
+@end
+
 
 #import "HelloWorldLayer.h"
 
@@ -49,7 +59,7 @@
 		CCLOG(@"Retina Display Not supported");
 
 	// Create a Navigation Controller with the Director
-	navController_ = [[CMMViewController alloc] initWithRootViewController:director_];
+	navController_ = [[MyViewController alloc] initWithRootViewController:director_];
 	navController_.navigationBarHidden = YES;
 	
 	// set the Navigation Controller as the root view controller

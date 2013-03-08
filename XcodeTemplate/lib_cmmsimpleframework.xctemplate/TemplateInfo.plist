@@ -153,6 +153,28 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMControlItemText.mm</string>
 		</dict>
+<key>libs/CMMSimpleFramework/CMMControlItemCheckbox.h</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>libs</string>
+				<string>CMMSimpleFramework</string>
+			</array>
+			<key>Path</key>
+			<string>libs/CMMSimpleFramework/CMMControlItemCheckbox.h</string>
+			<key>TargetIndices</key>
+			<array/>
+		</dict>
+		<key>libs/CMMSimpleFramework/CMMControlItemCheckbox.mm</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>libs</string>
+				<string>CMMSimpleFramework</string>
+			</array>
+			<key>Path</key>
+			<string>libs/CMMSimpleFramework/CMMControlItemCheckbox.mm</string>
+		</dict>
 		<key>libs/CMMSimpleFramework/CMMCustomUI.h</key>
 		<dict>
 			<key>Group</key>
@@ -969,7 +991,7 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMSprite.mm</string>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMSpriteBatchBar.h</key>
+		<key>libs/CMMSimpleFramework/CMM9SliceBar.h</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -977,11 +999,11 @@
 				<string>CMMSimpleFramework</string>
 			</array>
 			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMSpriteBatchBar.h</string>
+			<string>libs/CMMSimpleFramework/CMM9SliceBar.h</string>
 			<key>TargetIndices</key>
 			<array/>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMSpriteBatchBar.mm</key>
+		<key>libs/CMMSimpleFramework/CMM9SliceBar.mm</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -989,7 +1011,7 @@
 				<string>CMMSimpleFramework</string>
 			</array>
 			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMSpriteBatchBar.mm</string>
+			<string>libs/CMMSimpleFramework/CMM9SliceBar.mm</string>
 		</dict>
 		<key>libs/CMMSimpleFramework/CMMSSpec.h</key>
 		<dict>
@@ -1301,28 +1323,6 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMTimeIntervalArray.mm</string>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMViewController.h</key>
-		<dict>
-			<key>Group</key>
-			<array>
-				<string>libs</string>
-				<string>CMMSimpleFramework</string>
-			</array>
-			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMViewController.h</string>
-			<key>TargetIndices</key>
-			<array/>
-		</dict>
-		<key>libs/CMMSimpleFramework/CMMViewController.mm</key>
-		<dict>
-			<key>Group</key>
-			<array>
-				<string>libs</string>
-				<string>CMMSimpleFramework</string>
-			</array>
-			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMViewController.mm</string>
-		</dict>
 		<key>libs/CCMutableTexture2D.h</key>
 		<dict>
 			<key>Group</key>
@@ -1419,6 +1419,8 @@
 		<string>libs/CMMSimpleFramework/CMMControlItemSwitch.mm</string>
 		<string>libs/CMMSimpleFramework/CMMControlItemText.h</string>
 		<string>libs/CMMSimpleFramework/CMMControlItemText.mm</string>
+<string>libs/CMMSimpleFramework/CMMControlItemCheckbox.h</string>
+		<string>libs/CMMSimpleFramework/CMMControlItemCheckbox.mm</string>
 		<string>libs/CMMSimpleFramework/CMMCustomUI.h</string>
 		<string>libs/CMMSimpleFramework/CMMCustomUI.mm</string>
 		<string>libs/CMMSimpleFramework/CMMCustomUIJoypad.h</string>
@@ -1493,8 +1495,8 @@
 		<string>libs/CMMSimpleFramework/CMMSPMapObject.mm</string>
 		<string>libs/CMMSimpleFramework/CMMSprite.h</string>
 		<string>libs/CMMSimpleFramework/CMMSprite.mm</string>
-		<string>libs/CMMSimpleFramework/CMMSpriteBatchBar.h</string>
-		<string>libs/CMMSimpleFramework/CMMSpriteBatchBar.mm</string>
+		<string>libs/CMMSimpleFramework/CMM9SliceBar.h</string>
+		<string>libs/CMMSimpleFramework/CMM9SliceBar.mm</string>
 		<string>libs/CMMSimpleFramework/CMMSSpec.h</string>
 		<string>libs/CMMSimpleFramework/CMMSSpec.mm</string>
 		<string>libs/CMMSimpleFramework/CMMSSpecObject.h</string>
@@ -1523,8 +1525,6 @@
 		<string>libs/CMMSimpleFramework/CMMTouchUtil.mm</string>
 		<string>libs/CMMSimpleFramework/CMMTimeIntervalArray.h</string>
 		<string>libs/CMMSimpleFramework/CMMTimeIntervalArray.mm</string>
-		<string>libs/CMMSimpleFramework/CMMViewController.h</string>
-		<string>libs/CMMSimpleFramework/CMMViewController.mm</string>
 		<string>libs/CCMutableTexture2D.h</string>
 		<string>libs/CCMutableTexture2D.m</string>
 		<string>libs/CCSpriteBatchNode+SplitSprite.h</string>
