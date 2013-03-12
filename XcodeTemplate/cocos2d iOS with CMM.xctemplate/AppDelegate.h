@@ -2,19 +2,19 @@
 
 #import "CMMHeader.h"
 
-@interface MyViewController : UINavigationController
+@interface MyViewController : UINavigationController<CCDirectorDelegate>
 
 @end
 
-@interface AppController : NSObject <UIApplicationDelegate, CCDirectorDelegate>{
+@interface AppController : NSObject <UIApplicationDelegate>{
 	UIWindow *window_;
-	UINavigationController *navController_;
-
+	MyViewController *navController_;
+	
 	CCDirectorIOS	*director_;							// weak ref
 }
 
 @property (nonatomic, retain) UIWindow *window;
-@property (readonly) UINavigationController *navController;
+@property (readonly) MyViewController *navController;
 @property (readonly) CCDirectorIOS *director;
 
 @end

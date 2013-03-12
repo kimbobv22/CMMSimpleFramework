@@ -1,5 +1,5 @@
-##Version 1.2.3
-// todo
+##Version 1.2.3 - Emergency patch
+* [FIX] fixed a bug(rotation) in the CMMScene (thanks to [**Jeff Lawton**](https://github.com/Zarkwizard))
 
 ##Version 1.2.2
 * [FIX] fix an issue that caused the file path in the `CMMDrawingManager`
