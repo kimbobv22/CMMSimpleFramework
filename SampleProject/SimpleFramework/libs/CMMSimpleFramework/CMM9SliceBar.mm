@@ -2,7 +2,10 @@
 
 #import "CMM9SliceBar.h"
 
-@implementation CMM9SliceBar
+@implementation CMM9SliceBar{
+	CCSprite *_barTopSprite,*_barBottomSprite,*_barLeftSprite,*_barRightSprite,*_backSprite,*_edge1Sprite,*_edge2Sprite,*_edge3Sprite,*_edge4Sprite;
+	BOOL _dirty;
+}
 @synthesize targetSprite,edgeOffset;
 
 +(id)sliceBarWithTargetSprite:(CCSprite *)targetSprite_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_{

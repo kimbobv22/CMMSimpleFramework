@@ -6,32 +6,38 @@
 	int targetIndex;
 }
 
+-(void)setTextureWithMenuItem:(CMMMenuItem *)menuItem_;
+
 @property (nonatomic, readwrite) int targetIndex;
 
 @end
 
-@interface CMMScrollMenuV : CMMScrollMenu{
-	CMMScrollMenuVItemDragView *_itemDragView;
-	ccTime _curDragStartDelayTime;
-	CGPoint _firstTouchPoint;
-	
+typedef CGPoint(^CMMScrollMenuVItemDragViewOffsetFilter)(CGPoint orginalPoint_, CGPoint targetPoint_,ccTime dt_);
+typedef void(^CMMScrollMenuVItemDragViewCallback)(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_, void(^callback_)(void) );
+
+@interface CMMScrollMenuV : CMMScrollMenu{	
 	float dragStartDelayTime,dragStartDistance;
 	
 	BOOL (^filter_canDragItem)(CMMMenuItem *item_);
-	CGPoint (^filter_offsetOfDraggedItem)(CGPoint orginalPoint_, CGPoint targetPoint_,ccTime dt_);
-	CCFiniteTimeAction *(^action_itemDragViewCancelled)(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_);
+	CMMScrollMenuVItemDragViewOffsetFilter filter_itemDragViewOffset;
+	CMMScrollMenuVItemDragViewCallback callback_itemDragViewAppeared;
+	CMMScrollMenuVItemDragViewCallback callback_itemDragViewDisappeared;
 }
 
 @property (nonatomic, readwrite) float dragStartDelayTime,dragStartDistance;
+@property (nonatomic, readonly) CMMScrollMenuVItemDragView *itemDragView;
 @property (nonatomic, copy) BOOL (^filter_canDragItem)(CMMMenuItem *item_);
-@property (nonatomic, copy) CGPoint (^filter_offsetOfDraggedItem)(CGPoint orginalPoint_, CGPoint targetPoint_,ccTime dt_);
-@property (nonatomic, copy) CCFiniteTimeAction * (^action_itemDragViewCancelled)(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_);
+@property (nonatomic, copy) CMMScrollMenuVItemDragViewOffsetFilter filter_itemDragViewOffset;
+@property (nonatomic, copy) CMMScrollMenuVItemDragViewCallback callback_itemDragViewAppeared;
+@property (nonatomic, copy) CMMScrollMenuVItemDragViewCallback callback_itemDragViewDisappeared;
 
 -(void)setFilter_canDragItem:(BOOL (^)(CMMMenuItem *item_))block_;
--(void)setFilter_offsetOfDraggedItem:(CGPoint (^)(CGPoint orginalPoint_, CGPoint targetPoint_,ccTime dt_))block_;
--(void)setAction_itemDragViewCancelled:(CCFiniteTimeAction *(^)(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_))block_;
+-(void)setFilter_itemDragViewOffset:(CMMScrollMenuVItemDragViewOffsetFilter)block_;
+-(void)setCallback_itemDragViewAppeared:(CMMScrollMenuVItemDragViewCallback)block_;
+-(void)setCallback_itemDragViewDisappeared:(CMMScrollMenuVItemDragViewCallback)block_;
 
-+(void)setDefaultFilter_offsetOfDraggedItem:(CGPoint (^)(CGPoint orginalPoint_, CGPoint targetPoint_,ccTime dt_))block_;
-+(void)setDefaultAction_itemDragViewCancelled:(CCFiniteTimeAction *(^)(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_))block_;
++(void)setDefaultFilter_itemDragViewOffset:(CMMScrollMenuVItemDragViewOffsetFilter)block_;
++(void)setDefaultCallback_itemDragViewAppeared:(CMMScrollMenuVItemDragViewCallback)block_;
++(void)setDefaultCallback_itemDragViewDisappeared:(CMMScrollMenuVItemDragViewCallback)block_;
 
 @end

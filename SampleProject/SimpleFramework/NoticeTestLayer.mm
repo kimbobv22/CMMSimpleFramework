@@ -12,7 +12,7 @@
 	[tempButton_ setTitle:@"BACK"];
 	tempButton_.position = ccp(tempButton_.contentSize.width/2+20,tempButton_.contentSize.height/2);
 	tempButton_.callback_pushup = ^(id sender_){
-		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
+		[[CMMScene sharedScene] pushStaticLayerForKey:_HelloWorldLayer_key_];
 	};
 	[self addChild:tempButton_];
 	

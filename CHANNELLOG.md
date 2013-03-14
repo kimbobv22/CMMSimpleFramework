@@ -1,3 +1,35 @@
+##Version 1.2.4
+* [FIX] **CMMScene** - `isOnTransition` variable name has changed `onTransition`
+* [FIX] **CMMScene** - classes & methods has been changed (*you need to migrate your source*)
+	* **[variable]** `staticLayerItemList` is unavailable
+	* **[variable]** `countOfStaticLayerItem` deprecated, replaced by `countOfStaticLayers`
+	* **[method]** `-(void)pushStaticLayerItem:` is unavailable
+	* **[method]** `-(void)pushStaticLayerItemAtKey:` deprecated, replaced by `-(void)pushStaticLayerForKey:(NSString *)key_`
+	* **[method]** `-(void)addStaticLayerItem:` is unavailable
+	* **[method]** `-(id)addStaticLayerItemWithLayer:atKey:` deprecated, replaced by `-(void)setStaticLayer:forKey:`
+	* **[method]** `-(void)removeStaticLayerItem:` is unavailable
+	* **[method]** `-(void)removeStaticLayerItemAtIndex:` is unavailable
+	* **[method]** `-(void)removeStaticLayerItemAtKey:` deprecated, replaced by `-(void)removeStaticLayerForKey:`
+	* **[method]** `-(void)removeAllStaticLayerItems` deprecated, replaced by `-(void)removeAllStaticLayers`
+	* **[method]** `-(id)staticLayerItemAtIndex:` is unavailable
+	* **[method]** `-(id)staticLayerItemAtKey:` deprecated, replaced by `-(CMMLayer *)staticLayerForKey:`
+	* **[method]** `-(id)staticLayerItemAtLayer:` is unavailable
+	
+	* **[method]** `-(uint)indexOfStaticLayerItem:` is unavailable
+	* **[method]** `-(uint)indexOfStaticLayerItemWithLayer:` is unavailable
+	* **[method]** `-(uint)indexOfStaticLayerItemWithKey:` is unavailable
+* [DEL] **CMMSceneStaticLayerItem** is unavailable
+* [FIX] **CMMSceneTransitionLayer** - methods has been changed (*you need to migrate your source*)
+	* **[method]** `-(void)startFadeInTransitionWithTarget:callbackSelector:` deprecated, replaced by `-(void)scene:didStartTransitionWithCallbackAction:`
+	* **[method]** `-(void)startFadeOutTransitionWithTarget:callbackSelector:` deprecated, replaced by `-(void)scene:didEndTransitionWithCallbackAction:`
+* [FIX] **CMMScrollMenuV** - classes & methods has been changed (*you need to migrate your source*)
+	* **[variable]** `filter_offsetOfDraggedItem` deprecated, replaced by `filter_itemDragViewOffset`
+	* **[variable]** `action_itemDragViewCancelled` is unavailable, replaced by `callback_itemDragViewDisappeared`
+	* **[variable,NEW]** `callback_itemDragViewAppeared` added
+	* **[method]** `+(void)setDefaultFilter_offsetOfDraggedItem:` deprecated, replaced by `+(void)setDefaultFilter_itemDragViewOffset:`
+	* **[method]** `+(void)setDefaultAction_itemDragViewCancelled:` is unavailable, replaced by `+(void)setDefaultCallback_itemDragViewDisappeared:`
+	* **[method,NEW]** `+(void)setDefaultCallback_itemDragViewAppeared:` added
+
 ##Version 1.2.3 - Emergency patch
 * [FIX] fixed a bug(rotation) in the CMMScene (thanks to [**Jeff Lawton**](https://github.com/Zarkwizard))
 

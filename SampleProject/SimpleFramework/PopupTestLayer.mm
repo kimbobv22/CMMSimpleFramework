@@ -70,7 +70,7 @@ static int _testPopupCount_ = 1;
 	menuItemClose = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemClose setTitle:@"BACK"];
 	[menuItemClose setCallback_pushup:^(id) {
-		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
+		[[CMMScene sharedScene] pushStaticLayerForKey:_HelloWorldLayer_key_];
 	}];
 	menuItemClose.position = ccp(menuItemClose.contentSize.width/2+20,menuItemClose.contentSize.height/2);
 	[self addChild:menuItemClose];

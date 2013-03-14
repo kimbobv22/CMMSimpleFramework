@@ -74,7 +74,7 @@
 	[backBtn_ setTitle:@"BACK"];
 	backBtn_.position = ccp(backBtn_.contentSize.width/2,backBtn_.contentSize.height/2);
 	backBtn_.callback_pushup = ^(id sender_){
-		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
+		[[CMMScene sharedScene] pushStaticLayerForKey:_HelloWorldLayer_key_];
 	};
 	[self addChild:backBtn_];
 	

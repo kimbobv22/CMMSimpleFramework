@@ -114,7 +114,7 @@
 	[menuItemButton_ setTitle:@"BACK"];
 	menuItemButton_.position = ccp(menuItemButton_.contentSize.width/2,menuItemButton_.contentSize.height/2);
 	menuItemButton_.callback_pushup = ^(id sender_){
-		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
+		[[CMMScene sharedScene] pushStaticLayerForKey:_HelloWorldLayer_key_];
 	};
 	[self addChild:menuItemButton_];
 	

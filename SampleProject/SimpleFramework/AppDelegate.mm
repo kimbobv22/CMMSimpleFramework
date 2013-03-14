@@ -47,7 +47,6 @@
 		CCSprite *defaultBackGround_ = [CCSprite spriteWithFile:@"IMG_CMN_DEFAULT_BACK.png"];
 		[defaultBackGround_ setPosition:cmmFunc_positionIPN([CMMScene sharedScene],defaultBackGround_)];
 		[[CMMScene sharedScene] setDefaultBackGroundNode:defaultBackGround_];
-		
 	}
 }
 

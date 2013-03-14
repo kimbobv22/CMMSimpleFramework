@@ -53,6 +53,12 @@ DEPRECATED_ATTRIBUTE inline static void cmmFuncCallDispatcher_backQueue(void(^bl
 #pragma mark - common view
 
 #import "CMMScene.h"
+#import "CMMLayer.h"
+#import "CMMLayerM.h"
+#import "CMMLayerMD.h"
+#import "CCSpriteBatchNode+SplitSprite.h"
+#import "CMM9SliceBar.h"
+#import "CMMDrawingManager.h"
 
 DEPRECATED_ATTRIBUTE @interface CMMViewController : UIViewController
 
@@ -66,7 +72,10 @@ DEPRECATED_ATTRIBUTE @interface CMMViewController : UIViewController
 
 @property (nonatomic, readwrite) ccColor3B transitionColor DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readwrite) ccTime fadeTime DEPRECATED_ATTRIBUTE;
-@property (nonatomic, readonly) id popupDispatcher;
+@property (nonatomic, readonly) id popupDispatcher DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readonly, getter = _isOnTransition) BOOL isOnTransition DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readonly) CCArray *staticLayerItemList UNAVAILABLE_ATTRIBUTE;
+@property (nonatomic, readonly) uint countOfStaticLayerItem DEPRECATED_ATTRIBUTE;
 
 -(void)setIsTouchEnable:(BOOL)isTouchEnable_ DEPRECATED_ATTRIBUTE;
 
@@ -76,11 +85,40 @@ DEPRECATED_ATTRIBUTE @interface CMMViewController : UIViewController
 -(void)openPopup:(CMMPopupLayer *)popup_ delegate:(id)delegate_ DEPRECATED_ATTRIBUTE;
 -(void)openPopupAtFirst:(CMMPopupLayer *)popup_ delegate:(id)delegate_ DEPRECATED_ATTRIBUTE;
 
+/////////////////static layer/////////////////////
+
+-(void)pushStaticLayerItem:(id)staticLayerItem_ UNAVAILABLE_ATTRIBUTE;
+-(void)pushStaticLayerItemAtKey:(NSString *)key_ DEPRECATED_ATTRIBUTE;
+
+-(void)addStaticLayerItem:(id)staticLayerItem_ UNAVAILABLE_ATTRIBUTE;
+-(id)addStaticLayerItemWithLayer:(CMMLayer *)layer_ atKey:(NSString *)key_ DEPRECATED_ATTRIBUTE;
+
+-(void)removeStaticLayerItem:(id)staticLayerItem_ UNAVAILABLE_ATTRIBUTE;
+-(void)removeStaticLayerItemAtIndex:(uint)index_ UNAVAILABLE_ATTRIBUTE;
+-(void)removeStaticLayerItemAtKey:(NSString *)key_ DEPRECATED_ATTRIBUTE;
+-(void)removeAllStaticLayerItems DEPRECATED_ATTRIBUTE;
+
+-(id)staticLayerItemAtIndex:(uint)index_ UNAVAILABLE_ATTRIBUTE;
+-(id)staticLayerItemAtKey:(NSString *)key_ DEPRECATED_ATTRIBUTE;
+-(id)staticLayerItemAtLayer:(CMMLayer *)layer_ UNAVAILABLE_ATTRIBUTE;
+
+-(uint)indexOfStaticLayerItem:(id)staticLayerItem_ UNAVAILABLE_ATTRIBUTE;
+-(uint)indexOfStaticLayerItemWithLayer:(CMMLayer *)layer_ UNAVAILABLE_ATTRIBUTE;
+-(uint)indexOfStaticLayerItemWithKey:(NSString *)key_ UNAVAILABLE_ATTRIBUTE;
+
 @end
 
-@interface CMMSceneStaticLayerItem(Deprecated)
+UNAVAILABLE_ATTRIBUTE @interface CMMSceneStaticLayerItem : NSObject{
+	NSString *key;
+	CMMLayer *layer;
+}
 
-@property (nonatomic, readwrite) BOOL isFirstLoad;
++(id)staticLayerItemWithLayer:(CMMLayer *)layer_ key:(NSString *)key_ DEPRECATED_ATTRIBUTE;
+-(id)initWithLayer:(CMMLayer *)layer_ key:(NSString *)key_ DEPRECATED_ATTRIBUTE;
+
+@property (nonatomic, copy) NSString *key DEPRECATED_ATTRIBUTE;
+@property (nonatomic, retain) CMMLayer *layer DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readwrite) BOOL isFirstLoad DEPRECATED_ATTRIBUTE;
 
 @end
 
@@ -96,12 +134,13 @@ UNAVAILABLE_ATTRIBUTE @protocol CMMSceneLoadingProtocol <NSObject>
 
 @end
 
-#import "CMMLayer.h"
-#import "CMMLayerM.h"
-#import "CMMLayerMD.h"
-#import "CCSpriteBatchNode+SplitSprite.h"
-#import "CMM9SliceBar.h"
-#import "CMMDrawingManager.h"
+
+@interface CMMSceneTransitionLayer(Deprecated)
+
+-(void)startFadeInTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_ DEPRECATED_ATTRIBUTE;
+-(void)startFadeOutTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_ DEPRECATED_ATTRIBUTE;
+
+@end
 
 @interface CMMLayer(Deprecated)
 
@@ -469,6 +508,16 @@ DEPRECATED_ATTRIBUTE @protocol CMMMenuItemSetDelegate<NSObject>
 
 @property (nonatomic, assign) id delegate DEPRECATED_ATTRIBUTE;
 @property (nonatomic, getter = _isCanSelectItem) BOOL isCanSelectItem DEPRECATED_ATTRIBUTE;
+
+@end
+
+@interface CMMScrollMenuV(Deprecated)
+
++(void)setDefaultFilter_offsetOfDraggedItem:(CGPoint (^)(CGPoint orginalPoint_, CGPoint targetPoint_,ccTime dt_))block_ DEPRECATED_ATTRIBUTE;
++(void)setDefaultAction_itemDragViewCancelled:(CCFiniteTimeAction *(^)(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_))block_ UNAVAILABLE_ATTRIBUTE;
+
+@property (nonatomic, copy) CCFiniteTimeAction * (^action_itemDragViewCancelled)(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_) UNAVAILABLE_ATTRIBUTE;
+@property (nonatomic, copy) CGPoint(^filter_offsetOfDraggedItem)(CGPoint orginalPoint_, CGPoint targetPoint_,ccTime dt_) DEPRECATED_ATTRIBUTE;
 
 @end
 

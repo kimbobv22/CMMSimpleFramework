@@ -30,6 +30,13 @@
 	[self setTouchEnable:isTouchEnable_];
 }
 -(id)popupDispatcher{return [self popupView];}
+-(BOOL)_isOnTransition{
+	return [self isOnTransition];
+}
+-(CCArray *)staticLayerItemList{return nil;}
+-(uint)countOfStaticLayerItem{
+	return [self countOfStaticLayers];
+}
 
 -(void)closePopup:(CMMPopupLayer *)popup_ withData:(id)data_{
 	[popup_ close];
@@ -44,6 +51,36 @@
 -(void)openPopupAtFirst:(CMMPopupLayer *)popup_ delegate:(id)delegate_{
 	[self openPopupAtFirst:popup_];
 }
+
+-(void)pushStaticLayerItem:(id)staticLayerItem_{}
+-(void)pushStaticLayerItemAtKey:(NSString *)key_{
+	[self pushStaticLayerForKey:key_];
+}
+
+-(void)addStaticLayerItem:(id)staticLayerItem_{}
+-(id)addStaticLayerItemWithLayer:(CMMLayer *)layer_ atKey:(NSString *)key_{
+	[self setStaticLayer:layer_ forKey:key_];
+	return layer_;
+}
+
+-(void)removeStaticLayerItem:(id)staticLayerItem_{}
+-(void)removeStaticLayerItemAtIndex:(uint)index_{}
+-(void)removeStaticLayerItemAtKey:(NSString *)key_{
+	[self removeStaticLayerForKey:key_];
+}
+-(void)removeAllStaticLayerItems{
+	[self removeAllStaticLayers];
+}
+
+-(id)staticLayerItemAtIndex:(uint)index_{return nil;}
+-(id)staticLayerItemAtKey:(NSString *)key_{
+	return [self staticLayerForKey:key_];
+}
+-(id)staticLayerItemAtLayer:(CMMLayer *)layer_{return nil;}
+
+-(uint)indexOfStaticLayerItem:(id)staticLayerItem_{return NSNotFound;}
+-(uint)indexOfStaticLayerItemWithLayer:(CMMLayer *)layer_{return NSNotFound;}
+-(uint)indexOfStaticLayerItemWithKey:(NSString *)key_{return NSNotFound;}
 
 -(void)sceneDidStartLoading:(CMMScene *)scene_{
 	NSAssert(FALSE, @"CMMSceneLoadingProtocol has been UNAVAILABLE");
@@ -60,10 +97,35 @@
 
 @end
 
-@implementation CMMSceneStaticLayerItem(Deprecated)
+@implementation CMMSceneStaticLayerItem
+@synthesize key,layer;
 
++(id)staticLayerItemWithLayer:(CMMLayer *)layer_ key:(NSString *)key_{
+	return [[[self alloc] initWithLayer:layer_ key:key_] autorelease];
+}
+-(id)initWithLayer:(CMMLayer *)layer_ key:(NSString *)key_{
+	if(!(self = [super init])) return self;
+	
+	[self setKey:key_];
+	[self setLayer:layer_];
+	
+	return self;
+}
 -(void)setIsFirstLoad:(BOOL)isFirstLoad{}
 -(BOOL)isFirstLoad{return NO;}
+
+-(void)dealloc{
+	[key release];
+	[layer release];
+	[super dealloc];
+}
+
+@end
+
+@implementation CMMSceneTransitionLayer(Deprecated)
+
+-(void)startFadeInTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_{}
+-(void)startFadeOutTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_{}
 
 @end
 
@@ -520,6 +582,27 @@
 }
 -(BOOL)_isCanSelectItem{
 	return [self isCanSelectItem];
+}
+
+@end
+
+@implementation CMMScrollMenuV(Deprecated)
+
++(void)setDefaultFilter_offsetOfDraggedItem:(CGPoint (^)(CGPoint orginalPoint_, CGPoint targetPoint_,ccTime dt_))block_{
+	[self setDefaultFilter_itemDragViewOffset:block_];
+}
++(void)setDefaultAction_itemDragViewCancelled:(CCFiniteTimeAction *(^)(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_))block_{
+//refer to
+//	[self setDefaultCallback_itemDragViewDisappeared:block_];
+}
+
+-(void)setAction_itemDragViewCancelled:(CCFiniteTimeAction *(^)(CMMScrollMenuVItemDragView *, CGPoint))action_itemDragViewCancelled{}
+-(CCFiniteTimeAction *(^)(CMMScrollMenuVItemDragView *, CGPoint))action_itemDragViewCancelled{return nil;}
+-(void)setFilter_offsetOfDraggedItem:(CGPoint (^)(CGPoint, CGPoint, ccTime))block_{
+	[self setFilter_itemDragViewOffset:block_];
+}
+-(CGPoint (^)(CGPoint, CGPoint, ccTime))filter_offsetOfDraggedItem{
+	return [self filter_itemDragViewOffset];
 }
 
 @end

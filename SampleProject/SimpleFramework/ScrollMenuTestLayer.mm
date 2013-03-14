@@ -12,7 +12,7 @@
 	[menuItemButton_ setTitle:@"BACK"];
 	menuItemButton_.position = ccp(menuItemButton_.contentSize.width/2+20,menuItemButton_.contentSize.height/2);
 	menuItemButton_.callback_pushup = ^(id sender_){
-		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
+		[[CMMScene sharedScene] pushStaticLayerForKey:_HelloWorldLayer_key_];
 	};
 	[self addChild:menuItemButton_];
 	
@@ -78,7 +78,6 @@
 
 @implementation ScrollMenuTestLayer_V
 
-
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
@@ -109,12 +108,6 @@
 	}];
 	[scrollMenu1 setCallback_whenTapAtIndex:^(int index_) {
 		[self _setDisplayStr:[NSString stringWithFormat:@"scrollMenu1 : whenTapAtIndex : %d",index_]];
-	}];
-	
-	[scrollMenu1 setAction_itemDragViewCancelled:^CCFiniteTimeAction *(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_) {
-		[itemDragView_ setScale:1.0f];
-		[itemDragView_ setOpacity:180];
-		return [CCSequence actions:[CCScaleTo actionWithDuration:0.2 scale:1.2f],[CCScaleTo actionWithDuration:0.2 scale:1.0f], nil];
 	}];
 	
 	scrollMenu1.position = ccpSub(cmmFunc_positionIPN(self, scrollMenu1),ccp(scrollMenu1.contentSize.width/2+20,-40));
@@ -149,9 +142,9 @@
 		[self _setDisplayStr:[NSString stringWithFormat:@"scrollMenu2 : whenTapAtIndex : %d",index_]];
 	}];
 	
-	[scrollMenu2 setFilter_offsetOfDraggedItem:^CGPoint(CGPoint orginalPoint_, CGPoint targetPoint_, ccTime dt_) {
+	/*[scrollMenu2 setFilter_itemDragViewOffset:^CGPoint(CGPoint orginalPoint_, CGPoint targetPoint_, ccTime dt_) {
 		return ccpAdd(orginalPoint_, ccpMult(ccpSub(targetPoint_, orginalPoint_), dt_*5.0f));
-	}];
+	}];*/
 	
 	scrollMenu2.position = ccpAdd(cmmFunc_positionIPN(self, scrollMenu2),ccp(scrollMenu2.contentSize.width/2+20,40));
 	[self addChild:scrollMenu2];
@@ -173,7 +166,7 @@
 		[scrollMenu2 addItem:menuItem_];
 	};
 	[self addChild:menuItemButton_];
-	
+		
 	menuItemButton_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemButton_ setTitle:@"BACK"];
 	menuItemButton_.position = ccp(menuItemButton_.contentSize.width/2+20,menuItemButton_.contentSize.height/2);

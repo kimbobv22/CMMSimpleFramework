@@ -1,7 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#define CMMSimpleFrameworkVersion 0x00010203
-#define CMMSimpleFrameworkVersionString @"CMMSimpleFramework v1.2.3"
+#define CMMSimpleFrameworkVersion 0x00010204
+#define CMMSimpleFrameworkVersionString @"CMMSimpleFramework v1.2.4"
 
 //common
 #import "cocos2d.h"

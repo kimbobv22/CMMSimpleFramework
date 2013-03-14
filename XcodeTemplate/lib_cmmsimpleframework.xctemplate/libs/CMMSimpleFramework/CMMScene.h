@@ -6,23 +6,19 @@
 #import "CMMPopupView.h"
 #import "CMMNoticeDispatcher.h"
 
-@interface CMMSceneStaticLayerItem : NSObject{
-	NSString *key;
-	CMMLayer *layer;
-}
+@class CMMScene;
 
-+(id)staticLayerItemWithLayer:(CMMLayer *)layer_ key:(NSString *)key_;
--(id)initWithLayer:(CMMLayer *)layer_ key:(NSString *)key_;
+typedef void(^CMMSceneTransitionBlock)(void);
 
-@property (nonatomic, copy) NSString *key;
-@property (nonatomic, retain) CMMLayer *layer;
+@protocol CMMSceneTransitionLayerProtocol <NSObject>
+
+@required
+-(void)scene:(CMMScene *)scene_ didStartTransitionWithCallbackAction:(CCCallFunc *)callbackAction_;
+-(void)scene:(CMMScene *)scene_ didEndTransitionWithCallbackAction:(CCCallFunc *)callbackAction_;
 
 @end
 
-@interface CMMSceneTransitionLayer : CCLayerColor
-
--(void)startFadeInTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_;
--(void)startFadeOutTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_;
+@interface CMMSceneTransitionLayer : CCLayerColor<CMMSceneTransitionLayerProtocol>
 
 @end
 
@@ -56,11 +52,8 @@
 @interface CMMScene : CCScene<CMMGLViewTouchDelegate>{
 	CMMLayer *runningLayer;
 	
-	CCArray *_pushLayerList;
 	CMMSceneTransitionLayer *transitionLayer;
-	BOOL isOnTransition;
-	
-	CCArray *staticLayerItemList;
+	BOOL onTransition;
 	
 	CMMTouchDispatcher *touchDispatcher;
 	CMMPopupView *popupView;
@@ -78,9 +71,9 @@
 
 @property (nonatomic, readonly) CMMLayer *runningLayer;
 @property (nonatomic, retain) CMMSceneTransitionLayer *transitionLayer;
-@property (nonatomic, readonly) BOOL isOnTransition;
-@property (nonatomic, readonly) CCArray *staticLayerItemList;
-@property (nonatomic, readonly) uint countOfStaticLayerItem;
+@property (nonatomic, readonly, getter = isOnTransition) BOOL onTransition;
+@property (nonatomic, readonly) NSDictionary *staticLayers;
+@property (nonatomic, readonly) uint countOfStaticLayers;
 @property (nonatomic, readonly) CMMTouchDispatcher *touchDispatcher;
 @property (nonatomic, readonly) CMMPopupView *popupView;
 @property (nonatomic, readonly) CMMNoticeDispatcher *noticeDispatcher;
@@ -92,24 +85,14 @@
 
 @interface CMMScene(StaticLayer)
 
--(void)pushStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_;
--(void)pushStaticLayerItemAtKey:(NSString *)key_;
+-(void)setStaticLayer:(CMMLayer *)layer_ forKey:(NSString *)key_;
 
--(void)addStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_;
--(CMMSceneStaticLayerItem *)addStaticLayerItemWithLayer:(CMMLayer *)layer_ atKey:(NSString *)key_;
+-(void)removeStaticLayerForKey:(NSString *)key_;
+-(void)removeAllStaticLayers;
 
--(void)removeStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_;
--(void)removeStaticLayerItemAtIndex:(uint)index_;
--(void)removeStaticLayerItemAtKey:(NSString *)key_;
--(void)removeAllStaticLayerItems;
+-(CMMLayer *)staticLayerForKey:(NSString *)key_;
 
--(CMMSceneStaticLayerItem *)staticLayerItemAtIndex:(uint)index_;
--(CMMSceneStaticLayerItem *)staticLayerItemAtKey:(NSString *)key_;
--(CMMSceneStaticLayerItem *)staticLayerItemAtLayer:(CMMLayer *)layer_;
-
--(uint)indexOfStaticLayerItem:(CMMSceneStaticLayerItem *)staticLayerItem_;
--(uint)indexOfStaticLayerItemWithLayer:(CMMLayer *)layer_;
--(uint)indexOfStaticLayerItemWithKey:(NSString *)key_;
+-(void)pushStaticLayerForKey:(NSString *)key_;
 
 @end
 

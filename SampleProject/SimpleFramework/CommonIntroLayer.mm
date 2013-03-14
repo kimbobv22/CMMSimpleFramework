@@ -163,12 +163,12 @@
 	 static layer can be saved self state.
 	 */
 	CMMScene *scene_ = [CMMScene sharedScene];
-	[scene_ addStaticLayerItemWithLayer:[HelloWorldLayer node] atKey:_HelloWorldLayer_key_];
+	[scene_ setStaticLayer:[HelloWorldLayer node] forKey:_HelloWorldLayer_key_];
 	
 	/*
 	 push static layer to scene.
 	 */
-	[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
+	[[CMMScene sharedScene] pushStaticLayerForKey:_HelloWorldLayer_key_];
 }
 
 -(void)cleanup{

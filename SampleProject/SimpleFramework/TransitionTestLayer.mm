@@ -24,7 +24,7 @@
 	[door2 setContentSize:halfSize_];
 }
 
--(void)startFadeInTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_{
+-(void)scene:(CMMScene *)scene_ didStartTransitionWithCallbackAction:(CCCallFunc *)callbackAction_{
 	[door1 stopAllActions];
 	[door2 stopAllActions];
 	
@@ -32,14 +32,14 @@
 	[door2 setPosition:ccp(_contentSize.width,0)];
 	
 	[door1 runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(0,0)]];
-	[door2 runAction:[CCSequence actions:[CCMoveTo actionWithDuration:0.2f position:ccp(_contentSize.width*0.5f,0)],[CCDelayTime actionWithDuration:0.2f],[CCCallFunc actionWithTarget:target_ selector:selector_],nil]];
+	[door2 runAction:[CCSequence actions:[CCMoveTo actionWithDuration:0.2f position:ccp(_contentSize.width*0.5f,0)],[CCDelayTime actionWithDuration:0.2f],callbackAction_,nil]];	
 }
--(void)startFadeOutTransitionWithTarget:(id)target_ callbackSelector:(SEL)selector_{
+-(void)scene:(CMMScene *)scene_ didEndTransitionWithCallbackAction:(CCCallFunc *)callbackAction_{
 	[door1 stopAllActions];
 	[door2 stopAllActions];
 	
 	[door1 runAction:[CCMoveTo actionWithDuration:0.2f position:ccp(-_contentSize.width*0.5f,0)]];
-	[door2 runAction:[CCSequence actionOne:[CCMoveTo actionWithDuration:0.2f position:ccp(_contentSize.width,0)] two:[CCCallFunc actionWithTarget:target_ selector:selector_]]];
+	[door2 runAction:[CCSequence actions:[CCMoveTo actionWithDuration:0.2f position:ccp(_contentSize.width,0)],callbackAction_,nil]];
 }
 
 @end
@@ -52,7 +52,7 @@
 	CMMMenuItemL *menuItemBtn_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
 	[menuItemBtn_ setTitle:@"BACK"];
 	[menuItemBtn_ setCallback_pushup:^(id sender_){
-		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
+		[[CMMScene sharedScene] pushStaticLayerForKey:_HelloWorldLayer_key_];
 	}];
 	menuItemBtn_.position = ccp(menuItemBtn_.contentSize.width/2,menuItemBtn_.contentSize.height/2);
 	[self addChild:menuItemBtn_];

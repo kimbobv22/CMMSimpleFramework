@@ -50,7 +50,7 @@
 	[menuItemBack setTitle:@"BACK"];
 	menuItemBack.position = ccp(menuItemBack.contentSize.width/2+20,menuItemBack.contentSize.height/2+20);
 	[menuItemBack setCallback_pushup:^(id item_) {
-		[[CMMScene sharedScene] pushStaticLayerItemAtKey:_HelloWorldLayer_key_];
+		[[CMMScene sharedScene] pushStaticLayerForKey:_HelloWorldLayer_key_];
 	}];
 	[self addChild:menuItemBack];
 	

@@ -22,9 +22,6 @@ typedef CMM9SliceEdgeOffset CMM9SliceEdgeOffset;
 
 @interface CMM9SliceBar : CCSpriteBatchNode<CCRGBAProtocol>{
 	CCSprite *targetSprite;
-	CCSprite *_barTopSprite,*_barBottomSprite,*_barLeftSprite,*_barRightSprite,*_backSprite,*_edge1Sprite,*_edge2Sprite,*_edge3Sprite,*_edge4Sprite;
-	BOOL _dirty;
-	
 	CMM9SliceEdgeOffset edgeOffset;
 }
 
