@@ -118,12 +118,12 @@
 	[touchDispatcher setMaxMultiTouchCount:0];
 	
 	CMMDrawingManagerItem *drawingItem_ = [[CMMDrawingManager sharedManager] drawingItemAtIndex:0];
-	batchBar = [TestSliceBar sliceBarWithTargetSprite:[CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_text_bar]]];
+	batchBar = [TestSliceBar sliceBarWithTargetSprite:[CCSprite spriteWithSpriteFrame:[drawingItem_ batchBarFrameAtIndex:0]]];
 	[batchBar setContentSize:CGSizeMake(100, 40)];
 	[batchBar setPosition:ccp(10,80)];
 	[self addChild:batchBar];
 	
-	label = [CMMFontUtil labelWithString:@"Drag me!"];
+	label = [CMMFontUtil labelWithString:@"Drag here!"];
 	[label runAction:[CCRepeatForever actionWithAction:[CCBlink actionWithDuration:1 blinks:2]]];
 	[self addChild:label];
 	
