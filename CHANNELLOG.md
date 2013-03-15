@@ -1,3 +1,7 @@
+##Version 1.2.5
+* [NEW] **`CMMScrollMenuV`** improved ([**Jeff Lawton**](https://github.com/Zarkwizard)'s ideas)
+	* **[variable]** `switchMode` added
+
 ##Version 1.2.4
 * [FIX] **CMMScene** - `isOnTransition` variable name has changed `onTransition`
 * [FIX] **CMMScene** - classes & methods has been changed (*you need to migrate your source*)
