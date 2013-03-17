@@ -2,27 +2,36 @@
 
 #import "CMMDrawingUtil.h"
 
-typedef enum{
-	CMMDrawingManagerItemKey_switch_button,
-	CMMDrawingManagerItemKey_switch_back,
-	CMMDrawingManagerItemKey_switch_mask,
-	
-	CMMDrawingManagerItemKey_slider_bar,
-	CMMDrawingManagerItemKey_slider_button,
-	CMMDrawingManagerItemKey_slider_mask,
-	
-	CMMDrawingManagerItemKey_text_bar,
-	
-	CMMDrawingManagerItemKey_checkbox_back,
-	CMMDrawingManagerItemKey_checkbox_check,
-	
-	CMMDrawingManagerItemKey_maxCount,
-} CMMDrawingManagerItemKey;
+extern NSString *const CMMDrawingManagerItemFormatter_BatchBar;
+extern NSString *const CMMDrawingManagerItemFormatter_SwitchButton;
+extern NSString *const CMMDrawingManagerItemFormatter_SwitchBack;
+extern NSString *const CMMDrawingManagerItemFormatter_SwitchMask;
+extern NSString *const CMMDrawingManagerItemFormatter_SlideBar;
+extern NSString *const CMMDrawingManagerItemFormatter_SlideButton;
+extern NSString *const CMMDrawingManagerItemFormatter_SlideMask;
+extern NSString *const CMMDrawingManagerItemFormatter_TextBar;
+extern NSString *const CMMDrawingManagerItemFormatter_CheckboxBack;
+extern NSString *const CMMDrawingManagerItemFormatter_CheckboxCheck;
+
+@interface CMMDrawingManagerItemOtherFrames : NSObject
+
++(id)otherFramesWithFileName:(NSString *)fileName_;
+-(id)initWithFileName:(NSString *)fileName_;
+
+-(void)setSpriteFrame:(CCSpriteFrame *)frame_ forKey:(NSString *)key_;
+-(void)removeSpriteFrameForKey:(NSString *)key_;
+
+-(CCSpriteFrame *)spriteFrameForKey:(NSString *)key_;
+-(CCSpriteFrame *)spriteFrameForKeyFormatter:(NSString *)keyFormatter_;
+
+@property (nonatomic, readonly) NSDictionary *spriteFrames;
+
+@end
 
 @interface CMMDrawingManagerItem : NSObject{
 	NSString *fileName;
 	CCArray *batchBarFrames;
-	NSMutableDictionary *_otherFrames;
+	CMMDrawingManagerItemOtherFrames *otherFrames;
 }
 
 +(id)drawingItemWithFileName:(NSString *)fileName_;
@@ -41,13 +50,7 @@ typedef enum{
 @property (nonatomic, readonly) NSString *fileName;
 @property (nonatomic, retain) CCArray *batchBarFrames;
 @property (nonatomic, readonly) uint countOfBatchBar;
-
-@end
-
-@interface CMMDrawingManagerItem(Other)
-
--(void)setSpriteFrame:(CCSpriteFrame *)spriteFrame_ forKey:(CMMDrawingManagerItemKey)key_;
--(CCSpriteFrame *)spriteFrameForKey:(CMMDrawingManagerItemKey)key_;
+@property (nonatomic, readonly) CMMDrawingManagerItemOtherFrames *otherFrames;
 
 @end
 

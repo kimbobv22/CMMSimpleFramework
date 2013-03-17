@@ -115,6 +115,7 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 		case CMMTouchState_onFixed:{
 			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher touchItemAtIndex:0];
 			
+			CGPoint beforeInnerLayerPoint_ = [innerLayer position];
 			CGSize innerSize_ = [innerLayer contentSize];
 			CGPoint touchPoint_ = [self convertToNodeSpace:[CMMTouchUtil pointFromTouch:[touchItem_ touch]]];
 			touchPoint_.x = 0;
@@ -134,6 +135,9 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 				case CMMScrollMenuVSwitchMode_move:{
 					CGPoint innerCurPoint_ = [innerLayer convertToNodeSpace:targetPoint_];
 					CGPoint innerBefPoint_ = [innerLayer convertToNodeSpace:[CMMTouchUtil prepointFromTouch:[touchItem_ touch]]];
+					
+					innerBefPoint_ = ccpAdd(innerBefPoint_, ccpSub(beforeInnerLayerPoint_, touchPoint_));
+					
 					CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
 					int targetIndex_ = [self indexOfItem:item_];
 					

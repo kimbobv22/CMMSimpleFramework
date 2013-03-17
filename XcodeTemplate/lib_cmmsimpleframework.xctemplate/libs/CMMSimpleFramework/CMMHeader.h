@@ -1,7 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#define CMMSimpleFrameworkVersion 0x00010205
-#define CMMSimpleFrameworkVersionString @"CMMSimpleFramework v1.2.5"
+#define CMMSimpleFrameworkVersion 0x00010206
+#define CMMSimpleFrameworkVersionString @"CMMSimpleFramework v1.2.6"
 
 //common
 #import "cocos2d.h"
@@ -15,8 +15,6 @@
 #import "CMMType.h"
 #import "CMMMacro.h"
 #import "CMMDeprecated.h"
-
-#import "CMMGLView.h"
 
 #import "CMMScene.h"
 #import "CMMLayer.h"

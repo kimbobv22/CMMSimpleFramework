@@ -164,6 +164,12 @@
 -(void)removePopupAtIndex:(uint)index_{
 	[self removePopup:[self popupAtIndex:index_]];
 }
+-(void)removeAllPopups{
+	ccArray *data_ = popupList->data;
+	for(int index_=data_->num-1;index_>=0;--index_){
+		[self removePopup:data_->arr[index_]];
+	}
+}
 
 -(void)switchPopup:(CMMPopupLayer *)popup_ toIndex:(uint)toIndex_{
 	uint index_= [self indexOfPopup:popup_];

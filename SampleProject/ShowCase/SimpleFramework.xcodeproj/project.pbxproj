@@ -47,7 +47,6 @@
 		E02A462915D4115F005BB6C1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = E02A462815D4115F005BB6C1 /* main.m */; };
 		E02A462C15D4115F005BB6C1 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = E02A462B15D4115F005BB6C1 /* AppDelegate.mm */; };
 		E02A464615D411DD005BB6C1 /* HelloWorldLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E02A464515D411DD005BB6C1 /* HelloWorldLayer.mm */; };
-		E032FC3515E1E98500B28B61 /* CMMGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC3415E1E98100B28B61 /* CMMGLView.mm */; };
 		E032FC4215E1EAB300B28B61 /* CMMDrawingUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC3715E1EAB200B28B61 /* CMMDrawingUtil.mm */; };
 		E032FC4315E1EAB300B28B61 /* CMMFileUtil.mm in Sources */ = {isa = PBXBuildFile; fileRef = E032FC3915E1EAB200B28B61 /* CMMFileUtil.mm */; };
 		E032FC4415E1EAB300B28B61 /* CMMFontUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = E032FC3B15E1EAB200B28B61 /* CMMFontUtil.m */; };
@@ -369,8 +368,6 @@
 		E02A462D15D4115F005BB6C1 /* HelloWorldLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HelloWorldLayer.h; sourceTree = "<group>"; };
 		E02A464515D411DD005BB6C1 /* HelloWorldLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = HelloWorldLayer.mm; sourceTree = "<group>"; };
 		E032FC2F15E1E7F200B28B61 /* CMMHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMMHeader.h; path = libs/CMMSimpleFramework/CMMHeader.h; sourceTree = "<group>"; };
-		E032FC3315E1E97F00B28B61 /* CMMGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMGLView.h; path = libs/CMMSimpleFramework/CMMGLView.h; sourceTree = "<group>"; };
-		E032FC3415E1E98100B28B61 /* CMMGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMGLView.mm; path = libs/CMMSimpleFramework/CMMGLView.mm; sourceTree = "<group>"; };
 		E032FC3615E1EAB200B28B61 /* CMMDrawingUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMDrawingUtil.h; path = libs/CMMSimpleFramework/CMMDrawingUtil.h; sourceTree = "<group>"; };
 		E032FC3715E1EAB200B28B61 /* CMMDrawingUtil.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMDrawingUtil.mm; path = libs/CMMSimpleFramework/CMMDrawingUtil.mm; sourceTree = "<group>"; };
 		E032FC3815E1EAB200B28B61 /* CMMFileUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMFileUtil.h; path = libs/CMMSimpleFramework/CMMFileUtil.h; sourceTree = "<group>"; };
@@ -1093,8 +1090,6 @@
 				E0ED521615E20E250070712E /* CMMMacro.h */,
 				E0C1FE7D161428D800562E27 /* CMMDeprecated.h */,
 				E0C1FE7E161428D800562E27 /* CMMDeprecated.mm */,
-				E032FC3315E1E97F00B28B61 /* CMMGLView.h */,
-				E032FC3415E1E98100B28B61 /* CMMGLView.mm */,
 				E047705415D4C79C0079EAE9 /* view */,
 				E046596715D559F500D3ADF0 /* dispatcher */,
 				E0D4096615D4F4A400953AFC /* sound */,
@@ -1975,7 +1970,6 @@
 				E046597015D56A3400D3ADF0 /* PopupTestLayer.mm in Sources */,
 				E095571515D8A5FE00615954 /* GyroTestLayer.mm in Sources */,
 				E0B586CE15DCB406006C8B7F /* ScrollMenuTestLayer.mm in Sources */,
-				E032FC3515E1E98500B28B61 /* CMMGLView.mm in Sources */,
 				E032FC4215E1EAB300B28B61 /* CMMDrawingUtil.mm in Sources */,
 				E032FC4315E1EAB300B28B61 /* CMMFileUtil.mm in Sources */,
 				E032FC4415E1EAB300B28B61 /* CMMFontUtil.m in Sources */,

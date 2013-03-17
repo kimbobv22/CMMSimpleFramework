@@ -8,68 +8,124 @@
 
 #define cmmVarCMMDrawingManagerItem_makeKey(_key_) [NSString stringWithFormat:@"%d",(_key_)]
 
+NSString *const CMMDrawingManagerItemFormatter_BatchBar = @"%@_BATCHBAR_%02d.png";
+NSString *const CMMDrawingManagerItemFormatter_SwitchButton = @"%@_SWITCH_BTN.png";
+NSString *const CMMDrawingManagerItemFormatter_SwitchBack = @"%@_SWITCH_BACK.png";
+NSString *const CMMDrawingManagerItemFormatter_SwitchMask = @"%@_SWITCH_MASK.png";
+NSString *const CMMDrawingManagerItemFormatter_SlideBar = @"%@_SLIDE_BAR.png";
+NSString *const CMMDrawingManagerItemFormatter_SlideButton = @"%@_SLIDE_BTN.png";
+NSString *const CMMDrawingManagerItemFormatter_SlideMask = @"%@_SLIDE_MASK.png";
+NSString *const CMMDrawingManagerItemFormatter_TextBar = @"%@_TEXT_BAR.png";
+NSString *const CMMDrawingManagerItemFormatter_CheckboxBack = @"%@_CHECKBOX_BACK.png";
+NSString *const CMMDrawingManagerItemFormatter_CheckboxCheck = @"%@_CHECKBOX_CHECK.png";
+
 static CMMDrawingManager *_sharedDrawingManager_ = nil;
 static CMM9SliceBar *_cachedCMMSpriteBatchBar_ = nil;
 
+@interface CMMDrawingManagerItemOtherFrames(Private)
+
+-(void)_setSpriteFrame:(CCSpriteFrame *)frame_ keyFormatter:(NSString *)keyFormatter_;
+
+@end
+
+@implementation CMMDrawingManagerItemOtherFrames{
+	NSString *_fileName;
+	NSMutableDictionary *_spriteFrames;
+}
+@synthesize spriteFrames;
+
++(id)otherFramesWithFileName:(NSString *)fileName_{
+	return [[[self alloc] initWithFileName:fileName_] autorelease];
+}
+-(id)initWithFileName:(NSString *)fileName_{
+	if(!(self = [super init])) return self;
+	
+	_fileName = [fileName_ copy];
+	_spriteFrames = [[NSMutableDictionary alloc] init];
+	
+	return self;
+}
+
+-(NSDictionary *)spriteFrames{
+	return [NSDictionary dictionaryWithDictionary:_spriteFrames];
+}
+
+-(void)setSpriteFrame:(CCSpriteFrame *)frame_ forKey:(NSString *)key_{
+	[_spriteFrames setObject:frame_ forKey:key_];
+}
+-(void)removeSpriteFrameForKey:(NSString *)key_{
+	[_spriteFrames removeObjectForKey:key_];
+}
+
+-(CCSpriteFrame *)spriteFrameForKey:(NSString *)key_{
+	return [_spriteFrames objectForKey:key_];
+}
+-(CCSpriteFrame *)spriteFrameForKeyFormatter:(NSString *)keyFormatter_{
+	return [self spriteFrameForKey:[NSString stringWithFormat:keyFormatter_,_fileName]];
+}
+
+-(void)dealloc{
+	[_fileName release];
+	[_spriteFrames release];
+	[super dealloc];
+}
+
+@end
+
+@implementation CMMDrawingManagerItemOtherFrames(Private)
+
+-(void)_setSpriteFrame:(CCSpriteFrame *)frame_ keyFormatter:(NSString *)keyFormatter_{
+	[self setSpriteFrame:frame_ forKey:[NSString stringWithFormat:keyFormatter_,_fileName]];
+}
+
+@end
+
 @implementation CMMDrawingManagerItem
-@synthesize fileName,batchBarFrames,countOfBatchBar;
+@synthesize fileName,batchBarFrames,countOfBatchBar,otherFrames;
 
 +(id)drawingItemWithFileName:(NSString *)fileName_{
 	return [[[self alloc] initWithFileName:fileName_] autorelease];
 }
-
--(id)init{
-	[self release];
-	return nil;
-}
-
 -(id)initWithFileName:(NSString *)fileName_{
 	if(!(self = [super init])) return self;
-	
-	_otherFrames = [[NSMutableDictionary alloc] init];
-	batchBarFrames = [[CCArray alloc] init];
 	
 	if(!fileName_){
 		[self release];
 		return nil;
 	}
 	
-	CCSpriteFrameCache *spriteFrameCache_ = [CCSpriteFrameCache sharedSpriteFrameCache];
+	batchBarFrames = [[CCArray alloc] init];
+	otherFrames = [[CMMDrawingManagerItemOtherFrames alloc] initWithFileName:fileName_];
 	fileName = [fileName_ copy];
 	
-	NSString *lastFileName_ = [fileName lastPathComponent];
-	
-	//add default bar frame
-	NSString *barFrameFormatter_ = [lastFileName_ stringByAppendingString:@"_BATCHBAR_%02d.png"];
-	uint curBarFrameSeq_ = 0;
-	while(YES){
-		CCSpriteFrame *barFrame_ = [spriteFrameCache_ spriteFrameByName:[NSString stringWithFormat:barFrameFormatter_,curBarFrameSeq_]];
-		if(!barFrame_) break;
-		
-		[self addBatchBarFrame:barFrame_];
-		++curBarFrameSeq_;
+	NSString *realFileName_ = fileName;
+	if(![realFileName_ isAbsolutePath]){
+		realFileName_ = [CMMStringUtil stringPathOfResoruce:realFileName_ extension:@"png"];
+		realFileName_ = [realFileName_ stringByDeletingPathExtension];
 	}
 	
-	//add control frame - switch
-	NSString *switchFrameName_ = [lastFileName_ stringByAppendingString:@"_SWITCH"];
-	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[switchFrameName_ stringByAppendingString:@"_BTN.png"]] forKey:CMMDrawingManagerItemKey_switch_button];
-	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[switchFrameName_ stringByAppendingString:@"_BACK.png"]] forKey:CMMDrawingManagerItemKey_switch_back];
-	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[switchFrameName_ stringByAppendingString:@"_MASK.png"]] forKey:CMMDrawingManagerItemKey_switch_mask];
+	CCSpriteFrameCache *spriteFrameCache_ = [CCSpriteFrameCache sharedSpriteFrameCache];
+	NSDictionary *spriteFrameInfoDic_ = [NSDictionary dictionaryWithContentsOfFile:[realFileName_ stringByAppendingPathExtension:@"plist"]];
+	NSMutableDictionary *spriteFrameListDic_ = [NSMutableDictionary dictionaryWithDictionary:[spriteFrameInfoDic_ objectForKey:@"frames"]];
 	
-	//add control frame - slider
-	NSString *sliderFrameName_ = [lastFileName_ stringByAppendingString:@"_SLIDE"];
-	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[sliderFrameName_ stringByAppendingString:@"_BAR.png"]] forKey:CMMDrawingManagerItemKey_slider_bar];
-	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[sliderFrameName_ stringByAppendingString:@"_BTN.png"]] forKey:CMMDrawingManagerItemKey_slider_button];
-	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[sliderFrameName_ stringByAppendingString:@"_MASK.png"]] forKey:CMMDrawingManagerItemKey_slider_mask];
+	//add default bar frames
+	NSString *targetFileName_ = [fileName lastPathComponent];
+	uint curBarFrameSeq_ = 0;
+	while(YES){
+		NSString *spriteFrameName_ = [NSString stringWithFormat:CMMDrawingManagerItemFormatter_BatchBar,targetFileName_,curBarFrameSeq_];
+		CCSpriteFrame *barFrame_ = [spriteFrameCache_ spriteFrameByName:spriteFrameName_];
+		if(!barFrame_) break;
+		[self addBatchBarFrame:barFrame_];
+		++curBarFrameSeq_;
+		[spriteFrameListDic_ removeObjectForKey:spriteFrameName_];
+	}
 	
-	//add control frame - text
-	NSString *textFrameName_ = [lastFileName_ stringByAppendingString:@"_TEXT"];
-	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[textFrameName_ stringByAppendingString:@"_BAR.png"]] forKey:CMMDrawingManagerItemKey_text_bar];
-	
-	//add control frame - checkbox
-	NSString *checkboxFrameName_ = [lastFileName_ stringByAppendingString:@"_CHECKBOX"];
-	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[checkboxFrameName_ stringByAppendingString:@"_BACK.png"]] forKey:CMMDrawingManagerItemKey_checkbox_back];
-	[self setSpriteFrame:[spriteFrameCache_ spriteFrameByName:[checkboxFrameName_ stringByAppendingString:@"_CHECK.png"]] forKey:CMMDrawingManagerItemKey_checkbox_check];
+	//add other frames
+	NSArray *allKeys_ = [spriteFrameListDic_ allKeys];
+	for(NSString *key_ in allKeys_){
+		CCSpriteFrame *spriteFrame_ = [spriteFrameCache_ spriteFrameByName:key_];
+		[otherFrames setSpriteFrame:spriteFrame_ forKey:key_];
+	}
 	
 	return self;
 }
@@ -110,21 +166,9 @@ static CMM9SliceBar *_cachedCMMSpriteBatchBar_ = nil;
 
 -(void)dealloc{
 	[fileName release];
-	[_otherFrames release];
+	[otherFrames release];
 	[batchBarFrames release];
 	[super dealloc];
-}
-
-@end
-
-@implementation CMMDrawingManagerItem(Other)
-
--(void)setSpriteFrame:(CCSpriteFrame *)spriteFrame_ forKey:(CMMDrawingManagerItemKey)key_{
-	if(!spriteFrame_) return;
-	[_otherFrames setObject:spriteFrame_ forKey:cmmVarCMMDrawingManagerItem_makeKey(key_)];
-}
--(CCSpriteFrame *)spriteFrameForKey:(CMMDrawingManagerItemKey)key_{
-	return [_otherFrames objectForKey:cmmVarCMMDrawingManagerItem_makeKey(key_)];
 }
 
 @end

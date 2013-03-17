@@ -45,9 +45,9 @@
 		return nil;
 	}
 	
-	CCSprite *maskSprite_ = [CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_switch_mask]];
-	CCSprite *backSprite_ = [CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_switch_back]];
-	CCSprite *buttonSprite_ = [CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_switch_button]];
+	CCSprite *maskSprite_ = [CCSprite spriteWithSpriteFrame:[[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_SwitchMask]];
+	CCSprite *backSprite_ = [CCSprite spriteWithSpriteFrame:[[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_SwitchBack]];
+	CCSprite *buttonSprite_ = [CCSprite spriteWithSpriteFrame:[[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_SwitchButton]];
 	
 	return [self initWithMaskSprite:maskSprite_ backSprite:backSprite_ buttonSprite:buttonSprite_];
 }

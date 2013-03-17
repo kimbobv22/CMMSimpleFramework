@@ -87,7 +87,7 @@
 		return nil;
 	}
 	
-	CCSprite *barSprite_ = [CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_text_bar]];
+	CCSprite *barSprite_ = [CCSprite spriteWithSpriteFrame:[[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_TextBar]];
 	frameSize_.height = MAX([barSprite_ contentSize].height,frameSize_.height);
 	return [self initWithBarSprite:barSprite_ frameSize:frameSize_];
 }

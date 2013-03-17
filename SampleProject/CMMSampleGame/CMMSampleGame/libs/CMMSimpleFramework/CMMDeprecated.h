@@ -60,6 +60,19 @@ DEPRECATED_ATTRIBUTE inline static void cmmFuncCallDispatcher_backQueue(void(^bl
 #import "CMM9SliceBar.h"
 #import "CMMDrawingManager.h"
 
+DEPRECATED_ATTRIBUTE @protocol CMMGLViewTouchDelegate <NSObject>
+
+-(void)glView:(id)glView_ whenTouchesBegan:(NSSet *)touches_ event:(UIEvent *)event_ DEPRECATED_ATTRIBUTE;
+-(void)glView:(id)glView_ whenTouchesMoved:(NSSet *)touches_ event:(UIEvent *)event_ DEPRECATED_ATTRIBUTE;
+-(void)glView:(id)glView_ whenTouchesEnded:(NSSet *)touches_ event:(UIEvent *)event_ DEPRECATED_ATTRIBUTE;
+-(void)glView:(id)glView_ whenTouchesCancelled:(NSSet *)touches_ event:(UIEvent *)event_ DEPRECATED_ATTRIBUTE;
+
+@end
+
+DEPRECATED_ATTRIBUTE @interface CMMGLView : CCGLView
+
+@end
+
 DEPRECATED_ATTRIBUTE @interface CMMViewController : UIViewController
 
 /*
@@ -265,6 +278,30 @@ UNAVAILABLE_ATTRIBUTE @protocol CMMSequenceMakerDelegate <NSObject>
 
 -(void)sequenceMaker:(id)sequenceMaker_ didChangeState:(CMMSequenceMakerState)state_;
 -(void)sequenceMaker:(id)sequenceMaker_ didChangeSequence:(uint)curSequence_ sequenceCount:(uint)sequenceCount_;
+
+@end
+
+typedef enum{
+	CMMDrawingManagerItemKey_switch_button DEPRECATED_ATTRIBUTE = 0,
+	CMMDrawingManagerItemKey_switch_back DEPRECATED_ATTRIBUTE = 1,
+	CMMDrawingManagerItemKey_switch_mask DEPRECATED_ATTRIBUTE = 2,
+	
+	CMMDrawingManagerItemKey_slider_bar DEPRECATED_ATTRIBUTE = 3,
+	CMMDrawingManagerItemKey_slider_button DEPRECATED_ATTRIBUTE = 4,
+	CMMDrawingManagerItemKey_slider_mask DEPRECATED_ATTRIBUTE = 5,
+	
+	CMMDrawingManagerItemKey_text_bar DEPRECATED_ATTRIBUTE = 6,
+	
+	CMMDrawingManagerItemKey_checkbox_back DEPRECATED_ATTRIBUTE = 7,
+	CMMDrawingManagerItemKey_checkbox_check DEPRECATED_ATTRIBUTE = 8,
+	
+	CMMDrawingManagerItemKey_maxCount DEPRECATED_ATTRIBUTE = 9,
+} CMMDrawingManagerItemKey;
+
+@interface CMMDrawingManagerItem(Deprecated)
+
+-(void)setSpriteFrame:(CCSpriteFrame *)spriteFrame_ forKey:(CMMDrawingManagerItemKey)key_ UNAVAILABLE_ATTRIBUTE;
+-(CCSpriteFrame *)spriteFrameForKey:(CMMDrawingManagerItemKey)key_ DEPRECATED_ATTRIBUTE;
 
 @end
 

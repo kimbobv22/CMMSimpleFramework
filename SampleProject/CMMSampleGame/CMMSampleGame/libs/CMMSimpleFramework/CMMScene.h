@@ -1,7 +1,6 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMType.h"
-#import "CMMGLView.h"
 #import "CMMTouchDispatcher.h"
 #import "CMMPopupView.h"
 #import "CMMNoticeDispatcher.h"
@@ -49,7 +48,7 @@ typedef void(^CMMSceneTransitionBlock)(void);
 #define cmmVarCMMScene_frontLayerZOrder NSIntegerMax
 #define cmmVarCMMScene_popupViewZOrder (cmmVarCMMScene_frontLayerZOrder-1)
 
-@interface CMMScene : CCScene<CMMGLViewTouchDelegate>{
+@interface CMMScene : CCScene<CCTouchDelegate>{
 	CMMLayer *runningLayer;
 	
 	CMMSceneTransitionLayer *transitionLayer;

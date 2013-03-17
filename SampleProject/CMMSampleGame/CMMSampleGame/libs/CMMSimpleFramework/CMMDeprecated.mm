@@ -2,6 +2,10 @@
 
 #import "CMMDeprecated.h"
 
+@implementation CMMGLView
+
+@end
+
 @implementation CMMViewController
 
 -(NSUInteger)supportedInterfaceOrientations{
@@ -271,6 +275,53 @@
 
 +(id)sequenceMaker{
 	return [self sequencer];
+}
+
+@end
+
+@implementation CMMDrawingManagerItem(Deprecated)
+
+//for reference
+-(NSString *)_keyFormatterForCMMDrawingManagerItemKey:(int)key_{
+	NSString *result_ = nil;
+	switch(key_){
+		case 0:
+			result_ = CMMDrawingManagerItemFormatter_SwitchButton;
+			break;
+		case 1:
+			result_ = CMMDrawingManagerItemFormatter_SwitchBack;
+			break;
+		case 2:
+			result_ = CMMDrawingManagerItemFormatter_SwitchMask;
+			break;
+		case 3:
+			result_ = CMMDrawingManagerItemFormatter_SlideBar;
+			break;
+		case 4:
+			result_ = CMMDrawingManagerItemFormatter_SlideButton;
+			break;
+		case 5:
+			result_ = CMMDrawingManagerItemFormatter_SlideMask;
+			break;
+		case 6:
+			result_ = CMMDrawingManagerItemFormatter_TextBar;
+			break;
+		case 7:
+			result_ = CMMDrawingManagerItemFormatter_CheckboxBack;
+			break;
+		case 8:
+			result_ = CMMDrawingManagerItemFormatter_CheckboxCheck;
+			break;
+		case 9:
+		default:{break;}
+	}
+	
+	return result_;
+}
+
+-(void)setSpriteFrame:(CCSpriteFrame *)spriteFrame_ forKey:(CMMDrawingManagerItemKey)key_{}
+-(CCSpriteFrame *)spriteFrameForKey:(CMMDrawingManagerItemKey)key_{
+	return [[self otherFrames] spriteFrameForKeyFormatter:[self _keyFormatterForCMMDrawingManagerItemKey:key_]];
 }
 
 @end

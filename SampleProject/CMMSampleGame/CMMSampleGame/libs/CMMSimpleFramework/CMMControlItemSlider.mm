@@ -66,9 +66,9 @@
 		return nil;
 	}
 	
-	CCSprite *maskSprite_ = [CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_slider_mask]];
-	CCSprite *barSprite_ = [CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_slider_bar]];
-	CCSprite *buttonSprite_ = [CMMMenuItem spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_slider_button]];
+	CCSprite *maskSprite_ = [CCSprite spriteWithSpriteFrame:[[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_SlideMask]];
+	CCSprite *barSprite_ = [CCSprite spriteWithSpriteFrame:[[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_SlideBar]];
+	CCSprite *buttonSprite_ = [CMMMenuItem spriteWithSpriteFrame:[[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_SlideButton]];
 	
 	return [self initWithWidth:width_ maskSprite:maskSprite_ barSprite:barSprite_ backColorL:backColorL_ backColorR:backColorR_ buttonSprite:buttonSprite_];
 }

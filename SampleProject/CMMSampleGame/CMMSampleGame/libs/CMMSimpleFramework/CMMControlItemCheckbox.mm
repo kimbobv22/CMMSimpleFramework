@@ -47,8 +47,8 @@
 		return nil;
 	}
 	
-	CCSprite *backSprite_ = [CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_checkbox_back]];
-	CCSprite *checkSprite_ = [CCSprite spriteWithSpriteFrame:[drawingItem_ spriteFrameForKey:CMMDrawingManagerItemKey_checkbox_check]];
+	CCSprite *backSprite_ = [CCSprite spriteWithSpriteFrame:[[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_CheckboxBack]];
+	CCSprite *checkSprite_ = [CCSprite spriteWithSpriteFrame:[[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_CheckboxCheck]];
 	return [self initWithBackSprite:backSprite_ checkSprite:checkSprite_];
 }
 

@@ -39,8 +39,15 @@
 		// Add the first scene to the stack. The director will draw it immediately into the framebuffer. (Animation is started automatically when the view is displayed.)
 		// and add the scene to the stack. The director will run it when it automatically when the view is displayed.
 		
+		//touch configuration
+		CCGLView *glView_ = (CCGLView *)[director_ view];
+		[glView_ setMultipleTouchEnabled:YES];
+		[glView_ setTouchDelegate:[CMMScene sharedScene]];
 		
+		//push scene(only once)
 		[director_ pushScene:[CMMScene sharedScene]];
+		
+		//push layer
 		[[CMMScene sharedScene] pushLayer:[CommonIntroLayer1 node]];
 		
 		//add default background
@@ -62,7 +69,7 @@
 	window_ = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
 
 	// Create an CCGLView with a RGB565 color buffer, and a depth buffer of 0-bits
-	CMMGLView *glView = [CMMGLView viewWithFrame:[window_ bounds]
+	CCGLView *glView = [CCGLView viewWithFrame:[window_ bounds]
 								   pixelFormat:kEAGLColorFormatRGB565	//kEAGLColorFormatRGBA8
 								   depthFormat:0	//GL_DEPTH_COMPONENT24_OES
 							preserveBackbuffer:NO

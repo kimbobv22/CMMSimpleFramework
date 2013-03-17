@@ -1,3 +1,13 @@
+##Version 1.2.6
+* [FIX] **`CMMDrawingManagerItem`** improved
+	* **method** `-(void)setSpriteFrame:forKey:` deprecated
+	* **method** `-(CCSpriteFrame *)spriteFrameForKey:` is unavailable
+	* **variable** `(CMMDrawingManagerItemOtherFrames *)otherFrames` added
+* [NEW] **`CMMDrawingManagerItemOtherFrames`** added
+* [NEW] **`CMMPopupView`** improved
+	* **method** `-(void)removeAllPopups` added
+* [DEL] **`CMMGLView`** deprecated, replaced by `CCGLView` (*you need to migrate your source, please refer to SampleProject*)
+
 ##Version 1.2.5
 * [NEW] **`CMMScrollMenuV`** improved ([**Jeff Lawton**](https://github.com/Zarkwizard)'s ideas)
 	* **[variable]** `switchMode` added

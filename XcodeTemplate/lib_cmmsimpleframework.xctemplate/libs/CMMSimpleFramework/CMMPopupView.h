@@ -40,6 +40,7 @@
 
 -(void)removePopup:(CMMPopupLayer *)popup_;
 -(void)removePopupAtIndex:(uint)index_;
+-(void)removeAllPopups;
 
 -(void)switchPopup:(CMMPopupLayer *)popup_ toIndex:(uint)toIndex_;
 -(void)switchPopupAtIndex:(uint)atIndex_ toIndex:(uint)toIndex_;

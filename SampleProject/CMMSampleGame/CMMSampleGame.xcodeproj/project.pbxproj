@@ -201,7 +201,6 @@
 		E0AA78A916F2EE64008D067F /* CMMFontUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = E0AA78A816F2EE64008D067F /* CMMFontUtil.m */; };
 		E0AA78AC16F2EE64008D067F /* CMMSequencer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AA78AB16F2EE64008D067F /* CMMSequencer.mm */; };
 		E0AA78AF16F2EE64008D067F /* CMMGameKit.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AA78AE16F2EE64008D067F /* CMMGameKit.mm */; };
-		E0AA78B216F2EE64008D067F /* CMMGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AA78B116F2EE64008D067F /* CMMGLView.mm */; };
 		E0AA78B616F2EE64008D067F /* CMMInAppPurchasesManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AA78B516F2EE64008D067F /* CMMInAppPurchasesManager.mm */; };
 		E0AA78B916F2EE64008D067F /* CMMLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AA78B816F2EE64008D067F /* CMMLayer.mm */; };
 		E0AA78BC16F2EE64008D067F /* CMMLayerM.mm in Sources */ = {isa = PBXBuildFile; fileRef = E0AA78BB16F2EE64008D067F /* CMMLayerM.mm */; };
@@ -662,8 +661,6 @@
 		E0AA78AB16F2EE64008D067F /* CMMSequencer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSequencer.mm; path = libs/CMMSimpleFramework/CMMSequencer.mm; sourceTree = "<group>"; };
 		E0AA78AD16F2EE64008D067F /* CMMGameKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMMGameKit.h; path = libs/CMMSimpleFramework/CMMGameKit.h; sourceTree = "<group>"; };
 		E0AA78AE16F2EE64008D067F /* CMMGameKit.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMGameKit.mm; path = libs/CMMSimpleFramework/CMMGameKit.mm; sourceTree = "<group>"; };
-		E0AA78B016F2EE64008D067F /* CMMGLView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMMGLView.h; path = libs/CMMSimpleFramework/CMMGLView.h; sourceTree = "<group>"; };
-		E0AA78B116F2EE64008D067F /* CMMGLView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMGLView.mm; path = libs/CMMSimpleFramework/CMMGLView.mm; sourceTree = "<group>"; };
 		E0AA78B316F2EE64008D067F /* CMMHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMMHeader.h; path = libs/CMMSimpleFramework/CMMHeader.h; sourceTree = "<group>"; };
 		E0AA78B416F2EE64008D067F /* CMMInAppPurchasesManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CMMInAppPurchasesManager.h; path = libs/CMMSimpleFramework/CMMInAppPurchasesManager.h; sourceTree = "<group>"; };
 		E0AA78B516F2EE64008D067F /* CMMInAppPurchasesManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMInAppPurchasesManager.mm; path = libs/CMMSimpleFramework/CMMInAppPurchasesManager.mm; sourceTree = "<group>"; };
@@ -1434,8 +1431,6 @@
 				E0AA78AB16F2EE64008D067F /* CMMSequencer.mm */,
 				E0AA78AD16F2EE64008D067F /* CMMGameKit.h */,
 				E0AA78AE16F2EE64008D067F /* CMMGameKit.mm */,
-				E0AA78B016F2EE64008D067F /* CMMGLView.h */,
-				E0AA78B116F2EE64008D067F /* CMMGLView.mm */,
 				E0AA78B316F2EE64008D067F /* CMMHeader.h */,
 				E0AA78B416F2EE64008D067F /* CMMInAppPurchasesManager.h */,
 				E0AA78B516F2EE64008D067F /* CMMInAppPurchasesManager.mm */,
@@ -1778,7 +1773,6 @@
 				E0AA78A916F2EE64008D067F /* CMMFontUtil.m in Sources */,
 				E0AA78AC16F2EE64008D067F /* CMMSequencer.mm in Sources */,
 				E0AA78AF16F2EE64008D067F /* CMMGameKit.mm in Sources */,
-				E0AA78B216F2EE64008D067F /* CMMGLView.mm in Sources */,
 				E0AA78B616F2EE64008D067F /* CMMInAppPurchasesManager.mm in Sources */,
 				E0AA78B916F2EE64008D067F /* CMMLayer.mm in Sources */,
 				E0AA78BC16F2EE64008D067F /* CMMLayerM.mm in Sources */,
@@ -1945,6 +1939,7 @@
 				E0AA795316F2EE65008D067F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

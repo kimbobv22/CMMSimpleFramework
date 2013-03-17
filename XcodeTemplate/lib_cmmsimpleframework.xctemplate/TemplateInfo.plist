@@ -373,28 +373,6 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMGameKit.mm</string>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMGLView.h</key>
-		<dict>
-			<key>Group</key>
-			<array>
-				<string>libs</string>
-				<string>CMMSimpleFramework</string>
-			</array>
-			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMGLView.h</string>
-			<key>TargetIndices</key>
-			<array/>
-		</dict>
-		<key>libs/CMMSimpleFramework/CMMGLView.mm</key>
-		<dict>
-			<key>Group</key>
-			<array>
-				<string>libs</string>
-				<string>CMMSimpleFramework</string>
-			</array>
-			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMGLView.mm</string>
-		</dict>
 		<key>libs/CMMSimpleFramework/CMMHeader.h</key>
 		<dict>
 			<key>Group</key>
@@ -1441,8 +1419,6 @@
 		<string>libs/CMMSimpleFramework/CMMSequencer.mm</string>
 		<string>libs/CMMSimpleFramework/CMMGameKit.h</string>
 		<string>libs/CMMSimpleFramework/CMMGameKit.mm</string>
-		<string>libs/CMMSimpleFramework/CMMGLView.h</string>
-		<string>libs/CMMSimpleFramework/CMMGLView.mm</string>
 		<string>libs/CMMSimpleFramework/CMMHeader.h</string>
 		<string>libs/CMMSimpleFramework/CMMInAppPurchasesManager.h</string>
 		<string>libs/CMMSimpleFramework/CMMInAppPurchasesManager.mm</string>

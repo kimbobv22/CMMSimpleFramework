@@ -48,17 +48,29 @@
 
 @end
 
-@implementation TestEnemy
+@implementation TestEnemy{
+	ccTime _curTurnningTime;
+}
 
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
 	
 	b2CMask = CMMb2ContactMaskMake(varTestCMMSObjectMaskBit_enemy,-1,-1,1);
 	speed = 5.0f;
+	_curTurnningTime = 0.0f;
 	[self _refreshAccelVector];
 	[self setZOrder:2];
 	
 	return self;
+}
+
+-(void)update:(ccTime)dt_{
+	[super update:dt_];
+	_curTurnningTime += dt_;
+	if(_curTurnningTime > 5.0f){
+		_curTurnningTime = 0.0f;
+		[self _refreshAccelVector];
+	}
 }
 
 -(void)_refreshAccelVector{

@@ -137,17 +137,17 @@ static CMMScene *_sharedScene_ = nil;
 }
 #endif
 
--(void)glView:(CMMGLView *)glView_ whenTouchesBegan:(NSSet *)touches_ event:(UIEvent *)event_{
+-(void)touchesBegan:(NSSet *)touches_ withEvent:(UIEvent *)event_{
 	if(onTransition || !runningLayer || !touchEnable) return;
 	[touchDispatcher whenTouchesBeganFromScene:touches_ event:event_];
 }
--(void)glView:(CMMGLView *)glView_ whenTouchesMoved:(NSSet *)touches_ event:(UIEvent *)event_{
+-(void)touchesMoved:(NSSet *)touches_ withEvent:(UIEvent *)event_{
 	[touchDispatcher whenTouchesMovedFromScene:touches_ event:event_];
 }
--(void)glView:(CMMGLView *)glView_ whenTouchesEnded:(NSSet *)touches_ event:(UIEvent *)event_{
+-(void)touchesEnded:(NSSet *)touches_ withEvent:(UIEvent *)event_{
 	[touchDispatcher whenTouchesEndedFromScene:touches_ event:event_];
 }
--(void)glView:(CMMGLView *)glView_ whenTouchesCancelled:(NSSet *)touches_ event:(UIEvent *)event_{
+-(void)touchesCancelled:(NSSet *)touches_ withEvent:(UIEvent *)event_{
 	[touchDispatcher whenTouchesCancelledFromScene:touches_ event:event_];
 }
 
