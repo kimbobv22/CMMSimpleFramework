@@ -2,20 +2,16 @@
 
 #import "CMMScrollMenu.h"
 
-@interface CMMScrollMenuHItem : CMMMenuItem{
-	CGPoint _firstTouchPoint;
-}
-
-@property (nonatomic, readwrite) float touchCancelDistance;
+@interface CMMScrollMenuHItem : CMMMenuItem
 
 @end
 
 @interface CMMScrollMenuH : CMMScrollMenu{
-	float fouceItemScale,nonefouceItemScale,minScrollAccelToSnap;
-	BOOL snapAtItem,_OnSnap;
+	BOOL snapAtItem;
+	float targetScrollSpeedToPass;
 }
 
-@property (nonatomic, readwrite) float fouceItemScale,nonefouceItemScale,minScrollAccelToSnap;
 @property (nonatomic, readwrite, getter = isSnapAtItem) BOOL snapAtItem;
+@property (nonatomic, readwrite) float targetScrollSpeedToPass;
 
 @end

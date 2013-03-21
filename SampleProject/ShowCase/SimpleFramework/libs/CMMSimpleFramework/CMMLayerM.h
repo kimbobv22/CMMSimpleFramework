@@ -4,7 +4,6 @@
 
 @interface CMMLayerM : CMMLayer{
 	CMMLayer *innerLayer;
-	CMMTouchDispatcher *innerTouchDispatcher;
 }
 
 -(void)addChildToInner:(CCNode *)node z:(NSInteger)z tag:(NSInteger)tag;
@@ -16,5 +15,6 @@
 
 @property (nonatomic, readonly) CMMLayer *innerLayer;
 @property (nonatomic, readonly) CMMTouchDispatcher *innerTouchDispatcher;
+@property (nonatomic, readwrite, getter = isInnerLayerTouchEnable) BOOL innerLayerTouchEnable;
 
 @end

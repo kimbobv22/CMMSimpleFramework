@@ -2,13 +2,9 @@
 
 #import "CMMScrollMenu.h"
 
-@interface CMMScrollMenuVItemDragView : CCSprite{
-	int targetIndex;
-}
+@interface CMMScrollMenuVItemDragView : CCSprite
 
--(void)setTextureWithMenuItem:(CMMMenuItem *)menuItem_;
-
-@property (nonatomic, readwrite) int targetIndex;
+@property (nonatomic, assign) CMMMenuItem *targetItem;
 
 @end
 
@@ -32,6 +28,7 @@ typedef enum{
 
 @property (nonatomic, readwrite) float dragStartDelayTime,dragStartDistance;
 @property (nonatomic, readwrite) CMMScrollMenuVSwitchMode switchMode;
+@property (nonatomic, readonly, getter = isOnDragItem) BOOL onDragItem;
 @property (nonatomic, readonly) CMMScrollMenuVItemDragView *itemDragView;
 @property (nonatomic, copy) BOOL (^filter_canDragItem)(CMMMenuItem *item_);
 @property (nonatomic, copy) CMMScrollMenuVItemDragViewOffsetFilter filter_itemDragViewOffset;

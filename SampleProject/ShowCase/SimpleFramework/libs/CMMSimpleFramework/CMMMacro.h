@@ -3,12 +3,7 @@
 #import "cocos2d.h"
 #import <objc/message.h>
 
-inline static float cmmFuncCommon_fixRadians(float radians_){
-	return atan2f(sinf(radians_), cosf(radians_));
-}
-inline static float cmmFuncCommon_fixDegrees(float degrees_){
-	return CC_RADIANS_TO_DEGREES(cmmFuncCommon_fixRadians(CC_DEGREES_TO_RADIANS(degrees_)));
-}
+#define cmmFunc_MINMAX(_value_,_minValue_,_maxValue_) MIN(MAX((_value_),(_minValue_)), (_maxValue_))
 
 inline static float ccpToAngle(CGPoint point1_, CGPoint point2_){
 	return ccpToAngle(ccpSub(point1_, point2_));
@@ -57,6 +52,13 @@ inline static CGPoint ccpOffset(CGPoint point_,float radians_,float offset_){
 
 inline static NSRange NSRangeMake(uint loc_, uint len_){
 	return NSMakeRange(loc_, len_);
+}
+
+inline static float cmmFunc_fixRadians(float radians_){
+	return atan2f(sinf(radians_), cosf(radians_));
+}
+inline static float cmmFunc_fixDegrees(float degrees_){
+	return CC_RADIANS_TO_DEGREES(cmmFunc_fixRadians(CC_DEGREES_TO_RADIANS(degrees_)));
 }
 
 inline static CGRect cmmFunc_nodeToWorldRect(CCNode *node_){

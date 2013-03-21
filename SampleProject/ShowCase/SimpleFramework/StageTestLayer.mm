@@ -129,8 +129,8 @@
 		[labelGravity setString:[NSString stringWithFormat:@"gravity : %1.1f",gravity_.y]];
 		labelGravity.position = ccp(_contentSize.width-labelGravity.contentSize.width/2-5,labelGravity.contentSize.height/2+5);
 	}];
-	gravitySlider.minValue = -10.0f;
-	gravitySlider.maxValue = 10.0f;
+	
+	[gravitySlider setItemValueRange:CMMFloatRange(-10.0f,10.0)];
 	gravitySlider.unitValue = 0.5f;
 	gravitySlider.itemValue = 0.0f;
 	CGPoint targetPoint_ = cmmFunc_positionIPN(self, gravitySlider);

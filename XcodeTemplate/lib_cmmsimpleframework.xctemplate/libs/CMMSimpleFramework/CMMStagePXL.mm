@@ -67,7 +67,7 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 		float targetRotate_ = [target_ body]->GetAngle();
 		
 		float targetMoveDistance_ = ccpDistance(lastGenPoint_, targetPoint_);
-		float collisionCheckRotateDiff_ = ABS(cmmFuncCommon_fixRadians(cmmFuncCommon_fixRadians(lastRotate_)-cmmFuncCommon_fixRadians(targetRotate_)));
+		float collisionCheckRotateDiff_ = ABS(cmmFunc_fixRadians(cmmFunc_fixRadians(lastRotate_)-cmmFunc_fixRadians(targetRotate_)));
 		
 		if(![mapObject_ doRecreate] && targetMoveDistance_ <= targetSizeLength_ * collisionCheckUpdateRateOfDistance && collisionCheckRotateDiff_ <= collisionCheckUnitOfRotation) continue;
 		

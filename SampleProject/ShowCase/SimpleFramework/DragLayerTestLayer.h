@@ -4,6 +4,7 @@
 
 @interface DragLayerTestLayer : CMMLayer{
 	CMMLayerMD *dragLayer;
+	CMMControlItemSlider *_slider;
 }
 
 @end

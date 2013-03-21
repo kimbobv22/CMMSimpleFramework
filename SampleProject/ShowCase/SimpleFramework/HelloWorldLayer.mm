@@ -143,6 +143,10 @@
 	return self;
 }
 
+-(void)sceneDidEndTransition:(CMMScene *)scene_{
+//	[[CMMScene sharedScene] pushLayer:[DragLayerTestLayer node]];
+}
+
 -(void)updateConnectionStatus{
 	NSString *connectionStatusStr_ = nil;
 	CMMConnectionStatus connectionStatus_ = [[CMMConnectionMonitor sharedMonitor] connectionStatus];

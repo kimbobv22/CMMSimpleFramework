@@ -1,34 +1,33 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
 #import "CMMLayerM.h"
-
-struct CMMLayerMDScrollbar{
-	CMMLayerMDScrollbar(){
-		colorX = colorY = ccc4(255, 255, 255, 145);
-		widthX = widthY = 2.0f;
-		distanceX = distanceY = 4.0f;
-	}
-	
-	ccColor4B colorX,colorY;
-	float widthX,widthY,distanceX,distanceY;
-};
+#import "CMM9SliceBar.h"
 
 @interface CMMLayerMD : CMMLayerM{
-	CMMTouchState touchState;
-	CMMLayerMDScrollbar scrollbar;
+	CMM9SliceBar *scrollbarX,*scrollbarY;
+	float scrollbarOffsetX,scrollbarOffsetY;
+	float scrollResistance,scrollSpeed;
 	
-	BOOL canDragX,canDragY,alwaysShowScrollbar,_doShowScrollbar;
-	float dragSpeed,_curScrollSpeedX,_curScrollSpeedY;
-	
-	CGPoint _innerLayerBeforePoint;
+	BOOL canDragX,canDragY,alwaysShowScrollbar;
 }
 
-@property (nonatomic, readwrite) CMMTouchState touchState;
-@property (nonatomic, readwrite) CMMLayerMDScrollbar scrollbar;
++(void)setDefaultScrollbarX:(CCSprite *)scrollbar_;
++(CCSprite *)defaultScrollbarX;
+
++(void)setDefaultScrollbarY:(CCSprite *)scrollbar_;
++(CCSprite *)defaultScrollbarY;
+
+-(void)setInnerPosition:(CGPoint)point_ applyScrolling:(BOOL)applyScrolling_;
+-(void)setInnerPosition:(CGPoint)point_;
+
+@property (nonatomic, retain) CMM9SliceBar *scrollbarX,*scrollbarY;
+@property (nonatomic, readwrite) float scrollbarOffsetX,scrollbarOffsetY;
+@property (nonatomic, readwrite) float scrollResistance,scrollSpeed;
+@property (nonatomic, readwrite) float currentScrollSpeedX,currentScrollSpeedY;
 @property (nonatomic, readwrite, getter = isCanDragX) BOOL canDragX;
 @property (nonatomic, readwrite, getter = isCanDragY) BOOL canDragY;
 @property (nonatomic, readwrite, getter = isAlwaysShowScrollbar) BOOL alwaysShowScrollbar;
-@property (nonatomic, readwrite) float dragSpeed;
+@property (nonatomic, readonly, getter = isOnScrolling) BOOL onScrolling;
 
 @end
 

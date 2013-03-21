@@ -2,18 +2,26 @@
 
 #import "CMMLayerM.h"
 
-@implementation CMMLayerM
-@synthesize innerLayer,innerTouchDispatcher;
+@implementation CMMLayerM{
+	CMMTouchDispatcher *_innerTouchDispatcher;
+}
+@synthesize innerLayer,innerTouchDispatcher = _innerTouchDispatcher;
 
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	innerLayer = [CMMLayer layerWithColor:ccc4(0, 0, 0, 0)];
 	[innerLayer setContentSize:_contentSize];
-	innerTouchDispatcher = [innerLayer touchDispatcher]; //weak ref
+	_innerTouchDispatcher = [innerLayer touchDispatcher]; //weak ref
 	[self addChild:innerLayer];
 	
 	return self;
+}
+-(void)setInnerLayerTouchEnable:(BOOL)enable_{
+	[innerLayer setTouchEnabled:enable_];
+}
+-(BOOL)isInnerLayerTouchEnable{
+	return [innerLayer isTouchEnabled];
 }
 
 -(void)visit{
@@ -73,16 +81,6 @@
 	}
 	
 	kmGLPopMatrix();
-}
-
--(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
-	[innerLayer setTouchEnabled:NO];
-	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
-	[innerLayer setTouchEnabled:YES];
-	if([touchDispatcher touchCount] == 0){
-		[touchDispatcher addTouchItemWithTouch:touch_ node:innerLayer];
-		[innerLayer touchDispatcher:touchDispatcher whenTouchBegan:touch_ event:event_];
-	}
 }
 
 -(void)addChildToInner:(CCNode *)node z:(NSInteger)z tag:(NSInteger)tag{

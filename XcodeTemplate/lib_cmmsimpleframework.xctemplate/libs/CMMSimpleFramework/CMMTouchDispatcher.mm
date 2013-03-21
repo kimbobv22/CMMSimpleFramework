@@ -5,8 +5,10 @@
 
 static CMMSimpleCache *_cachedTouchItems_ = nil;
 
-@implementation CMMTouchDispatcherItem
-@synthesize touch,node;
+@implementation CMMTouchDispatcherItem{
+	CGPoint _firstTouchPoint;
+}
+@synthesize touch,node,firstTouchPoint = _firstTouchPoint;
 
 +(id)touchItemWithTouch:(UITouch *)touch_ node:(CCNode<CMMTouchDispatcherDelegate> *)node_{
 	return [[[self alloc] initWithTouch:touch_ node:node_] autorelease];
@@ -14,10 +16,20 @@ static CMMSimpleCache *_cachedTouchItems_ = nil;
 -(id)initWithTouch:(UITouch *)touch_ node:(CCNode<CMMTouchDispatcherDelegate> *)node_{
 	if(!(self = [super init])) return self;
 	
-	touch = [touch_ retain];
-	node = [node_ retain];
+	[self setTouch:touch_];
+	[self setNode:node_];
 	
 	return self;
+}
+
+-(void)setTouch:(UITouch *)touch_{
+	[touch release];
+	touch = [touch_ retain];
+	
+	_firstTouchPoint = CGPointZero;
+	if(touch){
+		_firstTouchPoint = [CMMTouchUtil pointFromTouch:touch_];
+	}
 }
 
 -(void)dealloc{
@@ -80,6 +92,9 @@ static SEL _sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_maxCount
 		_sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_TouchMoved] = @selector(touchDispatcher:whenTouchMoved:event:);
 		_sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_TouchEnded] = @selector(touchDispatcher:whenTouchEnded:event:);
 		_sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_TouchCancelled] = @selector(touchDispatcher:whenTouchCancelled:event:);
+		_sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_TouchCancelModeGetter] = @selector(touchCancelMode);
+		_sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_TouchCancelDistanceSetter] = @selector(setTouchCancelDistance:);
+		_sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_TouchCancelDistanceGetter] = @selector(touchCancelDistance);
 		
 		_sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_PinchBegan] = @selector(touchDispatcher:whenPinchBegan:);
 		_sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_PinchMoved] = @selector(touchDispatcher:whenPinchMoved:);
@@ -134,8 +149,28 @@ static SEL _sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_maxCount
 -(void)whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
 	CMMTouchDispatcherItem *touchItem_ = [self touchItemAtTouch:touch_];
 	if(!touchItem_) return;
-	CCNode<CMMTouchDispatcherDelegate> *child_ = touchItem_.node;	
+	CCNode<CMMTouchDispatcherDelegate> *child_ = [touchItem_ node];
 	objc_msgSend(child_, _sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_TouchMoved], self, touch_, event_);
+	
+	if(cmmFunc_respondsToSelector(child_, _sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_TouchCancelModeGetter])
+	   && cmmFunc_respondsToSelector(child_, _sharedCMMTouchDispatcher_TouchSelectors_[CMMTouchSelectorID_TouchCancelDistanceGetter])){
+		
+		BOOL doCancel_ = NO;
+		switch([child_ touchCancelMode]){
+			case CMMTouchCancelMode_move:{
+				doCancel_ = ccpDistance([touchItem_ firstTouchPoint], [CMMTouchUtil pointFromTouch:touch_]) >= [child_ touchCancelDistance];
+				break;
+			}
+			case CMMTouchCancelMode_goOut:
+			default:{
+				doCancel_ = ![CMMTouchUtil isNodeInTouch:child_ touch:touch_ margin:[child_ touchCancelDistance]];
+				break;
+			}
+		}
+		
+		if(doCancel_) [self cancelTouch:touchItem_]; 
+		return;
+	}
 }
 -(void)whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
 	CMMTouchDispatcherItem *touchItem_ = [self touchItemAtTouch:touch_];

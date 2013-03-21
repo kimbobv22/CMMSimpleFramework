@@ -11,7 +11,9 @@
 	
 	ccColor3B backColorL,backColorR;
 	
-	float itemValue,unitValue,minValue,maxValue;
+	float itemValue,unitValue;
+	CMMFloatRange itemValueRange;
+	BOOL snappable;
 	void (^callback_whenItemValueChanged)(float itemValue_, float beforeItemValue_);
 }
 
@@ -30,7 +32,9 @@
 
 @property (nonatomic, readonly) CMMMenuItem *buttonItem;
 @property (nonatomic, readwrite) ccColor3B backColorL,backColorR;
-@property (nonatomic, readwrite) float itemValue,unitValue,minValue,maxValue;
+@property (nonatomic, readwrite) float itemValue,unitValue;
+@property (nonatomic, readwrite) CMMFloatRange itemValueRange;
+@property (nonatomic, readwrite) BOOL snappable;
 @property (nonatomic, copy) void (^callback_whenItemValueChanged)(float itemValue_, float beforeItemValue_);
 
 -(void)setCallback_whenItemValueChanged:(void (^)(float itemValue_, float beforeItemValue_))block_;

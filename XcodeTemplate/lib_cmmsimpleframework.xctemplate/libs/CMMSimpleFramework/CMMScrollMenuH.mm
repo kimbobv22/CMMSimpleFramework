@@ -7,113 +7,101 @@
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
 	
-	touchCancelDistance = 30.0f;
-	_firstTouchPoint = CGPointZero;
-	
+	[self setTouchCancelDistance:30.0f];
 	[self initializeTouchDispatcher];
+	[self setPushUpAction:nil];
+	[self setPushDownAction:nil];
 	
 	return self;
 }
 
--(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
-	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
-	_firstTouchPoint = [CMMTouchUtil pointFromTouch:touch_];
-}
--(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
-	[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
-
-	if([touchDispatcher touchCount] <=0 && ccpDistance([CMMTouchUtil pointFromTouch:touch_], _firstTouchPoint)>touchCancelDistance)
-		if(touchDispatcher_)
-			[touchDispatcher_ cancelTouchAtTouch:touch_];
+-(CMMTouchCancelMode)touchCancelMode{
+	return ([touchDispatcher touchCount] > 0 ? [super touchCancelMode] : CMMTouchCancelMode_move);
 }
 
 @end
 
-@implementation CMMScrollMenuH
-@synthesize fouceItemScale,nonefouceItemScale,minScrollAccelToSnap,snapAtItem;
+@implementation CMMScrollMenuH{
+	BOOL _onSnapping;
+}
+@synthesize snapAtItem,targetScrollSpeedToPass;
 
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
 	marginPerItem = 5.0f;
 	snapAtItem = YES;
-	fouceItemScale = nonefouceItemScale = 1.0f;
-	minScrollAccelToSnap = 10.0f;
+	targetScrollSpeedToPass = 100.0f;
+	_onSnapping = NO;
 	[super setCanDragX:YES];
 	
 	return self;
 }
 
 -(void)setIndex:(int)index_{
+	if(index == index_) return;
 	[super setIndex:index_];
-	_OnSnap = YES && snapAtItem;
+	_onSnapping = YES;
 }
 
 -(void)update:(ccTime)dt_{
 	[super update:dt_];
 	
-	switch(touchState){
-		case CMMTouchState_none:{
-			if(!_OnSnap) break;
-			CMMMenuItem *item_ = [self itemAtIndex:index];
-			if(!item_) break;
-			
-			CGSize itemSize_ = [item_ contentSize];
-			CGPoint itemPoint_ = [item_ position];
-			CGPoint itemAnchorPoint_ = [item_ anchorPoint];
-			
-			itemPoint_.x += itemSize_.width*(0.5f-itemAnchorPoint_.x);
-			itemPoint_.y += itemSize_.height*(0.5f-itemAnchorPoint_.y);
-			itemPoint_ = [innerLayer convertToWorldSpace:itemPoint_];
-			CGPoint centerPoint_ = [self convertToWorldSpace:ccp(_contentSize.width/2.0f,_contentSize.height/2.0f)];
-			CGPoint diffPoint_ = ccpSub(itemPoint_,centerPoint_);
-			
-			diffPoint_ = ccpMult(diffPoint_, dt_*dragSpeed);
-			
-			CGPoint orgPoint_ = [innerLayer position];
-			CGPoint targetPoint_ = ccpSub(orgPoint_,diffPoint_);
-			targetPoint_.y = orgPoint_.y;
-			
-			if(ccpDistance(targetPoint_, [innerLayer position]) > 0.1f){
-				[innerLayer setPosition:targetPoint_];
-			}else{
-				_OnSnap = NO;
-			}
-			
-			break;
+	if(!_onSnapping){
+		CGPoint centerPoint_ = [self convertToWorldSpace:ccp(_contentSize.width*0.5f,_contentSize.height*0.5f)];
+		int newIndex_ = [self indexOfPoint:centerPoint_ margin:marginPerItem];
+		
+		if(snapAtItem && targetScrollSpeedToPass <= ABS([self currentScrollSpeedX]) && newIndex_ == index){
+			newIndex_ = MAX(0,MIN(([self currentScrollSpeedX] > 0.0f ? newIndex_-1 : newIndex_+1),[self count]-1));
+			[self setCurrentScrollSpeedX:0.0f];
 		}
-		case CMMTouchState_onScroll:{
-			if(!snapAtItem || [itemList count] <= 0 || minScrollAccelToSnap < ABS(_curScrollSpeedX)) break;
-			
-			int minIndex_ = -1;
-			float minDistance_ = _contentSize.width;
-			CGPoint centerPoint_ = [self convertToWorldSpace:ccp(_contentSize.width/2.0f,_contentSize.height/2.0f)];
-			ccArray *data_ = itemList->data;
-			int count_ = data_->num;
-			for(uint index_=0;index_<count_;++index_){
-				CMMMenuItem *item_ = data_->arr[index_];
-				CGSize itemSize_ = item_.contentSize;
-				CGPoint targetPoint_ = item_.position;
-				targetPoint_.x += itemSize_.width*(0.5f-item_.anchorPoint.x);
-				targetPoint_.y += itemSize_.height*(0.5f-item_.anchorPoint.y);
-				targetPoint_ = [innerLayer convertToWorldSpace:targetPoint_];
-				float targetDistance_ = ccpDistance(centerPoint_, targetPoint_);
-				
-				if(minDistance_>targetDistance_){
-					minIndex_ = index_;
-					minDistance_ = targetDistance_;
-				}
-			}
-			
-			if(minIndex_ >= 0){
-				[self setIndex:minIndex_];
-				[self setTouchState:CMMTouchState_none];
-			}
-			
-			break;
+		
+		if(newIndex_ != NSNotFound){
+			[self setIndex:newIndex_];
 		}
-		default: break;
 	}
+	
+	if(snapAtItem && _onSnapping
+	   && index >= 0 && index != NSNotFound
+	   && [self count] > 0
+	   && [touchDispatcher touchCount] == 0){
+		CMMMenuItem *targetItem_ = [self itemAtIndex:index];
+		CGSize itemSize_ = [targetItem_ contentSize];
+		CGPoint itemPoint_ = [targetItem_ position];
+		CGPoint itemAnchorPoint_ = [targetItem_ anchorPoint];
+		
+		itemPoint_.x += itemSize_.width*(0.5f-itemAnchorPoint_.x);
+		itemPoint_.y += itemSize_.height*(0.5f-itemAnchorPoint_.y);
+		itemPoint_ = [innerLayer convertToWorldSpace:itemPoint_];
+		CGPoint centerPoint_ = [self convertToWorldSpace:ccp(_contentSize.width*0.5f,_contentSize.height*0.5f)];
+		CGPoint diffPoint_ = ccpSub(itemPoint_,centerPoint_);
+		CGPoint addPoint_ = ccp((diffPoint_.x*scrollSpeed)*dt_,0.0f);
+		
+		if(ABS(addPoint_.x) < 0.1f){
+			addPoint_ = diffPoint_;
+		}
+		
+		CGPoint originalPoint_ = [innerLayer position];
+		CGPoint targetPoint_ = ccpSub(originalPoint_,addPoint_);
+		if(ccpDistance(targetPoint_, originalPoint_) > 0.1f){
+			[self setInnerPosition:targetPoint_];
+		}else{
+			_onSnapping = NO;
+		}
+	}
+}
+
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
+	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
+	_onSnapping = NO;
+}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
+	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
+	_onSnapping = snapAtItem;
+}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
+	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
+	_onSnapping = snapAtItem;
 }
 
 @end
@@ -152,7 +140,6 @@
 @implementation CMMScrollMenuH(Common)
 
 -(void)addItem:(CMMMenuItem *)item_ atIndex:(int)index_{
-	NSAssert([item_ isKindOfClass:[CMMScrollMenuHItem class]], @"CMMScrolMenuV only support CMMScrolMenuVItem as children.");
 	[super addItem:item_ atIndex:index_];
 	
 	CGPoint targetPoint_ = cmmFunc_positionIPN(self, item_);

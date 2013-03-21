@@ -13,6 +13,9 @@ struct CMMFloatRange{
 		len = len_;
 	}
 	
+	float Length(){
+		return (len-loc)+loc;
+	}
 	float LimitValue(){
 		return loc + len;
 	}

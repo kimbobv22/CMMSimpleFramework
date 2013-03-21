@@ -62,8 +62,7 @@
 	}
 	
 	CMMControlItemSlider *controlItem_ = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:150];
-	[controlItem_ setMinValue:1.0f];
-	[controlItem_ setMaxValue:10.0f];
+	[controlItem_ setItemValueRange:CMMFloatRange(1.0f,10.0f)];
 	[controlItem_ setUnitValue:1.0f];
 	[controlItem_ setPosition:ccp(_contentSize.width-controlItem_.contentSize.width,10)];
 	[controlItem_ setCallback_whenItemValueChanged:^(float curValue_, float beforeValue_) {

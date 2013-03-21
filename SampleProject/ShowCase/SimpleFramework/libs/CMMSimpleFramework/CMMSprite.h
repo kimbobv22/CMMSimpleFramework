@@ -5,13 +5,12 @@
 #import "CMMTouchUtil.h"
 
 @interface CMMSprite : CCSprite<CMMTouchDispatcherDelegate>{
-	float touchCancelDistance;
 	CMMTouchDispatcher *touchDispatcher;
+	float touchCancelDistance;
 }
 
 -(void)initializeTouchDispatcher;
 
-@property (nonatomic, readwrite) float touchCancelDistance;
 @property (nonatomic, readonly) CMMTouchDispatcher *touchDispatcher;
 
 @end

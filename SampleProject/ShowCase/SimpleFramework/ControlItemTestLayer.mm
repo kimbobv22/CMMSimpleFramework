@@ -53,8 +53,7 @@
 	[self addChild:switch2];
 	
 	slider1 = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:150];
-	[slider1 setMinValue:-10.0f];
-	[slider1 setMaxValue:10.0f];
+	[slider1 setItemValueRange:CMMFloatRange(-10.0f,10.0f)];
 	[slider1  setItemValue:1.0f];
 	[slider1 setPosition:cmmFunc_positionFON(switch1, slider1, ccp(0.0f,-1.0f),ccp(0.0f,-20.0f))];
 	[slider1 setCallback_whenItemValueChanged:^(float itemValue_, float beforeItemValue_) {
@@ -64,9 +63,9 @@
 	
 	slider2 = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:150];
 	[slider2 setButtonSprite:[CCSprite spriteWithFile:@"Icon-Small.png"]];
-	[slider2 setMinValue:-10.0f];
-	[slider2 setMaxValue:10.0f];
+	[slider2 setItemValueRange:CMMFloatRange(-10.0f,10.0f)];
 	[slider2  setItemValue:1.0f];
+	[slider2 setSnappable:YES];
 	[slider2 setPosition:cmmFunc_positionFON(slider1, slider2, ccp(1.0f,0.0f),ccp(20.0f,0.0f))];
 	[slider2 setCallback_whenItemValueChanged:^(float itemValue_, float beforeItemValue_) {
 		CCLOG(@"slider2 : %1.1f -> %1.1f",beforeItemValue_,itemValue_);

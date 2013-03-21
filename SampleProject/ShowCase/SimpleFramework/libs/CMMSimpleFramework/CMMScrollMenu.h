@@ -12,9 +12,7 @@
 @interface CMMScrollMenu : CMMLayerMD<NSFastEnumeration>{
 	int index;
 	CCArray *itemList;
-	
 	float marginPerItem;
-	BOOL canSelectItem;
 	
 	void (^callback_whenIndexChanged)(int index_);
 	void (^callback_whenTapAtIndex)(int index_);
@@ -41,7 +39,6 @@
 @property (nonatomic, readonly) int count;
 @property (nonatomic, readonly) CCArray *itemList;
 @property (nonatomic, readwrite) float marginPerItem;
-@property (nonatomic, readwrite, getter = isCanSelectItem) BOOL canSelectItem;
 
 @property (nonatomic, copy) void (^callback_whenIndexChanged)(int index_);
 @property (nonatomic, copy) void (^callback_whenTapAtIndex)(int index_);
@@ -111,7 +108,9 @@
 @interface CMMScrollMenu(Search)
 
 -(int)indexOfItem:(CMMMenuItem *)item_;
+-(int)indexOfPoint:(CGPoint)worldPoint_ margin:(float)margin_;
 -(int)indexOfPoint:(CGPoint)worldPoint_;
+-(int)indexOfTouch:(UITouch *)touch_ margin:(float)margin_;
 -(int)indexOfTouch:(UITouch *)touch_;
 
 @end

@@ -3,24 +3,29 @@
 #import "CMMScrollMenuV.h"
 #import "CMMScene.h"
 
-@implementation CMMScrollMenuVItemDragView
-@synthesize targetIndex;
+@implementation CMMScrollMenuVItemDragView{
+	CMMMenuItem *_targetItem;
+}
+@synthesize targetItem = _targetItem;
 
 -(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
 	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
 	
-	targetIndex = -1;
+	_targetItem = nil;
 	
 	return self;
 }
 
--(void)setTextureWithMenuItem:(CMMMenuItem *)menuItem_{
-	CCTexture2D *texture_ = [CMMDrawingUtil captureFromNode:menuItem_];
-	CGRect textureRect_ = CGRectZero;
-	textureRect_.size = texture_.contentSize;
-	
-	[self setTexture:texture_];
-	[self setTextureRect:textureRect_];
+-(void)setTargetItem:(CMMMenuItem *)targetItem_{
+	_targetItem = targetItem_;
+	if(_targetItem){
+		CCTexture2D *texture_ = [CMMDrawingUtil captureFromNode:_targetItem];
+		CGRect textureRect_ = CGRectZero;
+		textureRect_.size = texture_.contentSize;
+		
+		[self setTexture:texture_];
+		[self setTextureRect:textureRect_];
+	}
 }
 
 @end
@@ -56,7 +61,7 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 	ccTime _curDragStartDelayTime;
 	CGPoint _firstTouchPoint;
 }
-@synthesize dragStartDelayTime,dragStartDistance,switchMode;
+@synthesize dragStartDelayTime,dragStartDistance,switchMode,onDragItem;
 @synthesize itemDragView = _itemDragView;
 @synthesize filter_canDragItem,filter_itemDragViewOffset,callback_itemDragViewAppeared,callback_itemDragViewDisappeared;
 
@@ -71,6 +76,7 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 	//add front view
 	_itemDragView = [CMMScrollMenuVItemDragView node];
 	[[[CMMScene sharedScene] frontLayer] addChild:_itemDragView];
+	[_itemDragView setVisible:NO];
 	
 	[self setCanDragY:YES];
 	
@@ -80,41 +86,18 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 	
 	return self;
 }
+-(BOOL)isOnDragItem{
+	return [_itemDragView visible] && [touchDispatcher touchCount] > 0;
+}
 -(void)update:(ccTime)dt_{
 	[super update:dt_];
-
-	switch(touchState){
-		case CMMTouchState_onTouchChild:{
-			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher touchItemAtIndex:0];
-			if(!touchItem_) break;
-			
-			CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
+	
+	CMMTouchDispatcherItem *touchItem_ = [[self innerTouchDispatcher] touchItemAtIndex:0];
+	if(touchItem_){		
+		CMMMenuItem *touchedItem_ = (CMMMenuItem *)[touchItem_ node];
 		
-			if(!filter_canDragItem || !filter_canDragItem(item_)) break;
-			
-			_curDragStartDelayTime += dt_;
-			
-			if(_curDragStartDelayTime >= dragStartDelayTime){
-				[_itemDragView setTextureWithMenuItem:item_];
-				[_itemDragView setTargetIndex:[self indexOfItem:item_]];
-				
-				[self setTouchState:CMMTouchState_onFixed];
-				[self _appearItemDragViewWithItem:item_];
-				
-				switch(switchMode){
-					case CMMScrollMenuVSwitchMode_move:{
-						[item_ setVisible:NO];
-						break;
-					}
-					case CMMScrollMenuVSwitchMode_switch:
-					default:{break;}
-				}
-			}
-			break;
-		}
-		case CMMTouchState_onFixed:{
-			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher touchItemAtIndex:0];
-			
+		//when item drag
+		if([self isOnDragItem]){
 			CGPoint beforeInnerLayerPoint_ = [innerLayer position];
 			CGSize innerSize_ = [innerLayer contentSize];
 			CGPoint touchPoint_ = [self convertToNodeSpace:[CMMTouchUtil pointFromTouch:[touchItem_ touch]]];
@@ -128,7 +111,7 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 			else if(touchPoint_.y<-(innerSize_.height-_contentSize.height))
 				touchPoint_.y = -(innerSize_.height-_contentSize.height);
 			
-			[innerLayer setPosition:touchPoint_];
+			[self setInnerPosition:touchPoint_];
 			CGPoint targetPoint_ = [CMMTouchUtil pointFromTouch:[touchItem_ touch]];
 			
 			switch(switchMode){
@@ -136,10 +119,8 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 					CGPoint innerCurPoint_ = [innerLayer convertToNodeSpace:targetPoint_];
 					CGPoint innerBefPoint_ = [innerLayer convertToNodeSpace:[CMMTouchUtil prepointFromTouch:[touchItem_ touch]]];
 					
-					innerBefPoint_ = ccpAdd(innerBefPoint_, ccpSub(beforeInnerLayerPoint_, touchPoint_));
-					
-					CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
-					int targetIndex_ = [self indexOfItem:item_];
+					innerBefPoint_ = ccpSub(innerBefPoint_, ccpSub(beforeInnerLayerPoint_, touchPoint_));
+					int targetIndex_ = [self indexOfItem:touchedItem_];
 					
 					float targetOperator_ = 1.0f;
 					if(innerCurPoint_.y > innerBefPoint_.y){
@@ -149,9 +130,9 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 						targetOperator_ = -1.0f;
 					}
 					
-					CMMMenuItem *tItem_ = [self itemAtIndex:targetIndex_];
-					if((innerCurPoint_.y - [tItem_ position].y) * targetOperator_ > 0){
-						[self moveItem:item_ toIndex:targetIndex_];
+					CMMMenuItem *targetItem_ = [self itemAtIndex:targetIndex_];
+					if((innerCurPoint_.y - [targetItem_ position].y) * targetOperator_ > 0){
+						[self moveItem:touchedItem_ toIndex:targetIndex_];
 					}
 					
 					targetPoint_.x = [self convertToWorldSpace:ccp(_contentSize.width*0.5f,0.0f)].x;
@@ -165,10 +146,25 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 					break;
 				}
 			}
-			
-			break;
 		}
-		default: break;
+		//when item touch
+		else if(filter_canDragItem && filter_canDragItem(touchedItem_)){
+			_curDragStartDelayTime += dt_;
+			
+			if(_curDragStartDelayTime >= dragStartDelayTime){
+				[_itemDragView setTargetItem:touchedItem_];
+				[self _appearItemDragViewWithItem:touchedItem_];
+				
+				switch(switchMode){
+					case CMMScrollMenuVSwitchMode_move:{
+						[touchedItem_ setVisible:NO];
+						break;
+					}
+					case CMMScrollMenuVSwitchMode_switch:
+					default:{break;}
+				}
+			}
+		}
 	}
 }
 
@@ -177,19 +173,11 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 	_firstTouchPoint = [CMMTouchUtil pointFromTouch:touch_];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
-	[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
 	_curDragStartDelayTime = 0.0f;
 	
-	switch(touchState){
-		case CMMTouchState_onTouchChild:{
-			CGPoint touchPoint_ = [CMMTouchUtil pointFromTouch:touch_];
-			if(ABS(ccpSub(touchPoint_,_firstTouchPoint).x)>dragStartDistance)
-				_curDragStartDelayTime = dragStartDelayTime;
-			
-			break;
-		}
-		case CMMTouchState_onFixed:{
-			
+	CMMTouchDispatcherItem *touchItem_ = [[self innerTouchDispatcher] touchItemAtIndex:0];
+	if(touchItem_){
+		if([self isOnDragItem]){
 			switch(switchMode){
 				case CMMScrollMenuVSwitchMode_move:{
 					if(![CMMTouchUtil isNodeInTouch:self touch:touch_]){
@@ -203,19 +191,23 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 					break;
 				}
 			}
-			
-			break;
+			return;
+		}else{
+			CGPoint touchPoint_ = [CMMTouchUtil pointFromTouch:touch_];
+			if(ABS(ccpSub(touchPoint_,_firstTouchPoint).x)>dragStartDistance)
+				_curDragStartDelayTime = dragStartDelayTime;
 		}
-		default: break;
 	}
+	
+	[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
 	_curDragStartDelayTime = 0;
 	
-	switch(touchState){
-		case CMMTouchState_onFixed:{
-			
-			CMMMenuItem *item_ = [self itemAtIndex:[_itemDragView targetIndex]];
+	CMMTouchDispatcherItem *touchItem_ = [[self innerTouchDispatcher] touchItemAtIndex:0];
+	if(touchItem_){
+		if([self isOnDragItem]){
+			CMMMenuItem *item_ = [_itemDragView targetItem];
 			BOOL isRestoreDragItemView_ = YES;
 			CGPoint touchPoint_ = [CMMTouchUtil pointFromTouch:touch_];
 			
@@ -227,10 +219,8 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 				}
 				case CMMScrollMenuVSwitchMode_switch:
 				default:{
-					
 					//handle link switch
 					CMMLayer *parentLayer_ = (CMMLayer *)[touchDispatcher_ target];
-//					CGPoint parentPoint_ = [parentLayer_ convertToNodeSpace:touchPoint_];
 					if(![CMMTouchUtil isNodeInPoint:self point:touchPoint_]){
 						ccArray *pData_ = parentLayer_.children->data;
 						int pCount_ = pData_->num;
@@ -259,31 +249,22 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 				}
 			}
 			
+			[self touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
 			if(!isRestoreDragItemView_) [self _disappearItemDragView];
 			
-			[self touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
-			
-			break;
-		}
-		default:{
-			[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
-			break;
+			return;
 		}
 	}
+	
+	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
 }
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
 	_curDragStartDelayTime = 0;
 	
-	switch(touchState){
-		case CMMTouchState_onFixed:{
-			CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher touchItemAtTouch:touch_];
-			CMMMenuItem *item_ = (CMMMenuItem *)[touchItem_ node];
-			[self _disappearItemDragViewWithItem:item_];
-			[item_ setVisible:YES];
-			
-			break;
-		}
-		default: break;
+	if([self isOnDragItem]){
+		CMMMenuItem *touchedItem_ = [_itemDragView targetItem];
+		[self _disappearItemDragViewWithItem:touchedItem_];
+		[touchedItem_ setVisible:YES];
 	}
 	
 	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
@@ -341,6 +322,7 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 	
 	CGPoint targetPoint_ = ccpAdd([innerLayer position], ccp(0,beforeHeight_-targetHeight_));
 	[innerLayer setPosition:targetPoint_];
+	[self setInnerPosition:targetPoint_];
 	for(uint index_=0;index_<count_;++index_){
 		CMMMenuItem *item_ = data_->arr[index_];
 		[item_ setPosition:ccpSub([item_ position], ccp(0,beforeHeight_-targetHeight_))];
@@ -400,6 +382,8 @@ static CMMScrollMenuVItemDragViewCallback _staticCMMScrollMenuV_block_callback_i
 	}else{
 		[_itemDragView setVisible:NO];
 	}
+	
+	[_itemDragView setTargetItem:nil];
 }
 -(void)_disappearItemDragView{
 	[self _disappearItemDragViewWithItem:nil];

@@ -4,6 +4,13 @@
 
 #import "CMMMacro.h"
 
+DEPRECATED_ATTRIBUTE inline static float cmmFuncCommon_fixRadians(float radians_){
+	return cmmFunc_fixRadians(radians_);
+}
+DEPRECATED_ATTRIBUTE inline static float cmmFuncCommon_fixDegrees(float degrees_){
+	return cmmFunc_fixDegrees(degrees_);
+}
+
 DEPRECATED_ATTRIBUTE inline static inline CGPoint cmmFuncCommon_position_center(CGRect parentRect_,CGRect targetRect_,CGPoint targetAPoint_){
 	return cmmFunc_positionIPN(parentRect_, targetRect_, targetAPoint_, ccp(0.5f,0.5f));
 }
@@ -169,19 +176,33 @@ DEPRECATED_ATTRIBUTE @interface CMMLayerMask : CMMLayerM
 
 @end
 
-DEPRECATED_ATTRIBUTE typedef CMMLayerMDScrollbar CMMScrollbarDesign;
-
 DEPRECATED_ATTRIBUTE @interface CMMLayerMaskDrag : CMMLayerMD
 
 //use CMMLayerMD class
 
 @end
 
+struct CMMLayerMDScrollbar{
+	CMMLayerMDScrollbar(){
+		colorX = colorY = ccc4(255, 255, 255, 145);
+		widthX = widthY = 2.0f;
+		distanceX = distanceY = 4.0f;
+	}
+	
+	ccColor4B colorX,colorY;
+	float widthX,widthY,distanceX,distanceY;
+} DEPRECATED_ATTRIBUTE;
+
+DEPRECATED_ATTRIBUTE typedef CMMLayerMDScrollbar CMMScrollbarDesign;
+
 @interface CMMLayerMD(Deprecated)
 
 @property (nonatomic, readwrite, getter = _isCanDragX) BOOL isCanDragX DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readwrite, getter = _isCanDragY) BOOL isCanDragY DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readwrite, getter = _isAlwaysShowScrollbar) BOOL isAlwaysShowScrollbar DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readwrite) CMMLayerMDScrollbar scrollbar DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readwrite) float dragSpeed DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readwrite) int touchState DEPRECATED_ATTRIBUTE;
 
 @end
 
@@ -358,6 +379,14 @@ DEPRECATED_ATTRIBUTE @interface CMMSoundHandlerItemFollow : CMMSoundHandlerItem
 @end
 
 #pragma mark - dispatcher
+
+typedef enum{
+	CMMTouchState_none DEPRECATED_ATTRIBUTE,
+	CMMTouchState_onTouchChild DEPRECATED_ATTRIBUTE,
+	CMMTouchState_onFixed DEPRECATED_ATTRIBUTE,
+	CMMTouchState_onScroll DEPRECATED_ATTRIBUTE,
+	CMMTouchState_onDrag DEPRECATED_ATTRIBUTE,
+} CMMTouchState DEPRECATED_ATTRIBUTE;
 
 @interface CMMTouchDispatcher(Deprecated)
 
@@ -544,7 +573,16 @@ DEPRECATED_ATTRIBUTE @protocol CMMMenuItemSetDelegate<NSObject>
 +(id)scrollMenuWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_ DEPRECATED_ATTRIBUTE;
 
 @property (nonatomic, assign) id delegate DEPRECATED_ATTRIBUTE;
-@property (nonatomic, getter = _isCanSelectItem) BOOL isCanSelectItem DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readwrite, getter = _isCanSelectItem) BOOL isCanSelectItem DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readwrite, getter = isCanSelectItem) BOOL canSelectItem DEPRECATED_ATTRIBUTE;
+
+@end
+
+@interface CMMScrollMenuVItemDragView(Deprecated)
+
+-(void)setTextureWithMenuItem:(CMMMenuItem *)menuItem_ DEPRECATED_ATTRIBUTE;
+
+@property (nonatomic, readwrite) int targetIndex UNAVAILABLE_ATTRIBUTE;
 
 @end
 
@@ -555,6 +593,13 @@ DEPRECATED_ATTRIBUTE @protocol CMMMenuItemSetDelegate<NSObject>
 
 @property (nonatomic, copy) CCFiniteTimeAction * (^action_itemDragViewCancelled)(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_) UNAVAILABLE_ATTRIBUTE;
 @property (nonatomic, copy) CGPoint(^filter_offsetOfDraggedItem)(CGPoint orginalPoint_, CGPoint targetPoint_,ccTime dt_) DEPRECATED_ATTRIBUTE;
+
+@end
+
+@interface CMMScrollMenuH(Deprecated)
+
+@property (nonatomic, readwrite) float fouceItemScale UNAVAILABLE_ATTRIBUTE,nonefouceItemScale UNAVAILABLE_ATTRIBUTE;
+@property (nonatomic, readwrite) float minScrollAccelToSnap DEPRECATED_ATTRIBUTE;
 
 @end
 
@@ -634,6 +679,7 @@ DEPRECATED_ATTRIBUTE @protocol CMMControlItemSwitchDelegate
 @interface CMMControlItemSlider(Deprecated)
 
 @property (nonatomic, assign) void (^callback_whenChangedItemVale)(id sender_,float itemValue_, float beforeItemValue_) DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readwrite) float minValue DEPRECATED_ATTRIBUTE,maxValue DEPRECATED_ATTRIBUTE;
 
 @end
 

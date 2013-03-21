@@ -12,11 +12,10 @@
 @implementation CMMScrollMenu(Private)
 
 -(void)_removeItemDirect:(CCNode *)item_{
-	[innerTouchDispatcher cancelTouchAtNode:(id<CMMTouchDispatcherDelegate>)item_];
+	[[self innerTouchDispatcher] cancelTouchAtNode:(id<CMMTouchDispatcherDelegate>)item_];
 	[itemList removeObject:item_];
 	[item_ removeFromParentAndCleanup:NO];
 	[self doUpdateInnerSize];
-	[self setTouchState:CMMTouchState_onScroll];
 	
 	int count_ = [self count];
 	if(index>=count_)
@@ -26,7 +25,7 @@
 @end
 
 @implementation CMMScrollMenu
-@synthesize index,count,itemList,marginPerItem,canSelectItem;
+@synthesize index,count,itemList,marginPerItem;
 @synthesize callback_whenIndexChanged,callback_whenTapAtIndex,callback_whenItemAdded,callback_whenItemRemoved,callback_whenItemSwitched,callback_whenItemLinkSwitched,callback_whenItemMoved;
 @synthesize filter_canChangeIndex,filter_canAddItem,filter_canRemoveItem,filter_canSwitchItem,filter_canLinkSwitchItem,filter_canMoveItem;
 
@@ -43,9 +42,6 @@
 	CCSprite *frameSprite_ = [CCSprite spriteWithTexture:[[CMMDrawingManager sharedManager] textureBatchBarWithFrameSeq:frameSeq_ batchBarSeq:batchBarSeq_ size:frameSize_]];
 	[scrollMenu_ addChild:frameSprite_];
 	frameSprite_.position = cmmFunc_positionIPN(scrollMenu_, frameSprite_);
-	CMMLayerMDScrollbar scrollBar_ = CMMLayerMDScrollbar();
-	scrollBar_.distanceX = scrollBar_.distanceY = 6.0f;
-	[scrollMenu_ setScrollbar:scrollBar_];
 	
 	return scrollMenu_;
 }
@@ -53,10 +49,9 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	index = -1;
 	itemList = [[CCArray alloc] init];
 	marginPerItem = 1.0f;
-	canSelectItem = YES;
+	[self setIndex:-1];
 	
 	return self;
 }
@@ -76,31 +71,18 @@
 	[self updateMenuArrangeWithInterval:dt_];
 }
 
--(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
-	if(!canSelectItem || touchState == CMMTouchState_onScroll){
-		[self setTouchState:CMMTouchState_onDrag];
-		return;
-	}
-
-	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
-}
-
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
-	CMMTouchDispatcherItem *touchItem_ = [innerTouchDispatcher touchItemAtTouch:touch_];
-	
-	switch(touchState){
-		case CMMTouchState_onTouchChild:{
-			int touchedIndex_ = [self indexOfItem:(CMMMenuItem *)[touchItem_ node]];
-			if(callback_whenTapAtIndex){
-				callback_whenTapAtIndex(touchedIndex_);
-			}
-			[self setIndex:touchedIndex_];
-			
-			break;
+	CMMTouchDispatcherItem *touchItem_ = [[self innerTouchDispatcher] touchItemAtTouch:touch_];
+	if(touchItem_){
+		CMMMenuItem *menuItem_ = (CMMMenuItem *)[touchItem_ node];
+		int touchedIndex_ = [self indexOfItem:menuItem_];
+		if(callback_whenTapAtIndex){
+			callback_whenTapAtIndex(touchedIndex_);
 		}
-		default: break;
+		
+		[self setIndex:touchedIndex_];
 	}
-	
+
 	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
 }
 
@@ -291,19 +273,26 @@
 -(int)indexOfItem:(CMMMenuItem *)item_{
 	return [itemList indexOfObject:item_];
 }
--(int)indexOfPoint:(CGPoint)worldPoint_{
+
+-(int)indexOfPoint:(CGPoint)worldPoint_ margin:(float)margin_{
 	ccArray *data_ = itemList->data;
 	int count_ = data_->num;
 	for(uint index_=0;index_<count_;++index_){
 		CMMMenuItem *item_ = data_->arr[index_];
-		if([CMMTouchUtil isNodeInPoint:item_ point:worldPoint_])
+		if([CMMTouchUtil isNodeInPoint:item_ point:worldPoint_ margin:margin_])
 			return index_;
 	}
 	
 	return NSNotFound;
 }
+-(int)indexOfPoint:(CGPoint)worldPoint_{
+	return [self indexOfPoint:worldPoint_ margin:0.0f];
+}
+-(int)indexOfTouch:(UITouch *)touch_ margin:(float)margin_{
+	return [self indexOfPoint:[CMMTouchUtil pointFromTouch:touch_] margin:margin_];
+}
 -(int)indexOfTouch:(UITouch *)touch_{
-	return [self indexOfPoint:[CMMTouchUtil pointFromTouch:touch_]];
+	return [self indexOfTouch:touch_ margin:0.0f];
 }
 
 @end

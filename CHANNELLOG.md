@@ -1,3 +1,53 @@
+##Version 1.3.0
+###*---Please be careful before update!!!---*<br/>most of the features of the `CMMTouchDispatcher`,`CMMSprite`,`CMMLayerMD`,`CMMScrollMenuV`,`CMMScrollMenuH` has been changed & updated
+* [FIX] macro name has changed
+	* `cmmFuncCommon_fixRadians` -> `cmmFunc_fixRadians`
+	* `cmmFuncCommon_fixDegrees` -> `cmmFunc_fixDegrees`
+	* `cmmFunc_MINMAX(arg1,arg2,arg3)` added
+* [FIX] **`CMMFloatRange`** method added
+	* **method** `float Length();` added
+* [DEL] **`CMMTouchState`** deprecated, do not use anymore
+* [NEW] enum **`CMMTouchCancelMode`** added
+* [FIX] **`CMMTouchDispatcherDelegate`**
+	* **property** `(CMMTouchCancelMode)touchCancelMode` added
+	* **property** `(float)touchCancelDistance` added
+* [FIX]  **`CMMTouchDispatcherItem`** improved
+	* **property**  `(CGPoint)firstTouchPoint` added
+* [FIX] **`CMMTouchSelectorID`** item added
+	* `CMMTouchSelectorID_TouchCancelModeGetter` added
+	* `CMMTouchSelectorID_TouchCancelDistanceSetter` added
+	* `CMMTouchSelectorID_TouchCancelDistanceGetter` added
+* [FIX] **`CMMSprite`** improved
+* [DEL] **`CMMLayerMDScrollbar`** deprecated, do not use anymore
+* [FIX] **`CMMLayerMD`** classes & methods has been changed, scrolling process improved (*you need to migrate your source*)
+	* **variable & property** `(CMMLayerMDScrollbar)scrollbar` deprecated, do not use anymore
+	* **variable & property** `(float)dragSpeed` deprecated, replaced by `(float)scrollSpeed`
+	* **variable & property** `(CMMLayerMDScrollbar)scrollbar` deprecated, do not use anymore
+	* **variable & property** `(CMM9SliceBar *)scrollbarX` added
+	* **variable & property** `(CMM9SliceBar *)scrollbarY` added
+	* **variable & property** `(float)scrollbarOffsetX` added
+	* **variable & property** `(float)scrollbarOffsetY` added
+	* **variable & property** `(float)scrollResistance` added
+	* **property** `(float)currentScrollSpeedX` added
+	* **property** `(float)currentScrollSpeedY` added
+	* **method** `+(void)setDefaultScrollbarX:(CCSprite *)scrollbar_;` added
+	* **method** `+(CCSprite *)defaultScrollbarX;` added
+	* **method** `+(void)setDefaultScrollbarY:(CCSprite *)scrollbar_;` added
+	* **method** `+(CCSprite *)defaultScrollbarY;` added
+	* **method** `-(void)setInnerPosition:(CGPoint)point_ applyScrolling:(BOOL)applyScrolling_;` added
+	* **method** `-(void)setInnerPosition:(CGPoint)point_;` added
+* [FIX] **`CMMScrollMenu`** process improved
+* [FIX] **`CMMScrollMenuV`** process improved
+* [FIX] **`CMMScrollMenuH`** process improved
+	* **variable & property** `(float)fouceItemScale` is unavailable
+	* **variable & property** `(float)nonefouceItemScale` is unavailable
+	* **variable & property** `(float)minScrollAccelToSnap` deprecated, do not use anymore
+	* **variable & property** `(float)targetScrollSpeedToPass` added
+* [FIX] **`CMMMenuItem`** fixed bugs on the animation of the button
+* [FIX] **`CMMControlItemSlider`** properties has been changed
+	* **variable & property** `(float)minValue`,`(float)maxValue` deprecated, replaced by `(CMMFloatRange)itemValueRange`
+	* **variable & property** `(BOOL)snappable` added (default NO)
+
 ##Version 1.2.6
 * [FIX] **`CMMDrawingManagerItem`** improved
 	* **method** `-(void)setSpriteFrame:forKey:` deprecated

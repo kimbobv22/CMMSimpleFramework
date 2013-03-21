@@ -172,6 +172,17 @@
 -(BOOL)_isCanDragY{
 	return [self isCanDragY];
 }
+-(void)setScrollbar:(CMMLayerMDScrollbar)scrollbar{}
+-(CMMLayerMDScrollbar)scrollbar{return CMMLayerMDScrollbar();}
+
+-(void)setDragSpeed:(float)dragSpeed_{
+	[self setScrollSpeed:dragSpeed_];
+}
+-(float)dragSpeed{
+	return [self scrollSpeed];
+}
+-(void)setTouchState:(int)touchState{}
+-(int)touchState{return (CMMTouchState)0;};
 
 @end
 
@@ -629,11 +640,27 @@
 -(void)setDelegate:(id)delegate{}
 -(id)delegate{return nil;}
 -(void)setIsCanSelectItem:(BOOL)isCanSelectItem_{
-	[self setCanSelectItem:isCanSelectItem_];
+	[self setInnerLayerTouchEnable:isCanSelectItem_];
 }
 -(BOOL)_isCanSelectItem{
-	return [self isCanSelectItem];
+	return [self isInnerLayerTouchEnable];
 }
+-(void)setCanSelectItem:(BOOL)canSelectItem_{
+	[self setInnerLayerTouchEnable:canSelectItem_];
+}
+-(BOOL)isCanSelectItem{
+	return [self isInnerLayerTouchEnable];
+}
+
+@end
+
+@implementation CMMScrollMenuVItemDragView(Deprecated)
+
+-(void)setTextureWithMenuItem:(CMMMenuItem *)menuItem_{
+	[self setTargetItem:menuItem_];
+}
+-(void)setTargetIndex:(int)targetIndex_{}
+-(int)targetIndex{return -1;};
 
 @end
 
@@ -655,6 +682,17 @@
 -(CGPoint (^)(CGPoint, CGPoint, ccTime))filter_offsetOfDraggedItem{
 	return [self filter_itemDragViewOffset];
 }
+
+@end
+
+@implementation CMMScrollMenuH(Deprecated)
+
+-(void)setFouceItemScale:(float)fouceItemScale{}
+-(float)fouceItemScale{return 1.0f;}
+-(void)setNonefouceItemScale:(float)nonefouceItemScale{}
+-(float)nonefouceItemScale{return 1.0f;}
+-(void)setMinScrollAccelToSnap:(float)value_{}
+-(float)minScrollAccelToSnap{return 0.0f;}
 
 @end
 
@@ -697,6 +735,18 @@
 }
 -(void(^)(id,float,float))callback_whenChangedItemVale{
 	return nil;
+}
+-(void)setMinValue:(float)minValue_{
+	[self setItemValueRange:CMMFloatRange(minValue_,[self itemValueRange].len)];
+}
+-(float)minValue{
+	return [self itemValueRange].loc;
+}
+-(void)setMaxValue:(float)maxValue_{
+	[self setItemValueRange:CMMFloatRange([self itemValueRange].loc,maxValue_)];
+}
+-(float)maxValue{
+	return [self itemValueRange].len;
 }
 
 @end

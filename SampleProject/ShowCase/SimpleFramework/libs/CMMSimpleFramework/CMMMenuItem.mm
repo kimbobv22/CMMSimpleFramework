@@ -13,8 +13,8 @@
 @implementation CMMMenuItem(Private)
 
 -(void)_stopFadeAction{
-	[self stopAction:pushUpAction];
-	[self stopAction:pushDownAction];
+	if(pushUpAction) [self stopAction:pushUpAction];
+	if(pushDownAction) [self stopAction:pushDownAction];
 }
 -(void)_setMenuItemImage:(CCSprite *)sprite_{
 	[self setTexture:[sprite_ texture]];
@@ -24,10 +24,14 @@
 	onSelect = onSelect_;
 	[self _stopFadeAction];
 	if(onSelect){
-		[self runAction:pushDownAction];
+		if(pushDownAction) [self runAction:pushDownAction];
 		[self _setMenuItemImage:selectedImage];
 	}else{
-		[self runAction:enable?pushUpAction:pushDownAction];
+		if(enable){
+			if(pushUpAction) [self runAction:pushUpAction];
+		}else{
+			if(pushDownAction) [self runAction:pushDownAction];
+		}
 		[self _setMenuItemImage:normalImage];
 	}
 }

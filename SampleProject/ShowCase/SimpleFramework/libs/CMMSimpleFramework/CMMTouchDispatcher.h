@@ -6,14 +6,6 @@
 
 #define cmmVarCMMTouchDispather_defaultCacheCount 20
 
-typedef enum{
-	CMMTouchState_none,
-	CMMTouchState_onTouchChild,
-	CMMTouchState_onDrag,
-	CMMTouchState_onScroll, //none touch state
-	CMMTouchState_onFixed,
-} CMMTouchState;
-
 typedef struct{
 	float scale,lastScale;
 	float distance,lastDistance,firstDistance;
@@ -30,6 +22,11 @@ static inline CMMPinchState CMMPinchStateMake(float distance_,float radians_){
 	pinchState_.touch1 = pinchState_.touch2 = nil;
 	return pinchState_;
 }
+
+typedef enum{
+	CMMTouchCancelMode_goOut,
+	CMMTouchCancelMode_move,
+} CMMTouchCancelMode;
 
 @class CMMTouchDispatcher;
 
@@ -48,6 +45,9 @@ static inline CMMPinchState CMMPinchStateMake(float distance_,float radians_){
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenPinchEnded:(CMMPinchState)pinchState_;
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenPinchCancelled:(CMMPinchState)pinchState_;
 
+@property (nonatomic, readonly) CMMTouchCancelMode touchCancelMode;
+@property (nonatomic, readwrite) float touchCancelDistance;
+
 @end
 
 @interface CMMTouchDispatcherItem : NSObject{
@@ -60,6 +60,7 @@ static inline CMMPinchState CMMPinchStateMake(float distance_,float radians_){
 
 @property (nonatomic, retain) UITouch *touch;
 @property (nonatomic, retain) CCNode<CMMTouchDispatcherDelegate> *node;
+@property (nonatomic, readwrite) CGPoint firstTouchPoint;
 
 @end
 
@@ -69,10 +70,14 @@ typedef enum{
 	CMMTouchSelectorID_TouchMoved,
 	CMMTouchSelectorID_TouchEnded,
 	CMMTouchSelectorID_TouchCancelled,
+	CMMTouchSelectorID_TouchCancelModeGetter,
+	CMMTouchSelectorID_TouchCancelDistanceSetter,
+	CMMTouchSelectorID_TouchCancelDistanceGetter,
 	
 	CMMTouchSelectorID_PinchBegan,
 	CMMTouchSelectorID_PinchMoved,
 	CMMTouchSelectorID_PinchEnded,
+	
 	CMMTouchSelectorID_PinchCancelled,
 	
 	CMMTouchSelectorID_maxCount,

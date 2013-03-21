@@ -10,11 +10,12 @@
 	
 	CGSize winSize_ = [[CCDirector sharedDirector] winSize];
 	
-	dragLayer = [CMMLayerMD layerWithColor:ccc4(100, 0, 0, 120) width:winSize_.width*0.6f height:winSize_.height*0.8f];
+	dragLayer = [CMMLayerMD layerWithColor:ccc4(0, 0, 0, 120) width:winSize_.width*0.6f height:winSize_.height*0.7f];
 	dragLayer.canDragX = YES;
 	dragLayer.canDragY = YES;
 	[[dragLayer innerLayer] setContentSize:CGSizeMake(winSize_.width*2.0f, winSize_.width*2.0f)];
 	[[dragLayer innerLayer] setColor:ccc3(0, 100, 0)];
+	[[dragLayer innerLayer] setOpacity:180];
 	dragLayer.position = ccp(180,50);
 	//[dragLayer_ gotoTop]; //use this method when you want to go top
 	[self addChild:dragLayer];
@@ -24,6 +25,17 @@
 	CCSprite *testSprite_ = [CCSprite spriteWithFile:@"Default.png"];
 	testSprite_.position = ccp(innerSize_.width/2,innerSize_.height/2);
 	[dragLayer addChildToInner:testSprite_];
+	
+	_slider = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:_contentSize.width*0.4f];
+	[_slider setItemValueRange:CMMFloatRange(0.0f,0.9f)];
+	[_slider setUnitValue:0.1f];
+	[_slider setItemValue:[dragLayer scrollResistance]];
+	[_slider setCallback_whenItemValueChanged:^(float itemValue_, float beforeItemValue_) {
+		[dragLayer setScrollResistance:itemValue_];
+	}];
+	
+	[_slider setPosition:cmmFunc_positionFON(dragLayer, _slider, ccp(0.0f,-1.0f), ccp(0.0f,-10.0f))];
+	[self addChild:_slider];
 	
 	//add menuitem to dragLayer
 	CMMMenuItemL *menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0];
