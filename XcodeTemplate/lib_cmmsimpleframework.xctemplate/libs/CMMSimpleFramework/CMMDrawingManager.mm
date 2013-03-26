@@ -61,7 +61,7 @@ static CMM9SliceBar *_cachedCMMSpriteBatchBar_ = nil;
 	return [_spriteFrames objectForKey:key_];
 }
 -(CCSpriteFrame *)spriteFrameForKeyFormatter:(NSString *)keyFormatter_{
-	return [self spriteFrameForKey:[NSString stringWithFormat:keyFormatter_,_fileName]];
+	return [self spriteFrameForKey:[[NSFileManager defaultManager] displayNameAtPath:[NSString stringWithFormat:keyFormatter_,_fileName]]];
 }
 
 -(void)dealloc{

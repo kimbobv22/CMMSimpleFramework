@@ -1,3 +1,43 @@
+##Version 1.3.1
+* [NEW] **`CMMGestureDispatcher`** added
+	* You can control the gesture
+* [DEL] **`CMMPinchState`** is unavailable
+		
+		typedef struct{
+			float scale,lastScale;
+			float distance,lastDistance,firstDistance;
+			float radians,lastRadians,firstRadians;
+	
+			UITouch *touch1,*touch2;
+		} kCMMPinchState;
+
+		typedef kCMMPinchState CMMPinchState UNAVAILABLE_ATTRIBUTE;
+
+		UNAVAILABLE_ATTRIBUTE static inline kCMMPinchState CMMPinchStateMake(float distance_,float radians_){
+			return kCMMPinchState();
+		}
+			
+* [FIX] **`CMMTouchDispatcher`** updated
+	* **variable & property** `CMMPinchState` is unavailable, please refer `CMMGestureDispatcher`
+	
+			@property (nonatomic, readwrite) kCMMPinchState pinchState UNAVAILABLE_ATTRIBUTE;
+			
+* [FIX] **`CMMControlItemSlider`** bugs fixed
+* [FIX] **`CMMStage`** improved
+
+			//deprecated
+			@property (nonatomic, copy) CMMStageObjectBlock callback_whenObjectAdded DEPRECATED_ATTRIBUTE;
+			@property (nonatomic, copy) CMMStageObjectBlock callback_whenObjectRemoved DEPRECATED_ATTRIBUTE;
+			
+			//replace by
+			-(void)addObjectCallback:(CMMStageObjectCallback *)callback_;
+			-(CMMStageObjectCallback *)addObjectCallbackWithType:(CMMStageObjectCallbackType)type_ callback:(CMMStageObjectBlock)callback_;
+			-(void)removeObjectCallbackAtIndex:(uint)index_;
+			-(void)removeObjectCallback:(CMMStageObjectCallback *)callback_;
+			-(void)removeAllObjectCallbacks;
+			-(uint)indexOfObjectCallback:(CMMStageObjectCallback *)callback_;
+	
+
 ##Version 1.3.0
 ###*---Please be careful before update!!!---*<br/>most of the features of the `CMMTouchDispatcher`,`CMMSprite`,`CMMLayerMD`,`CMMScrollMenuV`,`CMMScrollMenuH` has been changed & updated
 * [FIX] macro name has changed

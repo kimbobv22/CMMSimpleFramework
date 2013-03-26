@@ -1,7 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#define CMMSimpleFrameworkVersion 0x00010300
-#define CMMSimpleFrameworkVersionString @"CMMSimpleFramework v1.3.0"
+#define CMMSimpleFrameworkVersion 0x00010301
+#define CMMSimpleFrameworkVersionString @"CMMSimpleFramework v1.3.1"
 
 //common
 #import "cocos2d.h"
@@ -23,9 +23,10 @@
 #import "CMMSprite.h"
 #import "CMM9SliceBar.h"
 
-#import "CMMTouchDispatcher.h"
-#import "CMMPopupView.h"
 #import "CMMMotionDispatcher.h"
+#import "CMMPopupView.h"
+#import "CMMTouchDispatcher.h"
+#import "CMMGestureDispatcher.h"
 #import "CMMNoticeDispatcher.h"
 
 #import "CMMSoundEngine.h"

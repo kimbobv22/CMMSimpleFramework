@@ -39,7 +39,13 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	return cmmFuncCMMb2ContactMask_IsContact(b2CMaskA_,b2CMaskB_);
 }
 
-@implementation CMMStageWorld
+@implementation CMMStageWorld{
+	CMMStageWorldContactListener *_contactLintener;
+	CMMStageWorldContactFilter *_contactFilter;
+	b2Draw *_debugDraw;
+	
+	int _OBATCHNODETAG_,_OBJECTTAG_;
+}
 @synthesize stage,world,worldBody,obatchNode_list,object_list,b2CMask_bottom,b2CMask_top,b2CMask_left,b2CMask_right,velocityIterations,positionIterations,countOfObatchNode,countOfObject;
 
 +(id)worldWithStage:(CMMStage *)stage_ worldSize:(CGSize)worldSize_{
@@ -47,8 +53,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 }
 -(id)initWithStage:(CMMStage *)stage_ worldSize:(CGSize)worldSize_{
 	if(!(self = [super init])) return self;
-	self.anchorPoint = CGPointZero;
-	self.contentSize = worldSize_;
+	[self setContentSize:worldSize_];
 	stage = stage_;
 	
 	obatchNode_list = [[CCArray alloc] init];
@@ -58,7 +63,6 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	
 	//add callback
 	[object_list setCallback_whenObjectsRemoved:^(CCArray *objects_){
-		void (^callback_)(CMMSObject *objects_) = [stage callback_whenObjectRemoved];
 		ccArray *data_ = objects_->data;
 		uint count_ = data_->num;
 		for(uint index_=0;index_<count_;++index_){
@@ -82,14 +86,9 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 			
 			//stage delegate
 			[stage stageWorld:self whenRemovedObject:object_];
-			
-			if(callback_){
-				callback_(object_);
-			}
 		}
 	}];
 	[object_list setCallback_whenObjectsAdded:^(CCArray * objects_){
-		void (^callback_)(CMMSObject *objects_) = [stage callback_whenObjectAdded];
 		ccArray *data_ = objects_->data;
 		uint count_ = data_->num;
 		for(uint index_=0;index_<count_;++index_){
@@ -97,10 +96,6 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 			[object_ buildupBodyWithWorld:self];
 			[object_ whenAddedToStage];
 			[stage stageWorld:self whenAddedObject:object_];
-			
-			if(callback_){
-				callback_(object_);
-			}
 		}
 	}];
 	
@@ -150,11 +145,13 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	velocityIterations = 8;
 	positionIterations = 3;
 	
-	_touchedObjects = nil;
-	
 	_OBATCHNODETAG_ = _OBJECTTAG_ = 0;
 	
 	return self;
+}
+
+-(CCArray *)children{
+	return object_list;
 }
 
 #if COCOS2D_DEBUG >= 1
@@ -225,59 +222,11 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	}
 }
 
--(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
-	return [super touchDispatcher:touchDispatcher_ shouldAllowTouch:touch_ event:event_] && [CMMTouchUtil nodeCountInTouch:object_list touch:touch_];
-}
--(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
-	CMMSObject *touchedObject_ = nil;
-	ccArray *data_ = object_list->data;
-	NSUInteger count_ = data_->num;
-	for(NSUInteger index_=0;index_<count_;++index_){
-		CMMSObject *object_ = data_->arr[index_];
-		if([CMMTouchUtil isNodeInTouch:object_ touch:touch_]){
-			[touchDispatcher addTouchItemWithTouch:touch_ node:object_];
-			[object_ touchDispatcher:touchDispatcher whenTouchBegan:touch_ event:event_];
-			touchedObject_ = object_;
-			break;
-		}
-	}
-	
-	void (^callback_)(UITouch *touch_, CMMSObject *object_) = [stage callback_whenTouchBegan];
-	if(callback_){
-		callback_(touch_,touchedObject_);
-	}
-}
--(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
-	void (^callback_)(UITouch *touch_, CMMSObject *object_) = [stage callback_whenTouchMoved];
-	if(callback_){
-		callback_(touch_,[self objectAtTouch:touch_]);
-	}
-	
-	[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
-}
--(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
-	void (^callback_)(UITouch *touch_, CMMSObject *object_) = [stage callback_whenTouchEnded];
-	if(callback_){
-		callback_(touch_,[self objectAtTouch:touch_]);
-	}
-	
-	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
-}
--(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
-	void (^callback_)(UITouch *touch_, CMMSObject *object_) = [stage callback_whenTouchCancelled];
-	if(callback_){
-		callback_(touch_,[self objectAtTouch:touch_]);
-	}
-	
-	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
-}
-
 -(NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state objects:(id __unsafe_unretained [])buffer count:(NSUInteger)len{
 	return [object_list countByEnumeratingWithState:state objects:buffer count:len];
 }
 
 -(void)dealloc{
-	[_touchedObjects release];
 	[object_list release];
 	
 	[obatchNode_destroyList release];
@@ -388,7 +337,7 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	ccArray *data_ = object_list->data;
 	for(int index_=data_->num-1;index_>=0;--index_){
 		CMMSObject *object_ = data_->arr[index_];
-		if(object_.obatchNode == obatchNode_)
+		if([object_ obatchNode] == obatchNode_)
 			[self removeObject:object_];
 	}
 }
@@ -403,8 +352,12 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 
 -(CMMSObject *)objectAtTouch:(UITouch *)touch_{
 	CMMTouchDispatcherItem *touchItem_ = [touchDispatcher touchItemAtTouch:touch_];
-	if(!touchItem_ || ![touchItem_.node isKindOfClass:[CMMSObject class]]) return nil;
-	else return (CMMSObject *)touchItem_.node;
+	if(!touchItem_) return nil;
+	else return (CMMSObject *)[touchItem_ node];
+}
+-(CMMSObject *)touchedObject{
+	if([touchDispatcher touchCount] == 0) return nil;
+	return [self objectAtTouch:[[touchDispatcher touchItemAtIndex:0] touch]];
 }
 
 -(int)indexOfObject:(CMMSObject *)object_{
@@ -420,22 +373,6 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	}
 	
 	return NSNotFound;
-}
-
--(CCArray *)objectsInTouches{
-	if(!_touchedObjects)
-		_touchedObjects = [[CCArray alloc] init];
-	
-	[_touchedObjects removeAllObjects];
-	ccArray *data_ = touchDispatcher.touchList->data;
-	int count_ = data_->num;
-	for(uint index_=0;index_<count_;index_++){
-		CMMTouchDispatcherItem *touchItem_ = data_->arr[index_];
-		if([touchItem_.node isKindOfClass:[CMMSObject class]])
-			[_touchedObjects addObject:touchItem_.node];
-	}
-	
-	return _touchedObjects;
 }
 
 @end
@@ -1056,9 +993,32 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 
 @end
 
-@implementation CMMStage
+@implementation CMMStageObjectCallback
+@synthesize type,callback;
+
++(id)callbackWithType:(CMMStageObjectCallbackType)type_ callback:(CMMStageObjectBlock)callback_{
+	return [[[self alloc] initWithType:type_ callback:callback_] autorelease];
+}
+-(id)initWithType:(CMMStageObjectCallbackType)type_ callback:(CMMStageObjectBlock)callback_{
+	if(!(self = [super init])) return self;
+	
+	type = type_;
+	callback = [callback_ copy];
+	
+	return self;
+}
+
+-(void)dealloc{
+	[callback release];
+	[super dealloc];
+}
+
+@end
+
+@implementation CMMStage{
+	CCArray *_objectCallbackList;
+}
 @synthesize spec,world,particle,stateView,light,sound,backgroundNode,worldSize,worldPoint,worldScale,timeInterval,maxTimeIntervalProcessCount;
-@synthesize callback_whenObjectAdded,callback_whenObjectRemoved;
 @synthesize callback_whenTouchBegan,callback_whenTouchMoved,callback_whenTouchEnded,callback_whenTouchCancelled;
 
 +(id)stageWithStageDef:(CMMStageDef)stageDef_{
@@ -1079,6 +1039,8 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	[self addChild:world z:2];
 	[self addChild:particle z:3];
 	[self addChild:stateView z:5];
+	
+	_objectCallbackList = [[CCArray alloc] init];
 
 	sound = [[CMMSoundHandler alloc] initSoundHandler:CGPointZero soundDistance:700.0f];
 	
@@ -1175,26 +1137,66 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 	[self addChild:light z:4];
 }
 
--(void)stageWorld:(CMMStageWorld *)world_ whenAddedObject:(CMMSObject *)object_{}
--(void)stageWorld:(CMMStageWorld *)world_ whenRemovedObject:(CMMSObject *)object_{}
+-(void)_fireObjectCallbackWithType:(CMMStageObjectCallbackType)type_ object:(CMMSObject *)object_{
+	ccArray *data_ = _objectCallbackList->data;
+	uint count_ = data_->num;
+	for(uint index_=0;index_<count_;++index_){
+		CMMStageObjectCallback *callback_ = data_->arr[index_];
+		if([callback_ type] == type_){
+			[callback_ callback](object_);
+		}
+	}
+}
+-(void)stageWorld:(CMMStageWorld *)world_ whenAddedObject:(CMMSObject *)object_{
+	[self _fireObjectCallbackWithType:CMMStageObjectCallbackType_added object:object_];
+}
+-(void)stageWorld:(CMMStageWorld *)world_ whenRemovedObject:(CMMSObject *)object_{
+	[self _fireObjectCallbackWithType:CMMStageObjectCallbackType_removed object:object_];
+}
 
 -(void)whenContactBeganWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{}
 -(void)whenContactEndedWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_{}
 -(void)doContactWithFixtureType:(CMMb2FixtureType)fixtureType_ otherObject:(id<CMMSContactProtocol>)otherObject_ otherFixtureType:(CMMb2FixtureType)otherFixtureType_ contactPoint:(CGPoint)contactPoint_ interval:(ccTime)interval_{}
 
+-(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
+	return [super touchDispatcher:touchDispatcher_ shouldAllowTouch:touch_ event:event_];
+}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchBegan:(UITouch *)touch_ event:(UIEvent *)event_{
+	[super touchDispatcher:touchDispatcher_ whenTouchBegan:touch_ event:event_];
+	if(callback_whenTouchBegan){
+		callback_whenTouchBegan(touch_,[world objectAtTouch:touch_]);
+	}
+}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{
+	[super touchDispatcher:touchDispatcher_ whenTouchMoved:touch_ event:event_];
+	if(callback_whenTouchMoved){
+		callback_whenTouchMoved(touch_,[world objectAtTouch:touch_]);
+	}
+}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{
+	if(callback_whenTouchEnded){
+		callback_whenTouchEnded(touch_,[world objectAtTouch:touch_]);
+	}
+	[super touchDispatcher:touchDispatcher_ whenTouchEnded:touch_ event:event_];
+}
+-(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{
+	if(callback_whenTouchCancelled){
+		callback_whenTouchCancelled(touch_,[world objectAtTouch:touch_]);
+	}
+	[super touchDispatcher:touchDispatcher_ whenTouchCancelled:touch_ event:event_];
+}
+
 -(void)cleanup{
-	[self setCallback_whenObjectAdded:nil];
-	[self setCallback_whenObjectRemoved:nil];
 	[self setCallback_whenTouchBegan:nil];
 	[self setCallback_whenTouchMoved:nil];
 	[self setCallback_whenTouchEnded:nil];
 	[self setCallback_whenTouchCancelled:nil];
+	[self removeAllObjectCallbacks];
 	[super cleanup];
 }
 
 -(void)dealloc{
-	[callback_whenObjectAdded release];
-	[callback_whenObjectRemoved release];
+	[_objectCallbackList release];
 	[callback_whenTouchBegan release];
 	[callback_whenTouchMoved release];
 	[callback_whenTouchEnded release];
@@ -1210,6 +1212,36 @@ bool CMMStageWorldContactFilter::ShouldCollide(b2Fixture *fixtureA, b2Fixture *f
 
 -(CGPoint)convertToStageWorldSpace:(CGPoint)worldPoint_{
 	return [world convertToNodeSpace:worldPoint_];
+}
+
+@end
+
+@implementation CMMStage(Callback)
+
+-(void)addObjectCallback:(CMMStageObjectCallback *)callback_{
+	[_objectCallbackList addObject:callback_];
+}
+-(CMMStageObjectCallback *)addObjectCallbackWithType:(CMMStageObjectCallbackType)type_ callback:(CMMStageObjectBlock)callback_{
+	CMMStageObjectCallback *objectCallback_ = [CMMStageObjectCallback callbackWithType:type_ callback:callback_];
+	[self addObjectCallback:objectCallback_];
+	return objectCallback_;
+}
+
+-(void)removeObjectCallbackAtIndex:(uint)index_{
+	[_objectCallbackList removeObjectAtIndex:index_];
+}
+-(void)removeObjectCallback:(CMMStageObjectCallback *)callback_{
+	[self removeObjectCallbackAtIndex:[self indexOfObjectCallback:callback_]];
+}
+-(void)removeAllObjectCallbacks{
+	ccArray *data_ = _objectCallbackList->data;
+	for(int index_=data_->num-1;index_>=0;--index_){
+		[self removeObjectCallbackAtIndex:index_];
+	}
+}
+
+-(uint)indexOfObjectCallback:(CMMStageObjectCallback *)callback_{
+	return [_objectCallbackList indexOfObject:callback_];
 }
 
 @end

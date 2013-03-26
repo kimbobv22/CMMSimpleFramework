@@ -6,7 +6,7 @@
 #import "MenuItemTestLayer.h"
 #import "MenuItemSetTestLayer.h"
 #import "DragLayerTestLayer.h"
-#import "PinchZoomTestLayer.h"
+#import "GestureTestLayer.h"
 #import "StageTestLayer.h"
 #import "SequenceMakerTestLayer.h"
 #import "SoundTestLayer.h"
@@ -61,8 +61,8 @@
  	[mainMenu addItem:menuItem_];
 	
 	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];
-	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[PinchZoomTestLayer node]];};
-	[menuItem_ setTitle:@"PinchZoom Test"];
+	menuItem_.callback_pushup = ^(CMMMenuItem *menuItem_){[[CMMScene sharedScene] pushLayer:[GestureTestLayer node]];};
+	[menuItem_ setTitle:@"Gesture Test"];
  	[mainMenu addItem:menuItem_];
 	
 	menuItem_ = [CMMMenuItemL menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:menuItemSize_];

@@ -49,20 +49,12 @@ public:
 	
 	b2World *world;
 	b2Body *worldBody;
-	CMMStageWorldContactListener *_contactLintener;
-	CMMStageWorldContactFilter *_contactFilter;
-	b2Draw *_debugDraw;
 	
 	CCArray *obatchNode_list,*obatchNode_destroyList;
 	CMMTimeIntervalArray *object_list;
 	CMMb2ContactMask b2CMask_bottom,b2CMask_top,b2CMask_left,b2CMask_right;
 	
 	int32 velocityIterations, positionIterations;
-	
-	//for performance Touch delegate
-	CCArray *_touchedObjects;
-
-	int _OBATCHNODETAG_,_OBJECTTAG_;
 }
 
 +(id)worldWithStage:(CMMStage *)stage_ worldSize:(CGSize)worldSize_;
@@ -107,11 +99,10 @@ public:
 -(CMMSObject *)objectAtIndex:(int)index_;
 -(CMMSObject *)objectAtObjectTag:(int)objectTag_;
 -(CMMSObject *)objectAtTouch:(UITouch *)touch_;
+-(CMMSObject *)touchedObject;
 
 -(int)indexOfObject:(CMMSObject *)object_;
 -(int)indexOfObjectTag:(int)objectTag_;
-
--(CCArray *)objectsInTouches;
 
 @end
 
@@ -284,6 +275,29 @@ typedef enum{
 
 @end
 
+typedef void(^CMMStageObjectBlock)(CMMSObject *object_);
+typedef void(^CMMStageTouchBlock)(UITouch *touch_, CMMSObject *object_);
+
+typedef enum{
+	CMMStageObjectCallbackType_added,
+	CMMStageObjectCallbackType_removed,
+} CMMStageObjectCallbackType;
+
+@interface CMMStageObjectCallback : NSObject{
+	CMMStageObjectCallbackType type;
+	CMMStageObjectBlock callback;
+}
+
++(id)callbackWithType:(CMMStageObjectCallbackType)type_ callback:(CMMStageObjectBlock)callback_;
+-(id)initWithType:(CMMStageObjectCallbackType)type_ callback:(CMMStageObjectBlock)callback_;
+
+@property (nonatomic, readwrite) CMMStageObjectCallbackType type;
+@property (nonatomic, copy) CMMStageObjectBlock callback;
+
+-(void)setCallback:(CMMStageObjectBlock)callback_;
+
+@end
+
 @interface CMMStage : CMMLayer<CMMStageWorldDelegate,CMMSContactProtocol>{
 	CMMSSpecStage *spec;
 	
@@ -297,8 +311,7 @@ typedef enum{
 	ccTime timeInterval,_stackTime;
 	uint maxTimeIntervalProcessCount;
 	
-	void (^callback_whenObjectAdded)(CMMSObject *object_),(^callback_whenObjectRemoved)(CMMSObject *object_);
-	void (^callback_whenTouchBegan)(UITouch *touch_, CMMSObject *object_),(^callback_whenTouchMoved)(UITouch *touch_, CMMSObject *object_),(^callback_whenTouchEnded)(UITouch *touch_, CMMSObject *object_),(^callback_whenTouchCancelled)(UITouch *touch_, CMMSObject *object_);
+	CMMStageTouchBlock callback_whenTouchBegan,callback_whenTouchMoved,callback_whenTouchEnded,callback_whenTouchCancelled;
 }
 
 +(id)stageWithStageDef:(CMMStageDef)stageDef_;
@@ -322,22 +335,30 @@ typedef enum{
 @property (nonatomic, readwrite) float worldScale;
 @property (nonatomic, readwrite) ccTime timeInterval;
 @property (nonatomic, readwrite) uint maxTimeIntervalProcessCount;
+@property (nonatomic, copy) CMMStageTouchBlock callback_whenTouchBegan,callback_whenTouchMoved,callback_whenTouchEnded,callback_whenTouchCancelled;
 
-@property (nonatomic, copy) void (^callback_whenObjectAdded)(CMMSObject *object_),(^callback_whenObjectRemoved)(CMMSObject *object_);
-@property (nonatomic, copy) void (^callback_whenTouchBegan)(UITouch *touch_, CMMSObject *object_),(^callback_whenTouchMoved)(UITouch *touch_, CMMSObject *object_),(^callback_whenTouchEnded)(UITouch *touch_, CMMSObject *object_),(^callback_whenTouchCancelled)(UITouch *touch_, CMMSObject *object_);
-
-//guide for block
--(void)setCallback_whenObjectAdded:(void (^)(CMMSObject *object_))block_;
--(void)setCallback_whenObjectRemoved:(void (^)(CMMSObject *object_))block_;
--(void)setCallback_whenTouchBegan:(void (^)(UITouch *touch_, CMMSObject *object_))block_;
--(void)setCallback_whenTouchMoved:(void (^)(UITouch *touch_, CMMSObject *object_))block_;
--(void)setCallback_whenTouchEnded:(void (^)(UITouch *touch_, CMMSObject *object_))block_;
--(void)setCallback_whenTouchCancelled:(void (^)(UITouch *touch_, CMMSObject *object_))block_;
+-(void)setCallback_whenTouchBegan:(CMMStageTouchBlock)block_;
+-(void)setCallback_whenTouchMoved:(CMMStageTouchBlock)block_;
+-(void)setCallback_whenTouchEnded:(CMMStageTouchBlock)block_;
+-(void)setCallback_whenTouchCancelled:(CMMStageTouchBlock)block_;
 
 @end
 
 @interface CMMStage(Point)
 
 -(CGPoint)convertToStageWorldSpace:(CGPoint)worldPoint_;
+
+@end
+
+@interface CMMStage(Callback)
+
+-(void)addObjectCallback:(CMMStageObjectCallback *)callback_;
+-(CMMStageObjectCallback *)addObjectCallbackWithType:(CMMStageObjectCallbackType)type_ callback:(CMMStageObjectBlock)callback_;
+
+-(void)removeObjectCallbackAtIndex:(uint)index_;
+-(void)removeObjectCallback:(CMMStageObjectCallback *)callback_;
+-(void)removeAllObjectCallbacks;
+
+-(uint)indexOfObjectCallback:(CMMStageObjectCallback *)callback_;
 
 @end

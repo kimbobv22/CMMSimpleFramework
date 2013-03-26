@@ -440,6 +440,8 @@
 +(BOOL)isAllTouchDispatcherEnable{
 	return [[CMMScene sharedScene] isTouchEnable];
 }
+-(void)setPinchState:(kCMMPinchState)pinchState{}
+-(kCMMPinchState)pinchState{return kCMMPinchState();}
 
 @end
 
@@ -888,6 +890,15 @@
 	return nil;
 }
 
+-(void)setCallback_whenObjectAdded:(CMMStageObjectBlock)block_{
+	[self addObjectCallbackWithType:CMMStageObjectCallbackType_added callback:block_];
+}
+-(CMMStageObjectBlock)callback_whenObjectAdded{return nil;}
+-(void)setCallback_whenObjectRemoved:(CMMStageObjectBlock)block_{
+	[self addObjectCallbackWithType:CMMStageObjectCallbackType_removed callback:block_];
+}
+-(CMMStageObjectBlock)callback_whenObjectRemoved{return nil;}
+
 @end
 
 @implementation CMMStageLightItem(Deprecated)
@@ -904,7 +915,14 @@
 @implementation CMMStageWorld(Deprecated)
 
 -(CCArray *)objectsInTouched{
-	return [self objectsInTouches];
+	CCArray *array_ = [CCArray array];
+	[array_ addObject:[self touchedObject]];
+	return array_;
+}
+-(CCArray *)objectsInTouches{
+	CCArray *array_ = [CCArray array];
+	[array_ addObject:[self touchedObject]];
+	return array_;
 }
 
 -(CMMSObjectBatchNode *)addObatchNodeWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{

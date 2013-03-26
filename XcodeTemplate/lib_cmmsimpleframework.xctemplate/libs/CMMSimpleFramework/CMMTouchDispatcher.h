@@ -6,23 +6,6 @@
 
 #define cmmVarCMMTouchDispather_defaultCacheCount 20
 
-typedef struct{
-	float scale,lastScale;
-	float distance,lastDistance,firstDistance;
-	float radians,lastRadians,firstRadians;
-	
-	UITouch *touch1,*touch2;
-} CMMPinchState;
-
-static inline CMMPinchState CMMPinchStateMake(float distance_,float radians_){
-	CMMPinchState pinchState_;
-	pinchState_.scale = pinchState_.lastScale = 1.0f;
-	pinchState_.distance = pinchState_.lastDistance = pinchState_.firstDistance = distance_;
-	pinchState_.radians = pinchState_.lastRadians = pinchState_.firstRadians = radians_;
-	pinchState_.touch1 = pinchState_.touch2 = nil;
-	return pinchState_;
-}
-
 typedef enum{
 	CMMTouchCancelMode_goOut,
 	CMMTouchCancelMode_move,
@@ -39,11 +22,6 @@ typedef enum{
 
 @optional
 -(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_;
-
--(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenPinchBegan:(CMMPinchState)pinchState_;
--(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenPinchMoved:(CMMPinchState)pinchState_;
--(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenPinchEnded:(CMMPinchState)pinchState_;
--(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenPinchCancelled:(CMMPinchState)pinchState_;
 
 @property (nonatomic, readonly) CMMTouchCancelMode touchCancelMode;
 @property (nonatomic, readwrite) float touchCancelDistance;
@@ -74,12 +52,6 @@ typedef enum{
 	CMMTouchSelectorID_TouchCancelDistanceSetter,
 	CMMTouchSelectorID_TouchCancelDistanceGetter,
 	
-	CMMTouchSelectorID_PinchBegan,
-	CMMTouchSelectorID_PinchMoved,
-	CMMTouchSelectorID_PinchEnded,
-	
-	CMMTouchSelectorID_PinchCancelled,
-	
 	CMMTouchSelectorID_maxCount,
 } CMMTouchSelectorID;
 
@@ -88,7 +60,6 @@ typedef enum{
 	CCNode *target;
 	
 	uint maxMultiTouchCount;
-	CMMPinchState pinchState;
 }
 
 +(id)touchDispatherWithTarget:(CCNode *)target_;
@@ -98,7 +69,6 @@ typedef enum{
 @property (nonatomic, readonly) CCNode *target;
 @property (nonatomic, readonly) int touchCount;
 @property (nonatomic, readwrite) uint maxMultiTouchCount;
-@property (nonatomic, readonly) CMMPinchState pinchState;
 
 @end
 
@@ -108,15 +78,6 @@ typedef enum{
 -(void)whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_;
 -(void)whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_;
 -(void)whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_;
-
-@end
-
-@interface CMMTouchDispatcher(PinchHandler)
-
--(void)whenPinchBeganWithPinchState:(CMMPinchState)pinchState_;
--(void)whenPinchMovedWithPinchState:(CMMPinchState)pinchState_;
--(void)whenPinchEndedWithPinchState:(CMMPinchState)pinchState_;
--(void)whenPinchCancelledWithPinchState:(CMMPinchState)pinchState_;
 
 @end
 
@@ -148,11 +109,6 @@ typedef enum{
 -(void)cancelTouch:(CMMTouchDispatcherItem *)touchItem_;
 -(void)cancelTouchAtTouch:(UITouch *)touch_;
 -(void)cancelTouchAtNode:(CCNode<CMMTouchDispatcherDelegate> *)node_;
-
-@end
-
-@interface CMMTouchDispatcher(Shared)
-
-+(SEL)touchSelectorAtTouchSelectID:(CMMTouchSelectorID)touchSelectorID_;
+-(void)cancelAllTouches;
 
 @end

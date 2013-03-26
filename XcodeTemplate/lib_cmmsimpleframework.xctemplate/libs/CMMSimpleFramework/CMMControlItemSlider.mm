@@ -115,7 +115,7 @@
 	float beforeItemValue_ = itemValue;
 	itemValue = convertItemValue_;
 	
-	float buttonPointX_ = ((_contentSize.width-[buttonItem contentSize].width)*((itemValue_-itemValueRange.loc)/(itemValueRange.len-itemValueRange.loc)))+[buttonItem contentSize].width/2.0f;
+	float buttonPointX_ = (_contentSize.width*(((snappable ? itemValue : itemValue_)-itemValueRange.loc)/(itemValueRange.len-itemValueRange.loc)));
 	[self _setPointXOfButton:buttonPointX_];
 	
 	if(doCallback_ && callback_whenItemValueChanged){
@@ -137,10 +137,6 @@
 	
 	float targetWidth_ = _contentSize.width - buttonSize_.width;
 	float convertX_ = targetWidth_ * cmmFunc_MINMAX((x_/_contentSize.width), 0.0f, 1.0f);
-	if(snappable){
-		convertX_ = targetWidth_ * (roundf((convertX_/targetWidth_) * 10.0f) * 0.1f);
-	}
-	
 	[buttonItem setPosition:ccp(convertX_+buttonSize_.width*0.5f,_contentSize.height*0.5f)];
 	_doRedraw = YES;
 }

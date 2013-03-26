@@ -380,6 +380,20 @@ DEPRECATED_ATTRIBUTE @interface CMMSoundHandlerItemFollow : CMMSoundHandlerItem
 
 #pragma mark - dispatcher
 
+typedef struct{
+	float scale,lastScale;
+	float distance,lastDistance,firstDistance;
+	float radians,lastRadians,firstRadians;
+	
+	UITouch *touch1,*touch2;
+} kCMMPinchState;
+
+typedef kCMMPinchState CMMPinchState UNAVAILABLE_ATTRIBUTE;
+
+UNAVAILABLE_ATTRIBUTE static inline kCMMPinchState CMMPinchStateMake(float distance_,float radians_){
+	return kCMMPinchState();
+}
+
 typedef enum{
 	CMMTouchState_none DEPRECATED_ATTRIBUTE,
 	CMMTouchState_onTouchChild DEPRECATED_ATTRIBUTE,
@@ -392,6 +406,8 @@ typedef enum{
 
 +(void)setAllTouchDispatcherEnable:(BOOL)enable_ DEPRECATED_ATTRIBUTE;
 +(BOOL)isAllTouchDispatcherEnable DEPRECATED_ATTRIBUTE;
+
+@property (nonatomic, readwrite) kCMMPinchState pinchState UNAVAILABLE_ATTRIBUTE;
 
 @end
 
@@ -797,6 +813,10 @@ DEPRECATED_ATTRIBUTE @interface CMMStageBackGround : NSObject{
 @property (nonatomic, assign) id delegate DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readwrite) BOOL isAllowTouch DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readonly) id backGround DEPRECATED_ATTRIBUTE;
+@property (nonatomic, copy) CMMStageObjectBlock callback_whenObjectAdded DEPRECATED_ATTRIBUTE, callback_whenObjectRemoved DEPRECATED_ATTRIBUTE;
+
+-(void)setCallback_whenObjectAdded:(CMMStageObjectBlock)block_ DEPRECATED_ATTRIBUTE;
+-(void)setCallback_whenObjectRemoved:(CMMStageObjectBlock)block_ DEPRECATED_ATTRIBUTE;
 
 @end
 
@@ -809,6 +829,7 @@ DEPRECATED_ATTRIBUTE @interface CMMStageBackGround : NSObject{
 @interface CMMStageWorld(Deprecated)
 
 -(CCArray *)objectsInTouched DEPRECATED_ATTRIBUTE;
+-(CCArray *)objectsInTouches DEPRECATED_ATTRIBUTE;
 
 -(CMMSObjectBatchNode *)addObatchNodeWithFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ DEPRECATED_ATTRIBUTE;
 -(void)removeObatchNodeAtFileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_ DEPRECATED_ATTRIBUTE;

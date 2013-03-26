@@ -5,10 +5,10 @@
 enum StageControlType{
 	StageControlType_addBox = 0,
 	StageControlType_addBall,
+	StageControlType_addLight,
 	StageControlType_paintMap,
 	StageControlType_eraseMap,
 	StageControlType_drawImage,
-	StageControlType_addLight,
 	
 	StageControlType_maxCount,
 };
@@ -19,40 +19,35 @@ enum StageControlType{
 
 @end
 
-@interface StageTestLayerMaster : CMMLayer{
+@interface ViewStageTest : CMMLayer<CMMGestureDelegate>{
 	CMMStage *stage;
 	CMMScrollMenuV *controlMenu;
-	CMMControlItemSlider *gravitySlider;
-	CCLabelTTF *labelGravity;
-	CMMMenuItemL *backBtn;
 	
-	BOOL _isOnTouch,_isTouchObject,_isOnDrag;
-	CGPoint _curTouchPoint;
-	CMMSObject *_curTouchObject;
-	
-	StageControlType stageControlType;
+	CMMControlItemSlider *_gravitySlider;
+	StageControlType _stageControlType;
 }
 
--(void)buildupStage;
++(id)stage;
++(id)layerWithStage:(CMMStage *)stage_;
+-(id)initWithStage:(CMMStage *)stage_;
 
--(CMMSObject *)addBox:(CGPoint)point_;
--(CMMSBall *)addBall:(CGPoint)point_;
+-(CMMSObject *)addBoxAtPoint:(CGPoint)point_;
+-(CMMSBall *)addBallAtPoint:(CGPoint)point_;
+-(void)addLightAtPoint:(CGPoint)point_;
 
--(void)update:(ccTime)dt_;
-
-@end
-
-@interface StageTestLayerBasic : StageTestLayerMaster
-
-@end
-
-@interface StageTestLayerPixel : StageTestLayerMaster{
-	CGPoint _beforeTouchPoint;
-}
+@property (nonatomic, readonly) CMMScrollMenuV *controlMenu;
 
 @end
 
-@interface StageTestLayerTile : StageTestLayerMaster
+@interface ViewStageTestBasic : ViewStageTest
+
+@end
+
+@interface ViewStageTestPixel : ViewStageTest
+
+@end
+
+@interface ViewStageTestTile : ViewStageTest
 
 @end
 

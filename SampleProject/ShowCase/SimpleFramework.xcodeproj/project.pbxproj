@@ -14,6 +14,7 @@
 		E00857591625482B009C9BC4 /* CMMPacketData.mm in Sources */ = {isa = PBXBuildFile; fileRef = E00857581625482B009C9BC4 /* CMMPacketData.mm */; };
 		E009D7E815D94F19004E9012 /* PAR_EFT_0001.plist in Resources */ = {isa = PBXBuildFile; fileRef = E009D7E715D94F19004E9012 /* PAR_EFT_0001.plist */; };
 		E00E2E6A15FF506A003551B4 /* CMMSimpleCache.mm in Sources */ = {isa = PBXBuildFile; fileRef = E00E2E6915FF506A003551B4 /* CMMSimpleCache.mm */; };
+		E016966C1700202300A1C8F5 /* CMMGestureDispatcher.mm in Sources */ = {isa = PBXBuildFile; fileRef = E016966B1700202300A1C8F5 /* CMMGestureDispatcher.mm */; };
 		E01D0A4D165F3FD7001B450F /* IMG_STG_BLOCK000.plist in Resources */ = {isa = PBXBuildFile; fileRef = E01D0A4B165F3FD7001B450F /* IMG_STG_BLOCK000.plist */; };
 		E01D0A4E165F3FD7001B450F /* IMG_STG_BLOCK000.png in Resources */ = {isa = PBXBuildFile; fileRef = E01D0A4C165F3FD7001B450F /* IMG_STG_BLOCK000.png */; };
 		E01D0A52165F5760001B450F /* IMG_STG_BLOCK001.plist in Resources */ = {isa = PBXBuildFile; fileRef = E01D0A50165F5760001B450F /* IMG_STG_BLOCK001.plist */; };
@@ -71,7 +72,7 @@
 		E046597015D56A3400D3ADF0 /* PopupTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E046596F15D56A3400D3ADF0 /* PopupTestLayer.mm */; };
 		E047704915D4BC7F0079EAE9 /* MenuItemTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E047704815D4BC7F0079EAE9 /* MenuItemTestLayer.mm */; };
 		E047704C15D4C0130079EAE9 /* DragLayerTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E047704B15D4C0130079EAE9 /* DragLayerTestLayer.mm */; };
-		E047705E15D4CC500079EAE9 /* PinchZoomTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E047705D15D4CC500079EAE9 /* PinchZoomTestLayer.mm */; };
+		E047705E15D4CC500079EAE9 /* GestureTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E047705D15D4CC500079EAE9 /* GestureTestLayer.mm */; };
 		E04770FD15D4D63C0079EAE9 /* GLES-Render.mm in Sources */ = {isa = PBXBuildFile; fileRef = E04770FC15D4D63B0079EAE9 /* GLES-Render.mm */; };
 		E047711115D4D7800079EAE9 /* StageTestLayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = E047711015D4D7800079EAE9 /* StageTestLayer.mm */; };
 		E049BE2215E3CDD100DF09A1 /* CMMControlItemSwitch.mm in Sources */ = {isa = PBXBuildFile; fileRef = E049BE2115E3CDD100DF09A1 /* CMMControlItemSwitch.mm */; };
@@ -322,6 +323,8 @@
 		E009D7E715D94F19004E9012 /* PAR_EFT_0001.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = PAR_EFT_0001.plist; path = Resources/PAR_EFT_0001.plist; sourceTree = "<group>"; };
 		E00E2E6815FF506A003551B4 /* CMMSimpleCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMSimpleCache.h; path = libs/CMMSimpleFramework/CMMSimpleCache.h; sourceTree = "<group>"; };
 		E00E2E6915FF506A003551B4 /* CMMSimpleCache.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMSimpleCache.mm; path = libs/CMMSimpleFramework/CMMSimpleCache.mm; sourceTree = "<group>"; };
+		E016966A1700202300A1C8F5 /* CMMGestureDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMMGestureDispatcher.h; path = libs/CMMSimpleFramework/CMMGestureDispatcher.h; sourceTree = "<group>"; };
+		E016966B1700202300A1C8F5 /* CMMGestureDispatcher.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = CMMGestureDispatcher.mm; path = libs/CMMSimpleFramework/CMMGestureDispatcher.mm; sourceTree = "<group>"; };
 		E01D0A4B165F3FD7001B450F /* IMG_STG_BLOCK000.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = IMG_STG_BLOCK000.plist; path = Resources/IMG_STG_BLOCK000.plist; sourceTree = "<group>"; };
 		E01D0A4C165F3FD7001B450F /* IMG_STG_BLOCK000.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = IMG_STG_BLOCK000.png; path = Resources/IMG_STG_BLOCK000.png; sourceTree = "<group>"; };
 		E01D0A50165F5760001B450F /* IMG_STG_BLOCK001.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = IMG_STG_BLOCK001.plist; path = Resources/IMG_STG_BLOCK001.plist; sourceTree = "<group>"; };
@@ -410,8 +413,8 @@
 		E047704815D4BC7F0079EAE9 /* MenuItemTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MenuItemTestLayer.mm; sourceTree = "<group>"; };
 		E047704A15D4C0130079EAE9 /* DragLayerTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DragLayerTestLayer.h; sourceTree = "<group>"; };
 		E047704B15D4C0130079EAE9 /* DragLayerTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DragLayerTestLayer.mm; sourceTree = "<group>"; };
-		E047705C15D4CC500079EAE9 /* PinchZoomTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PinchZoomTestLayer.h; sourceTree = "<group>"; };
-		E047705D15D4CC500079EAE9 /* PinchZoomTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = PinchZoomTestLayer.mm; sourceTree = "<group>"; };
+		E047705C15D4CC500079EAE9 /* GestureTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GestureTestLayer.h; sourceTree = "<group>"; };
+		E047705D15D4CC500079EAE9 /* GestureTestLayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = GestureTestLayer.mm; sourceTree = "<group>"; };
 		E04770FB15D4D63B0079EAE9 /* GLES-Render.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "GLES-Render.h"; sourceTree = "<group>"; };
 		E04770FC15D4D63B0079EAE9 /* GLES-Render.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = "GLES-Render.mm"; sourceTree = "<group>"; };
 		E047710F15D4D7800079EAE9 /* StageTestLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StageTestLayer.h; sourceTree = "<group>"; };
@@ -1183,6 +1186,8 @@
 				E032FC6015E1F22500B28B61 /* CMMPopupView.mm */,
 				E032FC6115E1F22600B28B61 /* CMMTouchDispatcher.h */,
 				E032FC6215E1F22700B28B61 /* CMMTouchDispatcher.mm */,
+				E016966A1700202300A1C8F5 /* CMMGestureDispatcher.h */,
+				E016966B1700202300A1C8F5 /* CMMGestureDispatcher.mm */,
 				E070503915EC701500CFC81E /* CMMNoticeDispatcher.h */,
 				E070503A15EC701500CFC81E /* CMMNoticeDispatcher.mm */,
 			);
@@ -1200,8 +1205,8 @@
 				E09D8381161577A1003E39A7 /* MenuItemSetTestLayer.mm */,
 				E047704A15D4C0130079EAE9 /* DragLayerTestLayer.h */,
 				E047704B15D4C0130079EAE9 /* DragLayerTestLayer.mm */,
-				E047705C15D4CC500079EAE9 /* PinchZoomTestLayer.h */,
-				E047705D15D4CC500079EAE9 /* PinchZoomTestLayer.mm */,
+				E047705C15D4CC500079EAE9 /* GestureTestLayer.h */,
+				E047705D15D4CC500079EAE9 /* GestureTestLayer.mm */,
 				E047710F15D4D7800079EAE9 /* StageTestLayer.h */,
 				E047711015D4D7800079EAE9 /* StageTestLayer.mm */,
 				E0C00DBF1631386000BE918E /* SequenceMakerTestLayer.h */,
@@ -1962,7 +1967,7 @@
 				E02A464615D411DD005BB6C1 /* HelloWorldLayer.mm in Sources */,
 				E047704915D4BC7F0079EAE9 /* MenuItemTestLayer.mm in Sources */,
 				E047704C15D4C0130079EAE9 /* DragLayerTestLayer.mm in Sources */,
-				E047705E15D4CC500079EAE9 /* PinchZoomTestLayer.mm in Sources */,
+				E047705E15D4CC500079EAE9 /* GestureTestLayer.mm in Sources */,
 				E04770FD15D4D63C0079EAE9 /* GLES-Render.mm in Sources */,
 				E047711115D4D7800079EAE9 /* StageTestLayer.mm in Sources */,
 				E0D4097315D4F6FD00953AFC /* CommonIntroLayer.mm in Sources */,
@@ -2193,6 +2198,7 @@
 				E0B5C2F316C36FB2008E7B62 /* b2WheelJoint.cpp in Sources */,
 				E0B5C2F416C36FB2008E7B62 /* b2Rope.cpp in Sources */,
 				E058EF9116E480AF0079733C /* CMMControlItemCheckbox.mm in Sources */,
+				E016966C1700202300A1C8F5 /* CMMGestureDispatcher.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -2,7 +2,7 @@
 
 #import "CMMHeader.h"
 
-@interface PinchZoomTestLayer : CMMLayer{
+@interface GestureTestLayer : CMMLayer<CMMGestureDelegate>{
 	CMMSprite *tempSprite;
 	float _targetScale;
 }
