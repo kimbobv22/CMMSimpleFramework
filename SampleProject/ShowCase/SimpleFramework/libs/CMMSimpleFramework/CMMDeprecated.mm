@@ -154,6 +154,20 @@
 
 @implementation CMMLayerMD(Deprecated)
 
++(void)setDefaultScrollbarX:(CCSprite *)scrollbar_{
+	[self setDefaultScrollbarFrameX:[CCSpriteFrame frameWithTexture:[scrollbar_ texture] rect:[scrollbar_ textureRect]]];
+}
++(CCSprite *)defaultScrollbarX{
+	return [CCSprite spriteWithSpriteFrame:[self defaultScrollbarFrameX]];
+}
+
++(void)setDefaultScrollbarY:(CCSprite *)scrollbar_{
+	[self setDefaultScrollbarFrameY:[CCSpriteFrame frameWithTexture:[scrollbar_ texture] rect:[scrollbar_ textureRect]]];
+}
++(CCSprite *)defaultScrollbarY{
+	return [CCSprite spriteWithSpriteFrame:[self defaultScrollbarFrameY]];
+}
+
 -(void)setIsAlwaysShowScrollbar:(BOOL)isAlwaysShowScrollbar_{
 	[self setAlwaysShowScrollbar:isAlwaysShowScrollbar_];
 }
@@ -672,8 +686,8 @@
 	[self setDefaultFilter_itemDragViewOffset:block_];
 }
 +(void)setDefaultAction_itemDragViewCancelled:(CCFiniteTimeAction *(^)(CMMScrollMenuVItemDragView *itemDragView_, CGPoint targetPoint_))block_{
-//refer to
-//	[self setDefaultCallback_itemDragViewDisappeared:block_];
+	//refer to
+	//	[self setDefaultCallback_itemDragViewDisappeared:block_];
 }
 
 -(void)setAction_itemDragViewCancelled:(CCFiniteTimeAction *(^)(CMMScrollMenuVItemDragView *, CGPoint))action_itemDragViewCancelled{}

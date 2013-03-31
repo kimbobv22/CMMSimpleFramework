@@ -197,6 +197,12 @@ DEPRECATED_ATTRIBUTE typedef CMMLayerMDScrollbar CMMScrollbarDesign;
 
 @interface CMMLayerMD(Deprecated)
 
++(void)setDefaultScrollbarX:(CCSprite *)scrollbar_ DEPRECATED_ATTRIBUTE;
++(CCSprite *)defaultScrollbarX DEPRECATED_ATTRIBUTE;
+
++(void)setDefaultScrollbarY:(CCSprite *)scrollbar_ DEPRECATED_ATTRIBUTE;
++(CCSprite *)defaultScrollbarY DEPRECATED_ATTRIBUTE;
+
 @property (nonatomic, readwrite, getter = _isCanDragX) BOOL isCanDragX DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readwrite, getter = _isCanDragY) BOOL isCanDragY DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readwrite, getter = _isAlwaysShowScrollbar) BOOL isAlwaysShowScrollbar DEPRECATED_ATTRIBUTE;

@@ -2,8 +2,16 @@
 
 #import "CMMLayerMD.h"
 
-static CCSprite *_staticCMMLayerMD_DefaultScrollbarX_ = nil;
-static CCSprite *_staticCMMLayerMD_DefaultScrollbarY_ = nil;
+namespace CMMLayerMDDefaultConfig{
+	CCSpriteFrame *_scrollbarFrameX_ = nil;
+	CCSpriteFrame *_scrollbarFrameY_ = nil;
+	
+	CMM9SliceEdgeOffset _scrollbarEdgeX_ = CMM9SliceEdgeOffset(0.5f,0.5f);
+	CMM9SliceEdgeOffset _scrollbarEdgeY_ = CMM9SliceEdgeOffset(0.5f,0.5f);
+	
+	GLubyte _scrollbarOpacityX_ = 120.0f;
+	GLubyte _scrollbarOpacityY_ = 120.0f;
+}
 
 @implementation CMMLayerMD{
 	float _curScrollSpeedX,_curScrollSpeedY;
@@ -20,41 +28,19 @@ static CCSprite *_staticCMMLayerMD_DefaultScrollbarY_ = nil;
 	CCRenderTexture *render_ = [CCRenderTexture renderTextureWithWidth:(int)targetSize_.width height:(int)targetSize_.height];
 	[render_ begin];
 	
-	ccDrawSolidRect(CGPointZero, ccpFromSize(targetSize_), ccc4f(1.0f, 1.0f, 1.0f, 0.5f));
+	ccDrawSolidRect(CGPointZero, ccpFromSize(targetSize_), ccc4f(1.0f, 1.0f, 1.0f, 1.0f));
 	
 	[render_ end];
 	
 	CCSprite *resultSprite_ = [render_ sprite];
+	CCSpriteFrame *resultFrame_ = [CCSpriteFrame frameWithTexture:[resultSprite_ texture] rect:[resultSprite_ textureRect]];
 	
-	if(!_staticCMMLayerMD_DefaultScrollbarX_){
-		[self setDefaultScrollbarX:resultSprite_];
+	if(!CMMLayerMDDefaultConfig::_scrollbarFrameX_){
+		[self setDefaultScrollbarFrameX:resultFrame_];
 	}
-	if(!_staticCMMLayerMD_DefaultScrollbarY_){
-		[self setDefaultScrollbarY:resultSprite_];
+	if(!CMMLayerMDDefaultConfig::_scrollbarFrameY_){
+		[self setDefaultScrollbarFrameY:resultFrame_];
 	}
-}
-+(void)setDefaultScrollbarX:(CCSprite *)scrollbar_{
-	[_staticCMMLayerMD_DefaultScrollbarX_ release];
-	_staticCMMLayerMD_DefaultScrollbarX_ = [scrollbar_ retain];
-}
-+(CCSprite *)defaultScrollbarX{
-	if(!_staticCMMLayerMD_DefaultScrollbarX_){
-		[self _initializeScrollbar];
-	}
-	
-	return _staticCMMLayerMD_DefaultScrollbarX_;
-}
-
-+(void)setDefaultScrollbarY:(CCSprite *)scrollbar_{
-	[_staticCMMLayerMD_DefaultScrollbarY_ release];
-	_staticCMMLayerMD_DefaultScrollbarY_ = [scrollbar_ retain];
-}
-+(CCSprite *)defaultScrollbarY{
-	if(!_staticCMMLayerMD_DefaultScrollbarY_){
-		[self _initializeScrollbar];
-	}
-	
-	return _staticCMMLayerMD_DefaultScrollbarY_;
 }
 
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
@@ -63,10 +49,11 @@ static CCSprite *_staticCMMLayerMD_DefaultScrollbarY_ = nil;
 	[touchDispatcher setMaxMultiTouchCount:0];
 	canDragX = canDragY = alwaysShowScrollbar = NO;
 	
-	CCSprite *scrollbarSpriteX_ = [[self class] defaultScrollbarX];
-	CCSprite *scrollbarSpriteY_ = [[self class] defaultScrollbarX];
-	[self setScrollbarX:[CMM9SliceBar sliceBarWithTargetSprite:[CCSprite spriteWithTexture:[scrollbarSpriteX_ texture] rect:[scrollbarSpriteX_ textureRect]] edgeOffset:CMM9SliceEdgeOffset(0.5f,0.5f)]];
-	[self setScrollbarY:[CMM9SliceBar sliceBarWithTargetSprite:[CCSprite spriteWithTexture:[scrollbarSpriteY_ texture] rect:[scrollbarSpriteY_ textureRect]] edgeOffset:CMM9SliceEdgeOffset(0.5f,0.5f)]];
+	CCSpriteFrame *scrollbarSpriteX_ = [[self class] defaultScrollbarFrameX];
+	CCSpriteFrame *scrollbarSpriteY_ = [[self class] defaultScrollbarFrameY];
+	
+	[self setScrollbarX:[CMM9SliceBar sliceBarWithTargetSprite:[CCSprite spriteWithSpriteFrame:scrollbarSpriteX_] edgeOffset:[[self class] defaultScrollbarEdgeX]]];
+	[self setScrollbarY:[CMM9SliceBar sliceBarWithTargetSprite:[CCSprite spriteWithSpriteFrame:scrollbarSpriteY_] edgeOffset:[[self class] defaultScrollbarEdgeY]]];
 	scrollbarOffsetX = scrollbarOffsetY = 5.0f;
 	scrollResistance = 0.4f;
 	scrollSpeed = 5.0f;
@@ -85,6 +72,7 @@ static CCSprite *_staticCMMLayerMD_DefaultScrollbarY_ = nil;
 		[scrollbarX removeFromParentAndCleanup:YES];
 	}
 	scrollbarX = scrollbarX_;
+	[scrollbarX setOpacity:[[self class] defaultScrollbarOpacityX]];
 	[self addChild:scrollbarX_];
 }
 -(void)setScrollbarY:(CMM9SliceBar *)scrollbarY_{
@@ -94,6 +82,7 @@ static CCSprite *_staticCMMLayerMD_DefaultScrollbarY_ = nil;
 		[scrollbarY removeFromParentAndCleanup:YES];
 	}
 	scrollbarY = scrollbarY_;
+	[scrollbarY setOpacity:[[self class] defaultScrollbarOpacityY]];
 	[self addChild:scrollbarY_];
 }
 
@@ -110,7 +99,7 @@ static CCSprite *_staticCMMLayerMD_DefaultScrollbarY_ = nil;
 	[scrollbarY setVisible:NO];
 	
 	if(![self isOnScrolling] && !alwaysShowScrollbar) return;
-
+	
 	CGPoint innerLayerPoint_ = [innerLayer position];
 	CGSize innerLayerSize_ = [innerLayer contentSize];
 	
@@ -139,7 +128,7 @@ static CCSprite *_staticCMMLayerMD_DefaultScrollbarY_ = nil;
 	addPoint_ = ccpSub(_targetInnerLayerPosition, innerPoint_);
 	CGSize frameSize_ = _contentSize;
 	CGSize innerSize_ = [innerLayer contentSize];
-
+	
 	float overLengthX_ = 0.0f;
 	float overLengthY_ = 0.0f;
 	if(frameSize_.width - innerPoint_.x < frameSize_.width){
@@ -260,6 +249,59 @@ static CCSprite *_staticCMMLayerMD_DefaultScrollbarY_ = nil;
 }
 -(void)gotoRight{
 	[self setInnerPosition:ccp(-[innerLayer contentSize].width+_contentSize.width,[innerLayer position].y) applyScrolling:NO];
+}
+
+@end
+
+@implementation CMMLayerMD(Configuration)
+
++(void)setDefaultScrollbarFrameX:(CCSpriteFrame *)scrollbar_{
+	[CMMLayerMDDefaultConfig::_scrollbarFrameX_ release];
+	CMMLayerMDDefaultConfig::_scrollbarFrameX_ = [scrollbar_ retain];
+}
++(void)setDefaultScrollbarFrameY:(CCSpriteFrame *)scrollbar_{
+	[CMMLayerMDDefaultConfig::_scrollbarFrameY_ release];
+	CMMLayerMDDefaultConfig::_scrollbarFrameY_ = [scrollbar_ retain];
+}
++(CCSpriteFrame *)defaultScrollbarFrameX{
+	if(!CMMLayerMDDefaultConfig::_scrollbarFrameX_){
+		[self _initializeScrollbar];
+	}
+	
+	return CMMLayerMDDefaultConfig::_scrollbarFrameX_;
+}
++(CCSpriteFrame *)defaultScrollbarFrameY{
+	if(!CMMLayerMDDefaultConfig::_scrollbarFrameY_){
+		[self _initializeScrollbar];
+	}
+	
+	return CMMLayerMDDefaultConfig::_scrollbarFrameY_;
+}
+
++(void)setDefaultScrollbarEdgeX:(CMM9SliceEdgeOffset)edge_{
+	CMMLayerMDDefaultConfig::_scrollbarEdgeX_ = edge_;
+}
++(void)setDefaultScrollbarEdgeY:(CMM9SliceEdgeOffset)edge_{
+	CMMLayerMDDefaultConfig::_scrollbarEdgeY_ = edge_;
+}
++(CMM9SliceEdgeOffset)defaultScrollbarEdgeX{
+	return CMMLayerMDDefaultConfig::_scrollbarEdgeX_;
+}
++(CMM9SliceEdgeOffset)defaultScrollbarEdgeY{
+	return CMMLayerMDDefaultConfig::_scrollbarEdgeY_;
+}
+
++(void)setDefaultScrollbarOpacityX:(GLubyte)opacity_{
+	CMMLayerMDDefaultConfig::_scrollbarOpacityX_ = opacity_;
+}
++(void)setDefaultScrollbarOpacityY:(GLubyte)opacity_{
+	CMMLayerMDDefaultConfig::_scrollbarOpacityY_ = opacity_;
+}
++(GLubyte)defaultScrollbarOpacityX{
+	return CMMLayerMDDefaultConfig::_scrollbarOpacityX_;
+}
++(GLubyte)defaultScrollbarOpacityY{
+	return CMMLayerMDDefaultConfig::_scrollbarOpacityY_;
 }
 
 @end

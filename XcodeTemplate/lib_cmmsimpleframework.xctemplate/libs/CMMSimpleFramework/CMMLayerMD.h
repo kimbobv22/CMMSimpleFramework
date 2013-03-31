@@ -11,12 +11,6 @@
 	BOOL canDragX,canDragY,alwaysShowScrollbar;
 }
 
-+(void)setDefaultScrollbarX:(CCSprite *)scrollbar_;
-+(CCSprite *)defaultScrollbarX;
-
-+(void)setDefaultScrollbarY:(CCSprite *)scrollbar_;
-+(CCSprite *)defaultScrollbarY;
-
 -(void)setInnerPosition:(CGPoint)point_ applyScrolling:(BOOL)applyScrolling_;
 -(void)setInnerPosition:(CGPoint)point_;
 
@@ -37,5 +31,24 @@
 -(void)gotoBottom;
 -(void)gotoLeft;
 -(void)gotoRight;
+
+@end
+
+@interface CMMLayerMD(Configuration)
+
++(void)setDefaultScrollbarFrameX:(CCSpriteFrame *)scrollbar_;
++(void)setDefaultScrollbarFrameY:(CCSpriteFrame *)scrollbar_;
++(CCSpriteFrame *)defaultScrollbarFrameX;
++(CCSpriteFrame *)defaultScrollbarFrameY;
+
++(void)setDefaultScrollbarEdgeX:(CMM9SliceEdgeOffset)edge_;
++(void)setDefaultScrollbarEdgeY:(CMM9SliceEdgeOffset)edge_;
++(CMM9SliceEdgeOffset)defaultScrollbarEdgeX;
++(CMM9SliceEdgeOffset)defaultScrollbarEdgeY;
+
++(void)setDefaultScrollbarOpacityX:(GLubyte)opacity_;
++(void)setDefaultScrollbarOpacityY:(GLubyte)opacity_;
++(GLubyte)defaultScrollbarOpacityX;
++(GLubyte)defaultScrollbarOpacityY;
 
 @end
