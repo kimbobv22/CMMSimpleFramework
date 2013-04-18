@@ -6,8 +6,8 @@ cocos2d v2.1-rc0 기반으로 짜여진 CMMSimpleframework는 당신의 cocos2d 
 * wirte soon...
 
 ##How to use 사용법
-1. required Cocos2d v2.1-rc0 library<br>
-Cocos2d v2.1-rc0 라이브러리 필요
+1. required Cocos2d v2.1-rc1 library<br>
+Cocos2d v2.1-rc1 라이브러리 필요
 2. Download template files.<br>
 템플릿 파일 다운로드.
 3. copy files to `${USER}/Library/Developer/Xcode/Templates/cocos2d v2.x/`<br>
