@@ -5,7 +5,6 @@
 @interface CMMMenuItem(Private)
 
 -(void)_stopFadeAction;
--(void)_setMenuItemImage:(CCSprite *)sprite_;
 -(void)_setOnSelect:(BOOL)onSelect_;
 
 @end
@@ -16,30 +15,26 @@
 	if(pushUpAction) [self stopAction:pushUpAction];
 	if(pushDownAction) [self stopAction:pushDownAction];
 }
--(void)_setMenuItemImage:(CCSprite *)sprite_{
-	[self setTexture:[sprite_ texture]];
-	[self setTextureRect:[sprite_ textureRect]];
-}
 -(void)_setOnSelect:(BOOL)onSelect_{
 	onSelect = onSelect_;
 	[self _stopFadeAction];
 	if(onSelect){
 		if(pushDownAction) [self runAction:pushDownAction];
-		[self _setMenuItemImage:selectedImage];
+		[self setDisplayFrame:selectedFrame];
 	}else{
 		if(enable){
 			if(pushUpAction) [self runAction:pushUpAction];
 		}else{
 			if(pushDownAction) [self runAction:pushDownAction];
 		}
-		[self _setMenuItemImage:normalImage];
+		[self setDisplayFrame:normalFrame];
 	}
 }
 
 @end
 
 @implementation CMMMenuItem
-@synthesize key,normalImage,selectedImage,enable,onSelect,filter_canSelectItem,callback_pushdown,callback_pushup,callback_pushcancel,pushDownAction,pushUpAction;
+@synthesize key,normalFrame,selectedFrame,enable,onSelect,filter_canSelectItem,callback_pushdown,callback_pushup,callback_pushcancel,pushDownAction,pushUpAction;
 
 +(id)menuItemWithFrameSeq:(uint)frameSeq_ batchBarSeq:(uint)batchBarSeq_ frameSize:(CGSize)frameSize_{
 	return [[[self alloc] initWithFrameSeq:frameSeq_ batchBarSeq:batchBarSeq_ frameSize:frameSize_] autorelease];
@@ -48,16 +43,15 @@
 	return [[[self alloc] initWithFrameSeq:frameSeq_ batchBarSeq:batchBarSeq_] autorelease];
 }
 
--(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect rotated:(BOOL)rotated{
+-(id)initWithTexture:(CCTexture2D *)texture rect:(CGRect)rect_ rotated:(BOOL)rotated{
 	
 	pushUpAction = [[CCTintTo actionWithDuration:0.1f red:255 green:255 blue:255] retain];
 	pushDownAction = [[CCTintTo actionWithDuration:0.1f red:140 green:140 blue:140] retain];
 	
-	if(!(self = [super initWithTexture:texture rect:rect rotated:rotated])) return self;
+	if(!(self = [super initWithTexture:texture rect:rect_ rotated:rotated])) return self;
 	
-	key = nil;
-	normalImage = [[CCSprite alloc] initWithTexture:texture rect:rect];
-	selectedImage = [[CCSprite alloc] initWithTexture:texture rect:rect];
+	normalFrame = [[CCSpriteFrame alloc] initWithTexture:texture rect:rect_];
+	selectedFrame = [[CCSpriteFrame alloc] initWithTexture:texture rect:rect_];
 	touchCancelDistance = 30.0f;
 	enable = YES;
 	onSelect = NO;
@@ -87,17 +81,28 @@
 	return onSelect;
 }
 
--(void)setNormalImage:(CCSprite *)normalImage_{
-	if(normalImage == normalImage_) return;
-	[normalImage release];
-	normalImage = [normalImage_ retain];
+-(void)setNormalFrame:(CCSpriteFrame *)frame_{
+	[normalFrame release];
+	normalFrame = [frame_ retain];
 	[self _setOnSelect:onSelect];
 }
--(void)setSelectedImage:(CCSprite *)selectedImage_{
-	if(selectedImage == selectedImage_) return;
-	[selectedImage release];
-	selectedImage = [selectedImage_ retain];
+-(void)setNormalFrameWithTexture:(CCTexture2D *)texture_ rect:(CGRect)rect_{
+	[self setNormalFrame:[CCSpriteFrame frameWithTexture:texture_ rect:rect_]];
+}
+-(void)setNormalFrameWithSprite:(CCSprite *)sprite_{
+	[self setNormalFrame:[CCSpriteFrame frameWithTexture:[sprite_ texture] rect:[sprite_ textureRect]]];
+}
+
+-(void)setSelectedFrame:(CCSpriteFrame *)frame_{
+	[selectedFrame release];
+	selectedFrame = [frame_ retain];
 	[self _setOnSelect:onSelect];
+}
+-(void)setSelectedFrameWithTexture:(CCTexture2D *)texture_ rect:(CGRect)rect_{
+	[self setSelectedFrame:[CCSpriteFrame frameWithTexture:texture_ rect:rect_]];
+}
+-(void)setSelectedFrameWithSprite:(CCSprite *)sprite_{
+	[self setSelectedFrame:[CCSpriteFrame frameWithTexture:[sprite_ texture] rect:[sprite_ textureRect]]];
 }
 
 -(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
@@ -133,8 +138,8 @@
 }
 
 -(void)dealloc{
-	[selectedImage release];
-	[normalImage release];
+	[normalFrame release];
+	[selectedFrame release];
 	[callback_pushdown release];
 	[callback_pushup release];
 	[callback_pushcancel release];

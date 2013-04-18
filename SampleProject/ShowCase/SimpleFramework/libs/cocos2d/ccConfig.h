@@ -39,6 +39,15 @@
 #define CC_ENABLE_CHIPMUNK_INTEGRATION 0
 #endif
 
+/** @def CC_CHIPMUNK_IMPORT
+ Which file to import if using Chipmunk.
+ Change it to "ObjectiveChipmunk.h" or define it as a preprocessor macro if you are using ObjectiveChipmunk.
+ @since v2.1
+ */
+#if CC_ENABLE_CHIPMUNK_INTEGRATION && !defined(CC_CHIPMUNK_IMPORT)
+#define CC_CHIPMUNK_IMPORT "chipmunk.h"
+#endif
+
 /** @def CC_ENABLE_BOX2D_INTEGRATION
  If enabled, it will include CCPhysicsScript with Box2D Physics support.
  If you enable it, make sure that Box2D is in the search path.
@@ -49,6 +58,19 @@
  */
 #ifndef CC_ENABLE_BOX2D_INTEGRATION
 #define CC_ENABLE_BOX2D_INTEGRATION 0
+#endif
+
+/** @def CC_ENABLE_STACKABLE_ACTIONS
+ If enabled, actions that alter the position property (eg: CCMoveBy, CCJumpBy, CCBezierBy, etc..) will be stacked.
+ If you run 2 or more 'position' actions at the same time on a node, then end position will be the sum of all the positions. 
+ If disabled, only the last run action will take effect.
+ 
+ Enabled by default. Disable to be compatible with v2.0 and older versions.
+
+ @since v2.1
+ */
+#ifndef CC_ENABLE_STACKABLE_ACTIONS
+#define CC_ENABLE_STACKABLE_ACTIONS 1
 #endif
 
 

@@ -2,53 +2,50 @@
 
 #import "CMMControlItemSlider.h"
 
+ccColor3B CMMControlItemSliderBackColorLeft = ccc3(80, 100, 200);
+ccColor3B CMMControlItemSliderBackColorRight = ccc3(200, 200, 200);
+
 @interface CMMControlItemSlider(Private)
 
 -(void)_setPointXOfButton:(float)x_;
 
 @end
 
-@implementation CMMControlItemSlider
+@implementation CMMControlItemSlider{
+	CMM9SliceBar *_maskSprite,*_barSprite;
+	CCSprite *_resultBackSprite;
+}
 @synthesize buttonItem,backColorL,backColorR,itemValue,unitValue,itemValueRange,snappable,callback_whenItemValueChanged;
 
-+(id)controlItemSliderWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_{
-	return [[[self alloc] initWithWidth:width_ maskSprite:maskSprite_ barSprite:barSprite_ backColorL:backColorL_ backColorR:backColorR_ buttonSprite:buttonSprite_] autorelease];
++(id)controlItemSliderWithWidth:(float)width_ maskFrame:(CCSpriteFrame *)maskFrame_ barFrame:(CCSpriteFrame *)barFrame_ buttonFrame:(CCSpriteFrame *)buttonFrame_{
+	return [[[self alloc] initWithWidth:width_ maskFrame:maskFrame_ barFrame:barFrame_ buttonFrame:buttonFrame_] autorelease];
+}
++(id)controlItemSliderWithWidth:(float)width_ frameSeq:(uint)frameSeq_{
+	return [[[self alloc] initWithWidth:width_ frameSeq:frameSeq_] autorelease];
 }
 
-+(id)controlItemSliderWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_{
-	return [[[self alloc] initWithFrameSeq:frameSeq_ width:width_ backColorL:backColorL_ backColorR:backColorR_] autorelease];
-}
-+(id)controlItemSliderWithFrameSeq:(int)frameSeq_ width:(float)width_{
-	return [[[self alloc] initWithFrameSeq:frameSeq_ width:width_] autorelease];
-}
-
--(id)initWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_{
+-(id)initWithWidth:(float)width_ maskFrame:(CCSpriteFrame *)maskFrame_ barFrame:(CCSpriteFrame *)barFrame_ buttonFrame:(CCSpriteFrame *)buttonFrame_{
+	CGSize frameSize_ = CGSizeZero;
+	frameSize_.width = width_+10.0f;
+	frameSize_.height = [buttonFrame_ rect].size.height+10.0f;
 	
-	CGSize sliderSize_ = CGSizeMake(width_, [maskSprite_ contentSize].height);
-	_maskSprite = [[CMM9SliceBar sliceBarWithTargetSprite:maskSprite_] retain];
+	if(!(self = [super initWithFrameSize:frameSize_])) return self;
+	[touchDispatcher setMaxMultiTouchCount:0];
+	
+	buttonItem = [CMMMenuItem node];
+	[buttonItem setTouchCancelDistance:100.0f];
+	[self setButtonFrame:buttonFrame_];
+	
+	CGSize sliderSize_ = CGSizeMake(width_, [maskFrame_ rect].size.height);
+	_maskSprite = [[CMM9SliceBar sliceBarWithTexture:[maskFrame_ texture] targetRect:[maskFrame_ rect]] retain];
 	[_maskSprite setContentSize:sliderSize_];
-	_barSprite = [CMM9SliceBar sliceBarWithTargetSprite:barSprite_];
+	_barSprite = [CMM9SliceBar sliceBarWithTexture:[barFrame_ texture] targetRect:[barFrame_ rect]];
 	[_barSprite setContentSize:sliderSize_];
 	
 	_resultBackSprite = [CCSprite node];
 	
-	buttonItem = [CMMMenuItem node];
-	[buttonItem setTouchCancelDistance:100.0f];
-	[self setButtonSprite:buttonSprite_];
-	
-	backColorL = backColorL_;
-	backColorR = backColorR_;
-	
-	CGSize frameSize_ = CGSizeZero;
-	frameSize_.width = width_+10.0f;
-	frameSize_.height = [buttonItem contentSize].height+10.0f;
-	if(!(self = [super initWithFrameSize:frameSize_])){
-		[_maskSprite release];
-		[_barSprite release];
-		return self;
-	}
-	
-	[touchDispatcher setMaxMultiTouchCount:0];
+	backColorL = CMMControlItemSliderBackColorLeft;
+	backColorR = CMMControlItemSliderBackColorRight;
 	
 	snappable = NO;
 	
@@ -60,10 +57,11 @@
 	[self setItemValueRange:CMMFloatRange(0.0f,10.0f)];
 	[self setItemValue:0.0f];
 	
+	[self redraw];
+	
 	return self;
 }
-
--(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_{
+-(id)initWithWidth:(float)width_ frameSeq:(uint)frameSeq_{
 	CMMDrawingManager *sharedDrawingManager_ = [CMMDrawingManager sharedManager];
 	CMMDrawingManagerItem *drawingItem_ = [sharedDrawingManager_ drawingItemAtIndex:frameSeq_];
 	if(!drawingItem_){
@@ -71,19 +69,16 @@
 		return nil;
 	}
 	
-	CCSprite *maskSprite_ = [CCSprite spriteWithSpriteFrame:[[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_SlideMask]];
-	CCSprite *barSprite_ = [CCSprite spriteWithSpriteFrame:[[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_SlideBar]];
-	CCSprite *buttonSprite_ = [CMMMenuItem spriteWithSpriteFrame:[[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_SlideButton]];
+	CCSpriteFrame *maskFrame_ = [[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_SlideMask];
+	CCSpriteFrame *barFrame_ = [[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_SlideBar];
+	CCSpriteFrame *buttonFrame_ = [[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_SlideButton];
 	
-	return [self initWithWidth:width_ maskSprite:maskSprite_ barSprite:barSprite_ backColorL:backColorL_ backColorR:backColorR_ buttonSprite:buttonSprite_];
-}
--(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_{
-	return [self initWithFrameSeq:frameSeq_ width:width_ backColorL:ccc3(80, 100, 200) backColorR:ccc3(200, 200, 200)];
+	return [self initWithWidth:width_ maskFrame:maskFrame_ barFrame:barFrame_ buttonFrame:buttonFrame_];
 }
 
 -(void)setContentSize:(CGSize)contentSize{
 	[super setContentSize:contentSize];
-	[self redrawWithBar];
+	[self setDoRedraw:YES];
 }
 
 -(void)setEnable:(BOOL)enable_{
@@ -93,19 +88,25 @@
 	[_resultBackSprite setColor:(enable?ccWHITE:disabledColor)];
 }
 
--(void)setButtonSprite:(CCSprite *)buttonSprite_{
-	[buttonItem setNormalImage:buttonSprite_];
-	[buttonItem setSelectedImage:buttonSprite_];
-	_doRedraw = YES;
+-(void)setButtonFrame:(CCSpriteFrame *)frame_{
+	[buttonItem setNormalFrame:frame_];
+	[buttonItem setSelectedFrame:frame_];
+	[self setDoRedraw:YES];
+}
+-(void)setButtonFrameWithTexture:(CCTexture2D *)texture_ rect:(CGRect)rect_{
+	[self setButtonFrame:[CCSpriteFrame frameWithTexture:texture_ rect:rect_]];
+}
+-(void)setButtonFrameWithSprite:(CCSprite *)sprite_{
+	[self setButtonFrame:[CCSpriteFrame frameWithTexture:[sprite_ texture] rect:[sprite_ textureRect]]];
 }
 
 -(void)setBackColorL:(ccColor3B)backColorL_{
 	backColorL = backColorL_;
-	_doRedraw = YES;
+	[self setDoRedraw:YES];
 }
 -(void)setBackColorR:(ccColor3B)backColorR_{
 	backColorR = backColorR_;
-	_doRedraw = YES;
+	[self setDoRedraw:YES];
 }
 
 -(void)setItemValue:(float)itemValue_{
@@ -138,11 +139,18 @@
 	float targetWidth_ = _contentSize.width - buttonSize_.width;
 	float convertX_ = targetWidth_ * cmmFunc_MINMAX((x_/_contentSize.width), 0.0f, 1.0f);
 	[buttonItem setPosition:ccp(convertX_+buttonSize_.width*0.5f,_contentSize.height*0.5f)];
-	_doRedraw = YES;
+	[self setDoRedraw:YES];
 }
 
 -(void)redraw{
 	[super redraw];
+	if(!_maskSprite) return;
+	
+	CGSize buttonSize_ = [buttonItem contentSize];
+	CGSize targetSize_ = CGSizeMake(_contentSize.width-buttonSize_.width*0.5f, [_maskSprite contentSize].height);
+	[_maskSprite setContentSize:targetSize_];
+	[_barSprite setContentSize:targetSize_];
+	
 	CCRenderTexture *render_ = [CCRenderTexture renderTextureWithWidth:_contentSize.width height:_contentSize.height];
 	
 	[render_ begin];
@@ -151,7 +159,7 @@
 	ccGLBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	[_maskSprite setPosition:cmmFunc_positionIPN(self,_maskSprite)];
 	[_maskSprite visit];
-	[_maskSprite removeFromParentAndCleanup:YES];
+	[_maskSprite removeFromParentAndCleanup:NO];
 	
 	CGPoint buttonPoint_ = [buttonItem position];
 	
@@ -167,14 +175,6 @@
 	[_resultBackSprite setTextureRect:targetTextureRect_];
 	_resultBackSprite.position = ccp(_contentSize.width/2,_contentSize.height/2);
 	[_barSprite setPosition:cmmFunc_positionIPN(self, _barSprite)];
-}
-
--(void)redrawWithBar{
-	CGSize buttonSize_ = [buttonItem contentSize];
-	_maskSprite.contentSize = _barSprite.contentSize = CGSizeMake(_contentSize.width-buttonSize_.width/2.0f, [_maskSprite contentSize].height);
-	
-	[self redraw];
-	[self setItemValue:itemValue];
 }
 
 -(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{
@@ -208,6 +208,17 @@
 	[callback_whenItemValueChanged release];
 	[_maskSprite release];
 	[super dealloc];
+}
+
+@end
+
+@implementation CMMControlItemSlider(Configuration)
+
++(void)setDefaultBackColorLeft:(ccColor3B)color_{
+	CMMControlItemSliderBackColorLeft = color_;
+}
++(void)setDefaultBackColorRight:(ccColor3B)color_{
+	CMMControlItemSliderBackColorRight = color_;
 }
 
 @end

@@ -62,7 +62,7 @@
 	menuItemButton_.position = ccp(self.contentSize.width-menuItemButton_.contentSize.width-menuItemButton_.contentSize.width/2,menuItemButton_.contentSize.height/2);
 	menuItemButton_.callback_pushup = ^(id sender_){
 		CMMScrollMenuHItem *item_ = [CMMScrollMenuHItem menuItemWithFrameSeq:0 batchBarSeq:0 frameSize:CGSizeMake((arc4random()%200 + 200), 150)];
-		CMMControlItemSlider *slider_ = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:180];
+		CMMControlItemSlider *slider_ = [CMMControlItemSlider controlItemSliderWithWidth:180 frameSeq:0];
 		slider_.position = cmmFunc_positionIPN(item_, slider_);
 		
 		[item_ addChild:slider_];

@@ -1,7 +1,7 @@
 //  Created by JGroup(kimbobv22@gmail.com)
 
-#define CMMSimpleFrameworkVersion 0x00010302
-#define CMMSimpleFrameworkVersionString @"CMMSimpleFramework v1.3.2"
+#define CMMSimpleFrameworkVersion 0x00010303
+#define CMMSimpleFrameworkVersionString @"CMMSimpleFramework v1.3.3"
 
 //common
 #import "cocos2d.h"
@@ -73,6 +73,7 @@
 #import "CMMControlItemSlider.h"
 #import "CMMControlItemText.h"
 #import "CMMControlItemCheckbox.h"
+#import "CMMControlItemCombo.h"
 
 #import "CMMCustomUI.h"
 #import "CMMCustomUIJoypad.h"

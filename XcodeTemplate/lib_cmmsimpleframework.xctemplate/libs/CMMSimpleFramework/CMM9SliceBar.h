@@ -21,17 +21,23 @@ struct CMM9SliceEdgeOffset{
 typedef CMM9SliceEdgeOffset CMM9SliceEdgeOffset;
 
 @interface CMM9SliceBar : CCSpriteBatchNode<CCRGBAProtocol>{
-	CCSprite *targetSprite;
+	CGRect targetRect;
 	CMM9SliceEdgeOffset edgeOffset;
 }
 
-+(id)sliceBarWithTargetSprite:(CCSprite *)targetSprite_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_;
-+(id)sliceBarWithTargetSprite:(CCSprite *)targetSprite_;
++(id)sliceBarWithTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_;
++(id)sliceBarWithTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_;
++(id)sliceBarWithTexture:(CCTexture2D *)texture_;
 
--(id)initWithTargetSprite:(CCSprite *)targetSprite_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_;
--(id)initWithTargetSprite:(CCSprite *)targetSprite_;
+-(id)initWithTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_;
+-(id)initWithTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_;
+-(id)initWithTexture:(CCTexture2D *)texture_;
 
-@property (nonatomic, assign) CCSprite *targetSprite;
+-(void)setTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_;
+-(void)setTextureWithSprite:(CCSprite *)sprite_;
+-(void)setTextureWithFrame:(CCSpriteFrame *)frame_;
+
+@property (nonatomic, readwrite) CGRect targetRect;
 @property (nonatomic, readwrite) CMM9SliceEdgeOffset edgeOffset;
 
 @end

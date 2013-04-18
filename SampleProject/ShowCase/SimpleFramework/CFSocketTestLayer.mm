@@ -113,7 +113,7 @@
 -(id)initWithColor:(ccColor4B)color width:(GLfloat)w height:(GLfloat)h{
 	if(!(self = [super initWithColor:color width:w height:h])) return self;
 	
-	hostTextField = [CMMControlItemText controlItemTextWithFrameSeq:0 width:_contentSize.width*0.4f];
+	hostTextField = [CMMControlItemText controlItemTextWithWidth:_contentSize.width*0.4f frameSeq:0];
 	[hostTextField setPosition:ccpAdd(cmmFunc_positionIPN(self, hostTextField), ccp(-50,-50))];
 	[hostTextField setTitle:@"Host IP"];
 	[self addChild:hostTextField];

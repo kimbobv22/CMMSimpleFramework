@@ -4,37 +4,28 @@
 #import "CMM9SliceBar.h"
 #import "CMMFontUtil.h"
 
-@class CMMControlItemText;
-
+extern NSString *CMMControlItemTextPasswordCharacter;
 
 @interface CMMControlItemText : CMMControlItem<UITextFieldDelegate>{
-	CCLabelTTF *_textLabel,*_placeHolderLabel;
-	CMM9SliceBar *_barSprite;
-	
 	NSString *itemValue;
-	
-	UIView *_backView;
-	UILabel *_textTitleLabel;
-	UITextField *_textField;
+	NSString *passwordCharacter;
 	
 	void (^callback_whenItemValueChanged)(NSString *itemValue_);
 	void (^callback_whenReturnKeyEntered)(),(^callback_whenKeypadShown)(),(^callback_whenKeypadHidden)();
 	BOOL (^filter_shouldShowKeypad)(),(^filter_shouldHideKeypad)();
 }
 
-+(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ frameSize:(CGSize)frameSize_;
-+(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ width:(float)width_;
++(id)controlItemTextWithFrameSize:(CGSize)frameSize_ barFrame:(CCSpriteFrame *)barFrame_;
++(id)controlItemTextWithWidth:(float)width_ barFrame:(CCSpriteFrame *)barFrame_;
 
-+(id)controlItemTextWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_;
-+(id)controlItemTextWithFrameSeq:(int)frameSeq_ width:(float)width_;
++(id)controlItemTextWithFrameSize:(CGSize)frameSize_ frameSeq:(uint)frameSeq_;
++(id)controlItemTextWithWidth:(float)width_ frameSeq:(uint)frameSeq_;
 
--(id)initWithBarSprite:(CCSprite *)barSprite_ frameSize:(CGSize)frameSize_;
--(id)initWithBarSprite:(CCSprite *)barSprite_ width:(float)width_;
+-(id)initWithFrameSize:(CGSize)frameSize_ barFrame:(CCSpriteFrame *)barFrame_;
+-(id)initWithWidth:(float)width_ barFrame:(CCSpriteFrame *)barFrame_;
 
--(id)initWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_;
--(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_;
-
--(void)redrawWithBar;
+-(id)initWithFrameSize:(CGSize)frameSize_ frameSeq:(uint)frameSeq_;
+-(id)initWithWidth:(float)width_ frameSeq:(uint)frameSeq_;
 
 -(void)showTextField;
 -(void)hideTextField;
@@ -51,6 +42,7 @@
 @property (nonatomic, readwrite) GLubyte placeHolderOpacity;
 
 @property (nonatomic, readwrite, getter = isPasswordForm) BOOL passwordForm;
+@property (nonatomic, copy) NSString *passwordCharacter;
 @property (nonatomic, readwrite) UIKeyboardType keyboardType;
 
 @property (nonatomic, copy) void (^callback_whenItemValueChanged)(NSString *itemValue_);
@@ -58,5 +50,11 @@
 @property (nonatomic, copy) BOOL (^filter_shouldShowKeypad)(),(^filter_shouldHideKeypad)();
 
 -(void)setCallback_whenItemValueChanged:(void (^)(NSString *itemValue_))block_;
+
+@end
+
+@interface CMMControlItemText(Configuration)
+
+-(void)setDefaultPasswordCharacter:(NSString *)character_;
 
 @end

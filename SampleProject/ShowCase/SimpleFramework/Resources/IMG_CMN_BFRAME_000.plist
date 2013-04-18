@@ -19,7 +19,7 @@
 			<key>spriteTrimmed</key>
 			<false/>
 			<key>textureRect</key>
-			<string>{{2, 132}, {21.5, 20.5}}</string>
+			<string>{{98, 84}, {21.5, 20.5}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -38,7 +38,7 @@
 			<key>spriteTrimmed</key>
 			<false/>
 			<key>textureRect</key>
-			<string>{{2, 108}, {21.5, 20.5}}</string>
+			<string>{{98, 108}, {21.5, 20.5}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -57,7 +57,7 @@
 			<key>spriteTrimmed</key>
 			<false/>
 			<key>textureRect</key>
-			<string>{{34, 76}, {25, 25}}</string>
+			<string>{{46, 70}, {25, 25}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -76,7 +76,64 @@
 			<key>spriteTrimmed</key>
 			<false/>
 			<key>textureRect</key>
-			<string>{{64, 78}, {25, 25}}</string>
+			<string>{{2, 82}, {25, 25}}</string>
+			<key>textureRotated</key>
+			<false/>
+		</dict>
+		<key>IMG_CMN_BFRAME_000_COMBO_BACK.png</key>
+		<dict>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{0, 0}, {40, 40}}</string>
+			<key>spriteOffset</key>
+			<string>{0, 0}</string>
+			<key>spriteSize</key>
+			<string>{40, 40}</string>
+			<key>spriteSourceSize</key>
+			<string>{40, 40}</string>
+			<key>spriteTrimmed</key>
+			<false/>
+			<key>textureRect</key>
+			<string>{{82, 2}, {40, 40}}</string>
+			<key>textureRotated</key>
+			<false/>
+		</dict>
+		<key>IMG_CMN_BFRAME_000_COMBO_CURSOR.png</key>
+		<dict>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{0, 0}, {40, 10}}</string>
+			<key>spriteOffset</key>
+			<string>{0, 0}</string>
+			<key>spriteSize</key>
+			<string>{40, 10}</string>
+			<key>spriteSourceSize</key>
+			<string>{40, 10}</string>
+			<key>spriteTrimmed</key>
+			<false/>
+			<key>textureRect</key>
+			<string>{{36, 120}, {40, 10}}</string>
+			<key>textureRotated</key>
+			<false/>
+		</dict>
+		<key>IMG_CMN_BFRAME_000_COMBO_FRAME.png</key>
+		<dict>
+			<key>aliases</key>
+			<array/>
+			<key>spriteColorRect</key>
+			<string>{{0, 0}, {40, 40}}</string>
+			<key>spriteOffset</key>
+			<string>{0, 0}</string>
+			<key>spriteSize</key>
+			<string>{40, 40}</string>
+			<key>spriteSourceSize</key>
+			<string>{40, 40}</string>
+			<key>spriteTrimmed</key>
+			<false/>
+			<key>textureRect</key>
+			<string>{{2, 38}, {40, 40}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -95,7 +152,7 @@
 			<key>spriteTrimmed</key>
 			<false/>
 			<key>textureRect</key>
-			<string>{{92, 78}, {29, 15}}</string>
+			<string>{{32, 98}, {29, 15}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -114,7 +171,7 @@
 			<key>spriteTrimmed</key>
 			<false/>
 			<key>textureRect</key>
-			<string>{{2, 76}, {28, 28}}</string>
+			<string>{{46, 38}, {28, 28}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -133,26 +190,7 @@
 			<key>spriteTrimmed</key>
 			<false/>
 			<key>textureRect</key>
-			<string>{{92, 98}, {29, 15}}</string>
-			<key>textureRotated</key>
-			<false/>
-		</dict>
-		<key>IMG_CMN_BFRAME_000_SWITCH_BACK.png</key>
-		<dict>
-			<key>aliases</key>
-			<array/>
-			<key>spriteColorRect</key>
-			<string>{{0, 0}, {120, 34}}</string>
-			<key>spriteOffset</key>
-			<string>{0, 0}</string>
-			<key>spriteSize</key>
-			<string>{120, 34}</string>
-			<key>spriteSourceSize</key>
-			<string>{120, 34}</string>
-			<key>spriteTrimmed</key>
-			<false/>
-			<key>textureRect</key>
-			<string>{{2, 2}, {120, 34}}</string>
+			<string>{{2, 118}, {29, 15}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -171,7 +209,7 @@
 			<key>spriteTrimmed</key>
 			<false/>
 			<key>textureRect</key>
-			<string>{{82, 40}, {33, 33.5}}</string>
+			<string>{{78, 46}, {33, 33.5}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -190,7 +228,7 @@
 			<key>spriteTrimmed</key>
 			<false/>
 			<key>textureRect</key>
-			<string>{{2, 40}, {76, 31}}</string>
+			<string>{{2, 2}, {76, 31}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>
@@ -209,7 +247,7 @@
 			<key>spriteTrimmed</key>
 			<false/>
 			<key>textureRect</key>
-			<string>{{34, 104}, {18.5, 31}}</string>
+			<string>{{76, 84}, {18.5, 31}}</string>
 			<key>textureRotated</key>
 			<false/>
 		</dict>

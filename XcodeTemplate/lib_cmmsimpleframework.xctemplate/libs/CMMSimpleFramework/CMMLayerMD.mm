@@ -2,16 +2,12 @@
 
 #import "CMMLayerMD.h"
 
-namespace CMMLayerMDDefaultConfig{
-	CCSpriteFrame *_scrollbarFrameX_ = nil;
-	CCSpriteFrame *_scrollbarFrameY_ = nil;
-	
-	CMM9SliceEdgeOffset _scrollbarEdgeX_ = CMM9SliceEdgeOffset(0.5f,0.5f);
-	CMM9SliceEdgeOffset _scrollbarEdgeY_ = CMM9SliceEdgeOffset(0.5f,0.5f);
-	
-	GLubyte _scrollbarOpacityX_ = 120.0f;
-	GLubyte _scrollbarOpacityY_ = 120.0f;
-}
+CCSpriteFrame *CMMLayerMDScrollbarFrameX = nil;
+CCSpriteFrame *CMMLayerMDScrollbarFrameY = nil;
+CMM9SliceEdgeOffset CMMLayerMDScrollbarEdgeX = CMM9SliceEdgeOffset(0.5f,0.5f);
+CMM9SliceEdgeOffset CMMLayerMDScrollbarEdgeY = CMMLayerMDScrollbarEdgeX;
+GLubyte CMMLayerMDScrollbarOpacityX = 120.0f;
+GLubyte CMMLayerMDScrollbarOpacityY = CMMLayerMDScrollbarOpacityX;
 
 @implementation CMMLayerMD{
 	float _curScrollSpeedX,_curScrollSpeedY;
@@ -35,10 +31,10 @@ namespace CMMLayerMDDefaultConfig{
 	CCSprite *resultSprite_ = [render_ sprite];
 	CCSpriteFrame *resultFrame_ = [CCSpriteFrame frameWithTexture:[resultSprite_ texture] rect:[resultSprite_ textureRect]];
 	
-	if(!CMMLayerMDDefaultConfig::_scrollbarFrameX_){
+	if(!CMMLayerMDScrollbarFrameX){
 		[self setDefaultScrollbarFrameX:resultFrame_];
 	}
-	if(!CMMLayerMDDefaultConfig::_scrollbarFrameY_){
+	if(!CMMLayerMDScrollbarFrameY){
 		[self setDefaultScrollbarFrameY:resultFrame_];
 	}
 }
@@ -49,11 +45,12 @@ namespace CMMLayerMDDefaultConfig{
 	[touchDispatcher setMaxMultiTouchCount:0];
 	canDragX = canDragY = alwaysShowScrollbar = NO;
 	
-	CCSpriteFrame *scrollbarSpriteX_ = [[self class] defaultScrollbarFrameX];
-	CCSpriteFrame *scrollbarSpriteY_ = [[self class] defaultScrollbarFrameY];
-	
-	[self setScrollbarX:[CMM9SliceBar sliceBarWithTargetSprite:[CCSprite spriteWithSpriteFrame:scrollbarSpriteX_] edgeOffset:[[self class] defaultScrollbarEdgeX]]];
-	[self setScrollbarY:[CMM9SliceBar sliceBarWithTargetSprite:[CCSprite spriteWithSpriteFrame:scrollbarSpriteY_] edgeOffset:[[self class] defaultScrollbarEdgeY]]];
+	if(!CMMLayerMDScrollbarFrameX){
+		[CMMLayerMD _initializeScrollbar];
+	}
+
+	[self setScrollbarX:[CMM9SliceBar sliceBarWithTexture:[CMMLayerMDScrollbarFrameX texture] targetRect:[CMMLayerMDScrollbarFrameX rect] edgeOffset:CMMLayerMDScrollbarEdgeX]];
+	[self setScrollbarY:[CMM9SliceBar sliceBarWithTexture:[CMMLayerMDScrollbarFrameY texture] targetRect:[CMMLayerMDScrollbarFrameY rect] edgeOffset:CMMLayerMDScrollbarEdgeY]];
 	scrollbarOffsetX = scrollbarOffsetY = 5.0f;
 	scrollResistance = 0.4f;
 	scrollSpeed = 5.0f;
@@ -72,7 +69,7 @@ namespace CMMLayerMDDefaultConfig{
 		[scrollbarX removeFromParentAndCleanup:YES];
 	}
 	scrollbarX = scrollbarX_;
-	[scrollbarX setOpacity:[[self class] defaultScrollbarOpacityX]];
+	[scrollbarX setOpacity:CMMLayerMDScrollbarOpacityX];
 	[self addChild:scrollbarX_];
 }
 -(void)setScrollbarY:(CMM9SliceBar *)scrollbarY_{
@@ -82,7 +79,7 @@ namespace CMMLayerMDDefaultConfig{
 		[scrollbarY removeFromParentAndCleanup:YES];
 	}
 	scrollbarY = scrollbarY_;
-	[scrollbarY setOpacity:[[self class] defaultScrollbarOpacityY]];
+	[scrollbarY setOpacity:CMMLayerMDScrollbarOpacityY];
 	[self addChild:scrollbarY_];
 }
 
@@ -256,52 +253,26 @@ namespace CMMLayerMDDefaultConfig{
 @implementation CMMLayerMD(Configuration)
 
 +(void)setDefaultScrollbarFrameX:(CCSpriteFrame *)scrollbar_{
-	[CMMLayerMDDefaultConfig::_scrollbarFrameX_ release];
-	CMMLayerMDDefaultConfig::_scrollbarFrameX_ = [scrollbar_ retain];
+	[CMMLayerMDScrollbarFrameX release];
+	CMMLayerMDScrollbarFrameX = [scrollbar_ retain];
 }
 +(void)setDefaultScrollbarFrameY:(CCSpriteFrame *)scrollbar_{
-	[CMMLayerMDDefaultConfig::_scrollbarFrameY_ release];
-	CMMLayerMDDefaultConfig::_scrollbarFrameY_ = [scrollbar_ retain];
-}
-+(CCSpriteFrame *)defaultScrollbarFrameX{
-	if(!CMMLayerMDDefaultConfig::_scrollbarFrameX_){
-		[self _initializeScrollbar];
-	}
-	
-	return CMMLayerMDDefaultConfig::_scrollbarFrameX_;
-}
-+(CCSpriteFrame *)defaultScrollbarFrameY{
-	if(!CMMLayerMDDefaultConfig::_scrollbarFrameY_){
-		[self _initializeScrollbar];
-	}
-	
-	return CMMLayerMDDefaultConfig::_scrollbarFrameY_;
+	[CMMLayerMDScrollbarFrameY release];
+	CMMLayerMDScrollbarFrameY = [scrollbar_ retain];
 }
 
 +(void)setDefaultScrollbarEdgeX:(CMM9SliceEdgeOffset)edge_{
-	CMMLayerMDDefaultConfig::_scrollbarEdgeX_ = edge_;
+	CMMLayerMDScrollbarEdgeX = edge_;
 }
 +(void)setDefaultScrollbarEdgeY:(CMM9SliceEdgeOffset)edge_{
-	CMMLayerMDDefaultConfig::_scrollbarEdgeY_ = edge_;
-}
-+(CMM9SliceEdgeOffset)defaultScrollbarEdgeX{
-	return CMMLayerMDDefaultConfig::_scrollbarEdgeX_;
-}
-+(CMM9SliceEdgeOffset)defaultScrollbarEdgeY{
-	return CMMLayerMDDefaultConfig::_scrollbarEdgeY_;
+	CMMLayerMDScrollbarEdgeY = edge_;
 }
 
 +(void)setDefaultScrollbarOpacityX:(GLubyte)opacity_{
-	CMMLayerMDDefaultConfig::_scrollbarOpacityX_ = opacity_;
+	CMMLayerMDScrollbarOpacityX = opacity_;
 }
 +(void)setDefaultScrollbarOpacityY:(GLubyte)opacity_{
-	CMMLayerMDDefaultConfig::_scrollbarOpacityY_ = opacity_;
-}
-+(GLubyte)defaultScrollbarOpacityX{
-	return CMMLayerMDDefaultConfig::_scrollbarOpacityX_;
-}
-+(GLubyte)defaultScrollbarOpacityY{
-	return CMMLayerMDDefaultConfig::_scrollbarOpacityY_;
+	CMMLayerMDScrollbarOpacityY = opacity_;
 }
 
 @end

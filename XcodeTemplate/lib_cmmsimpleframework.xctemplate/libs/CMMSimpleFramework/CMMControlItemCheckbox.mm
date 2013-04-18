@@ -8,28 +8,31 @@
 
 #import "CMMControlItemCheckbox.h"
 
-@implementation CMMControlItemCheckbox
+@implementation CMMControlItemCheckbox{
+	CMMMenuItem *_backSprite;
+	CCSprite *_checkSprite;
+}
 @synthesize checked,callback_whenChanged;
 
-+(id)controlItemCheckboxWithBackSprite:(CCSprite *)backSprite_ checkSprite:(CCSprite *)checkSprite_{
-	return [[[self alloc] initWithBackSprite:backSprite_ checkSprite:checkSprite_] autorelease];
++(id)controlItemCheckboxWithBackFrame:(CCSpriteFrame *)backFrame_ checkFrame:(CCSpriteFrame *)checkFrame_{
+	return [[[self alloc] initWithBackFrame:backFrame_ checkFrame:checkFrame_] autorelease];
 }
-+(id)controlItemCheckboxWithFrameSeq:(int)frameSeq_{
++(id)controlItemCheckboxWithFrameSeq:(uint)frameSeq_{
 	return [[[self alloc] initWithFrameSeq:frameSeq_] autorelease];
 }
 
--(id)initWithBackSprite:(CCSprite *)backSprite_ checkSprite:(CCSprite *)checkSprite_{
-	CGSize frameSize_ = [backSprite_ contentSize];
+-(id)initWithBackFrame:(CCSpriteFrame *)backSprite_ checkFrame:(CCSpriteFrame *)checkFrame_{
+	CGSize frameSize_ = [backSprite_ rect].size;
 	if(!(self = [super initWithFrameSize:frameSize_])) return self;
 	[touchDispatcher setMaxMultiTouchCount:0];
 	
-	_backSprite = [CMMMenuItem spriteWithTexture:[backSprite_ texture] rect:[backSprite_ textureRect]];
+	_backSprite = [CMMMenuItem spriteWithTexture:[backSprite_ texture] rect:[backSprite_ rect]];
 	[_backSprite setCallback_pushup:^(id item_) {
 		[self setChecked:!checked];
 	}];
 	[_backSprite setPosition:cmmFunc_positionIPN(self, _backSprite)];
 	
-	_checkSprite = checkSprite_;
+	_checkSprite = [CCSprite spriteWithSpriteFrame:checkFrame_];
 	[_checkSprite setVisible:NO];
 	[_checkSprite setPosition:cmmFunc_positionIPN(self, _checkSprite)];
 	
@@ -37,19 +40,20 @@
 	[self addChild:_checkSprite z:2];
 	
 	[self setChecked:NO];
+	[self redraw];
 	
 	return self;
 }
--(id)initWithFrameSeq:(int)frameSeq_{
-	CMMDrawingManagerItem *drawingItem_ = [[CMMDrawingManager sharedManager] drawingItemAtIndex:0];
+-(id)initWithFrameSeq:(uint)frameSeq_{
+	CMMDrawingManagerItem *drawingItem_ = [[CMMDrawingManager sharedManager] drawingItemAtIndex:frameSeq_];
 	if(!drawingItem_){
 		[self release];
 		return nil;
 	}
 	
-	CCSprite *backSprite_ = [CCSprite spriteWithSpriteFrame:[[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_CheckboxBack]];
-	CCSprite *checkSprite_ = [CCSprite spriteWithSpriteFrame:[[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_CheckboxCheck]];
-	return [self initWithBackSprite:backSprite_ checkSprite:checkSprite_];
+	CCSpriteFrame *backFrame_ = [[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_CheckboxBack];
+	CCSpriteFrame *checkFrame_ = [[drawingItem_ otherFrames] spriteFrameForKeyFormatter:CMMDrawingManagerItemFormatter_CheckboxCheck];
+	return [self initWithBackFrame:backFrame_ checkFrame:checkFrame_];
 }
 
 -(void)setEnable:(BOOL)enable_{

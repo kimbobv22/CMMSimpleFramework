@@ -3,6 +3,13 @@
 #import "CMMLayerM.h"
 #import "CMM9SliceBar.h"
 
+extern CCSpriteFrame *CMMLayerMDScrollbarFrameX;
+extern CCSpriteFrame *CMMLayerMDScrollbarFrameY;
+extern CMM9SliceEdgeOffset CMMLayerMDScrollbarEdgeX;
+extern CMM9SliceEdgeOffset CMMLayerMDScrollbarEdgeY;
+extern GLubyte CMMLayerMDScrollbarOpacityX;
+extern GLubyte CMMLayerMDScrollbarOpacityY;
+
 @interface CMMLayerMD : CMMLayerM{
 	CMM9SliceBar *scrollbarX,*scrollbarY;
 	float scrollbarOffsetX,scrollbarOffsetY;
@@ -38,17 +45,11 @@
 
 +(void)setDefaultScrollbarFrameX:(CCSpriteFrame *)scrollbar_;
 +(void)setDefaultScrollbarFrameY:(CCSpriteFrame *)scrollbar_;
-+(CCSpriteFrame *)defaultScrollbarFrameX;
-+(CCSpriteFrame *)defaultScrollbarFrameY;
 
 +(void)setDefaultScrollbarEdgeX:(CMM9SliceEdgeOffset)edge_;
 +(void)setDefaultScrollbarEdgeY:(CMM9SliceEdgeOffset)edge_;
-+(CMM9SliceEdgeOffset)defaultScrollbarEdgeX;
-+(CMM9SliceEdgeOffset)defaultScrollbarEdgeY;
 
 +(void)setDefaultScrollbarOpacityX:(GLubyte)opacity_;
 +(void)setDefaultScrollbarOpacityY:(GLubyte)opacity_;
-+(GLubyte)defaultScrollbarOpacityX;
-+(GLubyte)defaultScrollbarOpacityY;
 
 @end

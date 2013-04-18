@@ -153,7 +153,7 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMControlItemText.mm</string>
 		</dict>
-<key>libs/CMMSimpleFramework/CMMControlItemCheckbox.h</key>
+		<key>libs/CMMSimpleFramework/CMMControlItemCheckbox.h</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -175,6 +175,31 @@
 			<key>Path</key>
 			<string>libs/CMMSimpleFramework/CMMControlItemCheckbox.mm</string>
 		</dict>
+
+
+		<key>libs/CMMSimpleFramework/CMMControlItemCombo.h</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>libs</string>
+				<string>CMMSimpleFramework</string>
+			</array>
+			<key>Path</key>
+			<string>libs/CMMSimpleFramework/CMMControlItemCombo.h</string>
+			<key>TargetIndices</key>
+			<array/>
+		</dict>
+		<key>libs/CMMSimpleFramework/CMMControlItemCombo.mm</key>
+		<dict>
+			<key>Group</key>
+			<array>
+				<string>libs</string>
+				<string>CMMSimpleFramework</string>
+			</array>
+			<key>Path</key>
+			<string>libs/CMMSimpleFramework/CMMControlItemCombo.mm</string>
+		</dict>
+
 		<key>libs/CMMSimpleFramework/CMMCustomUI.h</key>
 		<dict>
 			<key>Group</key>
@@ -1420,8 +1445,10 @@
 		<string>libs/CMMSimpleFramework/CMMControlItemSwitch.mm</string>
 		<string>libs/CMMSimpleFramework/CMMControlItemText.h</string>
 		<string>libs/CMMSimpleFramework/CMMControlItemText.mm</string>
-<string>libs/CMMSimpleFramework/CMMControlItemCheckbox.h</string>
+		<string>libs/CMMSimpleFramework/CMMControlItemCheckbox.h</string>
 		<string>libs/CMMSimpleFramework/CMMControlItemCheckbox.mm</string>
+		<string>libs/CMMSimpleFramework/CMMControlItemCombo.h</string>
+		<string>libs/CMMSimpleFramework/CMMControlItemCombo.mm</string>
 		<string>libs/CMMSimpleFramework/CMMCustomUI.h</string>
 		<string>libs/CMMSimpleFramework/CMMCustomUI.mm</string>
 		<string>libs/CMMSimpleFramework/CMMCustomUIJoypad.h</string>
@@ -1442,10 +1469,8 @@
 		<string>libs/CMMSimpleFramework/CMMSequencer.mm</string>
 		<string>libs/CMMSimpleFramework/CMMGameKit.h</string>
 		<string>libs/CMMSimpleFramework/CMMGameKit.mm</string>
-
 		<string>libs/CMMSimpleFramework/CMMGestureDispatcher.h</string>
 		<string>libs/CMMSimpleFramework/CMMGestureDispatcher.mm</string>
-
 		<string>libs/CMMSimpleFramework/CMMHeader.h</string>
 		<string>libs/CMMSimpleFramework/CMMInAppPurchasesManager.h</string>
 		<string>libs/CMMSimpleFramework/CMMInAppPurchasesManager.mm</string>

@@ -26,7 +26,7 @@
 	testSprite_.position = ccp(innerSize_.width/2,innerSize_.height/2);
 	[dragLayer addChildToInner:testSprite_];
 	
-	_slider = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:_contentSize.width*0.4f];
+	_slider = [CMMControlItemSlider controlItemSliderWithWidth:_contentSize.width*0.4f frameSeq:0];
 	[_slider setItemValueRange:CMMFloatRange(0.0f,0.9f)];
 	[_slider setUnitValue:0.1f];
 	[_slider setItemValue:[dragLayer scrollResistance]];

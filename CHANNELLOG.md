@@ -1,3 +1,192 @@
+##Version 1.3.3
+* [FIX] **`CMMLayerMD`** changed
+		
+		//deprecated
+		+(CCSpriteFrame *)defaultScrollbarFrameX;
+		+(CCSpriteFrame *)defaultScrollbarFrameY;
+		+(CMM9SliceEdgeOffset)defaultScrollbarEdgeX;
+		+(CMM9SliceEdgeOffset)defaultScrollbarEdgeY;
+		+(GLubyte)defaultScrollbarOpacityX;
+		+(GLubyte)defaultScrollbarOpacityY;
+
+* [FIX] **`CMM9SliceBar`** changed
+
+		//deprecated
+		+(id)sliceBarWithTargetSprite:(CCSprite *)targetSprite_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_;
+		+(id)sliceBarWithTargetSprite:(CCSprite *)targetSprite_;
+
+		-(id)initWithTargetSprite:(CCSprite *)targetSprite_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_;
+		-(id)initWithTargetSprite:(CCSprite *)targetSprite_;
+
+		@property (nonatomic, assign) CCSprite *targetSprite;
+		
+		//replaced by
+		+(id)sliceBarWithTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_;
+		+(id)sliceBarWithTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_;
+		+(id)sliceBarWithTexture:(CCTexture2D *)texture_;
+
+		-(id)initWithTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_;
+		-(id)initWithTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_;
+		-(id)initWithTexture:(CCTexture2D *)texture_;
+
+		-(void)setTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_;
+		-(void)setTextureWithSprite:(CCSprite *)sprite_;
+		-(void)setTextureWithFrame:(CCSpriteFrame *)frame_;
+
+		@property (nonatomic, readwrite) CGRect targetRect;
+		
+* [FIX] **`CMMFontUtil`** improved
+		
+		//preset added
+		@interface CMMFontPreset : NSObject
+
+		@property (nonatomic, readwrite) float fontSize;
+		@property (nonatomic, readwrite) CGSize dimensions;
+		@property (nonatomic, readwrite) CCTextAlignment hAlignment;
+		@property (nonatomic, readwrite) CCVerticalTextAlignment vAlignment;
+		@property (nonatomic, readwrite) CCLineBreakMode lineBreakMode;
+		@property (nonatomic, copy) NSString *fontName;
+
+		@end
+		
+		//using preset
+		@interface CMMFontUtil(Preset)
+
+		+(NSDictionary *)presetList;
+
+		+(void)setPreset:(CMMFontPreset *)preset_ forKey:(NSString *)key_;
+		+(void)removePresetForKey:(NSString *)key_;
+		+(CMMFontPreset *)presetForKey:(NSString *)key_;
+
+		+(CCLabelTTF *)labelWithString:(NSString *)string_ withPresetKey:(NSString *)presetKey_;
+
+		@end
+
+		//deprecated
+		@interface CMMFontUtil(Deprecated)
+	
+		+(float)defaultFontSize;
+		+(CGSize)defaultDimensions;
+		+(CCTextAlignment)defaultHAlignment;
+		+(CCVerticalTextAlignment)defaultVAlignment;
+		+(CCLineBreakMode)defaultLineBreakMode;
+		+(NSString *)defaultFontName;
+		
+		@end
+		
+* [FIX] **`CMMMenuItem`** improved
+	
+		//deprecated
+		@property (nonatomic, retain) CCSprite *normalImage,*selectedImage;
+		
+		//replaced by
+		-(void)setNormalFrame:(CCSpriteFrame *)frame_;
+		-(void)setNormalFrameWithTexture:(CCTexture2D *)texture_ rect:(CGRect)rect_;
+		-(void)setNormalFrameWithSprite:(CCSprite *)sprite_;
+
+		-(void)setSelectedFrame:(CCSpriteFrame *)frame_;
+		-(void)setSelectedFrameWithTexture:(CCTexture2D *)texture_ rect:(CGRect)rect_;
+		-(void)setSelectedFrameWithSprite:(CCSprite *)sprite_;
+		
+		@property (nonatomic, readonly) CCSpriteFrame *normalFrame,*selectedFrame;
+		
+* [FIX] **`CMMControlItemSwitch`** changed
+	
+		//deprecated
+		+(id)controlItemSwitchWithMaskSprite:(CCSprite *)maskSprite_ backSprite:(CCSprite *)backSprite_ buttonSprite:(CCSprite *)buttonSprite_;
+		-(id)initWithMaskSprite:(CCSprite *)maskSprite_ backSprite:(CCSprite *)backSprite_ buttonSprite:(CCSprite *)buttonSprite_;
+		
+		//replaced by
+		+(id)controlItemSwitchWithMaskFrame:(CCSpriteFrame *)maskFrame_ buttonFrame:(CCSpriteFrame *)buttonFrame_;
+		-(id)initWithMaskFrame:(CCSpriteFrame *)maskFrame_ buttonFrame:(CCSpriteFrame *)buttonFrame_;
+		
+		+(void)setDefaultBackColorLeft:(ccColor3B)color_;
+		+(void)setDefaultBackColorRight:(ccColor3B)color_;
+
+		+(void)setDefaultBackLabelColorLeft:(ccColor3B)color_;
+		+(void)setDefaultBackLabelColorRight:(ccColor3B)color_;
+
+		+(void)setDefaultBackLabelOpacityLeft:(GLubyte)opacity_;
+		+(void)setDefaultBackLabelOpacityRight:(GLubyte)opacity_;
+
+		+(void)setDefaultBackLabelSizeLeft:(float)size_;
+		+(void)setDefaultBackLabelSizeRight:(float)size_;
+
+		+(void)setDefaultBackLabelStringLeft:(NSString *)string_;
+		+(void)setDefaultBackLabelStringRight:(NSString *)string_;
+		
+		@property (nonatomic, readwrite) ccColor3B backColorL,backColorR;
+		@property (nonatomic, readwrite) ccColor3B backLabelColorL,backLabelColorR;
+		@property (nonatomic, readwrite) GLubyte backLabelOpacityL,backLabelOpacityR;
+		@property (nonatomic, readwrite) float backLabelSizeL,backLabelSizeR;
+		@property (nonatomic, assign) NSString *backLabelStringL,*backLabelStringR;
+
+* [FIX] **`CMMControlItemSlider`** changed
+	
+		//deprecated
+		+(id)controlItemSliderWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_;
+		+(id)controlItemSliderWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_;
+		-(id)initWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_;
+		-(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_;
+		
+		-(void)setButtonSprite:(CCSprite *)buttonSprite_;
+		
+		//replaced by
+		+(id)controlItemSliderWithWidth:(float)width_ maskFrame:(CCSpriteFrame *)maskFrame_ barFrame:(CCSpriteFrame *)barFrame_ buttonFrame:(CCSpriteFrame *)buttonFrame_;
+		+(id)controlItemSliderWithWidth:(float)width_ frameSeq:(uint)frameSeq_;
+
+		-(id)initWithWidth:(float)width_ maskFrame:(CCSpriteFrame *)maskFrame_ barFrame:(CCSpriteFrame *)barFrame_ buttonFrame:(CCSpriteFrame *)buttonFrame_;
+		-(id)initWithWidth:(float)width_ frameSeq:(uint)frameSeq_;
+		
+		-(void)setButtonFrame:(CCSpriteFrame *)frame_;
+		-(void)setButtonFrameWithTexture:(CCTexture2D *)texture_ rect:(CGRect)rect_;
+		-(void)setButtonFrameWithSprite:(CCSprite *)sprite_;
+		
+* [FIX] **`CMMControlItemText`** changed
+	
+		//deprecated
+		+(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ frameSize:(CGSize)frameSize_;
+		+(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ width:(float)width_;
+
+		+(id)controlItemTextWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_;
+		+(id)controlItemTextWithFrameSeq:(int)frameSeq_ width:(float)width_;
+
+		-(id)initWithBarSprite:(CCSprite *)barSprite_ frameSize:(CGSize)frameSize_;
+		-(id)initWithBarSprite:(CCSprite *)barSprite_ width:(float)width_;
+
+		-(id)initWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_;
+		-(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_;
+
+		-(void)redrawWithBar; 
+		
+		//replaced by
+		+(id)controlItemTextWithFrameSize:(CGSize)frameSize_ barFrame:(CCSpriteFrame *)barFrame_;
+		+(id)controlItemTextWithWidth:(float)width_ barFrame:(CCSpriteFrame *)barFrame_;
+
+		+(id)controlItemTextWithFrameSize:(CGSize)frameSize_ frameSeq:(uint)frameSeq_;
+		+(id)controlItemTextWithWidth:(float)width_ frameSeq:(uint)frameSeq_;
+
+		-(id)initWithFrameSize:(CGSize)frameSize_ barFrame:(CCSpriteFrame *)barFrame_;
+		-(id)initWithWidth:(float)width_ barFrame:(CCSpriteFrame *)barFrame_;
+
+		-(id)initWithFrameSize:(CGSize)frameSize_ frameSeq:(uint)frameSeq_;
+		-(id)initWithWidth:(float)width_ frameSeq:(uint)frameSeq_;
+		
+* [FIX] **`CMMControlItemCheckbox`** changed
+	
+		//deprecated
+		+(id)controlItemCheckboxWithBackSprite:(CCSprite *)backSprite_ checkSprite:(CCSprite *)checkSprite_;
+		-(id)initWithBackSprite:(CCSprite *)backSprite_ checkSprite:(CCSprite *)checkSprite_;
+		
+		//replaced by
+		+(id)controlItemCheckboxWithBackFrame:(CCSpriteFrame *)backFrame_ checkFrame:(CCSpriteFrame *)checkFrame_;
+		-(id)initWithBackFrame:(CCSpriteFrame *)backSprite_ checkFrame:(CCSpriteFrame *)checkFrame_;
+		
+* [NEW] **`CMMControlItemCombo`** added
+* [FIX] minor bugs fixed
+* [FIX] change cocos2d library version
+
+
 ##Version 1.3.2
 * [FIX] **`CMMLayerMD`** improved
 	

@@ -10,18 +10,15 @@
 #import "CMMMenuItem.h"
 
 @interface CMMControlItemCheckbox : CMMControlItem{
-	CMMMenuItem *_backSprite;
-	CCSprite *_checkSprite;
 	BOOL checked;
-	
 	void(^callback_whenChanged)(BOOL isChecked_);
 }
 
-+(id)controlItemCheckboxWithBackSprite:(CCSprite *)backSprite_ checkSprite:(CCSprite *)checkSprite_;
-+(id)controlItemCheckboxWithFrameSeq:(int)frameSeq_;
++(id)controlItemCheckboxWithBackFrame:(CCSpriteFrame *)backFrame_ checkFrame:(CCSpriteFrame *)checkFrame_;
++(id)controlItemCheckboxWithFrameSeq:(uint)frameSeq_;
 
--(id)initWithBackSprite:(CCSprite *)backSprite_ checkSprite:(CCSprite *)checkSprite_;
--(id)initWithFrameSeq:(int)frameSeq_;
+-(id)initWithBackFrame:(CCSpriteFrame *)backSprite_ checkFrame:(CCSpriteFrame *)checkFrame_;
+-(id)initWithFrameSeq:(uint)frameSeq_;
 
 -(void)setCheckedDirectly:(BOOL)checked_;
 

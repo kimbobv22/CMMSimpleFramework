@@ -2,12 +2,38 @@
 
 #import "CMMFontUtil.h"
 
-static float _sharedCMMFontUtil_defaultFontSize_ = 14.0f;
-static CGSize _sharedCMMFontUtil_defaultDimensions_ = (CGSize){0,0};
-static CCTextAlignment _sharedCMMFontUtil_defaultHAlignment_ = kCCTextAlignmentCenter;
-static CCVerticalTextAlignment _sharedCMMFontUtil_defaultVAlignment_ = kCCVerticalTextAlignmentCenter;
-static CCLineBreakMode _sharedCMMFontUtil_defaultLineBreakMode_ = kCCLineBreakModeWordWrap;
-static NSString *_sharedCMMFontUtil_defaultFontName_ = @"Helvetica";
+float CMMFontUtilDefaultFontSize = 14.0f;
+CGSize CMMFontUtilDefaultDimensions = (CGSize){0,0};
+CCTextAlignment CMMFontUtilDefaultHAlignment = kCCTextAlignmentCenter;
+CCVerticalTextAlignment CMMFontUtilDefaultVAlignment = kCCVerticalTextAlignmentCenter;
+CCLineBreakMode CMMFontUtilDefaultLineBreakMode = kCCLineBreakModeWordWrap;
+NSString *CMMFontUtilDefaultFontName = @"Helvetica";
+
+@implementation CMMFontPreset
+@synthesize fontSize,dimensions,hAlignment,vAlignment,lineBreakMode,fontName;
+
++(id)preset{
+	return [[[self alloc] init] autorelease];
+}
+-(id)init{
+	if(!(self = [super init])) return self;
+	
+	fontSize = CMMFontUtilDefaultFontSize;
+	dimensions = CMMFontUtilDefaultDimensions;
+	hAlignment = CMMFontUtilDefaultHAlignment;
+	vAlignment = CMMFontUtilDefaultVAlignment;
+	lineBreakMode = CMMFontUtilDefaultLineBreakMode;
+	fontName = [CMMFontUtilDefaultFontName copy];
+	
+	return self;
+}
+
+-(void)dealloc{
+	[fontName release];
+	[super dealloc];
+}
+
+@end
 
 @implementation CMMFontUtil
 
@@ -15,65 +41,82 @@ static NSString *_sharedCMMFontUtil_defaultFontName_ = @"Helvetica";
 	return [CCLabelTTF labelWithString:string_ fontName:fontName_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:lineBreakMode_];
 }
 +(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ lineBreakMode:(CCLineBreakMode)lineBreakMode_{
-	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:lineBreakMode_ fontName:_sharedCMMFontUtil_defaultFontName_];
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:lineBreakMode_ fontName:CMMFontUtilDefaultFontName];
 }
 +(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_{
-	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:_sharedCMMFontUtil_defaultLineBreakMode_];
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:CMMFontUtilDefaultLineBreakMode];
 }
 +(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_{
-	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:_sharedCMMFontUtil_defaultVAlignment_];
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:CMMFontUtilDefaultVAlignment];
 }
 +(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_{
-	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:_sharedCMMFontUtil_defaultHAlignment_];
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:CMMFontUtilDefaultHAlignment];
 }
 +(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_{
-	return [self labelWithString:string_ fontSize:fontSize_ dimensions:_sharedCMMFontUtil_defaultDimensions_];
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:CMMFontUtilDefaultDimensions];
 }
 +(CCLabelTTF *)labelWithString:(NSString *)string_{
-	return [self labelWithString:string_ fontSize:_sharedCMMFontUtil_defaultFontSize_];
+	return [self labelWithString:string_ fontSize:CMMFontUtilDefaultFontSize];
 }
 
 @end
 
-@implementation CMMFontUtil(Setting)
+@implementation CMMFontUtil(Configuration)
 
 +(void)setDefaultFontSize:(float)fontSize_{
-	_sharedCMMFontUtil_defaultFontSize_ = fontSize_;
+	CMMFontUtilDefaultFontSize = fontSize_;
 }
 +(void)setDefaultDimensions:(CGSize)dimensions_{
-	_sharedCMMFontUtil_defaultDimensions_ = dimensions_;
+	CMMFontUtilDefaultDimensions = dimensions_;
 }
 +(void)setDefaultHAlignment:(CCTextAlignment)HAlignment_{
-	_sharedCMMFontUtil_defaultHAlignment_ = HAlignment_;
+	CMMFontUtilDefaultHAlignment = HAlignment_;
 }
 +(void)setDefaultVAlignment:(CCVerticalTextAlignment)VAlignment_{
-	_sharedCMMFontUtil_defaultVAlignment_ = VAlignment_;
+	CMMFontUtilDefaultVAlignment = VAlignment_;
 }
 +(void)setDefaultLineBreakMode:(CCLineBreakMode)lineBreakMode_{
-	_sharedCMMFontUtil_defaultLineBreakMode_ = lineBreakMode_;
+	CMMFontUtilDefaultLineBreakMode = lineBreakMode_;
 }
 +(void)setDefaultFontName:(NSString *)fontName_{
-	[_sharedCMMFontUtil_defaultFontName_ release];
-	_sharedCMMFontUtil_defaultFontName_ = [fontName_ copy];
+	[CMMFontUtilDefaultFontName release];
+	CMMFontUtilDefaultFontName = [fontName_ copy];
 }
 
-+(float)defaultFontSize{
-	return _sharedCMMFontUtil_defaultFontSize_;
+@end
+
+NSMutableDictionary *_sharedCMMFontUtilPresetList_ = nil;
+
+@implementation CMMFontUtil(Preset)
+
++(NSMutableDictionary *)_presetList{
+	if(!_sharedCMMFontUtilPresetList_){
+		_sharedCMMFontUtilPresetList_ = [[NSMutableDictionary alloc] init];
+	}
+	
+	return _sharedCMMFontUtilPresetList_;
 }
-+(CGSize)defaultDimensions{
-	return _sharedCMMFontUtil_defaultDimensions_;
++(NSDictionary *)presetList{
+	return [NSDictionary dictionaryWithDictionary:[self _presetList]];
 }
-+(CCTextAlignment)defaultHAlignment{
-	return _sharedCMMFontUtil_defaultHAlignment_;
+
++(void)setPreset:(CMMFontPreset *)preset_ forKey:(NSString *)key_{
+	[[self _presetList] setObject:preset_ forKey:key_];
 }
-+(CCVerticalTextAlignment)defaultVAlignment{
-	return _sharedCMMFontUtil_defaultVAlignment_;
++(void)removePresetForKey:(NSString *)key_{
+	[[self _presetList] removeObjectForKey:key_];
 }
-+(CCLineBreakMode)defaultLineBreakMode{
-	return _sharedCMMFontUtil_defaultLineBreakMode_;
++(CMMFontPreset *)presetForKey:(NSString *)key_{
+	return [[self _presetList] objectForKey:key_];
 }
-+(NSString *)defaultFontName{
-	return _sharedCMMFontUtil_defaultFontName_;
+
++(CCLabelTTF *)labelWithString:(NSString *)string_ withPresetKey:(NSString *)presetKey_{
+	CMMFontPreset *preset_ = [self presetForKey:presetKey_];
+	if(!preset_){
+		CCLOGWARN(@"CMMFontUtil : Font preset is nil");
+		return [self labelWithString:string_];
+	}
+	return [self labelWithString:string_ fontSize:[preset_ fontSize] dimensions:[preset_ dimensions] hAlignment:[preset_ hAlignment] vAlignment:[preset_ vAlignment] lineBreakMode:[preset_ lineBreakMode] fontName:[preset_ fontName]];
 }
 
 @end

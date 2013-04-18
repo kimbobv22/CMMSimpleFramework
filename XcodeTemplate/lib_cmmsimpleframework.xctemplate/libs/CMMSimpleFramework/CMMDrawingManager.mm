@@ -6,11 +6,8 @@
 #import "CMMFileUtil.h"
 #import "CMM9SliceBar.h"
 
-#define cmmVarCMMDrawingManagerItem_makeKey(_key_) [NSString stringWithFormat:@"%d",(_key_)]
-
 NSString *const CMMDrawingManagerItemFormatter_BatchBar = @"%@_BATCHBAR_%02d.png";
 NSString *const CMMDrawingManagerItemFormatter_SwitchButton = @"%@_SWITCH_BTN.png";
-NSString *const CMMDrawingManagerItemFormatter_SwitchBack = @"%@_SWITCH_BACK.png";
 NSString *const CMMDrawingManagerItemFormatter_SwitchMask = @"%@_SWITCH_MASK.png";
 NSString *const CMMDrawingManagerItemFormatter_SlideBar = @"%@_SLIDE_BAR.png";
 NSString *const CMMDrawingManagerItemFormatter_SlideButton = @"%@_SLIDE_BTN.png";
@@ -18,6 +15,9 @@ NSString *const CMMDrawingManagerItemFormatter_SlideMask = @"%@_SLIDE_MASK.png";
 NSString *const CMMDrawingManagerItemFormatter_TextBar = @"%@_TEXT_BAR.png";
 NSString *const CMMDrawingManagerItemFormatter_CheckboxBack = @"%@_CHECKBOX_BACK.png";
 NSString *const CMMDrawingManagerItemFormatter_CheckboxCheck = @"%@_CHECKBOX_CHECK.png";
+NSString *const CMMDrawingManagerItemFormatter_ComboFrame = @"%@_COMBO_FRAME.png";
+NSString *const CMMDrawingManagerItemFormatter_ComboBack = @"%@_COMBO_BACK.png";
+NSString *const CMMDrawingManagerItemFormatter_ComboCursor = @"%@_COMBO_CURSOR.png";
 
 static CMMDrawingManager *_sharedDrawingManager_ = nil;
 static CMM9SliceBar *_cachedCMMSpriteBatchBar_ = nil;
@@ -286,10 +286,10 @@ static CMM9SliceBar *_cachedCMMSpriteBatchBar_ = nil;
 		CCSprite *batchBarSprite_ = [CCSprite spriteWithSpriteFrame:batchBarSpriteFrame_];
 		
 		if(!_cachedCMMSpriteBatchBar_){
-			_cachedCMMSpriteBatchBar_ = [[CMM9SliceBar alloc] initWithTargetSprite:batchBarSprite_];
+			_cachedCMMSpriteBatchBar_ = [[CMM9SliceBar alloc] initWithTexture:[batchBarSprite_ texture] targetRect:[batchBarSprite_ textureRect]];
 		}
 		
-		[_cachedCMMSpriteBatchBar_ setTargetSprite:batchBarSprite_];
+		[_cachedCMMSpriteBatchBar_ setTextureWithSprite:batchBarSprite_];
 		[_cachedCMMSpriteBatchBar_ setContentSize:size_];
 		
 		CCRenderTexture *render_ = [CCRenderTexture renderTextureWithWidth:(uint)size_.width height:(uint)size_.height];

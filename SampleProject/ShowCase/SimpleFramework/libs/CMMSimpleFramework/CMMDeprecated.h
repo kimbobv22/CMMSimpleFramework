@@ -203,6 +203,13 @@ DEPRECATED_ATTRIBUTE typedef CMMLayerMDScrollbar CMMScrollbarDesign;
 +(void)setDefaultScrollbarY:(CCSprite *)scrollbar_ DEPRECATED_ATTRIBUTE;
 +(CCSprite *)defaultScrollbarY DEPRECATED_ATTRIBUTE;
 
++(CCSpriteFrame *)defaultScrollbarFrameX DEPRECATED_ATTRIBUTE;
++(CCSpriteFrame *)defaultScrollbarFrameY DEPRECATED_ATTRIBUTE;
++(CMM9SliceEdgeOffset)defaultScrollbarEdgeX DEPRECATED_ATTRIBUTE;
++(CMM9SliceEdgeOffset)defaultScrollbarEdgeY DEPRECATED_ATTRIBUTE;
++(GLubyte)defaultScrollbarOpacityX DEPRECATED_ATTRIBUTE;
++(GLubyte)defaultScrollbarOpacityY DEPRECATED_ATTRIBUTE;
+
 @property (nonatomic, readwrite, getter = _isCanDragX) BOOL isCanDragX DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readwrite, getter = _isCanDragY) BOOL isCanDragY DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readwrite, getter = _isAlwaysShowScrollbar) BOOL isAlwaysShowScrollbar DEPRECATED_ATTRIBUTE;
@@ -235,6 +242,18 @@ DEPRECATED_ATTRIBUTE @interface CMMSpriteBatchBar : CMM9SliceBar<CMMTouchDispatc
 
 @end
 
+@interface CMM9SliceBar(Deprecated)
+
++(id)sliceBarWithTargetSprite:(CCSprite *)targetSprite_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_ DEPRECATED_ATTRIBUTE;
++(id)sliceBarWithTargetSprite:(CCSprite *)targetSprite_ DEPRECATED_ATTRIBUTE;
+
+-(id)initWithTargetSprite:(CCSprite *)targetSprite_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_ DEPRECATED_ATTRIBUTE;
+-(id)initWithTargetSprite:(CCSprite *)targetSprite_ DEPRECATED_ATTRIBUTE;
+
+@property (nonatomic, assign) CCSprite *targetSprite DEPRECATED_ATTRIBUTE;
+
+@end
+
 #pragma mark - util
 
 #import "CMMFontUtil.h"
@@ -253,6 +272,13 @@ DEPRECATED_ATTRIBUTE @interface CMMSpriteBatchBar : CMM9SliceBar<CMMTouchDispatc
 +(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ DEPRECATED_ATTRIBUTE;
 +(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ DEPRECATED_ATTRIBUTE;
 +(CCLabelTTF *)labelWithstring:(NSString *)string_ DEPRECATED_ATTRIBUTE;
+
++(float)defaultFontSize DEPRECATED_ATTRIBUTE;
++(CGSize)defaultDimensions DEPRECATED_ATTRIBUTE;
++(CCTextAlignment)defaultHAlignment DEPRECATED_ATTRIBUTE;
++(CCVerticalTextAlignment)defaultVAlignment DEPRECATED_ATTRIBUTE;
++(CCLineBreakMode)defaultLineBreakMode DEPRECATED_ATTRIBUTE;
++(NSString *)defaultFontName DEPRECATED_ATTRIBUTE;
 
 @end
 
@@ -324,6 +350,8 @@ typedef enum{
 	
 	CMMDrawingManagerItemKey_maxCount DEPRECATED_ATTRIBUTE = 9,
 } CMMDrawingManagerItemKey;
+
+extern NSString *const CMMDrawingManagerItemFormatter_SwitchBack DEPRECATED_ATTRIBUTE;
 
 @interface CMMDrawingManagerItem(Deprecated)
 
@@ -545,6 +573,7 @@ DEPRECATED_ATTRIBUTE @protocol CMMMotionDispatcherDelegate <NSObject>
 #import "CMMControlItemSwitch.h"
 #import "CMMControlItemSlider.h"
 #import "CMMControlItemText.h"
+#import "CMMControlItemCheckbox.h"
 #import "CMMCustomUI.h"
 #import "CMMCustomUIJoypad.h"
 
@@ -558,6 +587,7 @@ DEPRECATED_ATTRIBUTE @protocol CMMMotionDispatcherDelegate <NSObject>
 
 @property (nonatomic, assign) id delegate DEPRECATED_ATTRIBUTE;
 @property (nonatomic, getter = _isEnable) BOOL isEnable DEPRECATED_ATTRIBUTE;
+@property (nonatomic, retain) CCSprite *normalImage,*selectedImage DEPRECATED_ATTRIBUTE;
 
 @end
 
@@ -687,6 +717,9 @@ DEPRECATED_ATTRIBUTE @protocol CMMControlItemDelegate <NSObject>
 
 @interface CMMControlItemSwitch(Deprecated)
 
++(id)controlItemSwitchWithMaskSprite:(CCSprite *)maskSprite_ backSprite:(CCSprite *)backSprite_ buttonSprite:(CCSprite *)buttonSprite_ DEPRECATED_ATTRIBUTE;
+-(id)initWithMaskSprite:(CCSprite *)maskSprite_ backSprite:(CCSprite *)backSprite_ buttonSprite:(CCSprite *)buttonSprite_ DEPRECATED_ATTRIBUTE;
+
 @property (nonatomic, assign) void (^callback_whenChangedItemVale)(id sender_,BOOL itemValue_) DEPRECATED_ATTRIBUTE;
 
 @end
@@ -699,6 +732,13 @@ DEPRECATED_ATTRIBUTE @protocol CMMControlItemSwitchDelegate
 @end
 
 @interface CMMControlItemSlider(Deprecated)
+
++(id)controlItemSliderWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_ DEPRECATED_ATTRIBUTE;
++(id)controlItemSliderWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ DEPRECATED_ATTRIBUTE;
+-(id)initWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_ DEPRECATED_ATTRIBUTE;
+-(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ DEPRECATED_ATTRIBUTE;
+
+-(void)setButtonSprite:(CCSprite *)buttonSprite_ DEPRECATED_ATTRIBUTE;
 
 @property (nonatomic, assign) void (^callback_whenChangedItemVale)(id sender_,float itemValue_, float beforeItemValue_) DEPRECATED_ATTRIBUTE;
 @property (nonatomic, readwrite) float minValue DEPRECATED_ATTRIBUTE,maxValue DEPRECATED_ATTRIBUTE;
@@ -714,6 +754,22 @@ DEPRECATED_ATTRIBUTE @protocol CMMControlItemSliderDelegate
 
 @interface CMMControlItemText(Deprecated)
 
+//2013.04.10
++(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ frameSize:(CGSize)frameSize_ DEPRECATED_ATTRIBUTE;
++(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ width:(float)width_ DEPRECATED_ATTRIBUTE;
+
++(id)controlItemTextWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_ DEPRECATED_ATTRIBUTE;
++(id)controlItemTextWithFrameSeq:(int)frameSeq_ width:(float)width_ DEPRECATED_ATTRIBUTE;
+
+-(id)initWithBarSprite:(CCSprite *)barSprite_ frameSize:(CGSize)frameSize_ DEPRECATED_ATTRIBUTE;
+-(id)initWithBarSprite:(CCSprite *)barSprite_ width:(float)width_ DEPRECATED_ATTRIBUTE;
+
+-(id)initWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_ DEPRECATED_ATTRIBUTE;
+-(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_ DEPRECATED_ATTRIBUTE;
+
+-(void)redrawWithBar DEPRECATED_ATTRIBUTE; 
+
+//before
 +(id)controlItemTextWithWidth:(float)width_ barSprite:(CCSprite *)barSprite_ DEPRECATED_ATTRIBUTE;
 -(id)initWithWidth:(float)width_ barSprite:(CCSprite *)barSprite_ DEPRECATED_ATTRIBUTE;
 
@@ -734,6 +790,13 @@ DEPRECATED_ATTRIBUTE @protocol CMMControlItemTextDelegate
 
 -(BOOL)controlItemTextShouldShow:(CMMControlItemText *)controlItem_;
 -(BOOL)controlItemTextShouldHide:(CMMControlItemText *)controlItem_;
+
+@end
+
+@interface CMMControlItemCheckbox(Deprecated)
+
++(id)controlItemCheckboxWithBackSprite:(CCSprite *)backSprite_ checkSprite:(CCSprite *)checkSprite_ DEPRECATED_ATTRIBUTE;
+-(id)initWithBackSprite:(CCSprite *)backSprite_ checkSprite:(CCSprite *)checkSprite_ DEPRECATED_ATTRIBUTE;
 
 @end
 

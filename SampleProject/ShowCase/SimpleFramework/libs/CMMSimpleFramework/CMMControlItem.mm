@@ -2,8 +2,11 @@
 
 #import "CMMControlItem.h"
 
-@implementation CMMControlItem
-@synthesize enable,disabledColor;
+@implementation CMMControlItem{
+	ccTime _redrawDelayTime;
+	BOOL _doRedraw;
+}
+@synthesize enable,disabledColor,doRedraw = _doRedraw;
 
 +(id)controlItemWithFrameSize:(CGSize)frameSize_{
 	return [[[self alloc] initWithFrameSize:frameSize_] autorelease];
@@ -13,15 +16,20 @@
 	
 	enable = YES;
 	disabledColor = ccc3(180, 180, 180);
-	_doRedraw = YES;
+	_doRedraw = NO;
 	
 	[self scheduleUpdate];
 	
 	return self;
 }
 
+
 -(void)draw{
+	[super draw];
+	if(_doRedraw && _redrawDelayTime >= cmmVarCMMControlItem_redrawDelayTime)
+		[self redraw];
 #if COCOS2D_DEBUG >= 1
+	ccGLBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	ccDrawColor4B(0, 255, 0, 180);
 	glLineWidth(1.0f);
 	ccDrawRect(CGPointZero, ccpFromSize(_contentSize));
@@ -34,8 +42,6 @@
 }
 -(void)update:(ccTime)dt_{
 	_redrawDelayTime = MIN(_redrawDelayTime+dt_,cmmVarCMMControlItem_redrawDelayTime);
-	if(_doRedraw && _redrawDelayTime >= cmmVarCMMControlItem_redrawDelayTime)
-		[self redraw];
 }
 
 -(BOOL)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ shouldAllowTouch:(UITouch *)touch_ event:(UIEvent *)event_{

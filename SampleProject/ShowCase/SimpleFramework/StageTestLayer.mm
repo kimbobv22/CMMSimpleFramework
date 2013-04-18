@@ -131,7 +131,7 @@
 	_labelGravity = [CMMFontUtil labelWithString:@" "];
 	[self addChild:_labelGravity];
 	
-	_gravitySlider = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:150];
+	_gravitySlider = [CMMControlItemSlider controlItemSliderWithWidth:150 frameSeq:0];
 	[_gravitySlider setCallback_whenItemValueChanged:^(float itemValue_, float beforeItemValue_) {
 		CGPoint gravity_ = stage.spec.gravity;
 		gravity_.y = itemValue_;

@@ -252,7 +252,7 @@
 	else if(found==0 && _last==1 )
 	{
 		// Reverse mode ?
-		// XXX: Bug. this case doesn't not contemplate when _last==-1, found=0 and in "reverse mode"
+		// XXX: Bug. this case doesn't contemplate when _last==-1, found=0 and in "reverse mode"
 		// since it will require a hack to know if an action is on reverse mode or not.
 		// "step" should be overriden, and the "reverseMode" value propagated to inner Sequences.
 		[_actions[1] update:0];
@@ -679,13 +679,19 @@
 
 -(void) update: (ccTime) t
 {
+
 	CCNode *node = (CCNode*)_target;
+
+#if CC_ENABLE_STACKABLE_ACTIONS
 	CGPoint currentPos = [node position];
 	CGPoint diff = ccpSub(currentPos, _previousPos);
 	_startPos = ccpAdd( _startPos, diff);
 	CGPoint newPos =  ccpAdd( _startPos, ccpMult(_positionDelta, t) );
 	[_target setPosition: newPos];
 	_previousPos = newPos;
+#else
+	[node setPosition: ccpAdd( _startPos, ccpMult(_positionDelta, t))];
+#endif // CC_ENABLE_STACKABLE_ACTIONS
 }
 @end
 
@@ -874,6 +880,8 @@
 	CGFloat x = _delta.x * t;
 	
 	CCNode *node = (CCNode*)_target;
+
+#if CC_ENABLE_STACKABLE_ACTIONS
 	CGPoint currentPos = [node position];
 	
 	CGPoint diff = ccpSub( currentPos, _previousPos );
@@ -883,6 +891,9 @@
 	[node setPosition:newPos];
 	
 	_previousPos = newPos;
+#else
+	[node setPosition: ccpAdd( _startPosition, ccp(x,y))];
+#endif // !CC_ENABLE_STACKABLE_ACTIONS
 }
 
 -(CCActionInterval*) reverse
@@ -938,8 +949,7 @@ static inline CGFloat bezierat( float a, float b, float c, float d, ccTime t )
 
 -(id) copyWithZone: (NSZone*) zone
 {
-	CCAction *copy = [[[self class] allocWithZone: zone] initWithDuration:[self duration] bezier:_config];
-    return copy;
+	return [[[self class] allocWithZone: zone] initWithDuration:[self duration] bezier:_config];
 }
 
 -(void) startWithTarget:(id)aTarget
@@ -964,6 +974,8 @@ static inline CGFloat bezierat( float a, float b, float c, float d, ccTime t )
 	CGFloat y = bezierat(ya, yb, yc, yd, t);
 	
 	CCNode *node = (CCNode*)_target;
+
+#if CC_ENABLE_STACKABLE_ACTIONS
 	CGPoint currentPos = [node position];
 	CGPoint diff = ccpSub(currentPos, _previousPosition);
 	_startPosition = ccpAdd( _startPosition, diff);
@@ -972,6 +984,9 @@ static inline CGFloat bezierat( float a, float b, float c, float d, ccTime t )
 	[node setPosition: newPos];
 	
 	_previousPosition = newPos;
+#else
+	[node setPosition: ccpAdd( _startPosition, ccp(x,y))];
+#endif // !CC_ENABLE_STACKABLE_ACTIONS
 }
 
 - (CCActionInterval*) reverse
@@ -1007,6 +1022,12 @@ static inline CGFloat bezierat( float a, float b, float c, float d, ccTime t )
 	_config.controlPoint_2 = ccpSub(_toConfig.controlPoint_2, _startPosition);
 	_config.endPosition = ccpSub(_toConfig.endPosition, _startPosition);
 }
+
+-(id) copyWithZone: (NSZone*) zone
+{
+	return [[[self class] allocWithZone: zone] initWithDuration:[self duration] bezier:_toConfig];
+}
+
 @end
 
 

@@ -11,7 +11,7 @@
 
 @interface CMMMenuItem : CMMSprite{
 	id key;
-	CCSprite *normalImage,*selectedImage;
+	CCSpriteFrame *normalFrame,*selectedFrame;
 	BOOL enable,onSelect;
 	
 	CCAction *pushDownAction,*pushUpAction;
@@ -27,10 +27,19 @@
 
 -(void)updateDisplay;
 
+-(void)setNormalFrame:(CCSpriteFrame *)frame_;
+-(void)setNormalFrameWithTexture:(CCTexture2D *)texture_ rect:(CGRect)rect_;
+-(void)setNormalFrameWithSprite:(CCSprite *)sprite_;
+
+-(void)setSelectedFrame:(CCSpriteFrame *)frame_;
+-(void)setSelectedFrameWithTexture:(CCTexture2D *)texture_ rect:(CGRect)rect_;
+-(void)setSelectedFrameWithSprite:(CCSprite *)sprite_;
+
 @property (nonatomic, retain) id key;
-@property (nonatomic, retain) CCSprite *normalImage,*selectedImage;
+
 @property (nonatomic, readwrite, getter = isEnable) BOOL enable;
 @property (nonatomic, readonly, getter = isOnSelect) BOOL onSelect;
+@property (nonatomic, readonly) CCSpriteFrame *normalFrame,*selectedFrame;
 @property (nonatomic, copy) BOOL (^filter_canSelectItem)(id item_);
 @property (nonatomic, copy) void (^callback_pushdown)(id item_),(^callback_pushup)(id item_),(^callback_pushcancel)(id item_);
 @property (nonatomic, retain) CCAction *pushDownAction,*pushUpAction;

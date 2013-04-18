@@ -10,9 +10,6 @@
 @interface CMMControlItem : CMMLayer{
 	BOOL enable;
 	ccColor3B disabledColor;
-	
-	ccTime _redrawDelayTime;
-	BOOL _doRedraw;
 }
 
 +(id)controlItemWithFrameSize:(CGSize)frameSize_;
@@ -23,5 +20,6 @@
 
 @property (nonatomic, readwrite, getter = isEnable) BOOL enable;
 @property (nonatomic, readwrite) ccColor3B disabledColor;
+@property (nonatomic, readwrite) BOOL doRedraw;
 
 @end

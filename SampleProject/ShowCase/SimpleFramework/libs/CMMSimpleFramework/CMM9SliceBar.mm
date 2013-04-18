@@ -6,56 +6,74 @@
 	CCSprite *_barTopSprite,*_barBottomSprite,*_barLeftSprite,*_barRightSprite,*_backSprite,*_edge1Sprite,*_edge2Sprite,*_edge3Sprite,*_edge4Sprite;
 	BOOL _dirty;
 }
-@synthesize targetSprite,edgeOffset;
+@synthesize targetRect,edgeOffset;
+@synthesize color,displayedColor,cascadeColorEnabled,opacity,displayedOpacity,cascadeOpacityEnabled;
 
-+(id)sliceBarWithTargetSprite:(CCSprite *)targetSprite_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_{
-	return [[[self alloc] initWithTargetSprite:targetSprite_ edgeOffset:edgeOffset_] autorelease];
++(id)sliceBarWithTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_{
+	return [[[self alloc] initWithTexture:texture_ targetRect:targetRect_ edgeOffset:edgeOffset_] autorelease];
 }
-+(id)sliceBarWithTargetSprite:(CCSprite *)targetSprite_{
-	return [[[self alloc] initWithTargetSprite:targetSprite_] autorelease];
++(id)sliceBarWithTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_{
+	return [[[self alloc] initWithTexture:texture_ targetRect:targetRect_] autorelease];
+}
++(id)sliceBarWithTexture:(CCTexture2D *)texture_{
+	return [[[self alloc] initWithTexture:texture_] autorelease];
 }
 
--(id)initWithTargetSprite:(CCSprite *)targetSprite_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_{
-	if(!(self = [super initWithTexture:[targetSprite_ texture] capacity:9])) return self;
+-(id)initWithTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_{
+	if(!(self = [super initWithTexture:texture_ capacity:9])) return self;
 	[self setIgnoreAnchorPointForPosition:NO];
 	[self setAnchorPoint:ccp(0.0f,0.0f)];
-	
-	edgeOffset = edgeOffset_;
-	[self setTargetSprite:targetSprite_];
-	[self setContentSize:[targetSprite contentSize]];
+
+	targetRect = targetRect_;
+	[self setEdgeOffset:edgeOffset_];
 	
 	return self;
 }
--(id)initWithTargetSprite:(CCSprite *)targetSprite_{
-	CGSize frameSize_ = CGSizeDiv([targetSprite_ contentSize], 2.0f);
+-(id)initWithTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_{
+	CGSize frameSize_ = CGSizeDiv(targetRect_.size, 2.0f);
 	CMM9SliceEdgeOffset edgeOffset_ = CMM9SliceEdgeOffset(CGSizeSub(frameSize_,CGSizeMake(2.0f,2.0f)));
-	return [self initWithTargetSprite:targetSprite_ edgeOffset:edgeOffset_];
+	return [self initWithTexture:texture_ targetRect:targetRect_ edgeOffset:edgeOffset_];
+}
+-(id)initWithTexture:(CCTexture2D *)texture_{
+	CGRect targetRect_ = CGRectZero;
+	targetRect_.size = [texture_ contentSize];
+	return [self initWithTexture:texture_ targetRect:targetRect_];
+}
+
+-(void)setTargetRect:(CGRect)targetRect_{
+	targetRect = targetRect_;
+	[self setEdgeOffset:edgeOffset];
+}
+-(void)setTexture:(CCTexture2D *)texture_ targetRect:(CGRect)targetRect_{
+	[self setTexture:texture_];
+	[self setTargetRect:targetRect_];
+}
+-(void)setTextureWithSprite:(CCSprite *)sprite_{
+	[self setTexture:[sprite_ texture] targetRect:[sprite_ textureRect]];
+}
+-(void)setTextureWithFrame:(CCSpriteFrame *)frame_{
+	[self setTexture:[frame_ texture] targetRect:[frame_ rect]];
 }
 
 -(void)setContentSize:(CGSize)contentSize_{
-	CGSize targetSpriteSize_ = [targetSprite contentSize];
-	if(contentSize_.width < targetSpriteSize_.width)
-		contentSize_.width = targetSpriteSize_.width;
-	if(contentSize_.height < targetSpriteSize_.height)
-		contentSize_.height = targetSpriteSize_.height;
+	CGSize targetSize_ = targetRect.size;
+	if(contentSize_.width < targetSize_.width)
+		contentSize_.width = targetSize_.width;
+	if(contentSize_.height < targetSize_.height)
+		contentSize_.height = targetSize_.height;
 	
 	[super setContentSize:contentSize_];
 	_dirty = YES;
 }
 
--(void)setTargetSprite:(CCSprite *)targetSprite_{
-	[targetSprite release];
-	targetSprite = [targetSprite_ retain];
-	[self setEdgeOffset:edgeOffset];
-}
 -(void)setEdgeOffset:(CMM9SliceEdgeOffset)edgeOffset_{
 	edgeOffset = edgeOffset_;
 	[self removeAllChildrenWithCleanup:YES];
 	
-	CCTexture2D *targetTexture_ = [targetSprite texture];
+	CCTexture2D *targetTexture_ = [self texture];
 	[self setTexture:targetTexture_];
 	[targetTexture_ setAliasTexParameters];
-	CGRect targetSpriteRect_ = [targetSprite textureRect];
+	CGRect targetSpriteRect_ = targetRect;
 	
 	/// make batch bar ///
 	CGPoint targetSpriteTexturePoint_ = targetSpriteRect_.origin;
@@ -168,10 +186,10 @@
 	[super visit];
 }
 
--(void)setColor:(ccColor3B)color{
+-(void)setColor:(ccColor3B)color_{
 	if(!_children) return;
 	for(CCSprite *sprite_ in _children){
-		[sprite_ setColor:color];
+		[sprite_ setColor:color_];
 	}
 }
 -(ccColor3B)color{
@@ -180,26 +198,26 @@
 -(ccColor3B)displayedColor{
 	return [_backSprite displayedColor];
 }
--(void)updateDisplayedColor:(ccColor3B)color{
+-(void)updateDisplayedColor:(ccColor3B)color_{
 	if(!_children) return;
 	for(CCSprite *sprite_ in _children){
-		[sprite_ updateDisplayedColor:color];
+		[sprite_ updateDisplayedColor:color_];
 	}
 }
--(void)setCascadeColor:(BOOL)cascadeColor{
+-(void)setCascadeColorEnabled:(BOOL)cascadeColorEnabled_{
 	if(!_children) return;
 	for(CCSprite *sprite_ in _children){
-		[sprite_ setCascadeColor:cascadeColor];
+		[sprite_ setCascadeColorEnabled:cascadeColorEnabled_];
 	}
 }
--(BOOL)cascadeColor{
-	return [_backSprite cascadeColor];
+-(BOOL)isCascadeColorEnabled{
+	return [_backSprite isCascadeColorEnabled];
 }
 
--(void)setOpacity:(GLubyte)opacity{
+-(void)setOpacity:(GLubyte)opacity_{
 	if(!_children) return;
 	for(CCSprite *sprite_ in _children){
-		[sprite_ setOpacity:opacity];
+		[sprite_ setOpacity:opacity_];
 	}
 }
 -(GLubyte)opacity{
@@ -208,25 +226,20 @@
 -(GLubyte)displayedOpacity{
 	return [_backSprite displayedOpacity];
 }
--(void)updateDisplayedOpacity:(GLubyte)opacity{
+-(void)updateDisplayedOpacity:(GLubyte)opacity_{
 	if(!_children) return;
 	for(CCSprite *sprite_ in _children){
-		[sprite_ updateDisplayedOpacity:opacity];
+		[sprite_ updateDisplayedOpacity:opacity_];
 	}
 }
--(void)setCascadeOpacity:(BOOL)cascadeOpacity{
+-(void)setCascadeOpacityEnabled:(BOOL)cascadeOpacityEnabled_{
 	if(!_children) return;
 	for(CCSprite *sprite_ in _children){
-		[sprite_ setCascadeOpacity:cascadeOpacity];
+		[sprite_ setCascadeOpacityEnabled:cascadeOpacityEnabled_];
 	}
 }
--(BOOL)cascadeOpacity{
-	return [_backSprite cascadeOpacity];
-}
-
--(void)dealloc{
-	[targetSprite release];
-	[super dealloc];
+-(BOOL)isCascadeOpacityEnabled{
+	return [_backSprite isCascadeOpacityEnabled];
 }
 
 @end

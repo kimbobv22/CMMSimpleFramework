@@ -61,7 +61,7 @@
 		[menuItemSet addMenuItem:tempItem_];
 	}
 	
-	CMMControlItemSlider *controlItem_ = [CMMControlItemSlider controlItemSliderWithFrameSeq:0 width:150];
+	CMMControlItemSlider *controlItem_ = [CMMControlItemSlider controlItemSliderWithWidth:150 frameSeq:0];
 	[controlItem_ setItemValueRange:CMMFloatRange(1.0f,10.0f)];
 	[controlItem_ setUnitValue:1.0f];
 	[controlItem_ setPosition:ccp(_contentSize.width-controlItem_.contentSize.width,10)];

@@ -168,6 +168,25 @@
 	return [CCSprite spriteWithSpriteFrame:[self defaultScrollbarFrameY]];
 }
 
++(CCSpriteFrame *)defaultScrollbarFrameX{
+	return CMMLayerMDScrollbarFrameX;
+}
++(CCSpriteFrame *)defaultScrollbarFrameY{
+	return CMMLayerMDScrollbarFrameY;
+}
++(CMM9SliceEdgeOffset)defaultScrollbarEdgeX{
+	return CMMLayerMDScrollbarEdgeX;
+}
++(CMM9SliceEdgeOffset)defaultScrollbarEdgeY{
+	return CMMLayerMDScrollbarEdgeY;
+}
++(GLubyte)defaultScrollbarOpacityX{
+	return CMMLayerMDScrollbarOpacityX;
+}
++(GLubyte)defaultScrollbarOpacityY{
+	return CMMLayerMDScrollbarOpacityY;
+}
+
 -(void)setIsAlwaysShowScrollbar:(BOOL)isAlwaysShowScrollbar_{
 	[self setAlwaysShowScrollbar:isAlwaysShowScrollbar_];
 }
@@ -219,17 +238,17 @@
 @synthesize edgeSize;
 
 +(id)batchBarWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_{
-	return [self sliceBarWithTargetSprite:targetSprite_ edgeOffset:CMM9SliceEdgeOffset(edgeSize_)];
+	return [self sliceBarWithTexture:[targetSprite_ texture] targetRect:[targetSprite_ textureRect] edgeOffset:CMM9SliceEdgeOffset(edgeSize_)];
 }
 +(id)batchBarWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_{
-	return [self sliceBarWithTargetSprite:targetSprite_];
+	return [self sliceBarWithTexture:[targetSprite_ texture] targetRect:[targetSprite_ textureRect]];
 }
 
 -(id)initWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_ edgeSize:(CGSize)edgeSize_{
-	return [self initWithTargetSprite:targetSprite_ edgeOffset:CMM9SliceEdgeOffset(edgeSize_)];
+	return [self initWithTexture:[targetSprite_ texture] targetRect:[targetSprite_ textureRect] edgeOffset:CMM9SliceEdgeOffset(edgeSize_)];
 }
 -(id)initWithTargetSprite:(CCSprite *)targetSprite_ batchBarSize:(CGSize)batchBarSize_{
-	return [self initWithTargetSprite:targetSprite_];
+	return [self initWithTexture:[targetSprite_ texture] targetRect:[targetSprite_ textureRect]];
 }
 
 -(void)setEdgeSize:(CGSize)edgeSize_{
@@ -243,6 +262,31 @@
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchMoved:(UITouch *)touch_ event:(UIEvent *)event_{}
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchEnded:(UITouch *)touch_ event:(UIEvent *)event_{}
 -(void)touchDispatcher:(CMMTouchDispatcher *)touchDispatcher_ whenTouchCancelled:(UITouch *)touch_ event:(UIEvent *)event_{}
+
+@end
+
+@implementation CMM9SliceBar(Deprecated)
+
++(id)sliceBarWithTargetSprite:(CCSprite *)targetSprite_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_{
+	return [self sliceBarWithTexture:[targetSprite_ texture] targetRect:[targetSprite_ textureRect]];
+}
++(id)sliceBarWithTargetSprite:(CCSprite *)targetSprite_{
+	return [self sliceBarWithTexture:[targetSprite_ texture]];
+}
+
+-(id)initWithTargetSprite:(CCSprite *)targetSprite_ edgeOffset:(CMM9SliceEdgeOffset)edgeOffset_{
+	return [self initWithTexture:[targetSprite_ texture] targetRect:[targetSprite_ textureRect]];
+}
+-(id)initWithTargetSprite:(CCSprite *)targetSprite_{
+	return [self initWithTexture:[targetSprite_ texture]];
+}
+
+-(void)setTargetSprite:(CCSprite *)targetSprite_{
+	[self setTexture:[targetSprite_ texture] targetRect:[targetSprite_ textureRect]];
+}
+-(CCSprite *)targetSprite{
+	return [CCSprite spriteWithTexture:[self texture] rect:[self targetRect]];
+}
 
 @end
 
@@ -268,6 +312,25 @@
 }
 +(CCLabelTTF *)labelWithstring:(NSString *)string_{
 	return [self labelWithString:string_];
+}
+
++(float)defaultFontSize{
+	return CMMFontUtilDefaultFontSize;
+}
++(CGSize)defaultDimensions{
+	return CMMFontUtilDefaultDimensions;
+}
++(CCTextAlignment)defaultHAlignment{
+	return CMMFontUtilDefaultHAlignment;
+}
++(CCVerticalTextAlignment)defaultVAlignment{
+	return CMMFontUtilDefaultVAlignment;
+}
++(CCLineBreakMode)defaultLineBreakMode{
+	return CMMFontUtilDefaultLineBreakMode;
+}
++(NSString *)defaultFontName{
+	return CMMFontUtilDefaultFontName;
 }
 
 @end
@@ -304,6 +367,8 @@
 
 @end
 
+NSString *const CMMDrawingManagerItemFormatter_SwitchBack = @"%@_SWITCH_BACK.png";
+
 @implementation CMMDrawingManagerItem(Deprecated)
 
 //for reference
@@ -313,9 +378,9 @@
 		case 0:
 			result_ = CMMDrawingManagerItemFormatter_SwitchButton;
 			break;
-		case 1:
+		/*case 1:
 			result_ = CMMDrawingManagerItemFormatter_SwitchBack;
-			break;
+			break;*/
 		case 2:
 			result_ = CMMDrawingManagerItemFormatter_SwitchMask;
 			break;
@@ -615,6 +680,15 @@
 	return [self isEnable];
 }
 
+-(void)setNormalImage:(CCSprite *)normalImage_{
+	[self setNormalFrameWithSprite:normalImage_];
+}
+-(CCSprite *)normalImage{return nil;}
+-(void)setSelectedImage:(CCSprite *)selectedImage_{
+	[self setSelectedFrameWithSprite:selectedImage_];
+}
+-(CCSprite *)selectedImage{return nil;}
+
 @end
 
 @implementation CMMMenuItemLabelTTF
@@ -731,6 +805,13 @@
 
 @implementation CMMControlItemSwitch(Deprecated)
 
++(id)controlItemSwitchWithMaskSprite:(CCSprite *)maskSprite_ backSprite:(CCSprite *)backSprite_ buttonSprite:(CCSprite *)buttonSprite_{
+	return [self controlItemSwitchWithMaskFrame:[CCSpriteFrame frameWithTexture:[maskSprite_ texture] rect:[maskSprite_ textureRect]] buttonFrame:[CCSpriteFrame frameWithTexture:[buttonSprite_ texture] rect:[buttonSprite_ textureRect]]];
+}
+-(id)initWithMaskSprite:(CCSprite *)maskSprite_ backSprite:(CCSprite *)backSprite_ buttonSprite:(CCSprite *)buttonSprite_{
+	return [self initWithMaskFrame:[CCSpriteFrame frameWithTexture:[maskSprite_ texture] rect:[maskSprite_ textureRect]] buttonFrame:[CCSpriteFrame frameWithTexture:[buttonSprite_ texture] rect:[buttonSprite_ textureRect]]];
+}
+
 -(void)setCallback_whenChangedItemVale:(void (^)(id, BOOL))callback_whenChangedItemVale_{
 	[self setCallback_whenItemValueChanged:^(BOOL itemValue_) {
 		callback_whenChangedItemVale_(self,itemValue_);
@@ -743,6 +824,49 @@
 @end
 
 @implementation CMMControlItemSlider(Deprecated)
+
++(id)controlItemSliderWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_{
+	
+	CCSpriteFrame *maskFrame_ = [CCSpriteFrame frameWithTexture:[maskSprite_ texture] rect:[maskSprite_ textureRect]];
+	CCSpriteFrame *barFrame_ = [CCSpriteFrame frameWithTexture:[barSprite_ texture] rect:[barSprite_ textureRect]];
+	CCSpriteFrame *buttonFrame_ = [CCSpriteFrame frameWithTexture:[buttonSprite_ texture] rect:[buttonSprite_ textureRect]];
+	
+	CMMControlItemSlider *slider_ = [self controlItemSliderWithWidth:width_ maskFrame:maskFrame_ barFrame:barFrame_ buttonFrame:buttonFrame_];
+	[slider_ setBackColorL:backColorL_];
+	[slider_ setBackColorR:backColorR_];
+	
+	return slider_;
+}
++(id)controlItemSliderWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_{
+	CMMControlItemSlider *slider_ = [self controlItemSliderWithWidth:width_ frameSeq:frameSeq_];
+	[slider_ setBackColorL:backColorL_];
+	[slider_ setBackColorR:backColorR_];
+	return slider_;
+}
+-(id)initWithWidth:(float)width_ maskSprite:(CCSprite *)maskSprite_ barSprite:(CCSprite *)barSprite_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_ buttonSprite:(CCSprite *)buttonSprite_{
+	CCSpriteFrame *maskFrame_ = [CCSpriteFrame frameWithTexture:[maskSprite_ texture] rect:[maskSprite_ textureRect]];
+	CCSpriteFrame *barFrame_ = [CCSpriteFrame frameWithTexture:[barSprite_ texture] rect:[barSprite_ textureRect]];
+	CCSpriteFrame *buttonFrame_ = [CCSpriteFrame frameWithTexture:[buttonSprite_ texture] rect:[buttonSprite_ textureRect]];
+	
+	if(!(self = [self initWithWidth:width_ maskFrame:maskFrame_ barFrame:barFrame_ buttonFrame:buttonFrame_])) return self;
+	
+	[self setBackColorL:backColorL_];
+	[self setBackColorR:backColorR_];
+
+	return self;
+}
+-(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_ backColorL:(ccColor3B)backColorL_ backColorR:(ccColor3B)backColorR_{
+	if(!(self = [self initWithWidth:width_ frameSeq:frameSeq_])) return self;
+	
+	[self setBackColorL:backColorL_];
+	[self setBackColorR:backColorR_];
+	
+	return self;
+}
+
+-(void)setButtonSprite:(CCSprite *)buttonSprite_{
+	[self setButtonFrameWithSprite:buttonSprite_];
+}
 
 -(void)setCallback_whenChangedItemVale:(void (^)(id, float, float))callback_whenChangedItemVale_{
 	[self setCallback_whenItemValueChanged:^(float itemValue_, float beforeItemValue_) {
@@ -768,6 +892,38 @@
 @end
 
 @implementation CMMControlItemText(Deprecated)
+
++(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ frameSize:(CGSize)frameSize_{
+	return [self controlItemTextWithFrameSize:frameSize_ barFrame:[CCSpriteFrame frameWithTexture:[barSprite_ texture] rect:[barSprite_ textureRect]]];
+}
++(id)controlItemTextWithBarSprite:(CCSprite *)barSprite_ width:(float)width_{
+	return [self controlItemTextWithWidth:width_ barFrame:[CCSpriteFrame frameWithTexture:[barSprite_ texture] rect:[barSprite_ textureRect]]];
+}
+
++(id)controlItemTextWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_{
+	return [self controlItemTextWithFrameSize:frameSize_ frameSeq:frameSeq_];
+}
++(id)controlItemTextWithFrameSeq:(int)frameSeq_ width:(float)width_{
+	return [self controlItemTextWithWidth:width_ frameSeq:frameSeq_];
+}
+
+-(id)initWithBarSprite:(CCSprite *)barSprite_ frameSize:(CGSize)frameSize_{
+	return [self initWithFrameSize:frameSize_ barFrame:[CCSpriteFrame frameWithTexture:[barSprite_ texture] rect:[barSprite_ textureRect]]];
+}
+-(id)initWithBarSprite:(CCSprite *)barSprite_ width:(float)width_{
+	return [self initWithWidth:width_ barFrame:[CCSpriteFrame frameWithTexture:[barSprite_ texture] rect:[barSprite_ textureRect]]];
+}
+
+-(id)initWithFrameSeq:(int)frameSeq_ frameSize:(CGSize)frameSize_{
+	return [self initWithFrameSize:frameSize_ frameSeq:frameSeq_];
+}
+-(id)initWithFrameSeq:(int)frameSeq_ width:(float)width_{
+	return [self initWithWidth:width_ frameSeq:frameSeq_];
+}
+
+-(void)redrawWithBar{
+	[self setDoRedraw:YES];
+}
 
 +(id)controlItemTextWithWidth:(float)width_ barSprite:(CCSprite *)barSprite_{
 	return [self controlItemTextWithBarSprite:barSprite_ width:width_];
@@ -802,6 +958,21 @@
 }
 -(NSString *)itemTitle{
 	return [self title];
+}
+
+@end
+
+@implementation CMMControlItemCheckbox(Deprecated)
+
++(id)controlItemCheckboxWithBackSprite:(CCSprite *)backSprite_ checkSprite:(CCSprite *)checkSprite_{
+	CCSpriteFrame *backFrame_ = [CCSpriteFrame frameWithTexture:[backSprite_ texture] rect:[backSprite_ textureRect]];
+	CCSpriteFrame *checkFrame_ = [CCSpriteFrame frameWithTexture:[checkSprite_ texture] rect:[checkSprite_ textureRect]];
+	return [self controlItemCheckboxWithBackFrame:backFrame_ checkFrame:checkFrame_];
+}
+-(id)initWithBackSprite:(CCSprite *)backSprite_ checkSprite:(CCSprite *)checkSprite_{
+	CCSpriteFrame *backFrame_ = [CCSpriteFrame frameWithTexture:[backSprite_ texture] rect:[backSprite_ textureRect]];
+	CCSpriteFrame *checkFrame_ = [CCSpriteFrame frameWithTexture:[checkSprite_ texture] rect:[checkSprite_ textureRect]];
+	return [self initWithBackFrame:backFrame_ checkFrame:checkFrame_];
 }
 
 @end

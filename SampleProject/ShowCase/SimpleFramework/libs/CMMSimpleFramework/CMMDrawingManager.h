@@ -4,7 +4,6 @@
 
 extern NSString *const CMMDrawingManagerItemFormatter_BatchBar;
 extern NSString *const CMMDrawingManagerItemFormatter_SwitchButton;
-extern NSString *const CMMDrawingManagerItemFormatter_SwitchBack;
 extern NSString *const CMMDrawingManagerItemFormatter_SwitchMask;
 extern NSString *const CMMDrawingManagerItemFormatter_SlideBar;
 extern NSString *const CMMDrawingManagerItemFormatter_SlideButton;
@@ -12,6 +11,9 @@ extern NSString *const CMMDrawingManagerItemFormatter_SlideMask;
 extern NSString *const CMMDrawingManagerItemFormatter_TextBar;
 extern NSString *const CMMDrawingManagerItemFormatter_CheckboxBack;
 extern NSString *const CMMDrawingManagerItemFormatter_CheckboxCheck;
+extern NSString *const CMMDrawingManagerItemFormatter_ComboFrame;
+extern NSString *const CMMDrawingManagerItemFormatter_ComboBack;
+extern NSString *const CMMDrawingManagerItemFormatter_ComboCursor;
 
 @interface CMMDrawingManagerItemOtherFrames : NSObject
 
