@@ -1,4 +1,36 @@
 ##Version 1.3.4
+* [FIX] change cocos2d library version(v2.1-rc1 -> v2.1)
+* [FIX] **`CMMFontUtil`** changed
+		
+		//deprecated
+		extern float CMMFontUtilDefaultFontSize;
+		extern CGSize CMMFontUtilDefaultDimensions;
+		extern CCTextAlignment CMMFontUtilDefaultHAlignment;
+		extern CCVerticalTextAlignment CMMFontUtilDefaultVAlignment;
+		extern CCLineBreakMode CMMFontUtilDefaultLineBreakMode;
+		extern NSString *CMMFontUtilDefaultFontName;
+		
+		+(void)setDefaultFontSize:(float)fontSize_;
+		+(void)setDefaultDimensions:(CGSize)dimensions_;
+		+(void)setDefaultHAlignment:(CCTextAlignment)HAlignment_;
+		+(void)setDefaultVAlignment:(CCVerticalTextAlignment)VAlignment_;
+		+(void)setDefaultLineBreakMode:(CCLineBreakMode)lineBreakMode_;
+		+(void)setDefaultFontName:(NSString *)fontName_;
+		
+		//replaced by
+		+(CMMFontPreset *)defaultPreset;
+		+(void)setDefaultPreset:(CMMFontPreset *)preset_;
+		
+		//new features
+		+(BOOL)enableEffect;
+		+(void)setEnableEffect:(BOOL)bool_;
+		
+* [NEW] **`CMMStagePXL`** improved
+
+		//new initialize method
+		+(id)stageWithStageDef:(CMMStageDef)stageDef_ pixelData:(void *)pixelData_ pixelSize:(CGSize)pixelSize_;
+		-(id)initWithStageDef:(CMMStageDef)stageDef_ pixelData:(void *)pixelData_ pixelSize:(CGSize)pixelSize_;
+		
 ##Version 1.3.3
 * [FIX] **`CMMLayerMD`** changed
 		
