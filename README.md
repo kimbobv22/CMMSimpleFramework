@@ -21,7 +21,7 @@ CMMSimpleFramework 라이브러리를 기존프로젝트에 복사하고 추가�
 2. modify code at `ViewController( : UINavigationController)`<br>
 `ViewController( : UINavigationController)`에 코드를 수정합니다.
 
-  	@implementation YourViewController
+  		@implementation YourViewController
 			-(NSUInteger)supportedInterfaceOrientations{…}
 			-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation{…}
 			-(void)directorDidReshapeProjection:(CCDirector*)director_{
