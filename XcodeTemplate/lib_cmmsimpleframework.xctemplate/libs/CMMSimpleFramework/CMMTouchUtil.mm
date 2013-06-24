@@ -18,6 +18,10 @@
 	return [node_ convertToNodeSpace:[self prepointFromTouch:touch_]];
 }
 
++(CGPoint)movedPointWithTouch:(UITouch *)touch_{
+	return ccpSub([self pointFromTouch:touch_], [self prepointFromTouch:touch_]);
+}
+
 @end
 
 @implementation CMMTouchUtil(Check)

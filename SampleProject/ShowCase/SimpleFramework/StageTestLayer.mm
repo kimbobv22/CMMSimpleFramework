@@ -351,6 +351,30 @@
 	stageDef_.brightness = 0.4f;
 	
 	CMMStagePXL *stage_ = [CMMStagePXL stageWithStageDef:stageDef_ fileName:@"IMG_STG_TEST_001.png" isInDocument:NO];
+	
+/*
+ higher accuracy of pixel collision & lower performance
+ */
+/*
+	stage_.pixel.collisionCheckSegOfRadians = 24;
+	stage_.pixel.collisionCheckSegOfStraight = 12;
+	stage_.pixel.collisionCheckCountOfStraight = 12;
+	stage_.pixel.collisionCheckUpdateRateOfDistance = 0.05f;
+	stage_.pixel.collisionCheckUnitOfRotation = CC_DEGREES_TO_RADIANS(1.0f);
+	stage_.pixel.mapFixtureNormalizeLimitDistance = 2.0f;
+*/
+/*
+ lower accuracy of pixel collision & heigher performance
+ */
+/*
+ stage_.pixel.collisionCheckSegOfRadians = 16;
+ stage_.pixel.collisionCheckSegOfStraight = 5;
+ stage_.pixel.collisionCheckCountOfStraight = 5;
+ stage_.pixel.collisionCheckUpdateRateOfDistance = 0.1f;
+ stage_.pixel.collisionCheckUnitOfRotation = CC_DEGREES_TO_RADIANS(10.0f);
+ stage_.pixel.mapFixtureNormalizeLimitDistance = 5.0f;
+*/
+	
 	stage_.sound.soundDistance = 300.0f;
 	stage_.touchEnabled = YES;
 	[stage_ initializeLightSystem]; // lazy initialization

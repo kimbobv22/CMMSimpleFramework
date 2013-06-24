@@ -290,6 +290,13 @@
 
 @end
 
+float CMMFontUtilDefaultFontSize = 14.0f;
+CGSize CMMFontUtilDefaultDimensions = (CGSize){0,0};
+CCTextAlignment CMMFontUtilDefaultHAlignment = kCCTextAlignmentCenter;
+CCVerticalTextAlignment CMMFontUtilDefaultVAlignment = kCCVerticalTextAlignmentCenter;
+CCLineBreakMode CMMFontUtilDefaultLineBreakMode = kCCLineBreakModeWordWrap;
+NSString *CMMFontUtilDefaultFontName = @"Helvetica";
+
 @implementation CMMFontUtil(Deprecated)
 
 +(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ lineBreakMode:(CCLineBreakMode)lineBreakMode_ fontName:(NSString*)fontName_{
@@ -331,6 +338,25 @@
 }
 +(NSString *)defaultFontName{
 	return CMMFontUtilDefaultFontName;
+}
+
++(void)setDefaultFontSize:(float)fontSize_{
+	[[self defaultPreset] setFontSize:fontSize_];
+}
++(void)setDefaultDimensions:(CGSize)dimensions_{
+	[[self defaultPreset] setDimensions:dimensions_];
+}
++(void)setDefaultHAlignment:(CCTextAlignment)HAlignment_{
+	[[self defaultPreset] setHAlignment:HAlignment_];
+}
++(void)setDefaultVAlignment:(CCVerticalTextAlignment)VAlignment_{
+	[[self defaultPreset] setVAlignment:VAlignment_];
+}
++(void)setDefaultLineBreakMode:(CCLineBreakMode)lineBreakMode_{
+	[[self defaultPreset] setLineBreakMode:lineBreakMode_];
+}
++(void)setDefaultFontName:(NSString *)fontName_{
+	[[self defaultPreset] setFontName:fontName_];
 }
 
 @end

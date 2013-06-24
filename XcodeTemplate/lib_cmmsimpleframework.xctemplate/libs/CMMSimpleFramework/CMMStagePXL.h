@@ -78,7 +78,10 @@
 	CMMStagePixel *pixel;
 }
 
++(id)stageWithStageDef:(CMMStageDef)stageDef_ pixelData:(void *)pixelData_ pixelSize:(CGSize)pixelSize_;
 +(id)stageWithStageDef:(CMMStageDef)stageDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
+
+-(id)initWithStageDef:(CMMStageDef)stageDef_ pixelData:(void *)pixelData_ pixelSize:(CGSize)pixelSize_;
 -(id)initWithStageDef:(CMMStageDef)stageDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_;
 
 @property (nonatomic, readonly) NSString *fileName;

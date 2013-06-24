@@ -366,7 +366,7 @@
 			<key>TargetIndices</key>
 			<array/>
 		</dict>
-		<key>libs/CMMSimpleFramework/CMMFontUtil.m</key>
+		<key>libs/CMMSimpleFramework/CMMFontUtil.mm</key>
 		<dict>
 			<key>Group</key>
 			<array>
@@ -374,7 +374,7 @@
 				<string>CMMSimpleFramework</string>
 			</array>
 			<key>Path</key>
-			<string>libs/CMMSimpleFramework/CMMFontUtil.m</string>
+			<string>libs/CMMSimpleFramework/CMMFontUtil.mm</string>
 		</dict>
 		<key>libs/CMMSimpleFramework/CMMGameKit.h</key>
 		<dict>
@@ -1464,7 +1464,7 @@
 		<string>libs/CMMSimpleFramework/CMMFileUtil.h</string>
 		<string>libs/CMMSimpleFramework/CMMFileUtil.mm</string>
 		<string>libs/CMMSimpleFramework/CMMFontUtil.h</string>
-		<string>libs/CMMSimpleFramework/CMMFontUtil.m</string>
+		<string>libs/CMMSimpleFramework/CMMFontUtil.mm</string>
 		<string>libs/CMMSimpleFramework/CMMSequencer.h</string>
 		<string>libs/CMMSimpleFramework/CMMSequencer.mm</string>
 		<string>libs/CMMSimpleFramework/CMMGameKit.h</string>
@@ -1571,6 +1571,7 @@
 				<string>CoreMotion</string>
 				<string>StoreKit</string>
 				<string>CFNetwork</string>
+				<string>CoreText</string>
 			</array>
 		</dict>
 	</array>

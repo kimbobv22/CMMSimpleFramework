@@ -42,11 +42,15 @@ NSString *CMMControlItemTextPasswordCharacter = @"●";
 	
 	passwordCharacter = [CMMControlItemTextPasswordCharacter copy];
 	
-	_textLabel = [CMMFontUtil labelWithString:@"" fontSize:CMMFontUtilDefaultFontSize dimensions:CGSizeMake(frameSize_.width-10.0f, CMMFontUtilDefaultFontSize) hAlignment:kCCTextAlignmentLeft vAlignment:kCCVerticalTextAlignmentCenter lineBreakMode:kCCLineBreakModeClip];
+	CMMFontPreset *defaultPreset_ = [CMMFontUtil defaultPreset];
+	
+	_textLabel = [CMMFontUtil labelWithString:@"" fontSize:[defaultPreset_ fontSize] dimensions:CGSizeMake(frameSize_.width-10.0f, [defaultPreset_ fontSize]) hAlignment:[defaultPreset_ hAlignment] vAlignment:[defaultPreset_ vAlignment] lineBreakMode:kCCLineBreakModeClip];
 	[_textLabel setPosition:ccp(_contentSize.width/2,_contentSize.height/2)];
 	[self setTextColor:ccBLACK];
 	
-	_placeHolderLabel = [CMMFontUtil labelWithString:@"" fontSize:CMMFontUtilDefaultFontSize dimensions:CGSizeMake(frameSize_.width-10.0f, CMMFontUtilDefaultFontSize) hAlignment:kCCTextAlignmentLeft vAlignment:kCCVerticalTextAlignmentCenter lineBreakMode:kCCLineBreakModeClip];
+	[CMMFontUtil setEnableEffect:NO];
+	_placeHolderLabel = [CMMFontUtil labelWithString:@"" fontSize:[defaultPreset_ fontSize] dimensions:CGSizeMake(frameSize_.width-10.0f, [defaultPreset_ fontSize]) hAlignment:kCCTextAlignmentLeft vAlignment:kCCVerticalTextAlignmentCenter lineBreakMode:kCCLineBreakModeClip];
+	[CMMFontUtil setEnableEffect:YES];
 	[_placeHolderLabel setPosition:ccp(_contentSize.width/2,_contentSize.height/2)];
 	[self setPlaceHolderColor:ccBLACK];
 	[self setPlaceHolderOpacity:100];

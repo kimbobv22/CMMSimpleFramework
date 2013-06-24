@@ -11,6 +11,8 @@
 +(CGPoint)prepointFromTouch:(UITouch *)touch_;
 +(CGPoint)prepointFromTouch:(UITouch *)touch_ targetNode:(CCNode *)node_;
 
++(CGPoint)movedPointWithTouch:(UITouch *)touch_;
+
 @end
 
 @interface CMMTouchUtil(Check)

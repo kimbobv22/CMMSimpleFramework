@@ -263,6 +263,13 @@ DEPRECATED_ATTRIBUTE @interface CMMSpriteBatchBar : CMM9SliceBar<CMMTouchDispatc
 #import "CMMTimeIntervalArray.h"
 #import "CMMMotionDispatcher.h"
 
+extern float CMMFontUtilDefaultFontSize DEPRECATED_ATTRIBUTE;
+extern CGSize CMMFontUtilDefaultDimensions DEPRECATED_ATTRIBUTE;
+extern CCTextAlignment CMMFontUtilDefaultHAlignment DEPRECATED_ATTRIBUTE;
+extern CCVerticalTextAlignment CMMFontUtilDefaultVAlignment DEPRECATED_ATTRIBUTE;
+extern CCLineBreakMode CMMFontUtilDefaultLineBreakMode DEPRECATED_ATTRIBUTE;
+extern NSString *CMMFontUtilDefaultFontName DEPRECATED_ATTRIBUTE;
+
 @interface CMMFontUtil(Deprecated)
 
 +(CCLabelTTF *)labelWithstring:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ lineBreakMode:(CCLineBreakMode)lineBreakMode_ fontName:(NSString*)fontName_ DEPRECATED_ATTRIBUTE;
@@ -279,6 +286,13 @@ DEPRECATED_ATTRIBUTE @interface CMMSpriteBatchBar : CMM9SliceBar<CMMTouchDispatc
 +(CCVerticalTextAlignment)defaultVAlignment DEPRECATED_ATTRIBUTE;
 +(CCLineBreakMode)defaultLineBreakMode DEPRECATED_ATTRIBUTE;
 +(NSString *)defaultFontName DEPRECATED_ATTRIBUTE;
+
++(void)setDefaultFontSize:(float)fontSize_ DEPRECATED_ATTRIBUTE;
++(void)setDefaultDimensions:(CGSize)dimensions_ DEPRECATED_ATTRIBUTE;
++(void)setDefaultHAlignment:(CCTextAlignment)HAlignment_ DEPRECATED_ATTRIBUTE;
++(void)setDefaultVAlignment:(CCVerticalTextAlignment)VAlignment_ DEPRECATED_ATTRIBUTE;
++(void)setDefaultLineBreakMode:(CCLineBreakMode)lineBreakMode_ DEPRECATED_ATTRIBUTE;
++(void)setDefaultFontName:(NSString *)fontName_ DEPRECATED_ATTRIBUTE;
 
 @end
 

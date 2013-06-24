@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>7462E72C-3BC5-4FAD-AA92-FA4C295EE3FC</string>
+	<key>IDESourceControlProjectName</key>
+	<string>SimpleFramework</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>D303D454-70DB-48AE-854A-B4AB6FF58733</key>
+		<string>https://github.com/kimbobv22/CMMSimpleFramework.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>SampleProject/ShowCase/SimpleFramework.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>D303D454-70DB-48AE-854A-B4AB6FF58733</key>
+		<string>../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/kimbobv22/CMMSimpleFramework.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>D303D454-70DB-48AE-854A-B4AB6FF58733</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>D303D454-70DB-48AE-854A-B4AB6FF58733</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CMMSimpleFramework</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -47,6 +47,7 @@ NSString *CMMControlItemSwitchBackLabelStringRight = @"OFF";
 	buttonItem = [CMMMenuItem node];
 	[buttonItem setTouchCancelDistance:100.0f];
 	
+	[CMMFontUtil setEnableEffect:NO];
 	_backLabelL = [[CMMFontUtil labelWithString:CMMControlItemSwitchBackLabelStringLeft fontSize:CMMControlItemSwitchBackLabelSizeLeft] retain];
 	[[_backLabelL texture] setAliasTexParameters];
 	[_backLabelL setColor:CMMControlItemSwitchBackLabelColorLeft];
@@ -56,6 +57,7 @@ NSString *CMMControlItemSwitchBackLabelStringRight = @"OFF";
 	[[_backLabelR texture] setAliasTexParameters];
 	[_backLabelR setColor:CMMControlItemSwitchBackLabelColorRight];
 	[_backLabelR setOpacity:CMMControlItemSwitchBackLabelOpacityRight];
+	[CMMFontUtil setEnableEffect:YES];
 	
 	[_backLabelL setScaleY:-1.0f];
 	[_backLabelR setScaleY:-1.0f];

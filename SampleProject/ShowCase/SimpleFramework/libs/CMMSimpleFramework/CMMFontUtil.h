@@ -2,30 +2,58 @@
 
 #import "cocos2d.h"
 
-extern float CMMFontUtilDefaultFontSize;
-extern CGSize CMMFontUtilDefaultDimensions;
-extern CCTextAlignment CMMFontUtilDefaultHAlignment;
-extern CCVerticalTextAlignment CMMFontUtilDefaultVAlignment;
-extern CCLineBreakMode CMMFontUtilDefaultLineBreakMode;
-extern NSString *CMMFontUtilDefaultFontName;
+struct CMMFontPresetStroke{
+	CMMFontPresetStroke(){
+		color = ccBLACK;
+		size = 0.1f;
+	}
+	CMMFontPresetStroke(ccColor3B color_, float size_) : color(color_), size(size_){}
+	
+	ccColor3B color;
+	float size;
+};
+typedef CMMFontPresetStroke CMMFontPresetStroke;
+
+struct CMMFontPresetShadow{
+	CMMFontPresetShadow(){
+		offset = CGSizeMake(1.0f, -1.0f);
+		opacity = 0.8f;
+		blur = 0.05f;
+	}
+	CMMFontPresetShadow(CGSize offset_, float opacity_, float blur_) : offset(offset_), opacity(opacity_), blur(blur_){}
+	
+	CGSize offset;
+	float opacity;
+	float blur;
+};
+typedef CMMFontPresetShadow CMMFontPresetShadow;
 
 @interface CMMFontPreset : NSObject{
+	ccColor3B fillColor;
 	float fontSize;
 	CGSize dimensions;
 	CCTextAlignment hAlignment;
 	CCVerticalTextAlignment vAlignment;
 	CCLineBreakMode lineBreakMode;
 	NSString *fontName;
+	BOOL enableStroke,enableShadow;
+	
+	CMMFontPresetStroke strokePreset;
+	CMMFontPresetShadow shadowPreset;
 }
 
 +(id)preset;
 
+@property (nonatomic, readwrite) ccColor3B fillColor;
 @property (nonatomic, readwrite) float fontSize;
 @property (nonatomic, readwrite) CGSize dimensions;
 @property (nonatomic, readwrite) CCTextAlignment hAlignment;
 @property (nonatomic, readwrite) CCVerticalTextAlignment vAlignment;
 @property (nonatomic, readwrite) CCLineBreakMode lineBreakMode;
 @property (nonatomic, copy) NSString *fontName;
+@property (nonatomic, readwrite) BOOL enableStroke,enableShadow;
+@property (nonatomic, readwrite) CMMFontPresetStroke strokePreset;
+@property (nonatomic, readwrite) CMMFontPresetShadow shadowPreset;
 
 @end
 
@@ -43,12 +71,11 @@ extern NSString *CMMFontUtilDefaultFontName;
 
 @interface CMMFontUtil(Configuration)
 
-+(void)setDefaultFontSize:(float)fontSize_;
-+(void)setDefaultDimensions:(CGSize)dimensions_;
-+(void)setDefaultHAlignment:(CCTextAlignment)HAlignment_;
-+(void)setDefaultVAlignment:(CCVerticalTextAlignment)VAlignment_;
-+(void)setDefaultLineBreakMode:(CCLineBreakMode)lineBreakMode_;
-+(void)setDefaultFontName:(NSString *)fontName_;
++(CMMFontPreset *)defaultPreset;
++(void)setDefaultPreset:(CMMFontPreset *)preset_;
+
++(BOOL)enableEffect;
++(void)setEnableEffect:(BOOL)bool_;
 
 @end
 

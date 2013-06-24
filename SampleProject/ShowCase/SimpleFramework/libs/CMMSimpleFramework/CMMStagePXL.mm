@@ -338,12 +338,24 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 @implementation CMMStagePXL
 @synthesize fileName,inDocument,pixel;
 
++(id)stageWithStageDef:(CMMStageDef)stageDef_ pixelData:(void *)pixelData_ pixelSize:(CGSize)pixelSize_{
+	return [[[self alloc] initWithStageDef:stageDef_ pixelData:pixelData_ pixelSize:pixelSize_] autorelease];
+}
 +(id)stageWithStageDef:(CMMStageDef)stageDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
 	return [[[self alloc] initWithStageDef:stageDef_ fileName:fileName_ isInDocument:isInDocument_] autorelease];
 }
 
 -(id)initWithStageDef:(CMMStageDef)stageDef_{
 	[self release];
+	return self;
+}
+-(id)initWithStageDef:(CMMStageDef)stageDef_ pixelData:(void *)pixelData_ pixelSize:(CGSize)pixelSize_{
+	stageDef_.worldSize = CGSizeDiv(pixelSize_, CC_CONTENT_SCALE_FACTOR());
+	if(!(self = [super initWithStageDef:stageDef_])) return self;
+	
+	pixel = [CMMStagePixel pixelWithStage:self pixelData:pixelData_ pixelSize:pixelSize_];
+	[self addChild:pixel z:2];
+	
 	return self;
 }
 -(id)initWithStageDef:(CMMStageDef)stageDef_ fileName:(NSString *)fileName_ isInDocument:(BOOL)isInDocument_{
@@ -358,19 +370,12 @@ static CMMSimpleCache *_CMMStagePixelObjectCache_ = nil;
 	}
 	
 	CCLOG(@"CMMStagePXL : load pixel data : length->%d",[data_ length]);
-
+	
 	UIImage *pixelImage_ = [UIImage imageWithData:data_];
 	CGSize pixelSize_ = [pixelImage_ size];
 	
 	void *pixelData_ = [CMMFileUtil imageDataWithCGImage:[pixelImage_ CGImage]];
-	pixel = [CMMStagePixel pixelWithStage:self pixelData:pixelData_ pixelSize:pixelSize_];
-	
-	stageDef_.worldSize = CGSizeDiv(pixelSize_, CC_CONTENT_SCALE_FACTOR());
-	if(!(self = [super initWithStageDef:stageDef_])) return self;
-	
-	[self addChild:pixel z:2];
-	
-	return self;
+	return [self initWithStageDef:stageDef_ pixelData:pixelData_ pixelSize:pixelSize_];
 }
 
 -(void)setWorldPoint:(CGPoint)worldPoint_{

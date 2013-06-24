@@ -86,7 +86,7 @@ CMM9SliceEdgeOffset CMMControlItemComboEdgeOffset = CMM9SliceEdgeOffset(15.0f,15
 	
 	void (^_callback_whenIndexChanged)(uint beforeIndex_, uint newIndex_);
 }
-@synthesize index,itemList;
+@synthesize index,itemValue,itemList;
 @synthesize itemFontColor = _itemFontColor,itemFontOpacity = _itemFontOpacity,itemFontSize = _itemFontSize;
 @synthesize stopToSnapScrollSpeed,snapSpeed,marginPerItem;
 @synthesize callback_whenIndexChanged = _callback_whenIndexChanged;
@@ -158,6 +158,17 @@ CMM9SliceEdgeOffset CMMControlItemComboEdgeOffset = CMM9SliceEdgeOffset(15.0f,15
 	_onSnaped = NO;
 	_snapIndex = index;
 }
+-(void)setItemValue:(id)itemValue_{
+	uint index_ = [self indexOfItemWithItemValue:itemValue_];
+	if(index_ !=NSNotFound){
+		[self setIndex:index_];
+	}
+}
+-(id)itemValue{
+	if(index == NSNotFound) return nil;
+	return [[self itemAtIndex:index] itemValue];
+}
+
 -(CCArray *)itemList{
 	return [CCArray arrayWithArray:_itemList];
 }
@@ -195,6 +206,17 @@ CMM9SliceEdgeOffset CMMControlItemComboEdgeOffset = CMM9SliceEdgeOffset(15.0f,15
 }
 -(uint)indexOfItem:(CMMControlItemComboItem *)item_{
 	return [_itemList indexOfObject:item_];
+}
+-(uint)indexOfItemWithItemValue:(id)itemValue_{
+	ccArray *data_ = _itemList->data;
+	uint count_ = data_->num;
+	for(uint index_=0;index_<count_;++index_){
+		if([data_->arr[index_] itemValue] == itemValue_){
+			return index_;
+		}
+	}
+	
+	return NSNotFound;
 }
 
 -(void)redraw{

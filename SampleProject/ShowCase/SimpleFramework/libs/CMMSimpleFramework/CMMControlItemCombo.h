@@ -47,8 +47,10 @@ extern CMM9SliceEdgeOffset CMMControlItemComboEdgeOffset;
 
 -(CMMControlItemComboItem *)itemAtIndex:(uint)index_;
 -(uint)indexOfItem:(CMMControlItemComboItem *)item_;
+-(uint)indexOfItemWithItemValue:(id)itemValue_;
 
 @property (nonatomic, readwrite) uint index;
+@property (nonatomic, assign) id itemValue;
 @property (nonatomic, readonly) CCArray *itemList;
 @property (nonatomic, readwrite) ccColor3B itemFontColor;
 @property (nonatomic, readwrite) GLubyte itemFontOpacity;
