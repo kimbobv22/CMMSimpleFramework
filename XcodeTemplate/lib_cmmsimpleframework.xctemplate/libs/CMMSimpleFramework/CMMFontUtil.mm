@@ -2,72 +2,62 @@
 
 #import "CMMFontUtil.h"
 
-@implementation CMMFontPreset
-@synthesize fillColor,fontSize,dimensions,hAlignment,vAlignment,lineBreakMode,fontName,enableStroke,enableShadow;
-@synthesize strokePreset,shadowPreset;
+@implementation CCFontDefinition(CMMExtension)
 
 +(id)preset{
 	return [[[self alloc] init] autorelease];
 }
--(id)init{
-	if(!(self = [super init])) return self;
-	
-	fillColor = ccWHITE;
-	fontSize = 14.0f;
-	dimensions = CGSizeZero;
-	hAlignment = kCCTextAlignmentCenter;
-	vAlignment = kCCVerticalTextAlignmentCenter;
-	lineBreakMode = kCCLineBreakModeWordWrap;
-	fontName = @"Helvetica";
-	enableStroke = NO;
-	enableShadow = YES;
-	
-	strokePreset = CMMFontPresetStroke();
-	shadowPreset = CMMFontPresetShadow();
-	
-	return self;
-}
 
--(void)dealloc{
-	[fontName release];
-	[super dealloc];
+-(id)copyWithZone:(NSZone *)zone_{
+	CCFontDefinition *copy_ = [[[self class] alloc] init];
+	[copy_ setFontSize:[self fontSize]];
+	[copy_ setDimensions:[self dimensions]];
+	[copy_ setAlignment:[self alignment]];
+	[copy_ setVertAlignment:[self vertAlignment]];
+	[copy_ setLineBreakMode:[self lineBreakMode]];
+	[copy_ setFontName:[self fontName]];
+	
+	[copy_ setFontFillColor:[self fontFillColor]];
+	
+	[copy_ enableShadow:[self shadowEnabled]];
+	[copy_ setShadowOffset:[self shadowOffset]];
+	[copy_ setShadowBlur:[self shadowBlur]];
+	
+	[copy_ enableStroke:[self strokeEnabled]];
+	[copy_ setStrokeSize:[self strokeSize]];
+	[copy_ setStrokeColor:[self strokeColor]];
+	
+	return copy_;
 }
 
 @end
 
-static CMMFontPreset *_CMMFontUtilDefaultPreset_ = [CMMFontUtil defaultPreset];
+static CCFontDefinition *_CMMFontUtilDefaultPreset_ = [CMMFontUtil defaultPreset];
 static BOOL _CMMFontUtilEnableEffect_ = YES;
-
-@interface CMMFontUtil(Private)
-
-+(void)_renderEffect:(CCLabelTTF *)label_ withPreset:(CMMFontPreset *)preset_;
-
-@end
-
-@implementation CMMFontUtil(Private)
-
-+(void)_renderEffect:(CCLabelTTF *)label_ withPreset:(CMMFontPreset *)preset_{
-	if(!_CMMFontUtilEnableEffect_) return;
-	[label_ setFontFillColor:[preset_ fillColor] updateImage:YES];
-	if([preset_ enableStroke]){
-		CMMFontPresetStroke strokePreset_ = [preset_ strokePreset];
-		[label_ enableStrokeWithColor:strokePreset_.color size:strokePreset_.size updateImage:YES];
-	}
-	if([preset_ enableShadow]){
-		CMMFontPresetShadow shadowPreset_ = [preset_ shadowPreset];
-		[label_ enableShadowWithOffset:shadowPreset_.offset opacity:shadowPreset_.opacity blur:shadowPreset_.blur updateImage:YES];
-	}
-}
-
-@end
 
 @implementation CMMFontUtil
 
-+(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ lineBreakMode:(CCLineBreakMode)lineBreakMode_ fontName:(NSString*)fontName_{
-	CCLabelTTF *label_ = [CCLabelTTF labelWithString:string_ fontName:fontName_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:lineBreakMode_];
-	[self _renderEffect:label_ withPreset:[self defaultPreset]];
++(CCLabelTTF *)labelWithString:(NSString *)string_ withPreset:(CCFontDefinition *)preset_{
+	//apply default preset
+	[preset_ setFontFillColor:[_CMMFontUtilDefaultPreset_ fontFillColor]];
 	
-	return label_;
+	if(!_CMMFontUtilEnableEffect_){
+		[preset_ enableShadow:NO];
+		[preset_ enableStroke:NO];
+	}
+	
+	return [CCLabelTTF labelWithString:string_ fontDefinition:preset_];
+}
++(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ lineBreakMode:(CCLineBreakMode)lineBreakMode_ fontName:(NSString*)fontName_{
+	
+	CCFontDefinition *preset_ = [[_CMMFontUtilDefaultPreset_ copy] autorelease];
+	[preset_ setFontName:fontName_];
+	[preset_ setFontSize:fontSize_];
+	[preset_ setDimensions:dimensions_];
+	[preset_ setAlignment:hAlignment_];
+	[preset_ setVertAlignment:vAlignment_];
+	[preset_ setLineBreakMode:lineBreakMode_];
+	return [self labelWithString:string_ withPreset:preset_];
 }
 +(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_ vAlignment:(CCVerticalTextAlignment)vAlignment_ lineBreakMode:(CCLineBreakMode)lineBreakMode_{
 	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:lineBreakMode_ fontName:[_CMMFontUtilDefaultPreset_ fontName]];
@@ -76,10 +66,10 @@ static BOOL _CMMFontUtilEnableEffect_ = YES;
 	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:vAlignment_ lineBreakMode:[_CMMFontUtilDefaultPreset_ lineBreakMode]];
 }
 +(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_ hAlignment:(CCTextAlignment)hAlignment_{
-	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:[_CMMFontUtilDefaultPreset_ vAlignment]];
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:hAlignment_ vAlignment:[_CMMFontUtilDefaultPreset_ vertAlignment]];
 }
 +(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_ dimensions:(CGSize)dimensions_{
-	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:[_CMMFontUtilDefaultPreset_ hAlignment]];
+	return [self labelWithString:string_ fontSize:fontSize_ dimensions:dimensions_ hAlignment:[_CMMFontUtilDefaultPreset_ alignment]];
 }
 +(CCLabelTTF *)labelWithString:(NSString *)string_ fontSize:(float)fontSize_{
 	return [self labelWithString:string_ fontSize:fontSize_ dimensions:[_CMMFontUtilDefaultPreset_ dimensions]];
@@ -92,13 +82,21 @@ static BOOL _CMMFontUtilEnableEffect_ = YES;
 
 @implementation CMMFontUtil(Configuration)
 
-+(CMMFontPreset *)defaultPreset{
++(CCFontDefinition *)defaultPreset{
 	if(!_CMMFontUtilDefaultPreset_){
-		_CMMFontUtilDefaultPreset_ = [[CMMFontPreset alloc] init];
+		_CMMFontUtilDefaultPreset_ = [[CCFontDefinition alloc] initWithFontName:@"Helvetica" fontSize:14.0f];
+		[_CMMFontUtilDefaultPreset_ setAlignment:kCCTextAlignmentCenter];
+		[_CMMFontUtilDefaultPreset_ setVertAlignment:kCCVerticalTextAlignmentCenter];
+		[_CMMFontUtilDefaultPreset_ setLineBreakMode:kCCLineBreakModeWordWrap];
+
+		[_CMMFontUtilDefaultPreset_ setFontFillColor:ccWHITE];
+		[_CMMFontUtilDefaultPreset_ enableShadow:YES];
+		[_CMMFontUtilDefaultPreset_ setShadowBlur:0.05];
+		[_CMMFontUtilDefaultPreset_ setShadowOffset:CGSizeMake(1.0f, -1.0f)];
 	}
 	return _CMMFontUtilDefaultPreset_;
 }
-+(void)setDefaultPreset:(CMMFontPreset *)preset_{
++(void)setDefaultPreset:(CCFontDefinition *)preset_{
 	[_CMMFontUtilDefaultPreset_ release];
 	_CMMFontUtilDefaultPreset_ = [preset_ retain];
 }
@@ -127,27 +125,24 @@ NSMutableDictionary *_sharedCMMFontUtilPresetList_ = nil;
 	return [NSDictionary dictionaryWithDictionary:[self _presetList]];
 }
 
-+(void)setPreset:(CMMFontPreset *)preset_ forKey:(NSString *)key_{
++(void)setPreset:(CCFontDefinition *)preset_ forKey:(NSString *)key_{
 	[[self _presetList] setObject:preset_ forKey:key_];
 }
 +(void)removePresetForKey:(NSString *)key_{
 	[[self _presetList] removeObjectForKey:key_];
 }
-+(CMMFontPreset *)presetForKey:(NSString *)key_{
++(CCFontDefinition *)presetForKey:(NSString *)key_{
 	return [[self _presetList] objectForKey:key_];
 }
 
 +(CCLabelTTF *)labelWithString:(NSString *)string_ withPresetKey:(NSString *)presetKey_{
-	CMMFontPreset *preset_ = [self presetForKey:presetKey_];
+	CCFontDefinition *preset_ = [self presetForKey:presetKey_];
 	if(!preset_){
 		CCLOGWARN(@"CMMFontUtil : Font preset is nil");
 		return [self labelWithString:string_];
 	}
 	
-	CCLabelTTF *label_ = [CCLabelTTF labelWithString:string_ fontName:[preset_ fontName] fontSize:[preset_ fontSize] dimensions:[preset_ dimensions] hAlignment:[preset_ hAlignment] vAlignment:[preset_ vAlignment] lineBreakMode:[preset_ lineBreakMode]];
-	[self _renderEffect:label_ withPreset:preset_];
-	
-	return label_;
+	return [self labelWithString:string_ withPreset:[[preset_ copy] autorelease]];
 }
 
 @end

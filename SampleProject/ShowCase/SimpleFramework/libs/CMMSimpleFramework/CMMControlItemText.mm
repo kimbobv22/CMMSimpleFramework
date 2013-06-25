@@ -42,16 +42,16 @@ NSString *CMMControlItemTextPasswordCharacter = @"●";
 	
 	passwordCharacter = [CMMControlItemTextPasswordCharacter copy];
 	
-	CMMFontPreset *defaultPreset_ = [CMMFontUtil defaultPreset];
+	CCFontDefinition *defaultPreset_ = [CMMFontUtil defaultPreset];
 	
-	_textLabel = [CMMFontUtil labelWithString:@"" fontSize:[defaultPreset_ fontSize] dimensions:CGSizeMake(frameSize_.width-10.0f, [defaultPreset_ fontSize]) hAlignment:[defaultPreset_ hAlignment] vAlignment:[defaultPreset_ vAlignment] lineBreakMode:kCCLineBreakModeClip];
+	[CMMFontUtil setEnableEffect:NO];
+	_textLabel = [CMMFontUtil labelWithString:@"" fontSize:[defaultPreset_ fontSize] dimensions:CGSizeMake(frameSize_.width-10.0f, [defaultPreset_ fontSize]) hAlignment:kCCTextAlignmentLeft vAlignment:kCCVerticalTextAlignmentCenter lineBreakMode:kCCLineBreakModeClip];
 	[_textLabel setPosition:ccp(_contentSize.width/2,_contentSize.height/2)];
 	[self setTextColor:ccBLACK];
 	
-	[CMMFontUtil setEnableEffect:NO];
 	_placeHolderLabel = [CMMFontUtil labelWithString:@"" fontSize:[defaultPreset_ fontSize] dimensions:CGSizeMake(frameSize_.width-10.0f, [defaultPreset_ fontSize]) hAlignment:kCCTextAlignmentLeft vAlignment:kCCVerticalTextAlignmentCenter lineBreakMode:kCCLineBreakModeClip];
 	[CMMFontUtil setEnableEffect:YES];
-	[_placeHolderLabel setPosition:ccp(_contentSize.width/2,_contentSize.height/2)];
+	[_placeHolderLabel setPosition:ccp(_contentSize.width/2.0f,_contentSize.height/2.0f)];
 	[self setPlaceHolderColor:ccBLACK];
 	[self setPlaceHolderOpacity:100];
 	

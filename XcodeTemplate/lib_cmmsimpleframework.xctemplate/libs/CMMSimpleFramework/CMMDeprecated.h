@@ -263,6 +263,15 @@ DEPRECATED_ATTRIBUTE @interface CMMSpriteBatchBar : CMM9SliceBar<CMMTouchDispatc
 #import "CMMTimeIntervalArray.h"
 #import "CMMMotionDispatcher.h"
 
+DEPRECATED_ATTRIBUTE @interface CMMFontPreset : CCFontDefinition
+
++(id)preset;
+
+@property (nonatomic, readwrite) CCTextAlignment hAlignment DEPRECATED_ATTRIBUTE;
+@property (nonatomic, readwrite) CCVerticalTextAlignment vAlignment DEPRECATED_ATTRIBUTE;
+
+@end
+
 extern float CMMFontUtilDefaultFontSize DEPRECATED_ATTRIBUTE;
 extern CGSize CMMFontUtilDefaultDimensions DEPRECATED_ATTRIBUTE;
 extern CCTextAlignment CMMFontUtilDefaultHAlignment DEPRECATED_ATTRIBUTE;

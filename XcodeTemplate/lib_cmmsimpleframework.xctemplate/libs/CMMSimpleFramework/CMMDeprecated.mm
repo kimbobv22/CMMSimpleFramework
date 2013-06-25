@@ -290,6 +290,15 @@
 
 @end
 
+@implementation CMMFontPreset
+@synthesize hAlignment,vAlignment;
+
++(id)preset{
+	return [super preset];
+}
+
+@end
+
 float CMMFontUtilDefaultFontSize = 14.0f;
 CGSize CMMFontUtilDefaultDimensions = (CGSize){0,0};
 CCTextAlignment CMMFontUtilDefaultHAlignment = kCCTextAlignmentCenter;
@@ -347,10 +356,10 @@ NSString *CMMFontUtilDefaultFontName = @"Helvetica";
 	[[self defaultPreset] setDimensions:dimensions_];
 }
 +(void)setDefaultHAlignment:(CCTextAlignment)HAlignment_{
-	[[self defaultPreset] setHAlignment:HAlignment_];
+	[[self defaultPreset] setAlignment:HAlignment_];
 }
 +(void)setDefaultVAlignment:(CCVerticalTextAlignment)VAlignment_{
-	[[self defaultPreset] setVAlignment:VAlignment_];
+	[[self defaultPreset] setVertAlignment:VAlignment_];
 }
 +(void)setDefaultLineBreakMode:(CCLineBreakMode)lineBreakMode_{
 	[[self defaultPreset] setLineBreakMode:lineBreakMode_];
