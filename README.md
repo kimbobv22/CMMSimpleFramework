@@ -39,7 +39,9 @@ CMMSimpleFramework 라이브러리를 기존프로젝트에 복사하고 추가�
 				}
 			}
 		@end
-
-**write soon!**
+		
+		
+##contact
+E-mail : kimbobv22@gmail.com
 
 ##**[Channel Log](https://github.com/kimbobv22/CMMSimpleFramework/blob/master/CHANNELLOG.md)**
